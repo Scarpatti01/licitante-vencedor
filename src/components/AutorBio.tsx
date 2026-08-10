@@ -22,9 +22,8 @@ export function AutorBio({ variante = "artigo" }: { variante?: "artigo" | "home"
       <Image
         src={AUTHOR.photo}
         alt={`Retrato de ${AUTHOR.name}`}
-        width={400}
-        height={400}
-        sizes="96px"
+        width={192}
+        height={192}
         className="h-24 w-24 shrink-0 rounded-full object-cover"
         priority={false}
       />
