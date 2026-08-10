@@ -21,7 +21,7 @@ export type LegacyRedirect = {
 };
 
 /** Hubs já publicados. Só os redirecionamentos que apontam para cá entram em vigor. */
-export const HUBS_PUBLICADOS: readonly string[] = ["/lei-14133/"];
+export const HUBS_PUBLICADOS: readonly string[] = ["/lei-14133/", "/jurisprudencia/"];
 
 export const LEGACY_REDIRECTS = redirects as LegacyRedirect[];
 export const LEGACY_GONE = gone as string[];
