@@ -1,13 +1,31 @@
 @import "tailwindcss";
 
+/**
+ * MARINHO E LATÃO — a paleta da marca.
+ *
+ * O marinho é a cor institucional de contrato e tribunal, que é o terreno de
+ * quem lê edital. O latão carrega o "vencedor" do nome e é o que torna o
+ * conjunto elegante em vez de corporativo-frio. Substitui o verde-esmeralda
+ * herdado do template inicial, que qualquer SaaS usa.
+ *
+ * Espelhado em `src/lib/brand.ts`, porque o cartão de compartilhamento é
+ * gerado pelo `next/og` fora do CSS e não enxerga variável CSS. Mudou aqui,
+ * mude lá.
+ */
 :root {
   --background: #ffffff;
-  --foreground: #0f172a;
-  --muted: #475569;
-  --border: #e2e8f0;
-  --surface: #f8fafc;
-  --accent: #047857;
-  --accent-soft: #ecfdf5;
+  --foreground: #0c1b33;
+  --muted: #51617a;
+  --border: #e1e6ed;
+  --surface: #f5f7fa;
+  --accent: #14315e;
+  --accent-soft: #edf1f7;
+  /**
+   * Latão escuro, no limite da acessibilidade: 4,85:1 sobre branco, passa em
+   * AA para texto normal. Um latão mais claro seria mais bonito e reprovaria.
+   * Sobre fundo escuro use `--brass` do bloco dark, que é o claro.
+   */
+  --brass: #8c6d28;
 }
 
 @theme inline {
@@ -18,19 +36,23 @@
   --color-surface: var(--surface);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
+  --color-brass: var(--brass);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0b1120;
-    --foreground: #e2e8f0;
-    --muted: #94a3b8;
-    --border: #1e293b;
-    --surface: #111c33;
-    --accent: #34d399;
-    --accent-soft: #0f2a22;
+    --background: #0a1526;
+    --foreground: #e5eaf3;
+    --muted: #93a2b9;
+    --border: #1b2c49;
+    --surface: #101f38;
+    /* Link em fundo escuro precisa clarear: o marinho do modo claro some. */
+    --accent: #8fb2e8;
+    --accent-soft: #142743;
+    /* O latão claro do cartão — 9,9:1 sobre o marinho, e é onde ele brilha. */
+    --brass: #d9b65f;
   }
 }
 
