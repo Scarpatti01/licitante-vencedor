@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AUTHOR, SITE } from "@/lib/site";
 import { Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
@@ -99,13 +100,13 @@ export default function Jurisprudencia() {
     <div className="min-h-screen">
       <header className="border-b">
         <div className="mx-auto max-w-3xl px-6 py-5">
-          <a href="/" className="text-base font-semibold tracking-tight">{SITE.name}</a>
+          <Link href="/" className="text-base font-semibold tracking-tight">{SITE.name}</Link>
         </div>
       </header>
 
       <main className="mx-auto max-w-3xl px-6 py-12">
         <nav aria-label="Trilha" className="text-sm text-[var(--muted)]">
-          <a href="/" className="underline-offset-4 hover:underline">Início</a>
+          <Link href="/" className="underline-offset-4 hover:underline">Início</Link>
           <span aria-hidden> › </span>
           <span>Jurisprudência</span>
         </nav>
