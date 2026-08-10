@@ -10,8 +10,8 @@ const ATUALIZADO = "2026-08-10";
 export const metadata: Metadata = {
   title: "Lei 14.133/2021: guia da Nova Lei de Licitações",
   description: DESCRICAO,
-  alternates: { canonical: "/lei-14133" },
-  openGraph: { title: TITULO, description: DESCRICAO, url: `${SITE.url}/lei-14133`, type: "article" },
+  alternates: { canonical: "/lei-14133/" },
+  openGraph: { title: TITULO, description: DESCRICAO, url: `${SITE.url}/lei-14133/`, type: "article" },
 };
 
 const SECOES = [
@@ -69,7 +69,7 @@ const schema = {
   "@graph": [
     {
       "@type": "Article",
-      "@id": `${SITE.url}/lei-14133#article`,
+      "@id": `${SITE.url}/lei-14133/#article`,
       headline: TITULO,
       description: DESCRICAO,
       inLanguage: SITE.locale,
@@ -87,7 +87,7 @@ const schema = {
     },
     {
       "@type": "FAQPage",
-      "@id": `${SITE.url}/lei-14133#faq`,
+      "@id": `${SITE.url}/lei-14133/#faq`,
       mainEntity: FAQ.map((f) => ({
         "@type": "Question",
         name: f.pergunta,
@@ -98,7 +98,7 @@ const schema = {
       "@type": "BreadcrumbList",
       itemListElement: [
         { "@type": "ListItem", position: 1, name: "Início", item: `${SITE.url}/` },
-        { "@type": "ListItem", position: 2, name: "Lei 14.133/2021", item: `${SITE.url}/lei-14133` },
+        { "@type": "ListItem", position: 2, name: "Lei 14.133/2021", item: `${SITE.url}/lei-14133/` },
       ],
     },
   ],

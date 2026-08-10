@@ -10,6 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const agora = new Date();
   return [
     { url: `${SITE.url}/`, lastModified: agora, changeFrequency: "daily", priority: 1 },
-    { url: `${SITE.url}/lei-14133`, lastModified: agora, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${SITE.url}/lei-14133/`, lastModified: agora, changeFrequency: "monthly", priority: 0.9 },
   ];
 }
