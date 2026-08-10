@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { AUTHOR, SITE } from "@/lib/site";
 
 const PILARES = [
@@ -86,14 +85,12 @@ export default function Home() {
 
         <section className="border-t">
           <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-16 sm:flex-row sm:items-start">
-            <Image
-              src={AUTHOR.photo}
-              alt={`Foto de ${AUTHOR.name}`}
-              width={96}
-              height={96}
-              className="h-24 w-24 shrink-0 rounded-full object-cover"
-              priority={false}
-            />
+            <div
+              aria-hidden
+              className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-[var(--surface)] text-2xl font-semibold tracking-tight"
+            >
+              LS
+            </div>
             <div>
               <h2 className="text-lg font-semibold tracking-tight">
                 Quem assina
