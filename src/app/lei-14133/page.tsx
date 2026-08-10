@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { AUTHOR, SITE } from "@/lib/site";
 import { Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
+import { AutorBio } from "@/components/AutorBio";
 
 const TITULO = "Lei 14.133/2021: o guia da Nova Lei de Licitações para quem vende ao governo";
 const DESCRICAO =
@@ -356,9 +357,8 @@ export default function Lei14133() {
           </Secao>
         </div>
 
-        <div className="mt-12 rounded-lg border bg-[var(--surface)] p-6">
-          <p className="font-medium">{AUTHOR.name}</p>
-          <p className="mt-2 leading-relaxed text-[var(--muted)]">{AUTHOR.bio}</p>
+        <div className="mt-12">
+          <AutorBio />
         </div>
 
         <p className="mt-8 text-sm leading-relaxed text-[var(--muted)]">

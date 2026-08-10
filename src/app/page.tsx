@@ -1,4 +1,5 @@
-import { AUTHOR, SITE } from "@/lib/site";
+import { SITE } from "@/lib/site";
+import { AutorBio } from "@/components/AutorBio";
 
 const PILARES = [
   {
@@ -84,28 +85,8 @@ export default function Home() {
         </section>
 
         <section className="border-t">
-          <div className="mx-auto flex max-w-5xl flex-col gap-6 px-6 py-16 sm:flex-row sm:items-start">
-            <div
-              aria-hidden
-              className="flex h-24 w-24 shrink-0 items-center justify-center rounded-full bg-[var(--surface)] text-2xl font-semibold tracking-tight"
-            >
-              LS
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold tracking-tight">
-                Quem assina
-              </h2>
-              <p className="mt-2 font-medium">
-                {AUTHOR.name}
-                <span className="font-normal text-[var(--muted)]">
-                  {" "}
-                  — {AUTHOR.jobTitle}
-                </span>
-              </p>
-              <p className="mt-3 max-w-2xl leading-relaxed text-[var(--muted)]">
-                {AUTHOR.bio}
-              </p>
-            </div>
+          <div className="mx-auto max-w-5xl px-6 py-16">
+            <AutorBio variante="home" />
           </div>
         </section>
       </main>
