@@ -1,4 +1,5 @@
 import { SITE } from "@/lib/site";
+import { GUIAS_PUBLICADOS } from "@/lib/guias";
 import { AutorBio } from "@/components/AutorBio";
 
 const PILARES = [
@@ -27,9 +28,10 @@ export default function Home() {
           <span className="text-base font-semibold tracking-tight">
             {SITE.name}
           </span>
-          <span className="text-sm text-[var(--muted)]">
-            Editais públicos, desde {SITE.foundingYear}
-          </span>
+          <nav className="flex items-center gap-6 text-sm text-[var(--muted)]">
+            <a href="/blog/" className="underline-offset-4 hover:underline">Guias</a>
+            <a href="/sobre/" className="underline-offset-4 hover:underline">Sobre</a>
+          </nav>
         </div>
       </header>
 
@@ -78,9 +80,28 @@ export default function Home() {
           <p className="mt-4 max-w-2xl leading-relaxed text-[var(--muted)]">
             O Licitante Vencedor publica sobre licitações e contratações
             públicas desde {SITE.foundingYear}. Todo esse acervo está sendo
-            revisado e reescrito para a Lei 14.133/2021, junto com as seções de
-            jurisprudência, súmulas do TCU e legislação. Os guias voltam ao ar
-            nas próximas semanas.
+            revisado e reescrito para a Lei 14.133/2021. Estes já estão no ar:
+          </p>
+
+          <div className="mt-8 grid gap-6 sm:grid-cols-3">
+            {GUIAS_PUBLICADOS.map((guia) => (
+              <article key={guia.href}>
+                <h3 className="font-semibold tracking-tight">
+                  <a href={guia.href} className="underline-offset-4 hover:underline">
+                    {guia.titulo}
+                  </a>
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+                  {guia.resumo}
+                </p>
+              </article>
+            ))}
+          </div>
+
+          <p className="mt-8">
+            <a href="/blog/" className="underline underline-offset-4">
+              Ver todos os guias
+            </a>
           </p>
         </section>
 

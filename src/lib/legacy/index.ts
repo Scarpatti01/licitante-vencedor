@@ -1,5 +1,6 @@
 import redirects from "./redirects.json";
 import gone from "./gone.json";
+import { GUIAS_PUBLICADOS, PAGINAS_FIXAS } from "../guias";
 
 /**
  * Mapa de recuperação do acervo (2016–2025).
@@ -20,8 +21,15 @@ export type LegacyRedirect = {
   permanent: boolean;
 };
 
-/** Hubs já publicados. Só os redirecionamentos que apontam para cá entram em vigor. */
-export const HUBS_PUBLICADOS: readonly string[] = ["/lei-14133/", "/jurisprudencia/"];
+/**
+ * Hubs já publicados. Só os redirecionamentos que apontam para cá entram em
+ * vigor. Deriva do catálogo em `../guias` para não existir uma segunda lista
+ * capaz de discordar dele.
+ */
+export const HUBS_PUBLICADOS: readonly string[] = [
+  ...GUIAS_PUBLICADOS.map((g) => g.href),
+  ...PAGINAS_FIXAS,
+];
 
 export const LEGACY_REDIRECTS = redirects as LegacyRedirect[];
 export const LEGACY_GONE = gone as string[];
