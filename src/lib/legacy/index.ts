@@ -43,3 +43,12 @@ export function redirecionamentosAtivos(): LegacyRedirect[] {
     HUBS_PUBLICADOS.includes(r.destination),
   );
 }
+
+/**
+ * Quantos endereços do acervo apontam para um destino.
+ * É a contagem que a página de guias exibe — derivada do mapa, nunca digitada,
+ * para não voltar a existir um número que discorda do `redirects.json`.
+ */
+export function urlsDoAcervo(destino: string): number {
+  return LEGACY_REDIRECTS.filter((r) => r.destination === destino).length;
+}

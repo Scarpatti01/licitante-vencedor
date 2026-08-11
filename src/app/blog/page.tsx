@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SITE } from "@/lib/site";
 import { GUIAS_EM_RECONSTRUCAO, GUIAS_PUBLICADOS } from "@/lib/guias";
+import { redirecionamentosAtivos, urlsDoAcervo } from "@/lib/legacy";
 
 const TITULO = "Guias sobre licitações e contratos públicos";
 const DESCRICAO =
@@ -45,7 +46,7 @@ const schema = {
 };
 
 export default function Blog() {
-  const resgatadas = GUIAS_PUBLICADOS.reduce((s, g) => s + g.urlsResgatadas, 0);
+  const resgatadas = redirecionamentosAtivos().length;
 
   return (
     <div className="min-h-screen">
@@ -105,7 +106,10 @@ export default function Blog() {
             {GUIAS_EM_RECONSTRUCAO.map((guia) => (
               <li key={guia.href}>
                 <span className="font-medium">{guia.titulo}</span>
-                <span className="text-[var(--muted)]"> — {guia.resumo}</span>
+                <span className="text-[var(--muted)]">
+                  {" "}
+                  — {guia.resumo} ({urlsDoAcervo(guia.href)} endereços do acervo)
+                </span>
               </li>
             ))}
           </ul>
