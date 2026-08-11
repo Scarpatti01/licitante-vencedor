@@ -10,7 +10,7 @@ import { LEGACY_GONE } from "@/lib/legacy";
  */
 const GONE = new Set(LEGACY_GONE.map((p) => p.replace(/\/$/, "")));
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname.replace(/\/$/, "");
 
   if (GONE.has(path)) {
