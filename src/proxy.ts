@@ -36,6 +36,13 @@ export function proxy(request: NextRequest) {
  * vez de 410. Num domínio que passou nove anos em WordPress, endereço
  * terminado em `.php` é acervo, não asset. Por isso a exclusão lista as
  * extensões de arquivo estático em vez de presumir que todo ponto é uma.
+ *
+ * Ainda assim, esse caminho responde 410 só em desenvolvimento. Em produção a
+ * Vercel bloqueia requisições a `.php` na borda, antes de invocar a função —
+ * resposta 403 com o cabeçalho `X-Vercel-Mitigated: deny`. É a regra gerenciada
+ * que barra varredura de exploit em WordPress, e não dá para contorná-la daqui.
+ * Fica assim de propósito: desligar a proteção para servir um 410 de página
+ * extinta, sem link equity, seria trocar segurança por nada.
  */
 export const config = {
   matcher: [
