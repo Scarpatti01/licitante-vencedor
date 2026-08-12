@@ -77,7 +77,7 @@ export const GUIAS: readonly Guia[] = [
     titulo: "Portais de licitação",
     resumo:
       "PNCP, Compras.gov.br e os portais estaduais e privados: onde cada certame é publicado e onde a disputa acontece de fato.",
-    publicado: false,
+    publicado: true,
   },
 ];
 

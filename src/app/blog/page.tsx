@@ -85,27 +85,38 @@ export default function Blog() {
           ))}
         </section>
 
+        {/*
+          Quando o último hub sai do forno, esta seção não pode continuar
+          anunciando "os próximos:" seguido de lista vazia — foi o que aconteceu
+          ao publicar /portais-de-licitacao/. O texto passa a depender de haver
+          ou não hub pendente, derivado do catálogo e não escrito à mão.
+        */}
         <section className="mt-16 rounded-lg border bg-[var(--surface)] p-6">
           <h2 className="text-lg font-semibold tracking-tight">
-            O que ainda está sendo escrito
+            {GUIAS_EM_RECONSTRUCAO.length > 0
+              ? "O que ainda está sendo escrito"
+              : "O acervo, e o que ele virou"}
           </h2>
           <p className="mt-3 leading-relaxed text-[var(--muted)]">
             Este site publica sobre licitações desde {SITE.foundingYear}. O
-            acervo está sendo reescrito guia a guia, para a Lei 14.133/2021 —{" "}
-            {resgatadas} endereços antigos já apontam para o conteúdo novo
-            correspondente. Os próximos:
+            acervo foi reescrito guia a guia, para a Lei 14.133/2021 —{" "}
+            {resgatadas} endereços antigos apontam para o conteúdo novo
+            correspondente.
+            {GUIAS_EM_RECONSTRUCAO.length > 0 ? " Os próximos:" : null}
           </p>
-          <ul className="mt-4 space-y-3">
-            {GUIAS_EM_RECONSTRUCAO.map((guia) => (
-              <li key={guia.href}>
-                <span className="font-medium">{guia.titulo}</span>
-                <span className="text-[var(--muted)]">
-                  {" "}
-                  — {guia.resumo} ({urlsDoAcervo(guia.href)} endereços do acervo)
-                </span>
-              </li>
-            ))}
-          </ul>
+          {GUIAS_EM_RECONSTRUCAO.length > 0 ? (
+            <ul className="mt-4 space-y-3">
+              {GUIAS_EM_RECONSTRUCAO.map((guia) => (
+                <li key={guia.href}>
+                  <span className="font-medium">{guia.titulo}</span>
+                  <span className="text-[var(--muted)]">
+                    {" "}
+                    — {guia.resumo} ({urlsDoAcervo(guia.href)} endereços do acervo)
+                  </span>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </section>
 
         <p className="mt-12 text-sm leading-relaxed text-[var(--muted)]">
