@@ -1,0 +1,74 @@
+# Coleta diária do PNCP.
+#
+# Roda a ingestão, passa pelo revisor e versiona apenas o agregado por município
+# e o relatório de revisão. O snapshot completo (~3,6 MB por coleta, só das 6 UFs
+# piloto) sai como artefato da execução, não como commit: diário, ele engordaria
+# o repositório em gigabytes por ano.
+#
+# O commit do agregado é, de propósito, a série temporal do projeto — é dele que
+# sai o "valor licitado nos últimos 12 meses" da página regional, sem banco.
+#
+# O PNCP cai. Isso não é hipótese: em 2026-08-12 ele saiu do ar duas vezes em
+# poucas horas. Por isso a coleta é isolada por UF e o workflow só commita se
+# alguma coisa foi realmente coletada.
+
+name: Coletar PNCP
+
+on:
+  schedule:
+    # 06:10 UTC = 03:10 em Brasília. Cedo o bastante para o alerta das 7h e
+    # fora do horário de pico do PNCP.
+    - cron: "10 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: coletar-pncp
+  cancel-in-progress: false
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Coletar e revisar
+        id: coleta
+        run: |
+          set -o pipefail
+          node scripts/ingerir-pncp.ts --dias 90 --saida dados/editais.json | tee saida-coleta.txt
+
+      - name: Publicar snapshot completo como artefato
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-pncp
+          path: |
+            dados/editais.json
+            saida-coleta.txt
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Versionar agregado e revisão
+        run: |
+          if [ ! -f dados/agregados.json ]; then
+            echo "sem agregado: a coleta não produziu dado utilizável, nada a commitar"
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dados/agregados.json dados/revisao.md
+          if git diff --cached --quiet; then
+            echo "agregado idêntico ao do dia anterior, nada a commitar"
+            exit 0
+          fi
+          git commit -m "Coleta do PNCP de $(date -u +%Y-%m-%d)"
+          git push

@@ -40,5 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# snapshot do PNCP: muda todo dia, gerado por scripts/ingerir-pncp.ts
-/dados/
+# Snapshot completo do PNCP: 3,6 MB por coleta so das 6 UFs piloto. Fica fora
+# do versionamento; o cron o publica como artefato da execucao.
+/dados/editais.json
+/dados/editais-revisao.txt

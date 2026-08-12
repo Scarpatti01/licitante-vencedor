@@ -141,8 +141,42 @@ async function main() {
   console.log(`valor total confiável: R$ ${somaConfiavel(editais).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}`);
   console.log(`gravado em ${saida}`);
 
+  // Dois artefatos versionados, e um não. O snapshot inteiro fica fora do
+  // repositório — 3,6 MB por dia só das 6 UFs piloto é insustentável. O que
+  // entra no git é o agregado por município (93 KB, e a série de commits diários
+  // vira, de graça, o histórico de 12 meses que a página regional precisa) e o
+  // relatório de revisão, que é o que dá rastro público às incoerências.
+  const porMunicipio = new Map<string, {
+    uf: string; municipio: string; slug: string; ibge: string;
+    editais: number; valor: number; orgaos: Set<string>; modalidades: Record<string, number>;
+  }>();
+
+  for (const e of editais) {
+    const chave = `${e.local.uf}/${e.local.municipioSlug}`;
+    let m = porMunicipio.get(chave);
+    if (!m) {
+      m = { uf: e.local.uf, municipio: e.local.municipio, slug: e.local.municipioSlug,
+            ibge: e.local.codigoIbge, editais: 0, valor: 0, orgaos: new Set(), modalidades: {} };
+      porMunicipio.set(chave, m);
+    }
+    m.editais++;
+    if (!e.valorSuspeito) m.valor += e.valorEstimado ?? 0;
+    m.orgaos.add(e.orgao.cnpj);
+    m.modalidades[e.modalidade] = (m.modalidades[e.modalidade] ?? 0) + 1;
+  }
+
+  const agregados = {
+    coletadoEm,
+    cobertura: snapshot.cobertura,
+    municipios: [...porMunicipio.values()]
+      .map((m) => ({ ...m, valor: Math.round(m.valor), orgaos: m.orgaos.size }))
+      .sort((a, b) => b.editais - a.editais),
+  };
+  await writeFile(resolve(dirname(saida), "agregados.json"), JSON.stringify(agregados), "utf8");
+
   const relatorio = relatorioEmTexto(auditoria, snapshot.cobertura);
-  await writeFile(saida.replace(/\.json$/, "-revisao.txt"), relatorio, "utf8");
+  await writeFile(resolve(dirname(saida), "revisao.md"), `# Revisão da coleta\n\n\`\`\`\n${relatorio}\n\`\`\`\n`, "utf8");
+  console.log(`\nagregado: ${agregados.municipios.length} municípios`);
   console.log(`\n${"─".repeat(72)}\n${relatorio}`);
 }
 
