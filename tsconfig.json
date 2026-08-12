@@ -6,6 +6,11 @@
     "skipLibCheck": true,
     "strict": true,
     "noEmit": true,
+    // Os scripts de `scripts/` rodam pelo `node`, que executa TypeScript
+    // apagando tipos e por isso EXIGE a extensão `.ts` no import — resolução de
+    // ESM não adivinha extensão. Sem esta opção, o `tsc` recusa exatamente o
+    // que o runtime obriga, e o build do site quebra por causa de um script.
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",

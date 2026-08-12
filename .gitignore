@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# snapshot do PNCP: muda todo dia, gerado por scripts/ingerir-pncp.ts
+/dados/
