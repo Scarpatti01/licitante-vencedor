@@ -336,7 +336,11 @@ export default function Jurisprudencia() {
           Este conteúdo tem finalidade informativa e operacional. Não constitui
           parecer jurídico — a análise de um edital concreto e a redação de
           impugnação ou recurso cabem à empresa licitante e ao seu assessor
-          jurídico.
+          jurídico. Leia o{" "}
+          <a className="underline underline-offset-4" href="/aviso-legal/">
+            aviso legal
+          </a>
+          .
         </p>
       </main>
 

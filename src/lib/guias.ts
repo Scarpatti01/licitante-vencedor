@@ -84,5 +84,21 @@ export const GUIAS: readonly Guia[] = [
 /** Páginas estruturais que também recebem endereços do acervo. */
 export const PAGINAS_FIXAS: readonly string[] = ["/sobre/", "/blog/"];
 
+/**
+ * Páginas institucionais, para o sitemap derivar daqui em vez de trazer a lista
+ * cravada — era o último lugar do projeto com nomes de rota escritos à mão em
+ * paralelo ao que existe. Publicar uma página institucional passa a ser
+ * acrescentar uma linha aqui.
+ *
+ * `prioridade` reflete o papel: /blog/ é porta de entrada de conteúdo, as
+ * demais existem para dar confiança e contexto, não para captar busca.
+ */
+export const PAGINAS_INSTITUCIONAIS: readonly { href: string; prioridade: number }[] = [
+  { href: "/blog/", prioridade: 0.7 },
+  { href: "/sobre/", prioridade: 0.5 },
+  { href: "/metodologia/", prioridade: 0.5 },
+  { href: "/aviso-legal/", prioridade: 0.3 },
+];
+
 export const GUIAS_PUBLICADOS = GUIAS.filter((g) => g.publicado);
 export const GUIAS_EM_RECONSTRUCAO = GUIAS.filter((g) => !g.publicado);

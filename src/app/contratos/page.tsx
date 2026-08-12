@@ -508,7 +508,11 @@ export default function Contratos() {
           Este conteúdo tem finalidade informativa e operacional. Não constitui
           parecer jurídico — a análise de um contrato concreto, a redação de
           pedidos de reequilíbrio e a defesa em processo sancionatório cabem à
-          empresa contratada e ao seu assessor jurídico.
+          empresa contratada e ao seu assessor jurídico. Leia o{" "}
+          <a className="underline underline-offset-4" href="/aviso-legal/">
+            aviso legal
+          </a>
+          .
         </p>
       </main>
 

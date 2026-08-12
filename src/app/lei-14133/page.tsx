@@ -358,7 +358,11 @@ export default function Lei14133() {
           Este guia tem finalidade informativa e operacional. Não constitui parecer
           jurídico — a decisão de participar de um certame e a interpretação de
           cláusulas específicas de edital cabem à empresa licitante e ao seu
-          assessor jurídico.
+          assessor jurídico. Leia o{" "}
+          <a className="underline underline-offset-4" href="/aviso-legal/">
+            aviso legal
+          </a>
+          .
         </p>
       </main>
 

@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
-import { GUIAS_PUBLICADOS } from "@/lib/guias";
+import { GUIAS_PUBLICADOS, PAGINAS_INSTITUCIONAIS } from "@/lib/guias";
 
 /**
  * Só entram no sitemap páginas com conteúdo próprio.
@@ -19,7 +19,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),
-    { url: `${SITE.url}/blog/`, lastModified: agora, changeFrequency: "weekly", priority: 0.7 },
-    { url: `${SITE.url}/sobre/`, lastModified: agora, changeFrequency: "yearly", priority: 0.5 },
+    ...PAGINAS_INSTITUCIONAIS.map((p) => ({
+      url: `${SITE.url}${p.href}`,
+      lastModified: agora,
+      changeFrequency: "monthly" as const,
+      priority: p.prioridade,
+    })),
   ];
 }
