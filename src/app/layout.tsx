@@ -28,6 +28,16 @@ export const metadata: Metadata = {
     description: SITE.description,
   },
   robots: { index: true, follow: true },
+  /**
+   * Verificação de propriedade no Bing Webmaster Tools.
+   *
+   * Pelo campo `verification` do Next em vez de um `<meta>` escrito à mão: a
+   * saída no `<head>` é a mesma e não depende de onde o framework monta o head.
+   * `msvalidate.01` não tem atalho nomeado, então vai em `other`.
+   */
+  verification: {
+    other: { "msvalidate.01": "9A881D27B89D4A787D22E1BAC3E5B884" },
+  },
 };
 
 /**
