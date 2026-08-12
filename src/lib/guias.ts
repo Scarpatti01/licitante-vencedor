@@ -70,7 +70,7 @@ export const GUIAS: readonly Guia[] = [
     titulo: "Habilitação",
     resumo:
       "A documentação exigida em cada fase, o que mais desclassifica fornecedor e como manter a empresa sempre apta a disputar.",
-    publicado: false,
+    publicado: true,
   },
   {
     href: "/portais-de-licitacao/",
