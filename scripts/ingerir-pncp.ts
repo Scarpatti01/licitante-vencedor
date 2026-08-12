@@ -15,6 +15,7 @@ import { writeFile, mkdir } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { coletarEditaisAbertos } from "../src/lib/pncp/cliente.ts";
 import { ehUtilizavel, marcarValoresSuspeitos, normalizarEdital, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
+import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
 import type { Edital } from "../src/lib/pncp/tipos.ts";
 
 function arg(nome: string): string | undefined {
@@ -46,10 +47,18 @@ async function main() {
   const descartados: Record<string, number> = {};
   let brutos = 0;
 
+  // Uma UF que falha não pode derrubar a coleta inteira. O PNCP saiu do ar no
+  // meio do piloto de 2026-08-12 e levou junto tudo que já tinha sido coletado.
+  // Agora cada UF é isolada: o que deu certo fica, o que falhou é declarado no
+  // snapshot e no relatório. Cobertura parcial anunciada é utilizável; coleta
+  // perdida, não.
+  const falhas: { uf: string; erro: string }[] = [];
+
   for (const uf of ufs) {
     let daUf = 0;
     process.stdout.write(`  ${uf} `);
 
+    try {
     for await (const c of coletarEditaisAbertos({
       uf,
       dataFinal,
@@ -70,7 +79,18 @@ async function main() {
       porId.set(c.numeroControlePNCP, normalizarEdital(c, coletadoEm));
       daUf++;
     }
-    console.log(` ${daUf}`);
+      console.log(` ${daUf}`);
+    } catch (e) {
+      const erro = e instanceof Error ? e.message : String(e);
+      falhas.push({ uf, erro });
+      console.log(` INTERROMPIDA após ${daUf} — ${erro}`);
+    }
+  }
+
+  if (porId.size === 0) {
+    throw new Error(
+      `nenhuma UF pôde ser coletada. Falhas: ${falhas.map((f) => `${f.uf} (${f.erro})`).join("; ")}`,
+    );
   }
 
   const editais = [...porId.values()].sort((a, b) =>
@@ -80,10 +100,22 @@ async function main() {
   const { marcados, corte } = marcarValoresSuspeitos(editais);
   const descartadosTotal = Object.values(descartados).reduce((a, b) => a + b, 0);
 
+  // A revisão roda SEMPRE, antes de o snapshot existir. Coleta não publicada
+  // sem revisão é a regra desta etapa, e o relatório vai junto do dado —
+  // inclusive quando não acha nada, porque "revisado e limpo" também é
+  // informação para quem lê.
+  const auditoria = auditar(editais, coletadoEm);
+
   const snapshot = {
     fonte: "pncp",
     coletadoEm,
     parametros: { ufs, dataFinal, dias },
+    cobertura: {
+      ufsSolicitadas: ufs,
+      ufsColetadas: ufs.filter((u) => !falhas.some((f) => f.uf === u)),
+      ufsComFalha: falhas,
+      completa: falhas.length === 0,
+    },
     totais: {
       recebidos: brutos,
       utilizaveis: editais.length,
@@ -93,6 +125,7 @@ async function main() {
       corteDeValorSuspeito: Number.isFinite(corte) ? corte : null,
       valorTotalConfiavel: somaConfiavel(editais),
     },
+    auditoria,
     editais,
   };
 
@@ -107,6 +140,10 @@ async function main() {
   }
   console.log(`valor total confiável: R$ ${somaConfiavel(editais).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}`);
   console.log(`gravado em ${saida}`);
+
+  const relatorio = relatorioEmTexto(auditoria, snapshot.cobertura);
+  await writeFile(saida.replace(/\.json$/, "-revisao.txt"), relatorio, "utf8");
+  console.log(`\n${"─".repeat(72)}\n${relatorio}`);
 }
 
 main().catch((e) => {
