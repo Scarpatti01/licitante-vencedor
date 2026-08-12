@@ -107,6 +107,7 @@ export const PAGINAS_INSTITUCIONAIS: readonly { href: string; prioridade: number
  */
 export const PAGINAS_PRODUTO: readonly { href: string; prioridade: number }[] = [
   { href: "/alerta-de-licitacao/", prioridade: 0.9 },
+  { href: "/como-funciona/", prioridade: 0.7 },
 ];
 
 export const GUIAS_PUBLICADOS = GUIAS.filter((g) => g.publicado);
