@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AUTHOR, SITE } from "@/lib/site";
 import { Citacao, Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
+import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 
 const TITULO =
   "Súmulas do TCU em licitações: o que cada uma muda na sua proposta";
@@ -131,18 +132,10 @@ const schema = {
 export default function SumulasTcu() {
   return (
     <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto max-w-3xl px-6 py-5">
-          <a href="/" className="text-base font-semibold tracking-tight">{SITE.name}</a>
-        </div>
-      </header>
+      <CabecalhoSite />
 
       <main className="mx-auto max-w-3xl px-6 py-12">
-        <nav aria-label="Trilha" className="text-sm text-[var(--muted)]">
-          <a href="/" className="underline-offset-4 hover:underline">Início</a>
-          <span aria-hidden> › </span>
-          <span>Súmulas do TCU</span>
-        </nav>
+        <Trilha atual="Súmulas do TCU" />
 
         <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl">
           Súmulas do TCU em licitações

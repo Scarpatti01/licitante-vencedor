@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SITE } from "@/lib/site";
 import { GUIAS_EM_RECONSTRUCAO, GUIAS_PUBLICADOS } from "@/lib/guias";
 import { redirecionamentosAtivos, urlsDoAcervo } from "@/lib/legacy";
+import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 
 const TITULO = "Guias sobre licitações e contratos públicos";
 const DESCRICAO =
@@ -50,18 +51,10 @@ export default function Blog() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto max-w-3xl px-6 py-5">
-          <a href="/" className="text-base font-semibold tracking-tight">{SITE.name}</a>
-        </div>
-      </header>
+      <CabecalhoSite />
 
       <main className="mx-auto max-w-3xl px-6 py-12">
-        <nav aria-label="Trilha" className="text-sm text-[var(--muted)]">
-          <a href="/" className="underline-offset-4 hover:underline">Início</a>
-          <span aria-hidden> › </span>
-          <span>Guias</span>
-        </nav>
+        <Trilha atual="Guias" />
 
         <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl">
           Guias sobre licitações e contratos públicos

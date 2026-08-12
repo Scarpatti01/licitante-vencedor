@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AUTHOR, SITE } from "@/lib/site";
 import { Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
+import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 
 const TITULO =
   "Como vender para o governo: o caminho completo de quem nunca participou de uma licitação";
@@ -115,18 +116,10 @@ const schema = {
 export default function VenderParaOGoverno() {
   return (
     <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto max-w-3xl px-6 py-5">
-          <a href="/" className="text-base font-semibold tracking-tight">{SITE.name}</a>
-        </div>
-      </header>
+      <CabecalhoSite />
 
       <main className="mx-auto max-w-3xl px-6 py-12">
-        <nav aria-label="Trilha" className="text-sm text-[var(--muted)]">
-          <a href="/" className="underline-offset-4 hover:underline">Início</a>
-          <span aria-hidden> › </span>
-          <span>Como vender para o governo</span>
-        </nav>
+        <Trilha atual="Como vender para o governo" />
 
         <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl">
           Como vender para o governo

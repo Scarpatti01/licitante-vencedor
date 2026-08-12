@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { AUTHOR, KNOWS_ABOUT, SITE } from "@/lib/site";
 import { P, Secao } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
+import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 
 const TITULO = `Sobre o ${SITE.name}`;
 const DESCRICAO =
@@ -42,18 +43,10 @@ const schema = {
 export default function Sobre() {
   return (
     <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto max-w-3xl px-6 py-5">
-          <a href="/" className="text-base font-semibold tracking-tight">{SITE.name}</a>
-        </div>
-      </header>
+      <CabecalhoSite />
 
       <main className="mx-auto max-w-3xl px-6 py-12">
-        <nav aria-label="Trilha" className="text-sm text-[var(--muted)]">
-          <a href="/" className="underline-offset-4 hover:underline">Início</a>
-          <span aria-hidden> › </span>
-          <span>Sobre</span>
-        </nav>
+        <Trilha atual="Sobre" />
 
         <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl">
           Sobre o {SITE.name}
