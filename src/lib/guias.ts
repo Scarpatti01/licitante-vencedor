@@ -100,5 +100,14 @@ export const PAGINAS_INSTITUCIONAIS: readonly { href: string; prioridade: number
   { href: "/aviso-legal/", prioridade: 0.3 },
 ];
 
+/**
+ * Páginas de produto. Prioridade alta no sitemap porque é aqui que a intenção
+ * de busca é comercial — quem procura "alerta de licitação" quer contratar, não
+ * estudar.
+ */
+export const PAGINAS_PRODUTO: readonly { href: string; prioridade: number }[] = [
+  { href: "/alerta-de-licitacao/", prioridade: 0.9 },
+];
+
 export const GUIAS_PUBLICADOS = GUIAS.filter((g) => g.publicado);
 export const GUIAS_EM_RECONSTRUCAO = GUIAS.filter((g) => !g.publicado);

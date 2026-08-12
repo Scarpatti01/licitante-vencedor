@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
-import { GUIAS_PUBLICADOS, PAGINAS_INSTITUCIONAIS } from "@/lib/guias";
+import { GUIAS_PUBLICADOS, PAGINAS_INSTITUCIONAIS, PAGINAS_PRODUTO } from "@/lib/guias";
 
 /**
  * Só entram no sitemap páginas com conteúdo próprio.
@@ -18,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: agora,
       changeFrequency: "monthly" as const,
       priority: 0.9,
+    })),
+    ...PAGINAS_PRODUTO.map((p) => ({
+      url: `${SITE.url}${p.href}`,
+      lastModified: agora,
+      changeFrequency: "weekly" as const,
+      priority: p.prioridade,
     })),
     ...PAGINAS_INSTITUCIONAIS.map((p) => ({
       url: `${SITE.url}${p.href}`,
