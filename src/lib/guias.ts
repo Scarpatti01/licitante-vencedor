@@ -63,7 +63,7 @@ export const GUIAS: readonly Guia[] = [
     titulo: "Legislação de licitações",
     resumo:
       "As normas que valem hoje, o que continua vigente da 8.666 e as regras específicas que aparecem nos editais.",
-    publicado: false,
+    publicado: true,
   },
   {
     href: "/habilitacao/",
