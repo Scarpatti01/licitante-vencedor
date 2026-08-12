@@ -480,6 +480,11 @@
   "permanent": true
  },
  {
+  "source": "/jurisprudencia/atraso-injustificado-de-obra-publica-e-o-dever-de-penalizacao/",
+  "destination": "/jurisprudencia/",
+  "permanent": true
+ },
+ {
   "source": "/jurisprudencia/as-restricoes-tecnicas-para-adocao-da-licitacao-por-tecnica-e-preco-e-necessidade-de-julgamento-estritamente-objetivo/",
   "destination": "/jurisprudencia/",
   "permanent": true
