@@ -21,6 +21,22 @@ export function RespostaDireta({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Citação de texto normativo oficial — súmula, artigo de lei, enunciado.
+ *
+ * Fica visualmente distinto do texto próprio de propósito: o leitor precisa
+ * saber, sem esforço, onde termina o que o tribunal escreveu e onde começa a
+ * nossa leitura do que aquilo significa na prática.
+ */
+export function Citacao({ fonte, children }: { fonte: string; children: ReactNode }) {
+  return (
+    <figure className="rounded-lg border bg-[var(--surface)] p-5">
+      <blockquote className="leading-relaxed italic">{children}</blockquote>
+      <figcaption className="mt-3 text-sm font-semibold not-italic">{fonte}</figcaption>
+    </figure>
+  );
+}
+
 export function Tabela({ cabecalho, linhas }: { cabecalho: string[]; linhas: string[][] }) {
   return (
     <div className="overflow-x-auto rounded-lg border">

@@ -56,7 +56,7 @@ export const GUIAS: readonly Guia[] = [
     titulo: "Súmulas do TCU",
     resumo:
       "As súmulas que mais aparecem em edital, reconstruídas da fonte oficial e traduzidas para o efeito prático sobre a sua proposta.",
-    publicado: false,
+    publicado: true,
   },
   {
     href: "/legislacao/",
