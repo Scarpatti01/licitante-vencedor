@@ -3,6 +3,8 @@ import { AUTHOR, SITE } from "@/lib/site";
 import { Citacao, Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO = "Portais de licitação: onde o edital é publicado e onde a disputa acontece";
 const DESCRICAO =
@@ -116,6 +118,8 @@ const schema = {
 };
 
 export default function PortaisDeLicitacao() {
+  const artigos = artigosDoGuia("/portais-de-licitacao/");
+
   return (
     <div className="min-h-screen">
       <CabecalhoSite />
@@ -248,6 +252,26 @@ export default function PortaisDeLicitacao() {
             </P>
           </Secao>
 
+          {/*
+            Logo depois da medição, que é onde o leitor para de achar que existe
+            "o portal" e passa a enxergar o tamanho da vigilância manual. O 54 é
+            o número apurado neste próprio guia — não é dado de fora.
+
+            Sem heading próprio: o `Indice` promete uma lista fechada de seções,
+            e um h2 comercial faria o sumário discordar do documento.
+          */}
+          <section aria-label="Alerta diário de editais">
+            <CapturaAlerta
+              origem="guia/portais-de-licitacao#meio"
+              chamada={{
+                titulo: "São 54 sistemas para vigiar, ou um e-mail por dia útil",
+                texto:
+                  "A publicação é a parte centralizada, e dá para usar isso a favor. Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e o link para o registro oficial. Você continua disputando no portal que o edital indicar; o que sai da rotina é abrir todos eles para descobrir se tem algo seu.",
+              }}
+              textoDoBotao="Quero receber os editais do meu ramo"
+            />
+          </section>
+
           <Secao id="federal" titulo="O caso federal: Compras.gov.br e SICAF">
             <P>
               No âmbito federal a coisa é mais simples, e vale começar por aí se
@@ -365,6 +389,34 @@ export default function PortaisDeLicitacao() {
             </ul>
           </Secao>
         </div>
+
+        {/*
+          Os artigos que aprofundam este hub, derivados do catálogo. Lista vazia
+          não renderiza nada — nem título, nem "em breve". O projeto já anunciou
+          "os próximos:" seguido de nada, e o custo disso é de confiança.
+        */}
+        {artigos.length > 0 ? (
+          <section className="mt-16 border-t pt-8">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Artigos sobre portais e publicação de editais
+            </h2>
+            <ul className="mt-4 space-y-4">
+              {artigos.map((artigo) => (
+                <li key={artigo.slug}>
+                  <a
+                    href={`/blog/${artigo.slug}/`}
+                    className="font-medium underline underline-offset-4"
+                  >
+                    {artigo.titulo}
+                  </a>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">
+                    {artigo.descricao}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <div className="mt-12">
           <AutorBio />

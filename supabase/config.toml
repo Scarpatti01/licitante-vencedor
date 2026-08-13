@@ -1,0 +1,49 @@
+project_id = "licitante-vencedor"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+# `extensions` no search_path é obrigatório: `vector` é instalado lá (e não em
+# `public`, para não poluir o schema exposto). Sem esta linha, o operador `<=>`
+# da busca por similaridade não resolve e a consulta falha com "operator does
+# not exist".
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+# 17 é a versão do Postgres nos projetos novos do Supabase. Se o projeto for
+# provisionado em outra, ajuste aqui antes do primeiro `db push` — o shadow
+# database usa este número para validar as migrações.
+major_version = 17
+
+[studio]
+enabled = true
+port = 54323
+
+[storage]
+enabled = true
+# Teto global. O limite por bucket (50 MiB em documentos-da-empresa) é definido
+# na migração 20260814103000 e é o que vale na prática.
+file_size_limit = "50MiB"
+
+[auth]
+enabled = true
+site_url = "http://localhost:3000"
+additional_redirect_urls = ["http://localhost:3000"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+# Cadastro aberto continua ligado para o fluxo local; quem cria a EMPRESA é o
+# servidor com service_role (ver README), então uma conta recém-criada não
+# enxerga tenant nenhum até o onboarding rodar.
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+enable_confirmations = false
+
+[inbucket]
+enabled = true
+port = 54324

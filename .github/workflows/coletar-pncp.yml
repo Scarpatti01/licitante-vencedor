@@ -1,4 +1,4 @@
-# Coleta diária do PNCP.
+# Coleta diária de editais.
 #
 # Roda a ingestão, passa pelo revisor e versiona apenas o agregado por município
 # e o relatório de revisão. O snapshot completo (~3,6 MB por coleta, só das 6 UFs
@@ -9,8 +9,15 @@
 # sai o "valor licitado nos últimos 12 meses" da página regional, sem banco.
 #
 # O PNCP cai. Isso não é hipótese: em 2026-08-12 ele saiu do ar duas vezes em
-# poucas horas. Por isso a coleta é isolada por UF e o workflow só commita se
-# alguma coisa foi realmente coletada.
+# poucas horas, e em 2026-08-13 a coleta inteira foi interrompida no meio. Por
+# isso a coleta é isolada por UF, tem orçamento de tempo, e — a parte que
+# faltava — o resultado é CLASSIFICADO antes de virar commit.
+#
+# A regra que este workflow passou a obedecer: um dia ruim não apaga um dia bom.
+# Antes, ele só verificava "o arquivo existe e mudou", e uma coleta de 150
+# editais em 2 UFs sobrescreveu, sem um aviso, a de 3.312 editais em 6 UFs do
+# dia anterior. Série temporal perdida não se recoleta: a janela é "propostas
+# abertas HOJE".
 
 name: Coletar PNCP
 
@@ -31,9 +38,16 @@ concurrency:
 jobs:
   coletar:
     runs-on: ubuntu-latest
+    # 45 min aqui contra 30 de orçamento no script (`--orcamento-min`). A folga
+    # é deliberada: o run de 2026-08-13 levou ~43 min e quase morreu no teto —
+    # e morrendo no teto ele não grava NADA, nem o que já havia coletado. Com
+    # orçamento no script, a coleta lenta termina sozinha, declara cobertura
+    # parcial e ainda tem tempo de gravar, classificar e commitar.
     timeout-minutes: 45
 
     steps:
+      # O agregado do dia anterior vem do próprio checkout: é ele que a guarda
+      # de degradação usa como referência. Nada de estado fora do git.
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
@@ -44,25 +58,62 @@ jobs:
         id: coleta
         run: |
           set -o pipefail
-          node scripts/ingerir-pncp.ts --dias 90 --saida dados/editais.json | tee saida-coleta.txt
+          node scripts/ingerir-pncp.ts \
+            --dias 90 \
+            --orcamento-min 30 \
+            --saida dados/editais.json | tee saida-coleta.txt
 
-      - name: Publicar snapshot completo como artefato
+      # Sai sempre, inclusive quando a coleta falha: é o material de diagnóstico
+      # do dia em que o PNCP esteve fora. `dados/parciais/` carrega o agregado
+      # recusado — ele não some, só não vira a série oficial.
+      - name: Publicar snapshot e parciais como artefato
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: snapshot-pncp
           path: |
             dados/editais.json
+            dados/parciais/
             saida-coleta.txt
           retention-days: 30
           if-no-files-found: ignore
 
-      - name: Versionar agregado e revisão
+      - name: Ler a classificação da coleta
+        id: classe
         run: |
-          if [ ! -f dados/agregados.json ]; then
-            echo "sem agregado: a coleta não produziu dado utilizável, nada a commitar"
+          arquivo=dados/parciais/classificacao.json
+          if [ ! -f "$arquivo" ]; then
+            echo "classe=ausente" >> "$GITHUB_OUTPUT"
+            echo "motivos=a coleta não chegou a classificar o resultado" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          # `node -p` e não `jq`: o repositório já exige node, e uma dependência
+          # a menos no runner é uma forma a menos de o cron quebrar sozinho.
+          #
+          # As duas leituras passam por `replace(/[\r\n]+/g, ' ')` porque o
+          # conteúdo NÃO é nosso: `motivos` inclui siglas de UF que vieram do
+          # PNCP (`unidadeOrgao.ufSigla`, sem validação de formato em nenhuma
+          # camada) e chegam aqui via `dados/agregados.json`. Uma quebra de linha
+          # nesse texto encerra a linha `chave=valor` do $GITHUB_OUTPUT e deixa o
+          # resto virar OUTRA saída — inclusive um `classe=completa` forjado, que
+          # faria o passo de commit aceitar uma coleta degradada.
+          classe=$(node -p "String(require('./$arquivo').classe).replace(/[\r\n]+/g, ' ')")
+          motivos=$(node -p "String(require('./$arquivo').motivos.join(' | ')).replace(/[\r\n]+/g, ' ')")
+          echo "classe=$classe" >> "$GITHUB_OUTPUT"
+          echo "motivos=$motivos" >> "$GITHUB_OUTPUT"
+          echo "coleta classificada como: $classe"
+
+      # `${{ }}` NUNCA entra no corpo de um `run:` aqui: a expressão é
+      # substituída no texto do script ANTES de o shell rodar, então um valor
+      # com aspa ou `$(...)` viraria comando executado no runner — que carrega
+      # um GITHUB_TOKEN com `contents: write`. O valor chega por `env:`, onde é
+      # variável de ambiente e não texto de programa. Vale para `classe` e
+      # `motivos`, os dois derivados de dado do PNCP.
+      - name: Versionar agregado e revisão
+        if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
+        env:
+          CLASSE: ${{ steps.classe.outputs.classe }}
+        run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -f dados/agregados.json dados/revisao.md
@@ -70,5 +121,29 @@ jobs:
             echo "agregado idêntico ao do dia anterior, nada a commitar"
             exit 0
           fi
-          git commit -m "Coleta do PNCP de $(date -u +%Y-%m-%d)"
+          git commit -m "Coleta do PNCP de $(date -u +%Y-%m-%d) ($CLASSE)"
           git push
+
+      # Coleta degradada NÃO commita — e também não passa em silêncio, que era
+      # metade do defeito. A falha do job é o mecanismo de aviso de propósito:
+      # é a única coisa que o GitHub notifica sozinho num cron. Um `::warning`
+      # ficaria enterrado no log de uma execução que ninguém abre, e o produto
+      # seguiria dias servindo o agregado velho sem que alguém soubesse.
+      - name: Avisar que a coleta foi recusada
+        if: steps.classe.outputs.classe != 'completa' && steps.classe.outputs.classe != 'parcial-aceitavel'
+        env:
+          CLASSE: ${{ steps.classe.outputs.classe }}
+          MOTIVOS: ${{ steps.classe.outputs.motivos }}
+        run: |
+          {
+            echo "## Coleta recusada — o agregado anterior foi preservado"
+            echo
+            echo "Classificação: \`$CLASSE\`"
+            echo
+            echo "Motivos: $MOTIVOS"
+            echo
+            echo "O resultado desta rodada está no artefato \`snapshot-pncp\`, em \`dados/parciais/\`."
+            echo "Nada foi commitado: \`dados/agregados.json\` continua sendo o último agregado bom."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::error title=Coleta do PNCP recusada::$MOTIVOS"
+          exit 1

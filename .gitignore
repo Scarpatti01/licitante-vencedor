@@ -44,3 +44,10 @@ next-env.d.ts
 # do versionamento; o cron o publica como artefato da execucao.
 /dados/editais.json
 /dados/editais-revisao.txt
+
+# Coleta recusada pela guarda de degradacao (ver src/lib/fontes/degradacao.ts).
+# Ela e gravada aqui em vez de substituir dados/agregados.json, para um dia ruim
+# nao apagar um dia bom. Fica FORA do git de proposito: o versionamento e a
+# serie temporal do produto e so dado bom entra nela. O diagnostico vai como
+# artefato da execucao, que e onde ele serve.
+/dados/parciais/

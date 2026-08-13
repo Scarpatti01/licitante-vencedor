@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { AUTHOR, KNOWS_ABOUT, SITE } from "@/lib/site";
 import { P, Secao } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
@@ -137,9 +138,9 @@ export default function Sobre() {
               É um trabalho em andamento. Os guias vão sendo publicados por tema, e
               a cada publicação mais endereços antigos voltam a levar a algum lugar
               útil. O que já está no ar e o que vem a seguir estão listados na{" "}
-              <a className="underline underline-offset-4" href="/blog/">
+              <Link className="underline underline-offset-4" href="/blog/">
                 página de guias
-              </a>
+              </Link>
               .
             </P>
           </Secao>

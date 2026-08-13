@@ -3,6 +3,8 @@ import { AUTHOR, SITE } from "@/lib/site";
 import { Citacao, Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO = "Habilitação em licitação: os documentos, os limites e o que desclassifica";
 const DESCRICAO =
@@ -105,6 +107,8 @@ const schema = {
 };
 
 export default function Habilitacao() {
+  const artigos = artigosDoGuia("/habilitacao/");
+
   return (
     <div className="min-h-screen">
       <CabecalhoSite />
@@ -201,6 +205,31 @@ export default function Habilitacao() {
               municipal em duas horas.
             </P>
           </Secao>
+
+          {/*
+            A captura entra aqui, e não no rodapé, porque este é o parágrafo em
+            que a dor fica concreta: o leitor acabou de ler que o prazo entre
+            vencer e comprovar é curto. É o instante em que "chegar ao edital
+            mais cedo" deixa de ser abstração e vira o tempo de tirar a certidão.
+
+            Sem heading próprio de propósito. O `Indice` acima promete uma lista
+            fechada de seções; acrescentar um h2 comercial ao sumário da página
+            faria o índice discordar do documento. O `aria-label` dá o nome
+            acessível sem inventar entrada de outline — mesma forma que as
+            capturas de /blog/ já usam.
+          */}
+          <section aria-label="Alerta diário de editais">
+            <CapturaAlerta
+              origem="guia/habilitacao#meio"
+              chamada={{
+                titulo:
+                  "O prazo para renovar certidão começa quando o edital sai, não quando você vence",
+                texto:
+                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e o link para o registro oficial. Ver o edital na publicação é o que dá tempo de pedir a certidão municipal antes de ela ser cobrada.",
+              }}
+              textoDoBotao="Quero receber os editais do meu ramo"
+            />
+          </section>
 
           <Secao id="corrigir" titulo="Entregou com erro: o que ainda dá para corrigir">
             <P>
@@ -449,6 +478,34 @@ export default function Habilitacao() {
             </ul>
           </Secao>
         </div>
+
+        {/*
+          Os artigos que aprofundam este hub, derivados do catálogo. Lista vazia
+          não renderiza nada — nem título, nem "em breve". O projeto já anunciou
+          "os próximos:" seguido de nada, e o custo disso é de confiança.
+        */}
+        {artigos.length > 0 ? (
+          <section className="mt-16 border-t pt-8">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Artigos sobre habilitação
+            </h2>
+            <ul className="mt-4 space-y-4">
+              {artigos.map((artigo) => (
+                <li key={artigo.slug}>
+                  <a
+                    href={`/blog/${artigo.slug}/`}
+                    className="font-medium underline underline-offset-4"
+                  >
+                    {artigo.titulo}
+                  </a>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">
+                    {artigo.descricao}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <div className="mt-12">
           <AutorBio />
