@@ -166,8 +166,15 @@ async function main() {
   const cobertura = resumirCobertura(ufs, resultadosPorUf);
 
   if (coletados.length === 0) {
+    // Sem nada coletado não há o que classificar, e sair com erro é o certo: o
+    // agregado anterior fica onde está (não foi tocado) e o job vermelho é o
+    // que efetivamente avisa alguém. A mensagem descreve TODAS as UFs, e não só
+    // as que falharam — uma rodada em que todas terminaram vazias é um
+    // diagnóstico bem diferente de uma em que todas caíram.
     throw new Error(
-      `nenhuma UF pôde ser coletada. ${cobertura.ufsComFalha.map((f) => `${f.uf} (${f.motivo})`).join("; ")}`,
+      `nenhum edital coletado. Estado por UF: ${cobertura.porUf
+        .map((c) => `${c.uf}=${c.estado}${c.motivo ? ` (${c.motivo})` : ""}`)
+        .join("; ")}`,
     );
   }
 
