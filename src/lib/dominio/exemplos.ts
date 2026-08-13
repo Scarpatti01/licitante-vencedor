@@ -15,7 +15,11 @@ import type { PerfilDaEmpresa } from "./tipos";
  * grande demais para o porte da empresa.
  */
 
-const BASE: Omit<Edital, "id" | "objeto" | "valorEstimado" | "valorEstimadoBruto"> = {
+const BASE: Omit<Edital, "id" | "idNaFonte" | "objeto" | "valorEstimado" | "valorEstimadoBruto"> = {
+  // A fonte sintética se declara como tal. Se um destes registros vazar para
+  // uma tela de produção, o campo `fonte` denuncia na hora — mais confiável que
+  // depender de alguém reparar no prefixo do `id`.
+  fonte: "exemplo",
   orgao: {
     cnpj: "00000000000191",
     nome: "PREFEITURA MUNICIPAL DE EXEMPLO",
@@ -39,6 +43,7 @@ const BASE: Omit<Edital, "id" | "objeto" | "valorEstimado" | "valorEstimadoBruto
 export const EDITAL_COMPATIVEL: Edital = {
   ...BASE,
   id: "EXEMPLO-COMPATIVEL",
+  idNaFonte: "EXEMPLO-COMPATIVEL",
   objeto: "Contratação de empresa especializada em serviços de limpeza predial e conservação",
   valorEstimado: 480_000,
   valorEstimadoBruto: 480_000,
@@ -48,6 +53,7 @@ export const EDITAL_COMPATIVEL: Edital = {
 export const EDITAL_SEM_VALOR: Edital = {
   ...BASE,
   id: "EXEMPLO-SEM-VALOR",
+  idNaFonte: "EXEMPLO-SEM-VALOR",
   objeto: "Contratação de serviços de limpeza predial",
   valorEstimado: null,
   valorEstimadoBruto: 0,
@@ -57,6 +63,7 @@ export const EDITAL_SEM_VALOR: Edital = {
 export const EDITAL_VALOR_ABSURDO: Edital = {
   ...BASE,
   id: "EXEMPLO-VALOR-ABSURDO",
+  idNaFonte: "EXEMPLO-VALOR-ABSURDO",
   objeto: "Aquisição de material de limpeza",
   valorEstimado: 77_840_000_000,
   valorEstimadoBruto: 77_840_000_000,
@@ -66,6 +73,7 @@ export const EDITAL_VALOR_ABSURDO: Edital = {
 export const EDITAL_ENCERRADO: Edital = {
   ...BASE,
   id: "EXEMPLO-ENCERRADO",
+  idNaFonte: "EXEMPLO-ENCERRADO",
   objeto: "Contratação de serviços de limpeza predial",
   valorEstimado: 300_000,
   valorEstimadoBruto: 300_000,
@@ -75,6 +83,7 @@ export const EDITAL_ENCERRADO: Edital = {
 export const EDITAL_URGENTE: Edital = {
   ...BASE,
   id: "EXEMPLO-URGENTE",
+  idNaFonte: "EXEMPLO-URGENTE",
   objeto: "Contratação de empresa para limpeza e conservação de prédios públicos",
   valorEstimado: 220_000,
   valorEstimadoBruto: 220_000,
@@ -84,6 +93,7 @@ export const EDITAL_URGENTE: Edital = {
 export const EDITAL_OUTRO_RAMO: Edital = {
   ...BASE,
   id: "EXEMPLO-OUTRO-RAMO",
+  idNaFonte: "EXEMPLO-OUTRO-RAMO",
   objeto: "Aquisição de medicamentos e insumos hospitalares para a rede municipal de saúde",
   valorEstimado: 900_000,
   valorEstimadoBruto: 900_000,
@@ -92,6 +102,7 @@ export const EDITAL_OUTRO_RAMO: Edital = {
 export const EDITAL_FORA_DA_REGIAO: Edital = {
   ...BASE,
   id: "EXEMPLO-FORA-DA-REGIAO",
+  idNaFonte: "EXEMPLO-FORA-DA-REGIAO",
   objeto: "Contratação de serviços de limpeza predial",
   local: {
     uf: "RS",
@@ -106,6 +117,7 @@ export const EDITAL_FORA_DA_REGIAO: Edital = {
 export const EDITAL_GRANDE_DEMAIS: Edital = {
   ...BASE,
   id: "EXEMPLO-GRANDE-DEMAIS",
+  idNaFonte: "EXEMPLO-GRANDE-DEMAIS",
   objeto: "Contratação de serviços de limpeza predial para toda a rede estadual",
   valorEstimado: 24_000_000,
   valorEstimadoBruto: 24_000_000,
