@@ -3,6 +3,8 @@ import { AUTHOR, SITE } from "@/lib/site";
 import { Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO =
   "Contrato administrativo: o que muda para a sua empresa depois que a licitação acaba";
@@ -104,6 +106,8 @@ const schema = {
 };
 
 export default function Contratos() {
+  const artigos = artigosDoGuia("/contratos/");
+
   return (
     <div className="min-h-screen">
       <CabecalhoSite />
@@ -304,6 +308,29 @@ export default function Contratos() {
             </P>
           </Secao>
 
+          {/*
+            Depois de reajuste e preclusão, que é onde a dor de "o prazo passou
+            batido" fica nítida. A chamada precisa começar dizendo o que o
+            produto NÃO faz: ele não vigia a data-base do seu contrato, isso é
+            calendário interno. Prometer o contrário aqui geraria cancelamento no
+            primeiro envio. O que ele cobre de verdade é o outro lado do mesmo
+            calendário — o certame que substitui o contrato em fim de vigência.
+
+            Sem heading próprio: o `Indice` promete uma lista fechada de seções,
+            e um h2 comercial faria o sumário discordar do documento.
+          */}
+          <section aria-label="Alerta diário de editais">
+            <CapturaAlerta
+              origem="guia/contratos#meio"
+              chamada={{
+                titulo: "Contrato que está acabando volta como edital — e costuma pegar o fornecedor de surpresa",
+                texto:
+                  "Não acompanhamos o seu contrato: data-base, ressalva e prorrogação são calendário interno da sua empresa. O que chega, todo dia útil, são os editais publicados no PNCP que combinam com o que você vende — inclusive o certame que vai substituir um contrato em fim de vigência, com prazo e link para o registro oficial.",
+              }}
+              textoDoBotao="Quero receber os editais do meu ramo"
+            />
+          </section>
+
           <Secao id="garantia" titulo="Garantia contratual">
             <P>
               A garantia é exigível quando o edital previu, e a escolha da
@@ -499,6 +526,34 @@ export default function Contratos() {
             </ul>
           </Secao>
         </div>
+
+        {/*
+          Os artigos que aprofundam este hub, derivados do catálogo. Lista vazia
+          não renderiza nada — nem título, nem "em breve". O projeto já anunciou
+          "os próximos:" seguido de nada, e o custo disso é de confiança.
+        */}
+        {artigos.length > 0 ? (
+          <section className="mt-16 border-t pt-8">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Artigos sobre execução de contrato
+            </h2>
+            <ul className="mt-4 space-y-4">
+              {artigos.map((artigo) => (
+                <li key={artigo.slug}>
+                  <a
+                    href={`/blog/${artigo.slug}/`}
+                    className="font-medium underline underline-offset-4"
+                  >
+                    {artigo.titulo}
+                  </a>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">
+                    {artigo.descricao}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <div className="mt-12">
           <AutorBio />

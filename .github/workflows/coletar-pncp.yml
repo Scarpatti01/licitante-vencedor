@@ -89,14 +89,30 @@ jobs:
           fi
           # `node -p` e não `jq`: o repositório já exige node, e uma dependência
           # a menos no runner é uma forma a menos de o cron quebrar sozinho.
-          classe=$(node -p "require('./$arquivo').classe")
-          motivos=$(node -p "require('./$arquivo').motivos.join(' | ')")
+          #
+          # As duas leituras passam por `replace(/[\r\n]+/g, ' ')` porque o
+          # conteúdo NÃO é nosso: `motivos` inclui siglas de UF que vieram do
+          # PNCP (`unidadeOrgao.ufSigla`, sem validação de formato em nenhuma
+          # camada) e chegam aqui via `dados/agregados.json`. Uma quebra de linha
+          # nesse texto encerra a linha `chave=valor` do $GITHUB_OUTPUT e deixa o
+          # resto virar OUTRA saída — inclusive um `classe=completa` forjado, que
+          # faria o passo de commit aceitar uma coleta degradada.
+          classe=$(node -p "String(require('./$arquivo').classe).replace(/[\r\n]+/g, ' ')")
+          motivos=$(node -p "String(require('./$arquivo').motivos.join(' | ')).replace(/[\r\n]+/g, ' ')")
           echo "classe=$classe" >> "$GITHUB_OUTPUT"
           echo "motivos=$motivos" >> "$GITHUB_OUTPUT"
           echo "coleta classificada como: $classe"
 
+      # `${{ }}` NUNCA entra no corpo de um `run:` aqui: a expressão é
+      # substituída no texto do script ANTES de o shell rodar, então um valor
+      # com aspa ou `$(...)` viraria comando executado no runner — que carrega
+      # um GITHUB_TOKEN com `contents: write`. O valor chega por `env:`, onde é
+      # variável de ambiente e não texto de programa. Vale para `classe` e
+      # `motivos`, os dois derivados de dado do PNCP.
       - name: Versionar agregado e revisão
         if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
+        env:
+          CLASSE: ${{ steps.classe.outputs.classe }}
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -105,7 +121,7 @@ jobs:
             echo "agregado idêntico ao do dia anterior, nada a commitar"
             exit 0
           fi
-          git commit -m "Coleta do PNCP de $(date -u +%Y-%m-%d) (${{ steps.classe.outputs.classe }})"
+          git commit -m "Coleta do PNCP de $(date -u +%Y-%m-%d) ($CLASSE)"
           git push
 
       # Coleta degradada NÃO commita — e também não passa em silêncio, que era
@@ -115,16 +131,19 @@ jobs:
       # seguiria dias servindo o agregado velho sem que alguém soubesse.
       - name: Avisar que a coleta foi recusada
         if: steps.classe.outputs.classe != 'completa' && steps.classe.outputs.classe != 'parcial-aceitavel'
+        env:
+          CLASSE: ${{ steps.classe.outputs.classe }}
+          MOTIVOS: ${{ steps.classe.outputs.motivos }}
         run: |
           {
             echo "## Coleta recusada — o agregado anterior foi preservado"
             echo
-            echo "Classificação: \`${{ steps.classe.outputs.classe }}\`"
+            echo "Classificação: \`$CLASSE\`"
             echo
-            echo "Motivos: ${{ steps.classe.outputs.motivos }}"
+            echo "Motivos: $MOTIVOS"
             echo
             echo "O resultado desta rodada está no artefato \`snapshot-pncp\`, em \`dados/parciais/\`."
             echo "Nada foi commitado: \`dados/agregados.json\` continua sendo o último agregado bom."
           } >> "$GITHUB_STEP_SUMMARY"
-          echo "::error title=Coleta do PNCP recusada::${{ steps.classe.outputs.motivos }}"
+          echo "::error title=Coleta do PNCP recusada::$MOTIVOS"
           exit 1

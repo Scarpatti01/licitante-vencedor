@@ -94,7 +94,12 @@ create table public.documentos_da_empresa (
   arquivo_anexado boolean generated always as (caminho_no_storage is not null) stored,
 
   criado_em timestamptz not null default now(),
-  atualizado_em timestamptz not null default now()
+  atualizado_em timestamptz not null default now(),
+
+  -- Redundante com a PK, e de propósito: é o que habilita a FK composta de
+  -- `atestados`, que impede um atestado de uma empresa apontar para documento
+  -- de outra. Mesmo recurso que `oportunidades` já usa para as ações.
+  constraint documento_identificado_por_empresa unique (id, empresa_id)
 );
 
 create trigger documentos_da_empresa_marcar_atualizacao
@@ -117,11 +122,27 @@ create table public.atestados (
   -- Limite alto de propósito: ano fora da faixa é digitação, e recusar 2031
   -- porque estamos em 2026 quebraria o cadastro sozinho com o tempo.
   ano smallint check (ano between 1900 and 2200),
-  -- SET NULL: apagar o PDF do atestado não apaga a experiência comprovada, que
-  -- continua valendo para casar com exigência de capacidade técnica.
-  documento_id uuid references public.documentos_da_empresa (id) on delete set null,
+  documento_id uuid,
   criado_em timestamptz not null default now(),
-  atualizado_em timestamptz not null default now()
+  atualizado_em timestamptz not null default now(),
+
+  -- FK COMPOSTA, com `empresa_id` dos dois lados, e não simples por `id`.
+  --
+  -- Com a versão simples, a auditoria conseguiu — em Postgres real, `INSERT 0 1`
+  -- — criar um atestado da empresa A apontando para documento da empresa B. Não
+  -- vazava conteúdo, porque a RLS de `documentos_da_empresa` zera o join no
+  -- caminho do usuário; deixava uma referência pendurada entre tenants, que
+  -- vira vazamento no dia em que um worker fizer esse join com `service_role`,
+  -- onde RLS não se aplica. `acoes_na_oportunidade` já se protegia assim.
+  --
+  -- SET NULL restrito à coluna do documento: apagar o PDF não apaga a
+  -- experiência comprovada, que continua valendo para casar com exigência de
+  -- capacidade técnica. Sem a lista de colunas, o Postgres tentaria anular
+  -- também `empresa_id`, que é `NOT NULL`, e o DELETE do documento falharia.
+  constraint atestado_usa_documento_da_mesma_empresa
+    foreign key (documento_id, empresa_id)
+    references public.documentos_da_empresa (id, empresa_id)
+    on delete set null (documento_id)
 );
 
 comment on table public.atestados is

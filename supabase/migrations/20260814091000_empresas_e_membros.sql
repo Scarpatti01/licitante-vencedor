@@ -191,9 +191,23 @@ create policy "administracao convida membro"
     and (papel <> 'dono' or public.usuario_tem_papel(empresa_id, array['dono']::public.papel_na_empresa[]))
   );
 
+-- O guard do dono precisa estar nos DOIS lados, e faltar no `USING` era defeito
+-- real: `WITH CHECK` julga a linha DEPOIS da alteração, `USING` julga a linha
+-- ANTES. Só com o `WITH CHECK`, um administrador não conseguia CRIAR um dono —
+-- mas conseguia pegar a linha do dono existente e rebaixá-la a operador, porque
+-- a linha resultante já não tem `papel = 'dono'` e passa no teste. Verificado
+-- em Postgres real durante a auditoria: `UPDATE 1`, seguido de `removido_em` no
+-- antigo dono. É tomada de conta dentro do tenant, com o dono perdendo até o
+-- acesso à assinatura que ele paga.
+--
+-- Com o predicado repetido no `USING`, a mesma tentativa vira `UPDATE 0`, e a
+-- gestão de operador comum continua funcionando.
 create policy "administracao altera membro"
   on public.membros_da_empresa for update to authenticated
-  using (public.usuario_tem_papel(empresa_id, array['dono', 'administrador']::public.papel_na_empresa[]))
+  using (
+    public.usuario_tem_papel(empresa_id, array['dono', 'administrador']::public.papel_na_empresa[])
+    and (papel <> 'dono' or public.usuario_tem_papel(empresa_id, array['dono']::public.papel_na_empresa[]))
+  )
   with check (
     public.usuario_tem_papel(empresa_id, array['dono', 'administrador']::public.papel_na_empresa[])
     and (papel <> 'dono' or public.usuario_tem_papel(empresa_id, array['dono']::public.papel_na_empresa[]))

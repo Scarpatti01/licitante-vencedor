@@ -185,9 +185,27 @@ create index acoes_por_oportunidade
 create index acoes_por_empresa_e_situacao
   on public.acoes_na_oportunidade (empresa_id, situacao, criado_em desc);
 
+-- `security definer` aqui não é conveniência: sem ele, salvar ou descartar uma
+-- oportunidade falha 100% das vezes. A trigger roda com os privilégios de quem
+-- inseriu a ação, e `authenticated` teve `UPDATE` em `oportunidades` revogado de
+-- propósito (mais abaixo) — a situação é derivada e a aplicação não deve
+-- escrevê-la à mão. O resultado era `permission denied for table oportunidades`
+-- na funcionalidade central do produto. Falha fechada, e ainda assim falha.
+--
+-- O privilégio elevado não afrouxa o isolamento, e isso foi testado e não
+-- deduzido: a inserção em `acoes_na_oportunidade` continua passando pela RLS da
+-- própria tabela, que só aceita ação para oportunidade da mesma empresa (FK
+-- composta `acao_pertence_a_oportunidade`). A função só é alcançada depois que
+-- essa checagem passou, e ela atualiza exatamente a linha referenciada. Os dois
+-- ataques cruzados da auditoria continuaram barrados depois desta mudança.
+--
+-- `set search_path = ''` é obrigatório junto de `security definer`: sem ele,
+-- quem controla o `search_path` da sessão escolheria qual `oportunidades` a
+-- função enxerga.
 create or replace function public.aplicar_acao_na_oportunidade()
 returns trigger
 language plpgsql
+security definer
 set search_path = ''
 as $$
 begin

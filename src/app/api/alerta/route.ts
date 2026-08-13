@@ -1,4 +1,5 @@
 import { capturaConfigurada, emailPlausivel, gravarLead } from "@/lib/leads";
+import { dentroDoLimite, identificarChamador } from "@/lib/limite-de-taxa";
 
 /**
  * Recebe o cadastro no alerta gratuito.
@@ -27,7 +28,26 @@ type Corpo = {
 const texto = (v: unknown, max: number): string | null =>
   typeof v === "string" && v.trim() ? v.trim().slice(0, max) : null;
 
+/**
+ * Cinco cadastros por minuto e por origem.
+ *
+ * O número vem do uso legítimo: uma pessoa preenche uma vez, erra o e-mail e
+ * tenta de novo, talvez cadastre uma segunda cidade. Cinco cobre isso com folga
+ * e ainda assim torna caro o flood ingênuo. Enquanto a captura era um stub isso
+ * não fazia diferença; agora que o lead é gravado de verdade, faz.
+ */
+const LIMITE = { maximo: 5, janelaSegundos: 60 };
+
 export async function POST(request: Request) {
+  const chamador = identificarChamador(request);
+  const limite = dentroDoLimite(`alerta:${chamador}`, LIMITE);
+  if (!limite.permitido) {
+    return Response.json(
+      { erro: "limite", mensagem: "Muitas tentativas seguidas. Aguarde um instante." },
+      { status: 429, headers: { "retry-after": String(limite.esperarSegundos) } },
+    );
+  }
+
   let corpo: Corpo;
   try {
     corpo = (await request.json()) as Corpo;

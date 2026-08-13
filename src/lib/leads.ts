@@ -59,20 +59,26 @@ export function capturaConfigurada(): boolean {
 /**
  * Grava o lead no destino configurado.
  *
- * Ainda não implementado de propósito: escolher entre banco, serviço de e-mail
- * ou planilha é decisão do dono, e inventar uma integração com credencial
- * imaginária produziria um formulário que parece funcionar e não funciona.
+ * Os destinos vivem em `leads-destinos.ts` — este arquivo continua sem saber
+ * onde o lead vai parar, que era a propriedade que valia a pena preservar. O
+ * contrato também não mudou: qualquer falha devolve `ok: false`, para a página
+ * nunca dizer "cadastrado" sem que o registro exista de fato.
  *
- * Enquanto `LEADS_DESTINO` não existir, esta função nunca é chamada — a rota
- * responde antes que a captura está indisponível, e a página diz isso ao
- * visitante.
+ * O import é dinâmico porque `leads-destinos.ts` é `server-only`, e este módulo
+ * exporta `emailPlausivel`, que é útil no cliente. Carregar estaticamente
+ * arrastaria a barreira de servidor para qualquer componente que só quisesse
+ * validar um e-mail.
  */
 export async function gravarLead(lead: Lead): Promise<ResultadoCaptura> {
   if (!capturaConfigurada()) return { ok: false, motivo: "sem-destino" };
 
-  // Ponto único de integração. Ao implementar, manter o contrato: devolver
-  // `ok: false` em qualquer falha, para a página nunca dizer "cadastrado" sem
-  // que o registro exista de fato.
-  void lead;
-  return { ok: false, motivo: "falha" };
+  const { destinoAtual } = await import("./leads-destinos");
+  const destino = destinoAtual();
+
+  // `LEADS_DESTINO` preenchido mas sem as credenciais do destino escolhido é
+  // erro de configuração, não ausência de destino — e o visitante merece a
+  // mesma mensagem honesta dos dois jeitos.
+  if (!destino) return { ok: false, motivo: "sem-destino" };
+
+  return destino.gravar(lead);
 }

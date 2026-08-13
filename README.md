@@ -79,7 +79,28 @@ declarada, nunca silenciosa.
 | `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Persistência e autenticação | Repositório de demonstração |
 | `SUPABASE_SERVICE_ROLE_KEY` | Coleta e jobs gravando no banco | Coleta só grava arquivo |
 | `GEMINI_API_KEY` | Leitura profunda do edital | Análise fica no nível da publicação, declarado na interface |
-| `LEADS_DESTINO` | Captura de leads do site público | Formulário responde 503 e a página avisa |
+| `LEADS_DESTINO` | Captura de leads do blog e dos guias | Formulário responde 503 e a página avisa |
+| `LEADS_WEBHOOK_URL` | Destino do lead quando `LEADS_DESTINO=webhook` | — |
+
+### Ligando a captação de leads
+
+O blog é o canal de aquisição, e um formulário que aceita e-mail sem ter onde
+guardá-lo é pior que nenhum formulário. Por isso a captura só se apresenta como
+funcional quando existe destino. Há dois, e o segundo existe para não esperar o
+banco:
+
+```bash
+# Destino final: grava na tabela `leads` (migração 20260814110000).
+LEADS_DESTINO=supabase          # exige NEXT_PUBLIC_SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY
+
+# Para começar hoje, com planilha ou automatizador.
+LEADS_DESTINO=webhook
+LEADS_WEBHOOK_URL=https://…
+```
+
+Cada cadastro grava a `origem` (`blog/<slug>#captura-2`, `guia/habilitacao#meio`),
+que é o que responde qual conteúdo traz cliente — sem isso, decidir onde
+investir em conteúdo vira palpite.
 
 ## Estrutura
 

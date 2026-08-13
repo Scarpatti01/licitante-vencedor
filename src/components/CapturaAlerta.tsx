@@ -17,7 +17,25 @@ type Estado =
   | { tipo: "ok" }
   | { tipo: "erro"; mensagem: string; semDestino: boolean };
 
-export function CapturaAlerta({ origem }: { origem: string }) {
+export function CapturaAlerta({
+  origem,
+  chamada,
+  textoDoBotao = "Receber editais da minha cidade",
+}: {
+  /** Qual página gerou o cadastro. É o que permite saber qual conteúdo converte. */
+  origem: string;
+  /**
+   * Chamada específica do contexto, exibida acima do formulário.
+   *
+   * Existe porque a captura que converte é a que fala do problema que o leitor
+   * acabou de reconhecer como dele. Formulário genérico no meio de um artigo
+   * sobre perder prazo desperdiça o único instante em que a pessoa está
+   * disposta a agir. Sem `chamada`, o componente se comporta como já se
+   * comportava nas duas LPs de produto.
+   */
+  chamada?: { titulo: string; texto: string };
+  textoDoBotao?: string;
+}) {
   const [estado, setEstado] = useState<Estado>({ tipo: "parado" });
 
   async function enviar(evento: React.FormEvent<HTMLFormElement>) {
@@ -72,6 +90,13 @@ export function CapturaAlerta({ origem }: { origem: string }) {
 
   return (
     <div className="rounded-lg border bg-[var(--surface)] p-6">
+      {chamada ? (
+        <div className="mb-5">
+          <p className="text-lg font-semibold tracking-tight">{chamada.titulo}</p>
+          <p className="mt-2 leading-relaxed text-[var(--muted)]">{chamada.texto}</p>
+        </div>
+      ) : null}
+
       <form onSubmit={enviar} className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block">
@@ -111,7 +136,7 @@ export function CapturaAlerta({ origem }: { origem: string }) {
           disabled={estado.tipo === "enviando"}
           className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white disabled:opacity-60"
         >
-          {estado.tipo === "enviando" ? "Enviando…" : "Receber editais da minha cidade"}
+          {estado.tipo === "enviando" ? "Enviando…" : textoDoBotao}
         </button>
 
         <p className="text-xs leading-relaxed text-[var(--muted)]">

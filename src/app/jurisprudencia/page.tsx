@@ -3,6 +3,8 @@ import { AUTHOR, SITE } from "@/lib/site";
 import { Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO =
   "Jurisprudência em licitações: como as decisões do TCU e dos tribunais definem o que é exigível de você";
@@ -96,6 +98,8 @@ const schema = {
 };
 
 export default function Jurisprudencia() {
+  const artigos = artigosDoGuia("/jurisprudencia/");
+
   return (
     <div className="min-h-screen">
       <CabecalhoSite />

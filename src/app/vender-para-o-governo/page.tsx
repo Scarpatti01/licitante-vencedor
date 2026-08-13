@@ -3,6 +3,8 @@ import { AUTHOR, SITE } from "@/lib/site";
 import { Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO =
   "Como vender para o governo: o caminho completo de quem nunca participou de uma licitação";
@@ -114,6 +116,8 @@ const schema = {
 };
 
 export default function VenderParaOGoverno() {
+  const artigos = artigosDoGuia("/vender-para-o-governo/");
+
   return (
     <div className="min-h-screen">
       <CabecalhoSite />
@@ -249,6 +253,28 @@ export default function VenderParaOGoverno() {
               específica poderia ganhar.
             </P>
           </Secao>
+
+          {/*
+            Aqui, e não no fim: o parágrafo acima acabou de nomear a dor com
+            precisão — o problema é excesso de publicação, não falta. E a seção
+            seguinte entrega o filtro de quatro perguntas, que só é aplicável a
+            uma lista curta. A captura fica exatamente entre o problema e o
+            método, que é onde ela é útil em vez de interruptiva.
+
+            Sem heading próprio: o `Indice` promete uma lista fechada de seções,
+            e um h2 comercial faria o sumário discordar do documento.
+          */}
+          <section aria-label="Alerta diário de editais">
+            <CapturaAlerta
+              origem="guia/vender-para-o-governo#meio"
+              chamada={{
+                titulo: "O problema não é achar edital — é achar o seu no meio de milhares",
+                texto:
+                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e o link para o registro oficial. As quatro perguntas da próxima seção você aplica a uma lista curta, em vez de a tudo que foi publicado.",
+              }}
+              textoDoBotao="Quero receber os editais do meu ramo"
+            />
+          </section>
 
           <Secao id="escolher" titulo="Como escolher o que disputar">
             <P>
@@ -520,6 +546,34 @@ export default function VenderParaOGoverno() {
             </ul>
           </Secao>
         </div>
+
+        {/*
+          Os artigos que aprofundam este hub, derivados do catálogo. Lista vazia
+          não renderiza nada — nem título, nem "em breve". O projeto já anunciou
+          "os próximos:" seguido de nada, e o custo disso é de confiança.
+        */}
+        {artigos.length > 0 ? (
+          <section className="mt-16 border-t pt-8">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Artigos para quem está começando
+            </h2>
+            <ul className="mt-4 space-y-4">
+              {artigos.map((artigo) => (
+                <li key={artigo.slug}>
+                  <a
+                    href={`/blog/${artigo.slug}/`}
+                    className="font-medium underline underline-offset-4"
+                  >
+                    {artigo.titulo}
+                  </a>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">
+                    {artigo.descricao}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <div className="mt-12">
           <AutorBio />
