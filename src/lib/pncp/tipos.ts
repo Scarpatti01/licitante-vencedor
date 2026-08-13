@@ -78,55 +78,16 @@ export type ContratacaoPncp = {
   informacaoComplementar: string | null;
 };
 
-/** O registro que o projeto usa. Estável mesmo se o PNCP mexer no dele. */
-export type Edital = {
-  /** `numeroControlePNCP` — identificador canônico e chave de deduplicação. */
-  id: string;
-  objeto: string;
-  orgao: {
-    cnpj: string;
-    nome: string;
-    esfera: "federal" | "estadual" | "municipal" | "distrital" | "desconhecida";
-  };
-  local: {
-    uf: string;
-    municipio: string;
-    municipioSlug: string;
-    codigoIbge: string;
-  };
-  modalidade: string;
-  modoDisputa: string | null;
-  instrumento: string | null;
-  amparoLegal: string | null;
-  registroDePrecos: boolean;
-  /**
-   * Em reais. `null` quando o órgão não informou.
-   *
-   * O PNCP usa `0` para "não informado" e também aceita valores reais baixos —
-   * há editais legítimos de R$ 0,01. Distinguir os dois é impossível pelo
-   * endpoint de lista, então `0` vira `null` e fica registrado em
-   * `valorEstimadoBruto` o que veio, para nada se perder.
-   */
-  valorEstimado: number | null;
-  valorEstimadoBruto: number | null;
-  /**
-   * `true` quando o valor é implausível a ponto de contaminar qualquer soma.
-   *
-   * A fonte tem erro de digitação. No piloto de 2026-08-12 havia um pregão de
-   * mobiliário declarado a R$ 77,84 bilhões — sozinho, 88% do total de seis
-   * estados. Uma página que anuncia "R$ 81 bi licitados em Fortaleza" perde a
-   * credibilidade exatamente onde ela deveria ser provada.
-   *
-   * O edital continua na listagem, porque existe de verdade e alguém pode
-   * querer disputá-lo. O que ele não faz é entrar em agregado.
-   */
-  valorSuspeito: boolean;
-  /** ISO 8601 com offset de Brasília, convertido de propósito. */
-  aberturaProposta: string | null;
-  encerramentoProposta: string | null;
-  publicadoEm: string | null;
-  situacao: string | null;
-  /** Página pública no PNCP. Padrão verificado, não deduzido. */
-  link: string;
-  coletadoEm: string;
-};
+/**
+ * `Edital` MUDOU DE CASA: agora mora em `src/lib/fontes/tipos.ts`.
+ *
+ * Ele nunca foi um tipo do PNCP — é o registro do projeto, e o PNCP é apenas a
+ * primeira fonte a produzi-lo. Deixá-lo aqui obrigava todo consumidor a
+ * importar de `pncp/` para falar de um edital que amanhã pode vir de outro
+ * portal, e era o acoplamento errado exatamente no tipo mais central.
+ *
+ * O reexport fica porque quem já importava daqui continua funcionando — e
+ * porque, sendo `export type`, ele some na compilação: não cria dependência de
+ * runtime de `pncp/` para `fontes/`.
+ */
+export type { Edital } from "../fontes/tipos";

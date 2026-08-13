@@ -1,4 +1,5 @@
-import type { ContratacaoPncp, Edital } from "./tipos";
+import type { ContratacaoPncp } from "./tipos";
+import type { Edital } from "../fontes/tipos";
 
 /**
  * Converte o DTO do PNCP no registro que o projeto usa.
@@ -62,7 +63,15 @@ export function normalizarEdital(c: ContratacaoPncp, coletadoEm: string): Edital
   const bruto = typeof c.valorTotalEstimado === "number" ? c.valorTotalEstimado : null;
 
   return {
+    // Para o PNCP, chave canônica e id na fonte coincidem: o
+    // `numeroControlePNCP` é identificador de registro NACIONAL, atribuído pelo
+    // portal obrigatório da Lei 14.133/2021 — é a melhor chave canônica que
+    // existe hoje. Numa fonte estadual isso não valerá, e é por isso que os
+    // dois campos são separados: `idNaFonte` é o número do portal, e o `id`
+    // canônico terá de ser derivado (`fonte:idNaFonte`) para não colidir.
     id: c.numeroControlePNCP,
+    fonte: "pncp",
+    idNaFonte: c.numeroControlePNCP,
     objeto: (c.objetoCompra ?? "").trim(),
     orgao: {
       cnpj: c.orgaoEntidade?.cnpj ?? "",

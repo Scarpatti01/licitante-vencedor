@@ -6,7 +6,8 @@
  * exatamente quando é mais necessário.
  */
 import { auditar, cnpjValido, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
-import type { Edital } from "../src/lib/pncp/tipos.ts";
+import type { Edital } from "../src/lib/fontes/tipos.ts";
+import { classificarUf, resumirCobertura } from "../src/lib/fontes/cobertura.ts";
 import { slugDeMunicipio, comFusoDeBrasilia } from "../src/lib/pncp/normaliza.ts";
 
 let falhas = 0;
@@ -19,6 +20,8 @@ const ok = (nome: string, real: unknown, esperado: unknown) => {
 const REF = "2026-08-12T12:00:00.000Z";
 const base = (over: Partial<Edital> = {}): Edital => ({
   id: "id-" + Math.random().toString(36).slice(2, 8),
+  fonte: "pncp",
+  idNaFonte: "id-na-fonte",
   objeto: "Aquisição de material de expediente para a secretaria",
   orgao: { cnpj: "11097292000149", nome: "MUNICIPIO DE LIMOEIRO", esfera: "municipal" },
   local: { uf: "PE", municipio: "Limoeiro", municipioSlug: "limoeiro", codigoIbge: "2608909" },
@@ -99,9 +102,17 @@ ok("nomeia o candidato quando so um cabe", /Dividido por/.test(unico.hipotese!),
 ok("mesmo assim rotula como hipotese", /hipótese derivada|não confirmação/i.test(unico.hipotese!), true);
 
 console.log("\n=== cobertura parcial e declarada antes dos numeros ===");
-const rel = relatorioEmTexto(limpo, { ufsSolicitadas: ["PE","PB","CE"], ufsComFalha: [{ uf: "CE", erro: "503" }] });
+// Os tres estados por UF: completa, parcial (entregou antes de parar) e falha.
+// A cobertura detalhada tem suite propria em src/lib/fontes/cobertura.test.ts.
+const cob = resumirCobertura(["PE","PB","CE"], [
+  classificarUf({ uf: "PE", editais: 100, motivo: "timeout" }),
+  classificarUf({ uf: "PB", editais: 40 }),
+  classificarUf({ uf: "CE", editais: 0, motivo: "503" }),
+]);
+const rel = relatorioEmTexto(limpo, cob);
 ok("avisa cobertura incompleta", rel.includes("cobertura incompleta"), true);
 ok("nomeia a UF que faltou", rel.includes("CE: 503"), true);
+ok("declara a UF parcial com o que entrou", rel.includes("PE: 100 editais coletados"), true);
 ok("aviso vem antes dos achados", rel.indexOf("cobertura incompleta") < rel.indexOf("editais têm valor"), true);
 
 

@@ -1,8 +1,14 @@
 /**
- * Ingestão do PNCP — coleta editais com propostas abertas e grava um snapshot.
+ * Ingestão de editais — coleta o que está com proposta aberta e grava snapshot,
+ * agregado e relatório de revisão.
  *
  *   node scripts/ingerir-pncp.ts --uf PE,PB,AL --dias 90 --saida dados/editais.json
  *   node scripts/ingerir-pncp.ts --uf PE --max-paginas 2        (teste rápido)
+ *   node scripts/ingerir-pncp.ts --orcamento-min 20             (corta cedo, de propósito)
+ *
+ * O nome do arquivo ainda diz "pncp" porque o cron e a documentação apontam
+ * para ele, mas o script já não conhece o PNCP: ele fala com `FonteDeEditais`
+ * (`src/lib/fontes/`) e o PNCP é a implementação que está plugada.
  *
  * Grava JSON e não banco de propósito, nesta etapa. As páginas regionais do
  * blog são estáticas com revalidação: elas precisam de um retrato consistente
@@ -11,12 +17,15 @@
  * escolha se faz com o requisito na mão, não por antecipação.
  */
 
-import { writeFile, mkdir } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
-import { coletarEditaisAbertos } from "../src/lib/pncp/cliente.ts";
-import { ehUtilizavel, marcarValoresSuspeitos, normalizarEdital, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
+import { writeFile, mkdir, readFile } from "node:fs/promises";
+import { dirname, resolve, join } from "node:path";
+import { fontePncp } from "../src/lib/fontes/pncp.ts";
+import { classificarUf, resumirCobertura, type ColetaDeUf } from "../src/lib/fontes/cobertura.ts";
+import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao.ts";
+import { deduplicar } from "../src/lib/fontes/deduplicacao.ts";
+import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
-import type { Edital } from "../src/lib/pncp/tipos.ts";
+import type { Edital } from "../src/lib/fontes/tipos.ts";
 
 function arg(nome: string): string | undefined {
   const i = process.argv.indexOf(`--${nome}`);
@@ -32,68 +41,141 @@ function dataFinalEm(dias: number): string {
 
 const UFS_PILOTO = ["PE", "PB", "AL", "RN", "CE", "SE"];
 
+/**
+ * Orçamento de tempo, em minutos, para a coleta inteira.
+ *
+ * DEFEITO CORRIGIDO AQUI: a execução de 2026-08-13 levou ~43 minutos contra o
+ * `timeout-minutes: 45` do workflow. Um run só um pouco mais lento morre no
+ * meio — e morrendo no meio ele não grava NADA: nem snapshot, nem agregado, nem
+ * relatório. Perde-se inclusive o que já tinha sido coletado, que é o cenário
+ * que a coleta isolada por UF existia justamente para evitar.
+ *
+ * A escolha foi orçamento de tempo, e não paralelismo entre UFs. Paralelizar
+ * contra o PNCP é o caminho mais curto para o 429: o cliente é sequencial por
+ * medição (a 350ms entre páginas o portal cortou depois de ~26 páginas), e
+ * disparar 6 UFs juntas multiplica por 6 a taxa que já se sabe estar no limite.
+ * Trocaríamos um defeito raro (run lento) por um frequente (bloqueio).
+ *
+ * Com orçamento, o run lento vira coleta PARCIAL declarada em vez de morte
+ * súbita — e cobertura parcial agora é um estado de primeira classe, que o
+ * relatório sabe descrever e a guarda de degradação sabe avaliar. 30 minutos
+ * contra 45 do workflow deixa folga para gravar tudo e ainda commitar.
+ */
+const ORCAMENTO_PADRAO_MIN = 30;
+
 async function main() {
   const ufs = (arg("uf") ?? UFS_PILOTO.join(",")).split(",").map((u) => u.trim().toUpperCase());
   const dias = Number(arg("dias") ?? 90);
   const maxPaginas = arg("max-paginas") ? Number(arg("max-paginas")) : undefined;
+  const orcamentoMin = Number(arg("orcamento-min") ?? ORCAMENTO_PADRAO_MIN);
   const saida = resolve(process.cwd(), arg("saida") ?? "dados/editais.json");
+  const pastaDados = dirname(saida);
+  const pastaParciais = resolve(pastaDados, arg("parciais") ?? "parciais");
   const dataFinal = dataFinalEm(dias);
   const coletadoEm = new Date().toISOString();
+  const prazoGlobal = Date.now() + orcamentoMin * 60_000;
 
-  console.log(`PNCP · propostas abertas até ${dataFinal} · UFs: ${ufs.join(", ")}`);
+  const fonte = fontePncp;
+
+  console.log(`${fonte.rotulo} · propostas abertas até ${dataFinal} · UFs: ${ufs.join(", ")}`);
+  console.log(`orçamento de tempo: ${orcamentoMin} min para a coleta inteira`);
   if (maxPaginas) console.log(`(modo teste: no máximo ${maxPaginas} páginas por UF)`);
 
-  const porId = new Map<string, Edital>();
+  // O agregado anterior é lido ANTES de qualquer escrita: ele é o que está no
+  // diretório, ou seja, o último agregado versionado (o workflow faz checkout).
+  // É contra ele que a guarda de degradação compara.
+  const caminhoAgregado = resolve(pastaDados, "agregados.json");
+  const anterior = await lerAgregado(caminhoAgregado);
+
+  const coletados: Edital[] = [];
   const descartados: Record<string, number> = {};
+  const resultadosPorUf: ColetaDeUf[] = [];
   let brutos = 0;
 
   // Uma UF que falha não pode derrubar a coleta inteira. O PNCP saiu do ar no
   // meio do piloto de 2026-08-12 e levou junto tudo que já tinha sido coletado.
-  // Agora cada UF é isolada: o que deu certo fica, o que falhou é declarado no
-  // snapshot e no relatório. Cobertura parcial anunciada é utilizável; coleta
-  // perdida, não.
-  const falhas: { uf: string; erro: string }[] = [];
+  // Agora cada UF é isolada, e termina em um de três estados — completa,
+  // parcial ou falha. O parcial é o que faltava: uma UF interrompida DEPOIS de
+  // entregar editais tinha o dado mantido e a coleta declarada como falha
+  // total, o que fez o relatório de 13/08 negar exatamente as duas UFs que
+  // sustentavam os números.
+  for (const [i, uf] of ufs.entries()) {
+    if (!fonte.cobre(uf)) {
+      resultadosPorUf.push(classificarUf({ uf, editais: 0, motivo: `${fonte.rotulo} não cobre esta UF` }));
+      console.log(`  ${uf} — fora da abrangência de ${fonte.nome}`);
+      continue;
+    }
 
-  for (const uf of ufs) {
-    let daUf = 0;
+    const restanteMs = prazoGlobal - Date.now();
+    if (restanteMs <= 0) {
+      resultadosPorUf.push(
+        classificarUf({ uf, editais: 0, motivo: `orçamento de ${orcamentoMin} min esgotado antes de começar esta UF` }),
+      );
+      console.log(`  ${uf} — pulada: orçamento de tempo esgotado`);
+      continue;
+    }
+
+    // Reparte o que sobrou entre as UFs que faltam. Quem termina rápido devolve
+    // o tempo para as seguintes, sem cota fixa que desperdiça.
+    const prazoDaUf = Date.now() + restanteMs / (ufs.length - i);
+    const idsDaUf = new Set<string>();
+    let motivo: string | null = null;
+
     process.stdout.write(`  ${uf} `);
 
     try {
-    for await (const c of coletarEditaisAbertos({
-      uf,
-      dataFinal,
-      maxPaginas,
-      aoProgredir: ({ pagina, totalPaginas }) => {
-        if (pagina === 1) process.stdout.write(`(${totalPaginas} pág) `);
-        process.stdout.write(".");
-      },
-      aoEsperar: (motivo, ms) => process.stdout.write(`[${motivo}, aguardando ${Math.round(ms / 1000)}s]`),
-    })) {
-      brutos++;
-      if (!ehUtilizavel(c)) {
-        descartados[uf] = (descartados[uf] ?? 0) + 1;
-        continue;
-      }
-      // Dedup por id: um mesmo edital reaparece entre páginas quando o PNCP
-      // reordena durante a coleta. Sem isto o mesmo certame vira duas linhas.
-      porId.set(c.numeroControlePNCP, normalizarEdital(c, coletadoEm));
-      daUf++;
-    }
-      console.log(` ${daUf}`);
-    } catch (e) {
-      const erro = e instanceof Error ? e.message : String(e);
-      falhas.push({ uf, erro });
-      console.log(` INTERROMPIDA após ${daUf} — ${erro}`);
-    }
-  }
+      for await (const e of fonte.coletar({
+        uf,
+        dataFinal,
+        maxPaginas,
+        coletadoEm,
+        aoReceber: () => brutos++,
+        aoDescartar: () => {
+          descartados[uf] = (descartados[uf] ?? 0) + 1;
+        },
+        aoProgredir: ({ pagina, totalPaginas }) => {
+          if (pagina === 1) process.stdout.write(`(${totalPaginas} pág) `);
+          process.stdout.write(".");
+        },
+        aoEsperar: (m, ms) => process.stdout.write(`[${m}, aguardando ${Math.round(ms / 1000)}s]`),
+      })) {
+        coletados.push(e);
+        idsDaUf.add(e.id);
 
-  if (porId.size === 0) {
-    throw new Error(
-      `nenhuma UF pôde ser coletada. Falhas: ${falhas.map((f) => `${f.uf} (${f.erro})`).join("; ")}`,
+        if (Date.now() > prazoDaUf) {
+          // Quebrar o `for await` encerra o gerador da fonte — a conexão em
+          // curso é abandonada e a paginação para. É o motivo de a porta
+          // devolver `AsyncIterable` e não array.
+          motivo = `orçamento de tempo da UF esgotado (${orcamentoMin} min para ${ufs.length} UFs)`;
+          break;
+        }
+      }
+    } catch (e) {
+      motivo = e instanceof Error ? e.message : String(e);
+    }
+
+    const resultado = classificarUf({ uf, editais: idsDaUf.size, motivo });
+    resultadosPorUf.push(resultado);
+    console.log(
+      resultado.estado === "completa"
+        ? ` ${resultado.editais}`
+        : ` ${resultado.estado.toUpperCase()} com ${resultado.editais} — ${motivo}`,
     );
   }
 
-  const editais = [...porId.values()].sort((a, b) =>
+  const cobertura = resumirCobertura(ufs, resultadosPorUf);
+
+  if (coletados.length === 0) {
+    throw new Error(
+      `nenhuma UF pôde ser coletada. ${cobertura.ufsComFalha.map((f) => `${f.uf} (${f.motivo})`).join("; ")}`,
+    );
+  }
+
+  // Deduplicação em um lugar só, com nome e com teste. Ver o comentário de
+  // `deduplicacao.ts`: hoje ela é quase trivial porque só há uma fonte, e é
+  // agora que o lugar precisa existir.
+  const dedup = deduplicar(coletados, { [fonte.nome]: fonte.precedencia });
+  const editais = dedup.editais.sort((a, b) =>
     (a.encerramentoProposta ?? "").localeCompare(b.encerramentoProposta ?? ""),
   );
 
@@ -107,20 +189,16 @@ async function main() {
   const auditoria = auditar(editais, coletadoEm);
 
   const snapshot = {
-    fonte: "pncp",
+    fonte: fonte.nome,
     coletadoEm,
-    parametros: { ufs, dataFinal, dias },
-    cobertura: {
-      ufsSolicitadas: ufs,
-      ufsColetadas: ufs.filter((u) => !falhas.some((f) => f.uf === u)),
-      ufsComFalha: falhas,
-      completa: falhas.length === 0,
-    },
+    parametros: { ufs, dataFinal, dias, orcamentoMin },
+    cobertura,
     totais: {
       recebidos: brutos,
       utilizaveis: editais.length,
       descartadosPorCampoFaltando: descartadosTotal,
-      duplicadosRemovidos: brutos - editais.length - descartadosTotal,
+      repetidosNaFonte: dedup.repetidosNaFonte,
+      fundidosEntreFontes: dedup.fundidosEntreFontes,
       valoresSuspeitos: marcados,
       corteDeValorSuspeito: Number.isFinite(corte) ? corte : null,
       valorTotalConfiavel: somaConfiavel(editais),
@@ -132,7 +210,9 @@ async function main() {
   await mkdir(dirname(saida), { recursive: true });
   await writeFile(saida, JSON.stringify(snapshot, null, 1), "utf8");
 
-  console.log(`\nrecebidos ${brutos} · utilizáveis ${editais.length} · descartados ${descartadosTotal} · duplicados ${snapshot.totais.duplicadosRemovidos}`);
+  console.log(
+    `\nrecebidos ${brutos} · utilizáveis ${editais.length} · descartados ${descartadosTotal} · repetidos ${dedup.repetidosNaFonte}`,
+  );
   if (marcados) {
     console.log(
       `valores suspeitos marcados: ${marcados} (acima de R$ ${corte.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}) — fora dos agregados, mantidos na listagem`,
@@ -167,17 +247,64 @@ async function main() {
 
   const agregados = {
     coletadoEm,
-    cobertura: snapshot.cobertura,
+    fonte: fonte.nome,
+    cobertura,
     municipios: [...porMunicipio.values()]
       .map((m) => ({ ...m, valor: Math.round(m.valor), orgaos: m.orgaos.size }))
       .sort((a, b) => b.editais - a.editais),
   };
-  await writeFile(resolve(dirname(saida), "agregados.json"), JSON.stringify(agregados), "utf8");
 
-  const relatorio = relatorioEmTexto(auditoria, snapshot.cobertura);
-  await writeFile(resolve(dirname(saida), "revisao.md"), `# Revisão da coleta\n\n\`\`\`\n${relatorio}\n\`\`\`\n`, "utf8");
-  console.log(`\nagregado: ${agregados.municipios.length} municípios`);
+  const relatorio = relatorioEmTexto(auditoria, cobertura);
+
+  // A guarda: uma coleta degradada NÃO substitui a série. Ver `degradacao.ts`.
+  const classificacao = classificarColeta({
+    cobertura,
+    atual: resumirAgregado(agregados),
+    anterior: anterior ? resumirAgregado(anterior) : null,
+  });
+
+  await mkdir(pastaParciais, { recursive: true });
+  // O veredito sai em arquivo, e não só em stdout, porque quem age sobre ele é
+  // o workflow — e casar decisão de commit com `grep` na saída do console é
+  // frágil do jeito que já custou caro aqui.
+  await writeFile(
+    join(pastaParciais, "classificacao.json"),
+    JSON.stringify({ coletadoEm, ...classificacao }, null, 1),
+    "utf8",
+  );
+
+  if (classificacao.preservarAnterior) {
+    const dia = coletadoEm.slice(0, 10);
+    await writeFile(join(pastaParciais, `agregados-${dia}.json`), JSON.stringify(agregados), "utf8");
+    await writeFile(
+      join(pastaParciais, `revisao-${dia}.md`),
+      `# Revisão da coleta (DEGRADADA — não substituiu o agregado)\n\n${classificacao.motivos.map((m) => `- ${m}`).join("\n")}\n\n\`\`\`\n${relatorio}\n\`\`\`\n`,
+      "utf8",
+    );
+    console.log(`\nCOLETA DEGRADADA — o agregado anterior foi PRESERVADO.`);
+    for (const m of classificacao.motivos) console.log(`  · ${m}`);
+    console.log(`resultado desta rodada gravado em ${pastaParciais}/ (fora do versionamento)`);
+  } else {
+    await writeFile(caminhoAgregado, JSON.stringify(agregados), "utf8");
+    await writeFile(
+      resolve(pastaDados, "revisao.md"),
+      `# Revisão da coleta\n\n\`\`\`\n${relatorio}\n\`\`\`\n`,
+      "utf8",
+    );
+    console.log(`\ncoleta ${classificacao.classe} — agregado atualizado: ${agregados.municipios.length} municípios`);
+    for (const m of classificacao.motivos) console.log(`  · ${m}`);
+  }
+
   console.log(`\n${"─".repeat(72)}\n${relatorio}`);
+}
+
+/** Lê o agregado do disco. Ausência não é erro: a primeira coleta não tem anterior. */
+async function lerAgregado(caminho: string) {
+  try {
+    return JSON.parse(await readFile(caminho, "utf8")) as { municipios?: { uf?: string; editais?: number }[] };
+  } catch {
+    return null;
+  }
 }
 
 main().catch((e) => {

@@ -1,4 +1,5 @@
-import type { Edital } from "./tipos";
+import type { Edital } from "../fontes/tipos";
+import type { Cobertura } from "../fontes/cobertura";
 
 /**
  * Revisão automática do que foi coletado, antes de qualquer publicação.
@@ -210,23 +211,63 @@ export function auditar(editais: Edital[], revisadoEm: string): Auditoria {
   };
 }
 
-/** Texto de publicação. É isto que vai junto do dado, não um resumo maquiado. */
-export function relatorioEmTexto(
-  a: Auditoria,
-  cobertura?: { ufsSolicitadas: string[]; ufsComFalha: { uf: string; erro: string }[] },
-): string {
+/**
+ * Texto de publicação. É isto que vai junto do dado, não um resumo maquiado.
+ *
+ * A parte de cobertura foi reescrita depois de 2026-08-13, quando o relatório
+ * afirmou que as 6 UFs solicitadas "não estão representadas nos números
+ * abaixo" — sendo que 150 dos editais relatados vinham justamente de duas
+ * delas, PE e AL, interrompidas no meio. O erro era de vocabulário: só havia
+ * "coletada" e "falhou", e uma UF interrompida cabia mal nos dois. Agora cada
+ * UF é declarada no estado em que de fato terminou.
+ */
+export function relatorioEmTexto(a: Auditoria, cobertura?: Cobertura): string {
   const l: string[] = [];
   l.push(`Revisão dos dados — ${a.totalEditais} editais coletados em ${a.revisadoEm}.`);
   l.push("");
 
-  // Cobertura incompleta é a primeira coisa a declarar: ela muda o que os
-  // números abaixo significam. Publicar total de "seis estados" tendo coletado
-  // quatro é errar por omissão.
-  if (cobertura && cobertura.ufsComFalha.length > 0) {
+  // Cobertura vem antes de tudo: ela muda o que os números abaixo significam.
+  // Publicar total de "seis estados" tendo coletado dois é errar por omissão.
+  if (cobertura && !cobertura.completa) {
+    const { ufsCompletas, ufsParciais, ufsComFalha, ufsSolicitadas } = cobertura;
+    // Concordância no texto publicado importa: este relatório vai para uma
+    // página pública, e "1 UFs não trouxeram nada" desmente a atenção com o
+    // dado que o resto do relatório está tentando demonstrar.
+    const conc = (n: number, singular: string, plural: string) => (n === 1 ? singular : plural);
     l.push(
-      `ATENÇÃO — cobertura incompleta. Das ${cobertura.ufsSolicitadas.length} UFs solicitadas, ${cobertura.ufsComFalha.length} não puderam ser coletadas nesta rodada e não estão representadas nos números abaixo:`,
+      `ATENÇÃO — cobertura incompleta. Das ${ufsSolicitadas.length} UFs solicitadas, ${ufsCompletas.length} ${conc(ufsCompletas.length, "foi coletada", "foram coletadas")} por inteiro, ${ufsParciais.length} ${conc(ufsParciais.length, "ficou parcial", "ficaram parciais")} e ${ufsComFalha.length} não ${conc(ufsComFalha.length, "trouxe", "trouxeram")} nada.`,
     );
-    for (const f of cobertura.ufsComFalha) l.push(`  ${f.uf}: ${f.erro}`);
+    l.push("");
+
+    if (ufsCompletas.length) {
+      l.push(`  Completas (representadas por inteiro nos números abaixo): ${ufsCompletas.join(", ")}`);
+    }
+
+    if (ufsParciais.length) {
+      // O ponto exato que estava errado: o dado parcial ESTÁ nos números. Dizer
+      // que a UF falhou faria o leitor descontar editais que estão ali.
+      l.push(
+        "  Parciais (o que entrou ANTES da interrupção está nos números abaixo; o restante da UF, não):",
+      );
+      for (const p of ufsParciais) {
+        l.push(
+          `    ${p.uf}: ${p.editais} ${conc(p.editais, "edital coletado", "editais coletados")}, interrompida — ${p.motivo}`,
+        );
+      }
+    }
+
+    if (ufsComFalha.length) {
+      l.push("  Sem coleta (nenhum edital; NÃO estão representadas nos números abaixo):");
+      for (const f of ufsComFalha) l.push(`    ${f.uf}: ${f.motivo}`);
+    }
+
+    l.push("");
+    // Só as UFs que de fato contribuíram. Uma UF pode terminar completa e ter
+    // trazido zero editais (nenhuma proposta aberta na janela, ou a fonte
+    // devolvendo vazio) — listá-la aqui sugeriria que parte dos números vem
+    // dela, que é a mesma classe de erro que este bloco existe para corrigir.
+    const contribuiram = cobertura.porUf.filter((c) => c.editais > 0).map((c) => c.uf);
+    l.push(`  Os ${a.totalEditais} editais revisados vêm de ${contribuiram.join(", ") || "nenhuma UF"}.`);
     l.push("");
   }
 
