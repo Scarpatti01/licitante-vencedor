@@ -1,5 +1,6 @@
 import "server-only";
 import { cache } from "react";
+import { connection } from "next/server";
 import { RepositorioDeDemonstracao, EMPRESA_DE_DEMONSTRACAO, ehDemonstracao } from "./demonstracao";
 import type { RepositorioDoProduto } from "./porta";
 
@@ -35,7 +36,20 @@ export const repositorio = cache((): RepositorioDoProduto => {
  * do usuário com a empresa — e continua sendo o ÚNICO lugar do sistema que
  * decide "de quem é o dado desta requisição". Concentrar isso em uma função é o
  * que torna o isolamento auditável: há um só ponto para revisar, e ele é este.
+ *
+ * O `await connection()` é de segurança, não de performance, e precisa ficar
+ * AQUI e não em cada página. Sem ele, o Next pré-renderiza no build tudo que não
+ * toca uma API de requisição — e o `/painel` saía do build como HTML estático.
+ * Hoje isso "funciona", porque o repositório é de demonstração e o dado é o
+ * mesmo para todos. No dia em que a autenticação entrar, a mesma página
+ * estaria servindo o painel de uma empresa para todas as outras, e o defeito
+ * apareceria como vazamento entre clientes, não como página desatualizada.
+ *
+ * Amarrando a espera à função que resolve o tenant, qualquer tela que leia dado
+ * de empresa vira dinâmica por construção. Nenhuma delas precisa lembrar de
+ * declarar `dynamic`, e nenhuma nova pode esquecer.
  */
 export const empresaAtual = cache(async (): Promise<string> => {
+  await connection();
   return EMPRESA_DE_DEMONSTRACAO;
 });
