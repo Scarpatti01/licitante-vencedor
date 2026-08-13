@@ -3,6 +3,8 @@ import { AUTHOR, SITE } from "@/lib/site";
 import { Citacao, Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO =
   "Súmulas do TCU em licitações: o que cada uma muda na sua proposta";
@@ -130,6 +132,8 @@ const schema = {
 };
 
 export default function SumulasTcu() {
+  const artigos = artigosDoGuia("/sumulas-tcu/");
+
   return (
     <div className="min-h-screen">
       <CabecalhoSite />
@@ -342,6 +346,28 @@ export default function SumulasTcu() {
               própria súmula.
             </P>
           </Secao>
+
+          {/*
+            Guia de consulta: quem chega aqui quase sempre está procurando o
+            texto de uma súmula, não um produto. A captura fica leve e diz para
+            seguir lendo. O lugar é depois do bloco de habilitação, que é a
+            sequência mais longa de cláusulas impugnáveis do guia — o ponto em
+            que fica evidente que a súmula só rende dentro do prazo do edital.
+
+            Sem heading próprio: o `Indice` promete uma lista fechada de seções,
+            e um h2 comercial faria o sumário discordar do documento.
+          */}
+          <section aria-label="Alerta diário de editais">
+            <CapturaAlerta
+              origem="guia/sumulas-tcu#meio"
+              chamada={{
+                titulo: "Súmula só rende enquanto o edital ainda está aberto",
+                texto:
+                  "Você veio consultar súmula, e a lista continua logo abaixo — siga em frente se for só isso. Fica o registro de que nenhuma delas se aplica a um edital que passou despercebido. Se ajudar, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+              }}
+              textoDoBotao="Quero receber os editais do meu ramo"
+            />
+          </section>
 
           <Secao id="preco" titulo="Preço, inexequibilidade e orçamento">
             <P>
@@ -612,6 +638,34 @@ export default function SumulasTcu() {
             </ul>
           </Secao>
         </div>
+
+        {/*
+          Os artigos que aprofundam este hub, derivados do catálogo. Lista vazia
+          não renderiza nada — nem título, nem "em breve". O projeto já anunciou
+          "os próximos:" seguido de nada, e o custo disso é de confiança.
+        */}
+        {artigos.length > 0 ? (
+          <section className="mt-16 border-t pt-8">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Artigos sobre as súmulas na prática
+            </h2>
+            <ul className="mt-4 space-y-4">
+              {artigos.map((artigo) => (
+                <li key={artigo.slug}>
+                  <a
+                    href={`/blog/${artigo.slug}/`}
+                    className="font-medium underline underline-offset-4"
+                  >
+                    {artigo.titulo}
+                  </a>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">
+                    {artigo.descricao}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <div className="mt-12">
           <AutorBio />

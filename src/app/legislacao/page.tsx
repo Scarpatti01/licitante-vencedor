@@ -3,6 +3,8 @@ import { AUTHOR, SITE } from "@/lib/site";
 import { Citacao, Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO = "Legislação de licitações: o que vale hoje e o que já foi revogado";
 const DESCRICAO =
@@ -112,6 +114,8 @@ const schema = {
 };
 
 export default function Legislacao() {
+  const artigos = artigosDoGuia("/legislacao/");
+
   return (
     <div className="min-h-screen">
       <CabecalhoSite />
@@ -278,6 +282,28 @@ export default function Legislacao() {
             </P>
           </Secao>
 
+          {/*
+            Página de consulta: a intenção é informacional e a captura tem de
+            aceitar isso, senão atrapalha quem só queria saber se a 8.666 caiu.
+            Vem no meio exato do guia, logo depois da frase que fecha a seção —
+            "na hora da disputa, o documento que rege você é o edital" — porque
+            é a única ponte honesta entre saber a norma e ter o edital na mão.
+
+            Sem heading próprio: o `Indice` promete uma lista fechada de seções,
+            e um h2 comercial faria o sumário discordar do documento.
+          */}
+          <section aria-label="Alerta diário de editais">
+            <CapturaAlerta
+              origem="guia/legislacao#meio"
+              chamada={{
+                titulo: "Saber qual norma vale não coloca o edital na sua frente",
+                texto:
+                  "Esta página é de consulta e o guia segue abaixo — pode pular. Só a observação prática do parágrafo acima: quem rege a disputa é o edital, e ele precisa chegar até você. Se quiser, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+              }}
+              textoDoBotao="Quero receber os editais do meu ramo"
+            />
+          </section>
+
           <Secao id="acervo" titulo="As normas que este site acompanhava: status verificado">
             <P>
               Este endereço reunia, entre 2016 e 2017, o acompanhamento de leis,
@@ -398,6 +424,34 @@ export default function Legislacao() {
             </ul>
           </Secao>
         </div>
+
+        {/*
+          Os artigos que aprofundam este hub, derivados do catálogo. Lista vazia
+          não renderiza nada — nem título, nem "em breve". O projeto já anunciou
+          "os próximos:" seguido de nada, e o custo disso é de confiança.
+        */}
+        {artigos.length > 0 ? (
+          <section className="mt-16 border-t pt-8">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Artigos sobre a legislação aplicada
+            </h2>
+            <ul className="mt-4 space-y-4">
+              {artigos.map((artigo) => (
+                <li key={artigo.slug}>
+                  <a
+                    href={`/blog/${artigo.slug}/`}
+                    className="font-medium underline underline-offset-4"
+                  >
+                    {artigo.titulo}
+                  </a>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">
+                    {artigo.descricao}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <div className="mt-12">
           <AutorBio />
