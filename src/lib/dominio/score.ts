@@ -3,6 +3,7 @@ import { diasAteEncerrar } from "../pncp/normaliza";
 import type { AnaliseDoEdital, PerfilDaEmpresa } from "./tipos";
 import { montarChecklist, prontidaoDocumental, type Checklist } from "./checklist";
 import { coberturaDeTermos, termosEncontrados } from "./texto";
+import { dataEHoraDeBrasilia } from "./datas";
 import { type Campo, desconhecido, doEdital, doPerfil, inferido } from "./procedencia";
 
 /**
@@ -321,7 +322,7 @@ function criterioPrazo(edital: Edital, agora: Date): CriterioAvaliado {
 
   const evidencia = doEdital(
     edital.encerramentoProposta,
-    `Encerramento das propostas: ${new Date(edital.encerramentoProposta!).toLocaleString("pt-BR")}.`,
+    `Encerramento das propostas: ${dataEHoraDeBrasilia(edital.encerramentoProposta!)} (horário de Brasília).`,
   );
 
   if (dias < 0) {

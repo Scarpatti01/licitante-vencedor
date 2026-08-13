@@ -152,7 +152,15 @@ export function emTextoSimples(mensagem: MensagemDeAlerta): string {
   return `${mensagem.assunto}\n\n${blocos.join("\n\n———\n\n")}\n\n${mensagem.rodape}`;
 }
 
-/** Escapa texto que vai para HTML de e-mail. Objeto de edital tem `&` e `<`. */
+/**
+ * Escapa texto que vai para HTML de e-mail. Objeto de edital tem `&` e `<`.
+ *
+ * Vale para conteúdo E para atributo: `"` é escapado, e todo atributo deste
+ * arquivo é delimitado por aspa dupla. O `link` passa por aqui pelo mesmo
+ * motivo que o objeto — ele carrega o id da oportunidade, que para o PNCP é o
+ * `numeroControlePNCP`, texto de terceiro sem validação de formato em nenhuma
+ * camada.
+ */
 function escapar(texto: string): string {
   return texto
     .replace(/&/g, "&amp;")
@@ -190,7 +198,7 @@ export function emHtml(mensagem: MensagemDeAlerta): string {
 ${linha("Valor", b.valor)}${linha("Órgão", b.orgao)}${linha("Local", b.local)}${linha("Prazo", b.prazo)}${linha("Aderência", b.score)}
 </table>
 ${listas}
-<p style="margin:18px 0 0"><a href="${b.link}" style="display:inline-block;background:#101418;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600">${escapar(b.proximaAcao)}</a></p>
+<p style="margin:18px 0 0"><a href="${escapar(b.link)}" style="display:inline-block;background:#101418;color:#fff;text-decoration:none;padding:10px 18px;border-radius:8px;font-size:14px;font-weight:600">${escapar(b.proximaAcao)}</a></p>
 </div>`;
     })
     .join("");

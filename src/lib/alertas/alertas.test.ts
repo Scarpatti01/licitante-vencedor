@@ -111,4 +111,24 @@ describe("montarMensagem", () => {
     expect(html).toContain("&lt;script&gt;");
     expect(html).toContain("&amp;");
   });
+
+  // O `id` da oportunidade vira o href do botão do e-mail, e para o PNCP ele é
+  // o `numeroControlePNCP` — texto de terceiro que nenhuma camada valida
+  // (`ContratacaoPncp` é `type`, não schema; `ehUtilizavel` só confere se o
+  // campo é truthy). Sem escape, uma aspa nesse campo fecha o atributo `href` e
+  // o resto vira marcação no e-mail de todo assinante que receber o edital.
+  it("escapa o link, que carrega identificador vindo da fonte", async () => {
+    const todas = await oportunidades();
+    const injetado = { ...todas[0], id: 'X" onmouseover="alert(1)' };
+    const html = emHtml(
+      montarMensagem({ itens: [{ oportunidade: injetado, motivo: "alta_aderencia", prioridade: 1 }], descartadas: 0, vazio: false }, AGORA),
+    );
+    // Sem escape o resultado é
+    // `<a href="https://.../oportunidades/X" onmouseover="alert(1)/" style=...>`:
+    // a aspa fechou o href e o que sobrou virou atributo de evento.
+    // A aspa CRUA é o que importa: escapada, `onmouseover=&quot;` é texto
+    // dentro do href e não atributo.
+    expect(html).not.toMatch(/onmouseover="/);
+    expect(html).toContain("/oportunidades/X&quot; onmouseover=&quot;alert(1)/");
+  });
 });

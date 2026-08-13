@@ -1,6 +1,7 @@
 import type { AnaliseDoEdital, DocumentoDaEmpresa, PerfilDaEmpresa, TipoDeDocumento } from "./tipos";
 import { NOME_DO_DOCUMENTO } from "./tipos";
 import { temValor } from "./procedencia";
+import { dataDeBrasilia } from "./datas";
 
 /**
  * Checklist: a exigência do edital virando tarefa da empresa.
@@ -108,18 +109,18 @@ function statusDoDocumento(
   if (dias < 0) {
     return {
       status: "verificar",
-      observacao: `Validade vencida em ${validade.toLocaleDateString("pt-BR")}. Renove antes de disputar.`,
+      observacao: `Validade vencida em ${dataDeBrasilia(doc.validoAte!)}. Renove antes de disputar.`,
     };
   }
   if (dias <= 30) {
     return {
       status: "verificar",
-      observacao: `Vence em ${dias} dia${dias === 1 ? "" : "s"} (${validade.toLocaleDateString("pt-BR")}). Renove para não perder o prazo.`,
+      observacao: `Vence em ${dias} dia${dias === 1 ? "" : "s"} (${dataDeBrasilia(doc.validoAte!)}). Renove para não perder o prazo.`,
     };
   }
   return {
     status: "disponivel",
-    observacao: `Anexado e válido até ${validade.toLocaleDateString("pt-BR")}.`,
+    observacao: `Anexado e válido até ${dataDeBrasilia(doc.validoAte!)}.`,
   };
 }
 

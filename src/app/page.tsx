@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { GUIAS_PUBLICADOS } from "@/lib/guias";
 import { AutorBio } from "@/components/AutorBio";
@@ -29,7 +30,7 @@ export default function Home() {
             {SITE.name}
           </span>
           <nav className="flex items-center gap-6 text-sm text-[var(--muted)]">
-            <a href="/blog/" className="underline-offset-4 hover:underline">Guias</a>
+            <Link href="/blog/" className="underline-offset-4 hover:underline">Guias</Link>
             <a href="/sobre/" className="underline-offset-4 hover:underline">Sobre</a>
           </nav>
         </div>
@@ -99,9 +100,9 @@ export default function Home() {
           </div>
 
           <p className="mt-8">
-            <a href="/blog/" className="underline underline-offset-4">
+            <Link href="/blog/" className="underline underline-offset-4">
               Ver todos os guias
-            </a>
+            </Link>
           </p>
         </section>
 
