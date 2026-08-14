@@ -1,0 +1,111 @@
+# Envio diário do alerta gratuito.
+#
+# Roda SEPARADO da coleta, e não como um passo dela, por uma razão de produto: o
+# e-mail de boas-vindas promete que o alerta chega "nos dias úteis, pela manhã".
+# A coleta roda às 03:10 de Brasília — cedo o bastante para não bater no pico do
+# PNCP e cedo demais para ser manhã de alguém. Colar o envio nela entregaria o
+# e-mail com carimbo de 3 da madrugada, e a promessa não é sobre quando o
+# processo roda, é sobre quando a mensagem chega.
+#
+# Também não recoleta. Ele baixa o snapshot que a coleta já produziu, pelos dois
+# motivos que o próprio script explica: dobrar a carga contra um serviço público
+# que já responde 429 no limite, e — pior — afirmar no e-mail coisas que o site
+# não mostra.
+#
+# ## O que acontece quando a coleta falhou
+#
+# Nada, e de propósito. Sem execução bem-sucedida recente não há artefato para
+# baixar, e o passo falha alto. Além disso o script recusa snapshot com mais de
+# 36 horas. O modo de falha que isso evita não faz barulho: com dado velho o
+# alerta continua saindo, só que sem os editais publicados desde então — e o
+# e-mail que chega parece perfeitamente normal.
+
+name: Enviar alertas
+
+on:
+  schedule:
+    # 10:10 UTC = 07:10 em Brasília, de segunda a sexta. O alerta está na caixa
+    # antes do começo do expediente, que é o que as boas-vindas prometem.
+    #
+    # Dia útil é decidido AQUI, e não dentro do script: dois lugares para a
+    # mesma regra é o caminho clássico para alguém mudar o cron e o produto
+    # continuar mandando no sábado.
+    - cron: "10 10 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Não enviar nada — só imprimir o que sairia"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  # Para baixar o artefato da execução da coleta.
+  actions: read
+
+concurrency:
+  # Duas execuções em paralelo mandariam o mesmo edital duas vezes: a checagem
+  # de duplicidade lê o estado ANTES do envio, e as duas leriam o mesmo estado.
+  # A restrição de unicidade no banco pega isso na hora de gravar, mas o e-mail
+  # já teria saído. Aqui a segunda execução simplesmente não começa.
+  group: enviar-alertas
+  cancel-in-progress: false
+
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Baixar o snapshot da última coleta bem-sucedida
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          id=$(gh run list \
+                --workflow=coletar-pncp.yml \
+                --status=success \
+                --limit=1 \
+                --json databaseId \
+                --jq '.[0].databaseId')
+
+          if [ -z "$id" ]; then
+            echo "::error title=Sem coleta::nenhuma execução bem-sucedida de coletar-pncp.yml"
+            exit 1
+          fi
+
+          echo "baixando o snapshot da execução $id"
+          gh run download "$id" --name snapshot-pncp --dir .
+          ls -la dados/editais.json
+
+      - name: Enviar
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_REMETENTE: ${{ secrets.EMAIL_REMETENTE }}
+          # No agendamento é sempre envio de verdade; o `simular` só existe para
+          # quem dispara à mão. `github.event.inputs` vem vazio no schedule.
+          SIMULAR: ${{ github.event_name == 'workflow_dispatch' && inputs.simular && '--simular' || '' }}
+        run: |
+          set -o pipefail
+          # `--conditions=react-server` faz o pacote `server-only` resolver para
+          # o módulo vazio. Sem isso ele LANÇA na importação: a condição
+          # `default` do pacote é um `throw`, e quem a recebe é justamente um
+          # processo Node como este.
+          node --conditions=react-server scripts/enviar-alertas.ts $SIMULAR | tee saida-alertas.txt
+
+      - name: Publicar o log do envio
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-alertas
+          path: saida-alertas.txt
+          retention-days: 30
+          if-no-files-found: ignore

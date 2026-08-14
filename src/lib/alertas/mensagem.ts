@@ -1,4 +1,5 @@
 import type { ItemSelecionado, SelecaoDeAlerta } from "./selecao";
+import { emReais, prazoEmTexto } from "./formato";
 import { diasAteEncerrar } from "../pncp/normaliza";
 import { SITE } from "../site";
 
@@ -39,19 +40,6 @@ export type MensagemDeAlerta = {
   /** Linha final honesta sobre o que ficou de fora e sobre os limites do serviço. */
   rodape: string;
 };
-
-function emReais(valor: number | null, suspeito: boolean): string {
-  if (suspeito) return "valor publicado é implausível — confira no edital";
-  if (valor === null) return "o órgão não publicou valor estimado";
-  return `R$ ${valor.toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
-
-function prazoEmTexto(dias: number | null): string {
-  if (dias === null) return "sem data de encerramento publicada";
-  if (dias === 0) return "encerra hoje";
-  if (dias === 1) return "encerra amanhã";
-  return `${dias} dias`;
-}
 
 const DESTAQUE: Record<ItemSelecionado["motivo"], string> = {
   alta_aderencia: "OPORTUNIDADE RECOMENDADA",

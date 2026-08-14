@@ -1,7 +1,7 @@
 import "server-only";
 
 import { Resend, type CreateEmailResponse } from "resend";
-import { remetente, type Mensagem, type ProvedorDeEmail, type ResultadoDeEnvio } from "./tipos";
+import { remetente, type Mensagem, type ProvedorDeEmail, type ResultadoDeEnvio } from "./tipos.ts";
 
 /**
  * O único arquivo do projeto que fala Resend.

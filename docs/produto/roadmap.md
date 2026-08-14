@@ -71,10 +71,11 @@ Conversão não é item de checklist de alguém: é condição de build.
 
 **O que eu faria em seguida, nesta ordem**
 
-1. **Mandar o primeiro alerta de verdade.** A lista já se enche sozinha e cada
-   confirmação é uma promessa com data: "editais nos dias úteis pela manhã".
-   Enquanto o envio não existir, o lead confirmado está esperando algo que não
-   chega — que é pior que não tê-lo capturado.
+1. **Configurar os segredos e ligar o envio.** O alerta diário está escrito,
+   testado e agendado (`.github/workflows/enviar-alertas.yml`), e não manda nada
+   até `RESEND_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`
+   existirem como segredos do repositório. Rodar antes com
+   `npm run alertas:simular` — ele imprime o que sairia sem enviar.
 2. **Uma tela para ver os leads.** Hoje a resposta a "quantos cadastros esta
    semana" é uma consulta SQL feita à mão. Não precisa ser bonita; precisa
    existir antes de o volume tornar a consulta um hábito caro.
@@ -92,15 +93,17 @@ Conversão não é item de checklist de alguém: é condição de build.
 | --- | --- |
 | Seleção do que merece alerta | **No ar**, testado |
 | Formato da mensagem (e-mail e WhatsApp) | **No ar** |
-| Envio de e-mail | **Não existe** — sem provedor configurado |
+| Alerta diário do lead: região, seleção e texto | **No ar**, testado |
+| Não repetir edital já enviado (`envios_de_alerta`) | **No ar** — tabela aplicada |
+| Agendamento diário do alerta | **No ar** — dias úteis, 07:10 de Brasília |
+| Envio de e-mail | **Escrito, inerte** — falta `RESEND_API_KEY` no repositório |
 | Envio de WhatsApp | **Não existe** — exige conta e aprovação de template |
-| Agendamento diário do alerta | **Não existe** |
 
 ## Fase 5 — Monetização
 
 | Item | Estado |
 | --- | --- |
-| Planos, limites e assinatura no modelo de dados | **Escrito, não aplicado** |
+| Planos, limites e assinatura no modelo de dados | **Aplicado** — tabelas no ar, sem catálogo cadastrado |
 | Cobrança recorrente, trial, cupom, upgrade | **Não existe** |
 | Success fee | **Modelado**, sem apuração |
 
