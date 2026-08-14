@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE } from "@/lib/site";
+import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { GUIAS_EM_RECONSTRUCAO, GUIAS_PUBLICADOS } from "@/lib/guias";
 import { ARTIGOS_PUBLICADOS } from "@/lib/blog";
 import { redirecionamentosAtivos, urlsDoAcervo } from "@/lib/legacy";
@@ -16,7 +16,8 @@ export const metadata: Metadata = {
   title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/blog/" },
-  openGraph: { title: TITULO, description: DESCRICAO, url: `${SITE.url}/blog/`, type: "website" },
+  openGraph: {
+    images: IMAGENS_DE_COMPARTILHAMENTO, title: TITULO, description: DESCRICAO, url: `${SITE.url}/blog/`, type: "website" },
 };
 
 const schema = {

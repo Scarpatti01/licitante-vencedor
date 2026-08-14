@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE } from "@/lib/site";
+import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { Faq, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
@@ -13,7 +13,8 @@ export const metadata: Metadata = {
   title: "Alerta de licitação: editais da sua cidade por e-mail",
   description: DESCRICAO,
   alternates: { canonical: "/alerta-de-licitacao/" },
-  openGraph: { title: TITULO, description: DESCRICAO, url: `${SITE.url}/alerta-de-licitacao/`, type: "website" },
+  openGraph: {
+    images: IMAGENS_DE_COMPARTILHAMENTO, title: TITULO, description: DESCRICAO, url: `${SITE.url}/alerta-de-licitacao/`, type: "website" },
 };
 
 const FAQ = [

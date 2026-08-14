@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AUTHOR, KNOWS_ABOUT, SITE } from "@/lib/site";
+import { AUTHOR, KNOWS_ABOUT, SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { P, Secao } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
@@ -15,7 +15,8 @@ export const metadata: Metadata = {
   title: "Sobre",
   description: DESCRICAO,
   alternates: { canonical: "/sobre/" },
-  openGraph: { title: TITULO, description: DESCRICAO, url: `${SITE.url}/sobre/`, type: "profile" },
+  openGraph: {
+    images: IMAGENS_DE_COMPARTILHAMENTO, title: TITULO, description: DESCRICAO, url: `${SITE.url}/sobre/`, type: "profile" },
 };
 
 const schema = {

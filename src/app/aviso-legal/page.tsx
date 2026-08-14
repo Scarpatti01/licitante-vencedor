@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE } from "@/lib/site";
+import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 
@@ -12,7 +12,8 @@ export const metadata: Metadata = {
   title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/aviso-legal/" },
-  openGraph: { title: TITULO, description: DESCRICAO, url: `${SITE.url}/aviso-legal/`, type: "website" },
+  openGraph: {
+    images: IMAGENS_DE_COMPARTILHAMENTO, title: TITULO, description: DESCRICAO, url: `${SITE.url}/aviso-legal/`, type: "website" },
 };
 
 const schema = {
