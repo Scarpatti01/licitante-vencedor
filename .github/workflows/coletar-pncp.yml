@@ -18,6 +18,13 @@
 # editais em 2 UFs sobrescreveu, sem um aviso, a de 3.312 editais em 6 UFs do
 # dia anterior. Série temporal perdida não se recoleta: a janela é "propostas
 # abertas HOJE".
+#
+# E, pela mesma razão, um dia ruim também não pode custar o dia inteiro: há uma
+# SEGUNDA TENTATIVA às 08:10 UTC que só coleta se a primeira não tiver publicado.
+# Ela não consulta a API do GitHub para descobrir isso — lê o `coletadoEm` do
+# agregado que veio no checkout, que responde a pergunta certa e não custa
+# permissão nova nem confiança em nada externo. O porquê está no passo "Decidir
+# se esta rodada precisa coletar".
 
 name: Coletar PNCP
 
@@ -26,6 +33,18 @@ on:
     # 06:10 UTC = 03:10 em Brasília. Cedo o bastante para o alerta das 7h e
     # fora do horário de pico do PNCP.
     - cron: "10 6 * * *"
+    # 08:10 UTC = 05:10 em Brasília. SEGUNDA TENTATIVA, e ela quase sempre não
+    # faz nada — ver o passo "Decidir se esta rodada precisa coletar".
+    #
+    # Existe porque uma tentativa por dia se mostrou pouco contra esta fonte: o
+    # PNCP caiu duas vezes em 12/08, entregou 13/08 já degradado (PE parcial por
+    # timeout, PB zerado) e falhou por inteiro em 14/08. E o dia perdido não se
+    # recolhe — a janela desta coleta é "propostas abertas HOJE", então o edital
+    # que encerrou no intervalo saiu do alcance para sempre.
+    #
+    # 08:10, e não mais tarde, porque o envio de alertas é 10:10: a segunda
+    # tentativa tem de caber inteira antes dele.
+    - cron: "10 8 * * *"
   workflow_dispatch:
 
 permissions:
@@ -54,8 +73,69 @@ jobs:
         with:
           node-version: "24"
 
+      # A segunda tentativa do dia só coleta se a primeira não publicou.
+      #
+      # A pergunta é respondida pelo `coletadoEm` de `dados/agregados.json`, que
+      # veio no checkout — e NÃO pela API do GitHub, que seria o caminho óbvio.
+      # Duas razões, e a segunda é a que decidiu:
+      #
+      #   1. Zero superfície de confiança e zero permissão nova. Não precisa de
+      #      token, de `actions: read` nem de chamada externa: é o nosso arquivo,
+      #      escrito pelo nosso coletor, chegando pelo git.
+      #
+      #   2. A API responderia a pergunta ERRADA. `conclusion == "success"` diz
+      #      que o job terminou verde, e este workflow termina verde recusando a
+      #      coleta quando ela vem degradada. O agregado, por outro lado, só é
+      #      commitado quando a classificação é `completa` ou `parcial-aceitavel`
+      #      — então "coletadoEm é de hoje" significa exatamente "já temos coleta
+      #      boa hoje", que é a condição que decide se vale insistir.
+      #
+      # Qualquer coisa fora do esperado (arquivo ausente, data ilegível) resolve
+      # para COLETAR. O custo de errar para esse lado é uma coleta redundante; o
+      # de errar para o outro é um dia de editais perdido.
+      - name: Decidir se esta rodada precisa coletar
+        id: decidir
+        env:
+          # Por `env:` e não interpolado no script, pela regra que este arquivo
+          # já segue mais abaixo: `${{ }}` dentro de `run:` é substituído no
+          # TEXTO do programa antes de o shell existir.
+          AGENDAMENTO: ${{ github.event.schedule }}
+        run: |
+          set -euo pipefail
+
+          if [ "$AGENDAMENTO" != "10 8 * * *" ]; then
+            echo "pular=false" >> "$GITHUB_OUTPUT"
+            echo "rodada principal (ou disparo manual) — coletando"
+            exit 0
+          fi
+
+          arquivo=dados/agregados.json
+          if [ ! -f "$arquivo" ]; then
+            echo "pular=false" >> "$GITHUB_OUTPUT"
+            echo "sem $arquivo — coletando"
+            exit 0
+          fi
+
+          # `[0-9]` em vez de `\d` para não ter barra invertida atravessando YAML
+          # e shell. Data que não casar com o formato vira 'invalido' e cai no
+          # ramo que coleta.
+          coletado=$(node -p "
+            const v = String(require('./$arquivo').coletadoEm ?? '').slice(0, 10);
+            /^[0-9]{4}-[0-9]{2}-[0-9]{2}\$/.test(v) ? v : 'invalido';
+          ")
+          hoje=$(date -u +%F)
+
+          if [ "$coletado" = "$hoje" ]; then
+            echo "pular=true" >> "$GITHUB_OUTPUT"
+            echo "a coleta das 06:10 já publicou hoje ($coletado) — nada a fazer"
+          else
+            echo "pular=false" >> "$GITHUB_OUTPUT"
+            echo "último agregado é de $coletado, e hoje é $hoje — repetindo a coleta"
+          fi
+
       - name: Coletar e revisar
         id: coleta
+        if: steps.decidir.outputs.pular != 'true'
         run: |
           set -o pipefail
           node scripts/ingerir-pncp.ts \
@@ -67,7 +147,10 @@ jobs:
       # do dia em que o PNCP esteve fora. `dados/parciais/` carrega o agregado
       # recusado — ele não some, só não vira a série oficial.
       - name: Publicar snapshot e parciais como artefato
-        if: always()
+        # `always()` para sair mesmo quando a coleta falha — é o diagnóstico do
+        # dia ruim. Combinado com a guarda: rodada que nem coletou não tem o que
+        # publicar, e um artefato vazio confundiria quem for procurar o do dia.
+        if: always() && steps.decidir.outputs.pular != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: snapshot-pncp
@@ -80,6 +163,7 @@ jobs:
 
       - name: Ler a classificação da coleta
         id: classe
+        if: steps.decidir.outputs.pular != 'true'
         run: |
           arquivo=dados/parciais/classificacao.json
           if [ ! -f "$arquivo" ]; then
@@ -110,7 +194,7 @@ jobs:
       # variável de ambiente e não texto de programa. Vale para `classe` e
       # `motivos`, os dois derivados de dado do PNCP.
       - name: Versionar agregado e revisão
-        if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
+        if: steps.decidir.outputs.pular != 'true' && (steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel')
         env:
           CLASSE: ${{ steps.classe.outputs.classe }}
         run: |
@@ -130,7 +214,11 @@ jobs:
       # ficaria enterrado no log de uma execução que ninguém abre, e o produto
       # seguiria dias servindo o agregado velho sem que alguém soubesse.
       - name: Avisar que a coleta foi recusada
-        if: steps.classe.outputs.classe != 'completa' && steps.classe.outputs.classe != 'parcial-aceitavel'
+        # A guarda de `pular` vem PRIMEIRO e não é redundante: numa rodada que
+        # não coletou, `classe` é string vazia, `!= 'completa'` é verdadeiro, e
+        # sem esta condição o job falharia todo dia às 08:10 anunciando uma
+        # recusa que nunca aconteceu.
+        if: steps.decidir.outputs.pular != 'true' && steps.classe.outputs.classe != 'completa' && steps.classe.outputs.classe != 'parcial-aceitavel'
         env:
           CLASSE: ${{ steps.classe.outputs.classe }}
           MOTIVOS: ${{ steps.classe.outputs.motivos }}
