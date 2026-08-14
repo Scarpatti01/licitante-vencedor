@@ -91,6 +91,20 @@ function destinoSupabase(): Destino | null {
  * reconhecimento de que a decisão de provisionar Postgres é do dono e pode
  * demorar, enquanto o tráfego orgânico não espera.
  */
+/**
+ * Respostas que chegam com status 200 e ainda assim significam recusa.
+ *
+ * App da web do Apps Script responde 200 para tudo — inclusive quando o próprio
+ * script rejeita a chamada. Confiar só no status faria o site dizer "cadastrado"
+ * ao visitante enquanto o lead era descartado do outro lado, que é exatamente o
+ * erro que `leads.ts` existe para impedir. Estes são os textos que o script
+ * documentado em `docs/produto/captura-de-leads.md` devolve ao recusar.
+ *
+ * A lista é curta e literal de propósito: webhook genérico (Zapier, Make, n8n)
+ * responde 200 com JSON de sucesso, e não pode ser reprovado por engano.
+ */
+const RECUSAS_COM_200 = ["nao autorizado", "sem email", "corpo invalido"];
+
 function destinoWebhook(): Destino | null {
   const url = envObrigatoria("LEADS_WEBHOOK_URL");
   if (!url) return null;
@@ -99,16 +113,29 @@ function destinoWebhook(): Destino | null {
     nome: "webhook",
     async gravar(lead) {
       try {
-        const controle = AbortSignal.timeout(8000);
+        // 15s, e não 8s: o app da web do Apps Script tem partida a frio medida
+        // entre 3 e 4 segundos em dia bom, e um lead perdido por impaciência é
+        // pior que uma requisição lenta — o visitante já foi embora da página.
         const resposta = await fetch(url, {
           method: "POST",
           headers: { "content-type": "application/json" },
           body: JSON.stringify(lead),
-          signal: controle,
+          signal: AbortSignal.timeout(15_000),
         });
-        if (resposta.ok) return { ok: true };
-        console.error("[leads] webhook recusou", resposta.status);
-        return { ok: false, motivo: "falha" };
+
+        const texto = (await resposta.text().catch(() => "")).trim();
+
+        if (!resposta.ok) {
+          console.error("[leads] webhook recusou", resposta.status, texto.slice(0, 200));
+          return { ok: false, motivo: "falha" };
+        }
+
+        if (RECUSAS_COM_200.includes(texto.toLowerCase())) {
+          console.error(`[leads] webhook respondeu 200 recusando: "${texto}"`);
+          return { ok: false, motivo: "falha" };
+        }
+
+        return { ok: true };
       } catch (erro) {
         console.error("[leads] webhook falhou", erro);
         return { ok: false, motivo: "falha" };
