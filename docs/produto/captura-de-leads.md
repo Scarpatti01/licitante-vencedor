@@ -1,23 +1,78 @@
-# Ligando a captura de leads numa planilha
+# Ligando a captura de leads
 
 O blog captura o e-mail; este documento é o outro lado do fio. Enquanto
 `LEADS_DESTINO` não existir, a rota `/api/alerta/` responde 503 e a página diz ao
 visitante que o cadastro não está aberto — que é honesto e não capta ninguém.
 
-O destino escolhido para começar é uma **planilha do Google com um Apps Script na
-frente**. Três razões: não entra fornecedor novo na conta, não custa nada, e a
-planilha é o formato em que o dono do negócio realmente olha lead. Quando o
-Postgres existir, trocar para `LEADS_DESTINO=supabase` é uma variável de
-ambiente — nenhuma linha de código muda.
+> **O que está em produção hoje: `LEADS_DESTINO=supabase`.** A captura grava na
+> tabela `leads` do Postgres. A planilha do Google continua existindo, com o
+> histórico intacto, mas **não recebe mais nada**.
+
+O arranjo com planilha veio primeiro e está documentado aqui embaixo por inteiro
+— ele continua sendo um caminho válido para quem for começar sem banco, e a
+[lição que fez a gente sair dele](#por-que-a-planilha-deixou-de-ser-o-destino)
+vale mais que o script.
+
+**Os dois destinos falam o mesmo contrato**, definido em `src/lib/leads-destinos.ts`:
+gravar, confirmar, descadastrar. Trocar de um para o outro é mudar uma variável
+de ambiente; nenhuma linha de código muda.
 
 **Este documento descreve a versão com double opt-in.** Preencher o formulário
-não põe mais ninguém na lista: põe na fila de pendentes, e quem entra de fato é
-quem clica no link do e-mail de confirmação. Se a sua planilha ainda tem sete
-colunas e o script antigo, vá direto para
-[Migrando a planilha que já está no ar](#migrando-a-planilha-que-já-está-no-ar) —
-são cinco passos e uns dez minutos.
+não põe ninguém na lista: põe na fila de pendentes, e quem entra de fato é quem
+clica no link do e-mail de confirmação.
 
-## A planilha
+## O destino em produção: Postgres
+
+Projeto Supabase **Licitante Vencedor**, região `sa-east-1` (São Paulo, perto de
+quem usa o site). A tabela nasce da migração
+`supabase/migrations/20260814110000_leads_do_site.sql`, e o que ela garante é o
+que a planilha não garantia:
+
+| Garantia | Como |
+| --- | --- |
+| Um e-mail, uma linha | `unique (email)` |
+| Token inadivinhável e único | `unique (token)` + `check` de formato |
+| Busca por token em tempo constante | índice da unicidade, não varredura |
+| Ninguém lê a tabela pelo navegador | RLS ligada **sem nenhuma policy**: nega tudo para `anon` e `authenticated`; só a `service_role`, no servidor, entra |
+| A lista de envio é o caminho barato | índice parcial `leads_confirmados` — mandar para quem não confirmou é também o caminho caro |
+
+As três variáveis na Vercel:
+
+```
+LEADS_DESTINO             = supabase
+NEXT_PUBLIC_SUPABASE_URL  = https://<ref>.supabase.co
+SUPABASE_SERVICE_ROLE_KEY = <chave de serviço>          # Sensitive
+```
+
+`SUPABASE_SERVICE_ROLE_KEY` ignora RLS: ela é a chave que abre a tabela inteira e
+nunca pode sair do servidor. `src/lib/leads-destinos.ts` é `server-only`
+justamente para o compilador recusar um import dela no cliente.
+
+E a quarta, que não é do destino mas sem a qual a lista não anda:
+`RESEND_API_KEY`. Sem ela o lead é gravado e o link de confirmação nunca sai — o
+site diz isso ao visitante em vez de fingir que o e-mail está a caminho.
+
+### Consultando os leads
+
+Não há tela de administração ainda. As duas consultas que respondem quase tudo:
+
+```sql
+-- quem de fato está na lista
+select email, cidade, origem, confirmado_em from leads
+where confirmado_em is not null and descadastrado_em is null
+order by confirmado_em desc;
+
+-- qual conteúdo converte
+select origem, count(*) as cadastros, count(confirmado_em) as confirmados
+from leads group by origem order by cadastros desc;
+```
+
+## A planilha (o arranjo anterior)
+
+> A partir daqui o documento descreve o destino `webhook`, que **não está mais em
+> uso em produção**. Está mantido porque o caminho continua no código, porque a
+> planilha guarda o histórico dos primeiros cadastros, e porque quem for repetir
+> este arranjo em outro projeto precisa das armadilhas listadas no fim.
 
 Já criada: **Licitante Vencedor — Leads do site**. O cabeçalho tinha sete
 colunas; o double opt-in acrescentou três, nas posições **H**, **I** e **J**:
@@ -337,7 +392,7 @@ São três caminhos, em ordem de recomendação:
 O que **não** é opção é passar a enviar para eles como se tivessem confirmado.
 Foi exatamente para não fazer isso que o double opt-in existe.
 
-## As variáveis na Vercel
+## As variáveis na Vercel (destino planilha)
 
 **Project → Settings → Environment Variables**, marcadas para *Production*,
 *Preview* e *Development*:
@@ -346,6 +401,12 @@ Foi exatamente para não fazer isso que o double opt-in existe.
 LEADS_DESTINO      = webhook
 LEADS_WEBHOOK_URL  = https://script.google.com/macros/s/AKfy…/exec?token=SEU_SEGREDO
 ```
+
+Uma lição de operação que custou caro: **`LEADS_DESTINO` não deve ser marcada
+como *Sensitive***. Ela não é segredo — o valor é a palavra `supabase` ou
+`webhook` —, e marcá-la assim esconde justamente o campo que você vai precisar
+conferir quando a captura estiver gravando no lugar errado. `LEADS_WEBHOOK_URL`
+e a chave de serviço, essas sim, são segredo.
 
 O token vai **na URL**, pelo motivo explicado no comentário do script. Isso torna
 `LEADS_WEBHOOK_URL` um segredo: ela não pode aparecer em log, em issue nem em
@@ -363,16 +424,21 @@ em deploys criados depois dela existir.
 
 ## Como conferir que funcionou
 
-Abra qualquer artigo ou guia, preencha o formulário e veja a linha aparecer na
-planilha. Se algo estiver errado, o site **não** diz "cadastrado":
+Abra qualquer artigo ou guia, preencha o formulário e veja a linha aparecer no
+destino — a tabela `leads` hoje, a planilha no arranjo antigo. Se algo estiver
+errado, o site **não** diz "cadastrado":
 
 | O que o visitante vê | O que aconteceu |
 | --- | --- |
-| "O cadastro ainda não está aberto" | `LEADS_DESTINO` ausente, ou `webhook` sem `LEADS_WEBHOOK_URL` |
-| "Não conseguimos registrar agora" | o webhook respondeu erro ou não respondeu — token errado, implantação antiga, script com erro |
+| "O cadastro ainda não está aberto" | `LEADS_DESTINO` ausente; ou `supabase` sem a URL/chave; ou `webhook` sem `LEADS_WEBHOOK_URL` |
+| "Não conseguimos registrar agora" | o destino respondeu erro ou não respondeu — no webhook: token errado, implantação antiga, script com erro |
 | "Muitas tentativas seguidas" | limite de 5 por minuto por origem |
-| "Falta um clique" | a linha está na planilha **e** o e-mail de confirmação saiu |
-| "Recebemos seu cadastro, mas o e-mail de confirmação não saiu" | a linha está na planilha e o provedor de e-mail falhou ou não está configurado |
+| "Falta um clique" | a linha está gravada **e** o e-mail de confirmação saiu |
+| "Recebemos seu cadastro, mas o e-mail de confirmação não saiu" | a linha está gravada e o provedor de e-mail falhou ou não está configurado |
+
+**O 503 e o 500 dizem coisas diferentes de propósito.** 503 é configuração
+ausente — ninguém foi gravado e ninguém deveria ter sido. 500 é destino
+configurado que falhou. Confundir os dois faz procurar bug onde falta variável.
 
 A última linha é a que costuma assustar e não deveria: ela significa que o lead
 está salvo e que o site **não** mentiu para o visitante. O motivo aparece no log
@@ -383,12 +449,16 @@ da Vercel (`[alerta] lead gravado mas confirmação não enviada`).
 Depois de cadastrar, o e-mail traz dois links, e vale clicar nos dois num
 endereço de teste:
 
-| O que fazer | O que a tela deve dizer | O que a planilha deve mostrar |
+| O que fazer | O que a tela deve dizer | O que o destino deve mostrar |
 | --- | --- | --- |
-| Clicar em "Confirmar meu e-mail" | "E-mail confirmado" | `Confirmado em` com data |
+| Clicar em "Confirmar meu e-mail" | "E-mail confirmado" | `confirmado_em` com data |
 | Clicar no mesmo link de novo | "Este e-mail já estava confirmado" | a data **não** muda |
-| Editar o `?t=` para um valor inventado | "Este link de confirmação não vale mais" | nada muda |
-| Clicar em "Não quero mais receber" | "Você não recebe mais nossos e-mails" | `Descadastrado em` com data, em **todas** as linhas daquele e-mail |
+| Editar o `?t=` para um valor inventado | "Não encontramos um cadastro para este link" | nada muda |
+| Clicar em "Não quero mais receber" | "Você não recebe mais nossos e-mails" | `descadastrado_em` com data (na planilha, em **todas** as linhas daquele e-mail) |
+
+Este é exatamente o roteiro que foi rodado contra produção depois da troca para o
+Postgres, e os seis passos passaram — inclusive o segundo clique preservando a
+data original do consentimento.
 
 Se o segundo clique zerar ou reescrever a data, a implantação publicada é a
 antiga — o script novo nunca sobrescreve carimbo existente.
@@ -438,7 +508,36 @@ não dizer "confirmado" sobre nada — mas quem conserta é o passo 3 da migraç
 O log do servidor na Vercel traz o status devolvido pelo webhook em caso de
 falha. O visitante nunca vê esse detalhe, de propósito.
 
-## Limites conhecidos deste arranjo
+## Por que a planilha deixou de ser o destino
+
+Não foi por limite de volume, e vale registrar o motivo real: **o Apps Script tem
+um passo de publicação que não avisa quando é esquecido, e nenhuma API para
+automatizá-lo.**
+
+O que aconteceu na prática, na ordem:
+
+1. O código novo foi colado no editor e salvo. A função de migração foi executada
+   com sucesso — prova de que o código novo estava lá.
+2. Mas o app da web continuou servindo a **versão anterior**. Salvar não publica;
+   publicar exige *Implantar → Gerenciar implantações → ✏️ → Nova versão*.
+3. O sintoma não foi um erro. Foi um `201` do site, o lead na planilha e a coluna
+   `Token` **vazia** — e a confirmação falhando depois, longe da causa.
+
+Três diagnósticos e dois redeploys depois, a conclusão foi que o problema não era
+o script: era um passo manual, invisível quando esquecido, num sistema que
+nenhuma ferramenta do projeto consegue inspecionar. Toda depuração dependia de
+alguém olhar uma tela e descrever o que via.
+
+O Postgres não é melhor por ser Postgres. É melhor porque o estado dele é
+**legível por quem está consertando**: dá para ver a linha, o token e o carimbo
+sem pedir print para ninguém. Quando a captura falhou de novo depois da troca, a
+causa apareceu numa consulta de dez segundos.
+
+A lição, que vale além deste caso: **prefira o componente cujo estado você
+consegue ler, e não o que é mais fácil de montar.** Facilidade de montagem se
+paga uma vez; opacidade se paga em toda falha.
+
+## Limites conhecidos do arranjo com planilha
 
 **A planilha não deduplica.** O destino Supabase tem `unique (email)`; aqui, o
 mesmo e-mail cadastrando duas vezes vira duas linhas, cada uma com seu token.

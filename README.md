@@ -90,13 +90,19 @@ funcional quando existe destino. Há dois, e o segundo existe para não esperar 
 banco:
 
 ```bash
-# Destino final: grava na tabela `leads` (migração 20260814110000).
+# Em produção hoje: grava na tabela `leads` (migração 20260814110000).
 LEADS_DESTINO=supabase          # exige NEXT_PUBLIC_SUPABASE_URL e SUPABASE_SERVICE_ROLE_KEY
 
-# Para começar hoje, com planilha ou automatizador.
+# Alternativa para começar sem banco, com planilha ou automatizador.
 LEADS_DESTINO=webhook
 LEADS_WEBHOOK_URL=https://…
 ```
+
+Não marque `LEADS_DESTINO` como *Sensitive* na Vercel: o valor não é segredo, e
+escondê-lo esconde o campo que você vai querer conferir quando o lead estiver
+caindo no lugar errado. Os detalhes dos dois destinos, e por que a planilha
+deixou de ser o de produção, estão em
+[`docs/produto/captura-de-leads.md`](docs/produto/captura-de-leads.md).
 
 Cada cadastro grava a `origem` (`blog/<slug>#captura-2`, `guia/habilitacao#meio`),
 que é o que responde qual conteúdo traz cliente — sem isso, decidir onde
