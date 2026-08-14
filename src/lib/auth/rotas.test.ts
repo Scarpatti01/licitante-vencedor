@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   DESTINO_PADRAO,
@@ -75,5 +76,25 @@ describe("sobPrefixo", () => {
     for (const rota of ROTAS_DO_PRODUTO) {
       expect(sobPrefixo(rota, ROTAS_DE_ENTRADA)).toBe(false);
     }
+  });
+});
+
+describe("estrutura de rotas", () => {
+  /*
+   * Guarda contra um laço de redirecionamento que já esteve escrito.
+   *
+   * O layout de `(app)` manda para `/cadastrar-empresa` quem tem conta e não
+   * tem empresa. Se essa página morasse dentro do grupo, ela executaria o mesmo
+   * layout, seria mandada para si mesma, e o navegador desistiria com
+   * ERR_TOO_MANY_REDIRECTS.
+   *
+   * O defeito só aparece com um usuário logado SEM empresa — um estado que não
+   * existe em nenhum teste de unidade e que ninguém encontra clicando pelo site
+   * já cadastrado. Por isso a garantia é estrutural: mover o arquivo de volta
+   * reprova aqui, em vez de reprovar no primeiro cliente que criar conta.
+   */
+  it("cadastrar-empresa vive fora do grupo (app)", () => {
+    expect(existsSync("src/app/cadastrar-empresa/page.tsx")).toBe(true);
+    expect(existsSync("src/app/(app)/cadastrar-empresa/page.tsx")).toBe(false);
   });
 });

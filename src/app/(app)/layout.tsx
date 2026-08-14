@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { empresaAtual, ehDemonstracao, repositorio } from "@/lib/dados";
+import { usuarioAtual, vinculoDoUsuario } from "@/lib/auth/sessao";
 import { SITE } from "@/lib/site";
 import { AvisoDeDemonstracao } from "@/components/app/AvisoDeDemonstracao";
 import { NavegacaoDoApp } from "@/components/app/NavegacaoDoApp";
@@ -38,6 +40,30 @@ export const metadata: Metadata = {
 export default async function LayoutDoProduto({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  /*
+   * Conta criada, empresa ainda não: vai para o onboarding.
+   *
+   * Sem este desvio, `empresaAtual()` cai na empresa de demonstração e a pessoa
+   * usa o produto inteiro achando que os dados são dela — salva oportunidade,
+   * edita perfil — e nada disso existe no cadastro que ela vai criar depois.
+   *
+   * A checagem mora aqui, e não no `proxy.ts`, por recomendação explícita do
+   * guia de autenticação do Next: o proxy roda em toda rota, inclusive nas
+   * pré-carregadas, e uma consulta ao banco ali vira uma consulta por
+   * navegação. O layout roda uma vez por visita à área do produto.
+   *
+   * O destino fica FORA de `(app)` de propósito. Dentro, ele executaria este
+   * mesmo layout, seria mandado para si mesmo e o navegador desistiria com
+   * ERR_TOO_MANY_REDIRECTS. Peguei isso escrevendo este comentário, não
+   * rodando — e é o tipo de laço que só aparece com um usuário logado sem
+   * empresa, que é exatamente o estado que nenhum teste tinha ainda.
+   */
+  const usuario = await usuarioAtual();
+  if (usuario) {
+    const vinculo = await vinculoDoUsuario();
+    if (!vinculo) redirect("/cadastrar-empresa/");
+  }
+
   const repo = repositorio();
   const empresaId = await empresaAtual();
   const perfil = await repo.perfil(empresaId);

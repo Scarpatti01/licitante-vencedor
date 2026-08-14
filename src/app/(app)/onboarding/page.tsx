@@ -28,6 +28,7 @@ export default async function PaginaDeOnboarding({
   searchParams: Promise<{ etapa?: string }>;
 }) {
   const { etapa } = await searchParams;
+
   const repo = repositorio();
   const empresaId = await empresaAtual();
   const perfil = await repo.perfil(empresaId);

@@ -15,6 +15,8 @@ export const ROTAS_DO_PRODUTO = [
   "/perfil",
   "/configuracoes",
   "/onboarding",
+  // Fora do grupo `(app)`, mas igualmente do produto: exige sessão.
+  "/cadastrar-empresa",
 ];
 
 /** Telas de autenticação. Quem já entrou não tem o que fazer nelas. */

@@ -26,3 +26,8 @@ export const ESTADO_INICIAL: EstadoDaEntrada = { erro: null, aviso: null };
  * usa. Comprimento é o que de fato pesa.
  */
 export const MINIMO_DA_SENHA = 8;
+
+/** O estado do cadastro de empresa. Separado pelo mesmo motivo do de cima. */
+export type EstadoDaEmpresa = { erro: string | null };
+
+export const EMPRESA_INICIAL: EstadoDaEmpresa = { erro: null };
