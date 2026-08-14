@@ -19,6 +19,15 @@
 # 36 horas. O modo de falha que isso evita não faz barulho: com dado velho o
 # alerta continua saindo, só que sem os editais publicados desde então — e o
 # e-mail que chega parece perfeitamente normal.
+#
+# ## E o que acontece enquanto os segredos não existem
+#
+# O job termina VERDE, com um resumo dizendo o que falta. Não é indulgência: é
+# a diferença entre "algo deu errado" e "algo ainda não foi feito". Este
+# workflow roda todo dia útil, e falhar sempre pelo mesmo motivo conhecido
+# ensinaria a ignorar o X vermelho — e é aí que a falha de verdade passa a se
+# esconder no meio das outras. O script devolve 78 (`EX_CONFIG`) para esse
+# caso, e só para ele; qualquer outra falha continua gritando.
 
 name: Enviar alertas
 
@@ -95,11 +104,44 @@ jobs:
           SIMULAR: ${{ github.event_name == 'workflow_dispatch' && inputs.simular && '--simular' || '' }}
         run: |
           set -o pipefail
+
           # `--conditions=react-server` faz o pacote `server-only` resolver para
           # o módulo vazio. Sem isso ele LANÇA na importação: a condição
           # `default` do pacote é um `throw`, e quem a recebe é justamente um
           # processo Node como este.
-          node --conditions=react-server scripts/enviar-alertas.ts $SIMULAR | tee saida-alertas.txt
+          #
+          # `|| codigo=$?` em vez de deixar o `set -e` matar: o código de saída é
+          # informação aqui, não só sucesso ou fracasso.
+          codigo=0
+          node --conditions=react-server scripts/enviar-alertas.ts $SIMULAR | tee saida-alertas.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            # 78 é `EX_CONFIG`: faltam segredos. Encerra LIMPO, dizendo o que
+            # falta — ver o comentário do `SEM_CONFIGURACAO` no script para o
+            # porquê. Em resumo: este job roda todo dia útil, e falhar sempre
+            # pelo mesmo motivo conhecido ensina a ignorar o X vermelho, que é
+            # onde a falha de verdade passa a se esconder.
+            {
+              echo "## Alerta não enviado — faltam segredos"
+              echo
+              echo "O workflow rodou e parou de propósito. Nada foi enviado e nada finge ter saído."
+              echo
+              echo "Para ligar, crie em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+              echo '- `RESEND_API_KEY`'
+              echo
+              echo "Depois rode este workflow à mão com **simular** marcado para conferir a saída antes do primeiro envio real."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Alerta inerte::faltam segredos — ver o resumo desta execução"
+            exit 0
+          fi
+
+          # Qualquer outro código diferente de zero é falha de verdade: o
+          # provedor recusou, o banco não respondeu, o snapshot estava velho.
+          # Essa falha PRECISA gritar.
+          exit "$codigo"
 
       - name: Publicar o log do envio
         if: always()
