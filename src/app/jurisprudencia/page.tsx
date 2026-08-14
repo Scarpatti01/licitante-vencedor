@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { AUTHOR, SITE } from "@/lib/site";
 import { Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
+import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO =
   "Jurisprudência em licitações: como as decisões do TCU e dos tribunais definem o que é exigível de você";
@@ -95,20 +98,14 @@ const schema = {
 };
 
 export default function Jurisprudencia() {
+  const artigos = artigosDoGuia("/jurisprudencia/");
+
   return (
     <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto max-w-3xl px-6 py-5">
-          <a href="/" className="text-base font-semibold tracking-tight">{SITE.name}</a>
-        </div>
-      </header>
+      <CabecalhoSite />
 
       <main className="mx-auto max-w-3xl px-6 py-12">
-        <nav aria-label="Trilha" className="text-sm text-[var(--muted)]">
-          <a href="/" className="underline-offset-4 hover:underline">Início</a>
-          <span aria-hidden> › </span>
-          <span>Jurisprudência</span>
-        </nav>
+        <Trilha atual="Jurisprudência" />
 
         <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl">
           Jurisprudência em licitações: como as decisões definem o que podem exigir de você
@@ -234,6 +231,29 @@ export default function Jurisprudencia() {
             </P>
           </Secao>
 
+          {/*
+            A intenção de quem chega aqui é informacional: a pessoa quer entender
+            jurisprudência, não contratar nada. Forçar venda neste guia queima o
+            que o texto construiu. Então a captura vem depois da tabela de
+            prazos — o único ponto em que o assunto encosta de verdade no
+            produto, porque o prazo de impugnação conta da publicação — e diz na
+            primeira linha que o leitor pode seguir em frente.
+
+            Sem heading próprio: o `Indice` promete uma lista fechada de seções,
+            e um h2 comercial faria o sumário discordar do documento.
+          */}
+          <section aria-label="Alerta diário de editais">
+            <CapturaAlerta
+              origem="guia/jurisprudencia#meio"
+              chamada={{
+                titulo: "O argumento só serve enquanto o prazo está aberto",
+                texto:
+                  "Este guia é sobre argumento, e ele continua logo abaixo — pule esta caixa sem culpa. Fica só a observação prática: os prazos da tabela acima correm a partir da publicação. Se ajudar, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+              }}
+              textoDoBotao="Quero receber os editais do meu ramo"
+            />
+          </section>
+
           <Secao id="temas" titulo="Os temas que mais aparecem">
             <P>
               Depois de percorrer o acervo de decisões deste site, os assuntos que se
@@ -335,6 +355,34 @@ export default function Jurisprudencia() {
           </Secao>
         </div>
 
+        {/*
+          Os artigos que aprofundam este hub, derivados do catálogo. Lista vazia
+          não renderiza nada — nem título, nem "em breve". O projeto já anunciou
+          "os próximos:" seguido de nada, e o custo disso é de confiança.
+        */}
+        {artigos.length > 0 ? (
+          <section className="mt-16 border-t pt-8">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Artigos sobre jurisprudência aplicada
+            </h2>
+            <ul className="mt-4 space-y-4">
+              {artigos.map((artigo) => (
+                <li key={artigo.slug}>
+                  <a
+                    href={`/blog/${artigo.slug}/`}
+                    className="font-medium underline underline-offset-4"
+                  >
+                    {artigo.titulo}
+                  </a>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">
+                    {artigo.descricao}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
         <div className="mt-12">
           <AutorBio />
         </div>
@@ -343,7 +391,11 @@ export default function Jurisprudencia() {
           Este conteúdo tem finalidade informativa e operacional. Não constitui
           parecer jurídico — a análise de um edital concreto e a redação de
           impugnação ou recurso cabem à empresa licitante e ao seu assessor
-          jurídico.
+          jurídico. Leia o{" "}
+          <a className="underline underline-offset-4" href="/aviso-legal/">
+            aviso legal
+          </a>
+          .
         </p>
       </main>
 

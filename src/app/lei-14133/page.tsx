@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { AUTHOR, SITE } from "@/lib/site";
 import { Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
+import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO = "Lei 14.133/2021: o guia da Nova Lei de Licitações para quem vende ao governo";
 const DESCRICAO =
@@ -106,20 +109,14 @@ const schema = {
 };
 
 export default function Lei14133() {
+  const artigos = artigosDoGuia("/lei-14133/");
+
   return (
     <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto max-w-3xl px-6 py-5">
-          <a href="/" className="text-base font-semibold tracking-tight">{SITE.name}</a>
-        </div>
-      </header>
+      <CabecalhoSite />
 
       <main className="mx-auto max-w-3xl px-6 py-12">
-        <nav aria-label="Trilha" className="text-sm text-[var(--muted)]">
-          <a href="/" className="underline-offset-4 hover:underline">Início</a>
-          <span aria-hidden> › </span>
-          <span>Lei 14.133/2021</span>
-        </nav>
+        <Trilha atual="Lei 14.133/2021" />
 
         <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl">
           Lei 14.133/2021: o guia da Nova Lei de Licitações para quem vende ao governo
@@ -300,6 +297,30 @@ export default function Lei14133() {
             />
           </Secao>
 
+          {/*
+            Logo depois da tabela que lista as cinco frentes da operação. É ali
+            que a linha "Monitoramento" aparece como tarefa, e ainda antes da
+            seção do PNCP — o leitor acabou de receber uma lista de deveres e é
+            o momento em que tirar um deles da mão tem valor óbvio.
+
+            A chamada devolve só essa linha, de propósito: prometer as outras
+            quatro seria vender o que o produto não faz.
+
+            Sem heading próprio: o `Indice` promete uma lista fechada de seções,
+            e um h2 comercial faria o sumário discordar do documento.
+          */}
+          <section aria-label="Alerta diário de editais">
+            <CapturaAlerta
+              origem="guia/lei-14133#meio"
+              chamada={{
+                titulo: "Das cinco linhas acima, o monitoramento é a que ninguém faz à mão por muito tempo",
+                texto:
+                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e o link para o registro oficial. Habilitação, proposta, prazos e contrato continuam com você; esta é a linha que dá para tirar da rotina.",
+              }}
+              textoDoBotao="Quero receber os editais do meu ramo"
+            />
+          </section>
+
           <Secao id="pncp" titulo="Onde os editais são publicados: o PNCP">
             <P>
               O Portal Nacional de Contratações Públicas é definido pela própria lei
@@ -357,6 +378,34 @@ export default function Lei14133() {
           </Secao>
         </div>
 
+        {/*
+          Os artigos que aprofundam este hub, derivados do catálogo. Lista vazia
+          não renderiza nada — nem título, nem "em breve". O projeto já anunciou
+          "os próximos:" seguido de nada, e o custo disso é de confiança.
+        */}
+        {artigos.length > 0 ? (
+          <section className="mt-16 border-t pt-8">
+            <h2 className="text-lg font-semibold tracking-tight">
+              Artigos sobre a Lei 14.133 na prática
+            </h2>
+            <ul className="mt-4 space-y-4">
+              {artigos.map((artigo) => (
+                <li key={artigo.slug}>
+                  <a
+                    href={`/blog/${artigo.slug}/`}
+                    className="font-medium underline underline-offset-4"
+                  >
+                    {artigo.titulo}
+                  </a>
+                  <p className="mt-1 text-sm leading-relaxed text-[var(--muted)]">
+                    {artigo.descricao}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
+
         <div className="mt-12">
           <AutorBio />
         </div>
@@ -365,7 +414,11 @@ export default function Lei14133() {
           Este guia tem finalidade informativa e operacional. Não constitui parecer
           jurídico — a decisão de participar de um certame e a interpretação de
           cláusulas específicas de edital cabem à empresa licitante e ao seu
-          assessor jurídico.
+          assessor jurídico. Leia o{" "}
+          <a className="underline underline-offset-4" href="/aviso-legal/">
+            aviso legal
+          </a>
+          .
         </p>
       </main>
 

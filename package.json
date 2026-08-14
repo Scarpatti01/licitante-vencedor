@@ -6,12 +6,27 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "tipos": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verificar": "npm run tipos && npm run lint && npm test",
+    "pncp:ingerir": "node scripts/ingerir-pncp.ts",
+    "pncp:testar": "node scripts/testar-pncp.ts",
+    "db:novo": "supabase migration new",
+    "db:aplicar": "supabase db push",
+    "db:status": "supabase migration list"
   },
   "dependencies": {
+    "@google/genai": "^2.17.1",
+    "@supabase/ssr": "^0.12.4",
+    "@supabase/supabase-js": "^2.112.3",
     "next": "16.3.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "resend": "^6.20.0",
+    "server-only": "^0.0.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -21,6 +36,8 @@
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vite-tsconfig-paths": "^6.1.1",
+    "vitest": "^4.1.10"
   }
 }
