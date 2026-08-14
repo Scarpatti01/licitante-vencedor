@@ -57,10 +57,11 @@ leitor entendendo que há uma forma melhor de fazer aquilo.
 | 3 artigos verificados no texto oficial | **No ar** |
 | Captura dentro do texto, contextual por assunto | **No ar** |
 | Registro de qual conteúdo converte (`origem`) | **No ar** |
-| Destino do lead (Supabase ou webhook) | **No ar**, inerte sem `LEADS_DESTINO` |
+| Destino do lead (Supabase ou webhook) | **No ar**, em produção com `LEADS_DESTINO=supabase` |
+| Double opt-in: confirmação e descadastro por link | **No ar**, verificado ponta a ponta em produção |
 | Limite de taxa na rota de captura | **No ar** (por instância — ver o arquivo) |
 | Artigos relacionados nos hubs | **No ar** |
-| Envio do primeiro e-mail ao lead capturado | **Não existe** — sem provedor |
+| Envio do primeiro e-mail ao lead capturado | **No ar** — confirmação e boas-vindas, via Resend |
 | Páginas regionais por município, do dado próprio | **Não existe** — ver abaixo |
 
 **A regra que governa o blog**: `validarArtigo` roda em teste e reprova artigo
@@ -70,12 +71,13 @@ Conversão não é item de checklist de alguém: é condição de build.
 
 **O que eu faria em seguida, nesta ordem**
 
-1. **Ligar o destino do lead.** Enquanto `LEADS_DESTINO` não existir, todo o
-   resto é ensaio: o formulário responde 503 e o visitante vai embora. Um
-   webhook para planilha resolve hoje e custa nada.
-2. **Escrever o primeiro e-mail de boas-vindas.** Lead capturado e não
-   respondido esfria em dias. Não precisa ser automático no começo — precisa
-   existir.
+1. **Mandar o primeiro alerta de verdade.** A lista já se enche sozinha e cada
+   confirmação é uma promessa com data: "editais nos dias úteis pela manhã".
+   Enquanto o envio não existir, o lead confirmado está esperando algo que não
+   chega — que é pior que não tê-lo capturado.
+2. **Uma tela para ver os leads.** Hoje a resposta a "quantos cadastros esta
+   semana" é uma consulta SQL feita à mão. Não precisa ser bonita; precisa
+   existir antes de o volume tornar a consulta um hábito caro.
 3. **Mais artigos, sempre atrás de um hub.** O gargalo não é volume, é intenção:
    três textos que respondem a dúvida de quem está executando valem mais que
    trinta sobre conceito.
