@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   DESTINO_PADRAO,
@@ -96,5 +96,29 @@ describe("estrutura de rotas", () => {
   it("cadastrar-empresa vive fora do grupo (app)", () => {
     expect(existsSync("src/app/cadastrar-empresa/page.tsx")).toBe(true);
     expect(existsSync("src/app/(app)/cadastrar-empresa/page.tsx")).toBe(false);
+  });
+
+  it("a área de operação exige sessão no proxy", () => {
+    // Sem o prefixo na lista, a rota deixaria de mandar o anônimo para o login.
+    // A autorização de verdade é a da tela, mas este é o degrau que evita a
+    // viagem — e removê-lo por engano não deve passar em silêncio.
+    expect(sobPrefixo("/administracao/leads", ROTAS_DO_PRODUTO)).toBe(true);
+  });
+
+  /*
+   * Guarda contra um 404 congelado, que já aconteceu ao escrever esta área.
+   *
+   * Uma página que chama `notFound()` quando não há sessão e que o Next
+   * pré-renderiza vira um 404 estático servido para sempre — inclusive para o
+   * administrador legítimo. Pior: com as credenciais do Supabase presentes no
+   * build, `cookies()` é chamado e o Next marca a rota como dinâmica sozinho,
+   * então o defeito só aparece nos deploys em que alguma variável falta.
+   *
+   * O teste lê o código-fonte porque é a única forma de reprovar antes do
+   * build: o modo de renderização não é observável a partir do módulo.
+   */
+  it("a área de operação nunca é pré-renderizada", () => {
+    const layout = readFileSync("src/app/administracao/layout.tsx", "utf8");
+    expect(layout).toMatch(/export const dynamic = "force-dynamic"/);
   });
 });

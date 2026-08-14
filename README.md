@@ -81,6 +81,28 @@ declarada, nunca silenciosa.
 | `GEMINI_API_KEY` | Leitura profunda do edital | Análise fica no nível da publicação, declarado na interface |
 | `LEADS_DESTINO` | Captura de leads do blog e dos guias | Formulário responde 503 e a página avisa |
 | `LEADS_WEBHOOK_URL` | Destino do lead quando `LEADS_DESTINO=webhook` | — |
+| `ADMINS_DA_PLATAFORMA` | A área de operação em `/administracao/` | A área responde 404 para todo mundo |
+
+### Quem enxerga a área de operação
+
+`/administracao/leads/` mostra quem se cadastrou pelo site e qual conteúdo
+converteu. É tela de quem opera o negócio, não de cliente — e por isso não usa
+os papéis da empresa (`dono`, `administrador`…), que são de dentro do tenant:
+reaproveitá-los daria o funil comercial inteiro a qualquer cliente que criasse a
+própria empresa.
+
+```bash
+ADMINS_DA_PLATAFORMA=voce@suaempresa.com,socio@suaempresa.com
+```
+
+Aceita vírgula, espaço ou quebra de linha como separador, e ignora maiúsculas.
+**Variável ausente significa ninguém, nunca todos**: sem ela a área responde 404
+para qualquer pessoa, inclusive logada. É a recusa segura — o dia em que o
+segredo não chegar ao ambiente é o dia em que a alternativa abriria a lista de
+leads para toda conta cadastrada.
+
+O 404 também é deliberado no lugar de 403: 403 confirmaria a um estranho que o
+endereço existe e que falta apenas a conta certa.
 
 ### Ligando a captação de leads
 

@@ -17,6 +17,18 @@ export const ROTAS_DO_PRODUTO = [
   "/onboarding",
   // Fora do grupo `(app)`, mas igualmente do produto: exige sessão.
   "/cadastrar-empresa",
+  /*
+   * A área de quem opera o negócio — hoje, a tela de leads.
+   *
+   * Estar nesta lista garante só o primeiro degrau: sem sessão, o proxy manda
+   * para o login em vez de deixar a requisição chegar. Quem de fato autoriza é
+   * a própria tela, que confere o e-mail contra `ADMINS_DA_PLATAFORMA` e
+   * responde 404 para todo o resto — inclusive para cliente logado, que passa
+   * por aqui sem problema e não pode ver nada lá dentro. A checagem real não
+   * pode morar no proxy: ele roda otimista, sem consultar o banco, e uma regra
+   * de autorização que decide por cookie é uma regra que o cliente controla.
+   */
+  "/administracao",
 ];
 
 /** Telas de autenticação. Quem já entrou não tem o que fazer nelas. */

@@ -18,7 +18,7 @@ Estado em 2026-08-14.
 | Arquitetura desacoplada da fonte (`FonteDeEditais`) | **No ar** |
 | Detecção de mudança em edital já coletado | **No ar** |
 | Esquema multi-tenant com RLS, índices e pgvector | **Aplicado** — 20 tabelas no Postgres de produção, advisor limpo |
-| Autenticação e vínculo usuário↔empresa | **Não existe** |
+| Autenticação e vínculo usuário↔empresa | **No ar** — entrar, criar conta, proxy e `sessao.ts` |
 | Perfil da empresa (modelo + telas) | **No ar** com repositório de demonstração |
 
 ## Fase 2 — Inteligência
@@ -62,6 +62,7 @@ leitor entendendo que há uma forma melhor de fazer aquilo.
 | Limite de taxa na rota de captura | **No ar** (por instância — ver o arquivo) |
 | Artigos relacionados nos hubs | **No ar** |
 | Envio do primeiro e-mail ao lead capturado | **No ar** — confirmação e boas-vindas, via Resend |
+| Tela para ler os leads e ver o que converte | **No ar** — `/administracao/leads/`, atrás de `ADMINS_DA_PLATAFORMA` |
 | Páginas regionais por município, do dado próprio | **Não existe** — ver abaixo |
 
 **A regra que governa o blog**: `validarArtigo` roda em teste e reprova artigo
@@ -76,9 +77,13 @@ Conversão não é item de checklist de alguém: é condição de build.
    até `RESEND_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`
    existirem como segredos do repositório. Rodar antes com
    `npm run alertas:simular` — ele imprime o que sairia sem enviar.
-2. **Uma tela para ver os leads.** Hoje a resposta a "quantos cadastros esta
-   semana" é uma consulta SQL feita à mão. Não precisa ser bonita; precisa
-   existir antes de o volume tornar a consulta um hábito caro.
+2. ~~**Uma tela para ver os leads.**~~ **Feita** — `/administracao/leads/`
+   responde "quantos cadastros esta semana" e "qual conteúdo converte", que eram
+   as duas consultas escritas à mão. Ela mostra número só quando tem base: sem
+   credencial do banco diz o que falta ligar, com a consulta falhando diz que
+   falhou, e vazia diz que ninguém se cadastrou — três telas, porque são três
+   coisas diferentes. O que ela ainda não tem, de propósito: filtro por período,
+   exportação e gráfico. Nenhum muda uma decisão com o volume de hoje.
 3. **Mais artigos, sempre atrás de um hub.** O gargalo não é volume, é intenção:
    três textos que respondem a dúvida de quem está executando valem mais que
    trinta sobre conceito.
