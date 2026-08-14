@@ -69,16 +69,39 @@ const UFS = new Set([
 /**
  * Palavras que denunciam que o visitante NÃO quer um município só.
  *
- * Cada uma apareceu em captação real de produto do gênero, e todas têm o mesmo
- * efeito: o texto contém um nome de cidade, então o casamento ingênuo acerta o
- * slug e erra a intenção. Melhor devolver `null` e deixar alguém decidir do que
- * mandar a capital para quem pediu a região inteira.
+ * A assimetria que governa esta lista, e que ela já errou uma vez:
+ *
+ *   **Falso negativo** (deixar passar um pedido amplo) — a pessoa pede a região
+ *   e recebe só a capital. Ruim, e visível: ela responde reclamando.
+ *
+ *   **Falso positivo** (recusar um município de verdade) — o lead confirmado
+ *   NUNCA recebe nada. Não aparece como erro em lugar nenhum, porque a recusa é
+ *   exatamente o comportamento projetado. É silêncio permanente.
+ *
+ * O segundo é muito pior, então a lista é conservadora de propósito. Descoberto
+ * rodando o casador contra os 63 municípios da coleta real de 2026-08-13:
+ * `"grande "` derrubava **Mata Grande/AL** — e derrubaria **Campo Grande/MS** e
+ * **Rio Grande/RS** pelo mesmo motivo. `"vale do"` derrubaria **Vale do
+ * Paraíso/RO** e **Vale do Sol/RS**, que também são municípios.
  */
-const PEDIDOS_AMPLOS = [
-  "regiao", "região", "metropolitan", "grande ", "todo ", "toda ", "todos", "todas",
-  "estado de", "estado do", "interior", "litoral", "vale do", "sul de", "norte de",
-  "leste de", "oeste de", "entorno", "proximidade", "redondeza", "e regiao", "e região",
+const AMPLOS_EM_QUALQUER_LUGAR = [
+  "regiao", "região", "metropolitan", "entorno", "proximidade", "redondeza",
+  "estado de", "estado do", "todo ", "toda ", "todos ", "todas ",
+  // Com "de" obrigatório: "interior de São Paulo" é pedido amplo, e nenhum
+  // município se chama assim. "Interior" solto poderia ser parte de um nome.
+  "interior de", "litoral de", "sul de", "norte de", "leste de", "oeste de",
 ];
+
+/**
+ * Amplos APENAS quando abrem o texto.
+ *
+ * "Grande São Paulo" é região; "Campo Grande" é município. A diferença é a
+ * posição, e só ela. `"vale do"` NÃO entra aqui: "Vale do Itajaí" é região e
+ * "Vale do Paraíso" é município, os dois começando igual — não há como separar
+ * pelo texto, e na dúvida vale a regra de cima, que prefere errar mandando a
+ * recusar um município real.
+ */
+const AMPLOS_NO_COMECO = ["grande "];
 
 /**
  * Separadores entre cidade e UF. `/` e `-` são o que as pessoas escrevem;
@@ -91,8 +114,9 @@ const PEDIDOS_AMPLOS = [
 const SEPARADORES = /[\/,\-–—]/;
 
 function ehPedidoAmplo(texto: string): boolean {
-  const t = texto.toLowerCase();
-  return PEDIDOS_AMPLOS.some((marca) => t.includes(marca));
+  const t = texto.toLocaleLowerCase("pt-BR");
+  if (AMPLOS_EM_QUALQUER_LUGAR.some((marca) => t.includes(marca))) return true;
+  return AMPLOS_NO_COMECO.some((marca) => t.startsWith(marca));
 }
 
 /**

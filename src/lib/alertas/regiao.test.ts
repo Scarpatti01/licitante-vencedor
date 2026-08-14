@@ -73,6 +73,35 @@ describe("interpretarRegiao", () => {
     expect(interpretarRegiao(escrito)).toBeNull();
   });
 
+  describe("município real não pode ser confundido com pedido amplo", () => {
+    /*
+     * Regressão de um defeito encontrado rodando o casador contra os 63
+     * municípios da coleta real de 2026-08-13: `"grande "` estava na lista de
+     * pedidos amplos para pegar "Grande São Paulo", e derrubava Mata Grande/AL.
+     *
+     * O custo do falso positivo é o que faz este teste existir: o lead
+     * confirmado simplesmente nunca recebe nada, e isso não aparece como erro
+     * em lugar nenhum — a recusa É o comportamento projetado.
+     */
+    it.each([
+      ["Mata Grande - AL", "mata-grande", "AL"],
+      ["Campo Grande/MS", "campo-grande", "MS"],
+      ["Rio Grande/RS", "rio-grande", "RS"],
+      ["Vale do Paraíso/RO", "vale-do-paraiso", "RO"],
+      ["Vale do Sol/RS", "vale-do-sol", "RS"],
+      ["Sul Brasil/SC", "sul-brasil", "SC"],
+    ])("aceita %s", (escrito, slug, uf) => {
+      expect(interpretarRegiao(escrito)).toMatchObject({ municipioSlug: slug, uf });
+    });
+
+    it("mas continua recusando a região quando o marcador abre o texto", () => {
+      // "Grande São Paulo" é região; "Campo Grande" é município. A diferença é
+      // a posição, e só ela.
+      expect(interpretarRegiao("Grande São Paulo")).toBeNull();
+      expect(interpretarRegiao("grande recife")).toBeNull();
+    });
+  });
+
   it("recusa frase — não é nome de cidade", () => {
     expect(
       interpretarRegiao("quero receber tudo que aparecer perto de mim por favor obrigado"),
