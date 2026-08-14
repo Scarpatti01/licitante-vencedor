@@ -9,12 +9,18 @@ import { useState } from "react";
  * captura ainda não tem destino configurado, a resposta 503 vira uma mensagem
  * honesta com um caminho alternativo — em vez de um agradecimento sobre um lead
  * que não existe em lugar nenhum.
+ *
+ * Com o double opt-in, o sucesso deixou de ser um estado só. O servidor grava o
+ * lead e depois tenta enviar a confirmação, e as duas coisas podem discordar:
+ * gravou e enviou, ou gravou e não enviou. Mandar procurar um e-mail que não
+ * saiu é a pior das telas possíveis — a pessoa espera, nada chega, e ela não
+ * volta. Daí `confirmacaoEnviada` na resposta e dois textos diferentes aqui.
  */
 
 type Estado =
   | { tipo: "parado" }
   | { tipo: "enviando" }
-  | { tipo: "ok" }
+  | { tipo: "ok"; confirmacaoEnviada: boolean }
   | { tipo: "erro"; mensagem: string; semDestino: boolean };
 
 export function CapturaAlerta({
@@ -58,7 +64,11 @@ export function CapturaAlerta({
       });
 
       if (res.ok) {
-        setEstado({ tipo: "ok" });
+        const corpo = (await res.json().catch(() => ({}))) as { confirmacaoEnviada?: boolean };
+        // Ausência do campo é tratada como "não enviou". Se a resposta veio de
+        // uma versão que ainda não conhece o campo, prometer o e-mail seria
+        // adivinhar — e o custo do palpite errado cai sobre o visitante.
+        setEstado({ tipo: "ok", confirmacaoEnviada: corpo.confirmacaoEnviada === true });
         return;
       }
 
@@ -80,10 +90,38 @@ export function CapturaAlerta({
   if (estado.tipo === "ok") {
     return (
       <div className="rounded-lg border-l-4 border-l-[var(--accent)] bg-[var(--surface)] p-5">
-        <p className="leading-relaxed">
-          Cadastro registrado. Você vai receber os editais da sua cidade nos dias
-          úteis, e pode sair a qualquer momento pelo link no rodapé do e-mail.
-        </p>
+        {estado.confirmacaoEnviada ? (
+          <>
+            <p className="leading-relaxed">
+              <strong>Falta um clique.</strong> Enviamos um e-mail de confirmação
+              para o endereço que você digitou. Só depois que você clicar no link
+              é que os editais começam a chegar — é assim que garantimos que
+              ninguém entra na lista sem pedir.
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+              Não chegou em alguns minutos? Confira a caixa de spam e o promoções.
+              Se digitou o e-mail errado, é só cadastrar de novo com o endereço
+              certo.
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="leading-relaxed">
+              <strong>Recebemos seu cadastro, mas o e-mail de confirmação não
+              saiu.</strong>{" "}
+              Seu interesse está registrado — o que falhou foi o envio, do nosso
+              lado. Sem a confirmação, o alerta não começa.
+            </p>
+            <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+              Tente de novo daqui a pouco ou fale com a gente pelo{" "}
+              <a className="underline underline-offset-4" href="/sobre/">
+                contato
+              </a>{" "}
+              que confirmamos manualmente. Já sabemos do problema: ele fica
+              registrado no nosso log.
+            </p>
+          </>
+        )}
       </div>
     );
   }
