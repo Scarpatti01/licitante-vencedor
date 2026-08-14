@@ -1,5 +1,5 @@
-import type { Edital } from "../pncp/tipos";
-import type { PerfilDaEmpresa } from "./tipos";
+import type { Edital } from "../pncp/tipos.ts";
+import type { PerfilDaEmpresa } from "./tipos.ts";
 
 /**
  * Dados SINTÉTICOS para teste e para as telas de desenvolvimento.

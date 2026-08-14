@@ -1,5 +1,5 @@
-import type { Campo } from "./procedencia";
-import type { Edital } from "../pncp/tipos";
+import type { Campo } from "./procedencia.ts";
+import type { Edital } from "../pncp/tipos.ts";
 
 /**
  * O vocabulário do produto.
