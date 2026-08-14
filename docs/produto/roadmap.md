@@ -54,7 +54,7 @@ leitor entendendo que há uma forma melhor de fazer aquilo.
 | --- | --- |
 | 9 guias de referência (hubs) | **No ar** |
 | Sistema de artigos, com validação de publicação | **No ar** |
-| 3 artigos verificados no texto oficial | **No ar** |
+| 4 artigos verificados no texto oficial | **No ar** — um por hub: portais, habilitação, Lei 14.133 e vender para o governo |
 | Captura dentro do texto, contextual por assunto | **No ar** |
 | Registro de qual conteúdo converte (`origem`) | **No ar** |
 | Destino do lead (Supabase ou webhook) | **No ar**, em produção com `LEADS_DESTINO=supabase` |
@@ -91,6 +91,15 @@ Conversão não é item de checklist de alguém: é condição de build.
    para isso que a coleta versiona o agregado. Fica para depois de propósito: a
    última coleta cobriu 2 UFs, e publicar centenas de páginas rasas com dado
    parcial custaria a confiança que os guias construíram.
+
+   **Reconferido em 2026-08-14, e a conclusão não mudou.** `dados/revisao.md`
+   registra 0 UFs completas, 2 parciais (PE e AL, interrompidas por timeout) e 4
+   sem nenhum edital (PB e SE por timeout, RN e CE com 500 do PNCP). O bloqueio
+   não é de escrita de página: é de cobertura. Uma coleta isolada de PE em 15
+   dias trouxe 633 editais sem falhar, o que sugere que o problema está no
+   tamanho da janela pedida por execução, e não na fonte — o caminho antes das
+   páginas regionais é ajustar o particionamento da coleta até 6 UFs saírem
+   inteiras, e só então publicar.
 
 ## Fase 4 — Comunicação
 

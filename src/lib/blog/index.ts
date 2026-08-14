@@ -1,6 +1,7 @@
 import type { Artigo } from "./tipos";
 import { COMO_SABER_SE_SAIU_UMA_LICITACAO } from "./artigos/como-saber-se-saiu-uma-licitacao";
 import { DOCUMENTOS_PARA_PARTICIPAR } from "./artigos/documentos-para-participar-de-licitacao";
+import { PRAZO_PARA_IMPUGNAR_EDITAL } from "./artigos/prazo-para-impugnar-edital-de-licitacao";
 import { VALE_A_PENA_PARTICIPAR } from "./artigos/vale-a-pena-participar-de-licitacao";
 
 export type { Artigo, BlocoDeConteudo, IntencaoDeBusca } from "./tipos";
@@ -17,6 +18,7 @@ export { validarArtigo, contarPalavras, textoDoArtigo } from "./tipos";
 const CATALOGO: readonly Artigo[] = [
   COMO_SABER_SE_SAIU_UMA_LICITACAO,
   DOCUMENTOS_PARA_PARTICIPAR,
+  PRAZO_PARA_IMPUGNAR_EDITAL,
   VALE_A_PENA_PARTICIPAR,
 ];
 
