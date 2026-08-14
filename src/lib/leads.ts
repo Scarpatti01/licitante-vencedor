@@ -24,7 +24,22 @@ export type Lead = {
 
 export type ResultadoCaptura =
   | { ok: true }
-  | { ok: false; motivo: "sem-destino" | "invalido" | "falha" };
+  | {
+      ok: false;
+      motivo: "sem-destino" | "invalido" | "falha";
+      /**
+       * Diagnóstico curto para quem opera — nunca para o visitante.
+       *
+       * Existe porque "não conseguimos registrar agora" é a mensagem certa para
+       * quem preencheu o formulário e a mensagem inútil para quem precisa
+       * consertar. Sem isto, descobrir por que um lead não gravou vira tentativa
+       * e erro contra a configuração, com um redeploy por palpite.
+       *
+       * Regra: descreve a FORMA do problema, nunca o segredo. Pode dizer que o
+       * destino respondeu 404; não pode dizer qual é a URL nem o token.
+       */
+      detalhe?: string;
+    };
 
 /**
  * Validação de e-mail deliberadamente simples.

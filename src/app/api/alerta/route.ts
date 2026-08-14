@@ -83,7 +83,15 @@ export async function POST(request: Request) {
 
   if (!resultado.ok) {
     return Response.json(
-      { erro: resultado.motivo, mensagem: "Não conseguimos registrar agora. Tente mais tarde." },
+      {
+        erro: resultado.motivo,
+        mensagem: "Não conseguimos registrar agora. Tente mais tarde.",
+        // `diagnostico` descreve a FORMA da falha, nunca o segredo: qual status o
+        // destino devolveu, se a URL termina em `/exec`, se traz token, quantos
+        // caracteres tem. É o que permite consertar a configuração sem um
+        // redeploy por palpite — a interface mostra só `mensagem`.
+        ...(resultado.detalhe ? { diagnostico: resultado.detalhe } : {}),
+      },
       { status: resultado.motivo === "sem-destino" ? 503 : 500 },
     );
   }

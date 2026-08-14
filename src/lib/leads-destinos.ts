@@ -85,13 +85,6 @@ function destinoSupabase(): Destino | null {
 }
 
 /**
- * Entrega o lead a um webhook — planilha, automatizador, CRM.
- *
- * Existe para a captação poder começar antes do banco. Não é gambiarra: é o
- * reconhecimento de que a decisão de provisionar Postgres é do dono e pode
- * demorar, enquanto o tráfego orgânico não espera.
- */
-/**
  * Respostas que chegam com status 200 e ainda assim significam recusa.
  *
  * App da web do Apps Script responde 200 para tudo — inclusive quando o próprio
@@ -105,9 +98,36 @@ function destinoSupabase(): Destino | null {
  */
 const RECUSAS_COM_200 = ["nao autorizado", "sem email", "corpo invalido"];
 
+/**
+ * Entrega o lead a um webhook — planilha, automatizador, CRM.
+ *
+ * Existe para a captação poder começar antes do banco. Não é gambiarra: é o
+ * reconhecimento de que a decisão de provisionar Postgres é do dono e pode
+ * demorar, enquanto o tráfego orgânico não espera.
+ */
 function destinoWebhook(): Destino | null {
   const url = envObrigatoria("LEADS_WEBHOOK_URL");
   if (!url) return null;
+
+  /*
+   * A forma da URL, sem o segredo. É o que permite responder "a variável está
+   * truncada" sem imprimir a variável em lugar nenhum — e URL truncada foi
+   * exatamente o defeito que custou duas rodadas de tentativa e erro na
+   * primeira configuração.
+   */
+  const forma = (() => {
+    try {
+      const u = new URL(url);
+      return [
+        u.host,
+        u.pathname.endsWith("/exec") ? "termina em /exec" : `caminho termina em "${u.pathname.slice(-6)}"`,
+        u.searchParams.has("token") ? "com token" : "SEM token",
+        `${url.length} caracteres`,
+      ].join(", ");
+    } catch {
+      return `não é uma URL válida (${url.length} caracteres)`;
+    }
+  })();
 
   return {
     nome: "webhook",
@@ -127,18 +147,23 @@ function destinoWebhook(): Destino | null {
 
         if (!resposta.ok) {
           console.error("[leads] webhook recusou", resposta.status, texto.slice(0, 200));
-          return { ok: false, motivo: "falha" };
+          return {
+            ok: false,
+            motivo: "falha",
+            detalhe: `destino respondeu ${resposta.status} · ${forma}`,
+          };
         }
 
         if (RECUSAS_COM_200.includes(texto.toLowerCase())) {
           console.error(`[leads] webhook respondeu 200 recusando: "${texto}"`);
-          return { ok: false, motivo: "falha" };
+          return { ok: false, motivo: "falha", detalhe: `destino recusou: "${texto}"` };
         }
 
         return { ok: true };
       } catch (erro) {
         console.error("[leads] webhook falhou", erro);
-        return { ok: false, motivo: "falha" };
+        const causa = erro instanceof Error ? erro.name : "erro desconhecido";
+        return { ok: false, motivo: "falha", detalhe: `${causa} ao chamar o destino · ${forma}` };
       }
     },
   };

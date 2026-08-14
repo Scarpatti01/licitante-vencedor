@@ -58,18 +58,38 @@ describe("destino webhook", () => {
     'NÃO confirma quando o corpo é "%s", mesmo com status 200',
     async (corpo) => {
       responder(200, corpo);
-      expect(await destinoAtual()!.gravar(LEAD)).toEqual({ ok: false, motivo: "falha" });
+      expect(await destinoAtual()!.gravar(LEAD)).toMatchObject({ ok: false, motivo: "falha" });
     },
   );
 
   it("não confirma quando o status não é 2xx", async () => {
     responder(401, "<html>login</html>");
-    expect(await destinoAtual()!.gravar(LEAD)).toEqual({ ok: false, motivo: "falha" });
+    expect(await destinoAtual()!.gravar(LEAD)).toMatchObject({ ok: false, motivo: "falha" });
   });
 
   it("não confirma quando a rede falha", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => { throw new Error("timeout"); }));
-    expect(await destinoAtual()!.gravar(LEAD)).toEqual({ ok: false, motivo: "falha" });
+    expect(await destinoAtual()!.gravar(LEAD)).toMatchObject({ ok: false, motivo: "falha" });
+  });
+
+  it("o diagnóstico descreve a forma do problema sem vazar o segredo", async () => {
+    // É o único ponto do sistema em que informação de configuração sai para
+    // fora do servidor. A URL inteira é segredo — o que pode sair é o formato.
+    responder(404, "Not Found");
+    const r = await destinoAtual()!.gravar(LEAD);
+    const detalhe = (r as { detalhe?: string }).detalhe ?? "";
+
+    expect(detalhe).toContain("404");
+    expect(detalhe).toContain("exemplo.test");
+    expect(detalhe).toContain("com token");
+    expect(detalhe).not.toContain("segredo");
+  });
+
+  it("acusa quando a URL configurada nem é uma URL", async () => {
+    process.env.LEADS_WEBHOOK_URL = "cole-aqui-a-url";
+    vi.stubGlobal("fetch", vi.fn(async () => { throw new TypeError("Failed to parse URL"); }));
+    const r = await destinoAtual()!.gravar(LEAD);
+    expect((r as { detalhe?: string }).detalhe).toContain("não é uma URL válida");
   });
 
   it("sem URL configurada não há destino", () => {
