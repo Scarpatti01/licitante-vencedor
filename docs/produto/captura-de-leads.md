@@ -98,13 +98,25 @@ Troque `COLE_AQUI_UM_SEGREDO_LONGO` por um segredo de verdade (30+ caracteres
 aleatórios), salve, e publique:
 
 **Implantar → Nova implantação → Tipo: App da Web**
-- *Executar como*: **Eu**
-- *Quem pode acessar*: **Qualquer pessoa**
+- *Executar como*: **Eu** — é o que dá ao script permissão de escrever na planilha.
+- *Quem pode acessar*: **Qualquer pessoa**. Atenção: *"Qualquer pessoa com uma
+  Conta do Google"* **não serve** — a Vercel chama o endereço sem estar logada em
+  conta nenhuma, e a chamada morre num `401` antes de chegar ao script.
 
 O Google pede autorização na primeira vez e mostra um aviso de app não
 verificado — é o seu próprio script, siga em **Avançado → Acessar**.
 
 Copie a URL gerada. Ela termina em `/exec`.
+
+> **Salvar o código não publica o código.** A implantação fica presa a uma
+> *versão* congelada: você edita o script, salva, e o endereço continua servindo
+> o código antigo. Toda vez que mexer no arquivo — inclusive para trocar o
+> `TOKEN` — repita **Implantar → Gerenciar implantações → ✏️ → Versão: Nova
+> versão → Implantar**.
+>
+> Use **Gerenciar implantações** e não **Nova implantação**: editar a existente
+> preserva a URL, enquanto criar outra gera um endereço novo e obriga a atualizar
+> a variável na Vercel.
 
 ## As variáveis na Vercel
 
@@ -136,6 +148,29 @@ planilha. Se algo estiver errado, o site **não** diz "cadastrado":
 | "Não conseguimos registrar agora" | o webhook respondeu erro ou não respondeu — token errado, implantação antiga, script com erro |
 | "Muitas tentativas seguidas" | limite de 5 por minuto por origem |
 | Confirmação de cadastro | a linha está na planilha |
+
+### Testando o webhook direto, sem passar pelo site
+
+Vale conferir o endpoint isolado antes de mexer na Vercel — separa o problema em
+metade do tempo:
+
+```bash
+curl -sS -L "https://script.google.com/macros/s/…/exec?token=SEU_TOKEN" \
+  -H 'content-type: application/json' \
+  --data '{"email":"teste@exemplo.com","cidade":"TESTE","origem":"teste/manual"}'
+```
+
+Não use `-X POST`. O `/exec` responde `302` para outro domínio, e o `-X` força o
+método também no redirecionamento — o destino só aceita GET e devolve um `405`
+enganoso, que parece defeito da implantação e não é. Sem o `-X`, o `curl` troca
+para GET no salto sozinho, que é exatamente o que o `fetch` do site faz.
+
+| Resposta | Significado |
+| --- | --- |
+| `ok` | gravou; confira a linha na planilha |
+| `nao autorizado` | o `TOKEN` do script não é o que está na URL — ou o código novo não foi implantado |
+| `sem email` | token certo, corpo sem o campo `email` |
+| `401` + HTML de login | acesso não está em "Qualquer pessoa" |
 
 O log do servidor na Vercel traz o status devolvido pelo webhook em caso de
 falha. O visitante nunca vê esse detalhe, de propósito.
