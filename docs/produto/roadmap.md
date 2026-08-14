@@ -17,7 +17,7 @@ Estado em 2026-08-14.
 | Guarda contra coleta degradada sobrescrever a boa | **No ar** |
 | Arquitetura desacoplada da fonte (`FonteDeEditais`) | **No ar** |
 | Detecção de mudança em edital já coletado | **No ar** |
-| Esquema multi-tenant com RLS, índices e pgvector | **Escrito, não aplicado** — depende de provisionar Postgres |
+| Esquema multi-tenant com RLS, índices e pgvector | **Aplicado** — 20 tabelas no Postgres de produção, advisor limpo |
 | Autenticação e vínculo usuário↔empresa | **Não existe** |
 | Perfil da empresa (modelo + telas) | **No ar** com repositório de demonstração |
 
