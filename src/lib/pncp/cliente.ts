@@ -34,7 +34,46 @@ export type OpcoesColeta = {
   aoProgredir?: (info: { pagina: number; totalPaginas: number; acumulado: number }) => void;
   /** Avisa que entrou em espera por limite ou erro, para o CLI não parecer travado. */
   aoEsperar?: (motivo: string, ms: number) => void;
+  /**
+   * Instante (epoch ms) em que esta coleta tem de parar, aconteça o que
+   * acontecer.
+   *
+   * DEFEITO QUE ISTO CORRIGE, medido na coleta de 2026-08-13: o orçamento de
+   * tempo existia no script, mas era conferido ENTRE editais produzidos — e o
+   * tempo é gasto DENTRO do `fetch`. Uma UF que não consegue a primeira página
+   * não produz edital nenhum, então a conferência nunca roda, e a UF fica presa
+   * na retentativa: 6 tentativas × 60s de timeout, mais a espera exponencial,
+   * passam de seis minutos para UMA página que nunca vem. Com 30 minutos para
+   * seis UFs, as duas primeiras consumiam tudo e as quatro seguintes eram
+   * puladas por "orçamento esgotado antes de começar" — que foi exatamente o
+   * resultado observado.
+   *
+   * Com o prazo aqui dentro, o teto de cada requisição encolhe junto com o que
+   * resta, a retentativa para quando não há mais tempo, e a UF é interrompida
+   * cedo o bastante para as próximas ainda terem a sua fatia. Cobertura parcial
+   * declarada continua sendo o resultado — só que agora de mais UFs, e não de
+   * duas.
+   *
+   * Ausente, o comportamento é o de antes: sem prazo, nada corta.
+   */
+  prazo?: number;
 };
+
+/**
+ * A coleta parou por falta de tempo, não por defeito.
+ *
+ * Classe própria porque o motivo aparece no relatório de cobertura, e "orçamento
+ * de tempo esgotado" e "PNCP respondeu 500" levam a decisões opostas: o primeiro
+ * pede mais orçamento ou menos UFs por rodada, o segundo pede esperar o portal
+ * voltar. Antes os dois chegavam como `The operation was aborted due to
+ * timeout`, que não distingue nada.
+ */
+class ErroDeOrcamento extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "ErroDeOrcamento";
+  }
+}
 
 /**
  * Campos declarados e atribuídos à mão de propósito: o `node` roda TypeScript
@@ -57,23 +96,80 @@ class ErroPncp extends Error {
 const dormir = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /**
+ * Espera o backoff, mas nunca além do prazo.
+ *
+ * A espera do 429 chega a 120s. Dormir isso com 20s de orçamento restante
+ * gastaria 100s que pertencem às UFs seguintes — e ainda acordaria para
+ * descobrir que não há mais tempo. Encurtar a espera não atropela o PNCP: quem
+ * acorda cedo bate no guarda do topo do laço e desiste, em vez de fazer outra
+ * requisição.
+ */
+async function esperarSemEstourar(
+  espera: number,
+  prazo: number | undefined,
+  aoEsperar: ((motivo: string, ms: number) => void) | undefined,
+  motivo: string,
+): Promise<void> {
+  const real = Math.max(0, Math.min(espera, restanteAte(prazo)));
+  if (real === 0) return;
+  aoEsperar?.(motivo, real);
+  await dormir(real);
+}
+
+/**
  * Uma requisição, com retentativa só no que faz sentido retentar.
  *
  * 5xx, 429 e falha de rede são transitórios — vale insistir com espera
  * crescente. 4xx é parâmetro errado nosso: insistir só transforma um bug
  * visível em lentidão inexplicável, então falha na hora e alto.
  */
+const TIMEOUT_MAX_MS = 60_000;
+
+/**
+ * Quanto falta até o prazo, ou `Infinity` quando não há prazo.
+ *
+ * **Sempre inteiro**, e isso não é preciosismo — foi um defeito real, pego
+ * rodando contra o PNCP de verdade. Quem calcula o prazo reparte o tempo entre
+ * as UFs restantes (`restante / (total - i)`), o que produz milissegundo
+ * fracionário para toda UF menos a última, onde a divisão é por 1. Esse valor
+ * chegava a `AbortSignal.timeout()` e a `setTimeout()`, que exigem inteiro, e a
+ * exceção voltava disfarçada de erro de rede: cinco UFs "falhando" com
+ * `The value of "delay" is out of range` e só a última coletando.
+ *
+ * `floor` e não `round` porque arredondar para cima devolveria um prazo alguns
+ * milissegundos além do combinado — o erro pequeno na direção errada.
+ */
+function restanteAte(prazo: number | undefined): number {
+  return prazo === undefined ? Infinity : Math.floor(prazo - Date.now());
+}
+
 async function buscarComRetentativa(
   url: string,
   tentativas = 6,
   aoEsperar?: (motivo: string, ms: number) => void,
+  prazo?: number,
 ): Promise<unknown> {
   let ultimoErro: unknown;
 
   for (let i = 0; i < tentativas; i++) {
+    /*
+     * O teto de CADA requisição é o menor entre 60s e o que resta do orçamento.
+     * Sem isto, a última tentativa de uma UF quase sem tempo ainda esperaria um
+     * minuto inteiro por uma resposta que já não caberia no prazo — e esse
+     * minuto sai do orçamento das UFs seguintes.
+     */
+    const restante = restanteAte(prazo);
+    if (restante <= 0) {
+      throw new ErroDeOrcamento(
+        ultimoErro instanceof Error
+          ? `orçamento de tempo esgotado durante a consulta (último erro: ${ultimoErro.message})`
+          : "orçamento de tempo esgotado durante a consulta",
+      );
+    }
+
     try {
       const res = await fetch(url, {
-        signal: AbortSignal.timeout(60_000),
+        signal: AbortSignal.timeout(Math.min(TIMEOUT_MAX_MS, restante)),
         headers: { accept: "application/json", "user-agent": "licitantevencedor.com.br" },
       });
 
@@ -90,17 +186,15 @@ async function buscarComRetentativa(
         const espera = Number.isFinite(cabecalho) && cabecalho > 0
           ? cabecalho * 1000
           : Math.min(15_000 * 2 ** i, 120_000);
-        aoEsperar?.("429", espera);
         ultimoErro = new ErroPncp("PNCP respondeu 429", 429, url);
-        await dormir(espera);
+        await esperarSemEstourar(espera, prazo, aoEsperar, "429");
         continue;
       }
 
       if (res.status >= 500) {
         const espera = 2 ** i * 1000;
-        aoEsperar?.(String(res.status), espera);
         ultimoErro = new ErroPncp(`PNCP respondeu ${res.status}`, res.status, url);
-        await dormir(espera);
+        await esperarSemEstourar(espera, prazo, aoEsperar, String(res.status));
         continue;
       }
 
@@ -114,10 +208,11 @@ async function buscarComRetentativa(
       );
     } catch (e) {
       if (e instanceof ErroPncp && e.status !== null && e.status < 500 && e.status !== 429) throw e;
+      // Estourar o orçamento não é transitório: insistir é exatamente o que não
+      // se quer, já que o tempo acabou.
+      if (e instanceof ErroDeOrcamento) throw e;
       ultimoErro = e;
-      const espera = 2 ** i * 1000;
-      aoEsperar?.("rede", espera);
-      await dormir(espera);
+      await esperarSemEstourar(2 ** i * 1000, prazo, aoEsperar, "rede");
     }
   }
 
@@ -136,13 +231,29 @@ async function buscarComRetentativa(
 export async function* coletarEditaisAbertos(
   opcoes: OpcoesColeta,
 ): AsyncGenerator<ContratacaoPncp> {
-  const { uf, dataFinal, maxPaginas = Infinity, pausaMs = 800, aoProgredir, aoEsperar } = opcoes;
+  const {
+    uf,
+    dataFinal,
+    maxPaginas = Infinity,
+    pausaMs = 800,
+    aoProgredir,
+    aoEsperar,
+    prazo,
+  } = opcoes;
 
   let pagina = 1;
   let totalPaginas = 1;
   let acumulado = 0;
 
   while (pagina <= totalPaginas && pagina <= maxPaginas) {
+    /*
+     * Antes de pedir a próxima página, e não só depois de produzir um edital.
+     * Uma UF sem tempo restante para aqui em silêncio, com o que já coletou —
+     * que é uma coleta parcial honesta — em vez de começar uma requisição cujo
+     * resultado não caberia no orçamento.
+     */
+    if (restanteAte(prazo) <= 0) return;
+
     const params = new URLSearchParams({
       dataFinal,
       pagina: String(pagina),
@@ -151,7 +262,9 @@ export async function* coletarEditaisAbertos(
     if (uf) params.set("uf", uf);
 
     const url = `${BASE}/v1/contratacoes/proposta?${params}`;
-    const bruto = (await buscarComRetentativa(url, 6, aoEsperar)) as PaginaPncp<ContratacaoPncp>;
+    const bruto = (await buscarComRetentativa(url, 6, aoEsperar, prazo)) as PaginaPncp<
+      ContratacaoPncp
+    >;
 
     // Página vazia devolve `data: null` em vez de `[]` em alguns casos.
     const itens = Array.isArray(bruto?.data) ? bruto.data : [];
@@ -164,8 +277,11 @@ export async function* coletarEditaisAbertos(
 
     if (itens.length === 0) break;
     pagina++;
-    if (pagina <= totalPaginas && pagina <= maxPaginas) await dormir(pausaMs);
+    if (pagina <= totalPaginas && pagina <= maxPaginas) {
+      // A pausa de cortesia também não pode furar o prazo.
+      await dormir(Math.max(0, Math.min(pausaMs, restanteAte(prazo))));
+    }
   }
 }
 
-export { ErroPncp };
+export { ErroPncp, ErroDeOrcamento };

@@ -92,14 +92,20 @@ Conversão não é item de checklist de alguém: é condição de build.
    última coleta cobriu 2 UFs, e publicar centenas de páginas rasas com dado
    parcial custaria a confiança que os guias construíram.
 
-   **Reconferido em 2026-08-14, e a conclusão não mudou.** `dados/revisao.md`
-   registra 0 UFs completas, 2 parciais (PE e AL, interrompidas por timeout) e 4
-   sem nenhum edital (PB e SE por timeout, RN e CE com 500 do PNCP). O bloqueio
-   não é de escrita de página: é de cobertura. Uma coleta isolada de PE em 15
-   dias trouxe 633 editais sem falhar, o que sugere que o problema está no
-   tamanho da janela pedida por execução, e não na fonte — o caminho antes das
-   páginas regionais é ajustar o particionamento da coleta até 6 UFs saírem
-   inteiras, e só então publicar.
+   **A causa foi encontrada e corrigida em 2026-08-14, e o bloqueio caiu.** Não
+   era a janela de 90 dias nem o PNCP: o orçamento de tempo era conferido ENTRE
+   editais produzidos, enquanto o tempo se gastava DENTRO do `fetch`. Uma UF que
+   não conseguia a primeira página não produzia edital nenhum, nunca chegava à
+   conferência, e ficava presa em 6 tentativas × 60s — devorando o orçamento das
+   seguintes. Daí "0 UFs completas, 4 sem nada" com 30 minutos disponíveis.
+
+   Com o prazo propagado até a camada HTTP, uma coleta de teste com **5 minutos**
+   — seis vezes menos — trouxe 3.115 editais, 4 UFs completas, 2 parciais e
+   **nenhuma vazia**, com 640 municípios no agregado. Contra 150 editais e 4 UFs
+   vazias na coleta de 13/08.
+
+   O caminho está aberto: confirmar uma coleta agendada com as 6 UFs inteiras e
+   então publicar as páginas regionais a partir de `dados/agregados.json`.
 
 ## Fase 4 — Comunicação
 
