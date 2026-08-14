@@ -26,7 +26,7 @@ export {
   type Mensagem,
   type ProvedorDeEmail,
   type ResultadoDeEnvio,
-} from "./tipos";
+} from "./tipos.ts";
 
 export {
   conteudoDeBoasVindas,
@@ -40,6 +40,6 @@ export {
   type ConteudoDeEmail,
   type DadosDaConfirmacao,
   type DadosDeBoasVindas,
-} from "./mensagens";
+} from "./mensagens.ts";
 
-export { criarProvedorResend, chaveDoResend, type OpcoesDoProvedorResend } from "./resend";
+export { criarProvedorResend, chaveDoResend, type OpcoesDoProvedorResend } from "./resend.ts";

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { SITE, AUTHOR } from "@/lib/site";
+import { SITE, AUTHOR, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { ARTIGOS_PUBLICADOS, artigoPorSlug, artigosRelacionados } from "@/lib/blog";
 import { GUIAS } from "@/lib/guias";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
@@ -37,6 +37,7 @@ export async function generateMetadata({
     description: artigo.descricao,
     alternates: { canonical: `/blog/${artigo.slug}/` },
     openGraph: {
+    images: IMAGENS_DE_COMPARTILHAMENTO,
       title: artigo.titulo,
       description: artigo.descricao,
       url,

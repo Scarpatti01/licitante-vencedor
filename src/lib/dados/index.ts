@@ -3,6 +3,7 @@ import { cache } from "react";
 import { connection } from "next/server";
 import { RepositorioDeDemonstracao, EMPRESA_DE_DEMONSTRACAO, ehDemonstracao } from "./demonstracao";
 import type { RepositorioDoProduto } from "./porta";
+import { vinculoDoUsuario } from "../auth/sessao";
 
 export type { RepositorioDoProduto, ResumoDaOportunidade, PainelDoDia, FiltroDeOportunidades } from "./porta";
 export { ehDemonstracao };
@@ -31,11 +32,20 @@ export const repositorio = cache((): RepositorioDoProduto => {
 /**
  * A empresa cuja visão está sendo renderizada.
  *
- * Enquanto não há autenticação, devolve a empresa de demonstração. Quando a
- * autenticação entrar, esta função passa a ler a sessão e a resolver o vínculo
- * do usuário com a empresa — e continua sendo o ÚNICO lugar do sistema que
- * decide "de quem é o dado desta requisição". Concentrar isso em uma função é o
- * que torna o isolamento auditável: há um só ponto para revisar, e ele é este.
+ * É o ÚNICO lugar do sistema que decide "de quem é o dado desta requisição".
+ * Concentrar isso numa função é o que torna o isolamento auditável: há um só
+ * ponto para revisar, e ele é este.
+ *
+ * Com sessão válida e vínculo, devolve a empresa do usuário. Sem sessão — ou
+ * sem Supabase configurado no ambiente — devolve a de demonstração, e o layout
+ * do produto exibe o aviso correspondente. Os dois caminhos convivem de
+ * propósito: o visitante conhece o produto sem criar conta, e ninguém confunde
+ * uma coisa com a outra, porque a tela avisa qual está vendo.
+ *
+ * Usuário autenticado SEM vínculo também cai na demonstração. É o estado de
+ * quem criou conta e ainda não fez o onboarding, e é o `proxy.ts` que o manda
+ * para lá — aqui a resposta precisa ser um id válido, não uma exceção que
+ * derrubaria a página no meio da renderização.
  *
  * O `await connection()` é de segurança, não de performance, e precisa ficar
  * AQUI e não em cada página. Sem ele, o Next pré-renderiza no build tudo que não
@@ -51,5 +61,7 @@ export const repositorio = cache((): RepositorioDoProduto => {
  */
 export const empresaAtual = cache(async (): Promise<string> => {
   await connection();
-  return EMPRESA_DE_DEMONSTRACAO;
+
+  const vinculo = await vinculoDoUsuario();
+  return vinculo?.empresaId ?? EMPRESA_DE_DEMONSTRACAO;
 });

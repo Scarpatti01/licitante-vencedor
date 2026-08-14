@@ -27,7 +27,16 @@ export const metadata: Metadata = {
     title: `${SITE.name} — ${SITE.tagline}`,
     description: SITE.description,
   },
-  robots: { index: true, follow: true },
+  robots: {
+    index: true,
+    follow: true,
+    // Sem isto o Google escolhe um preview conservador e o cartão de 1200×630
+    // sai como miniatura, ou não sai. É também o que habilita o card grande do
+    // Discover. Só passou a fazer sentido com os `opengraph-image`: antes deles
+    // não havia imagem nenhuma para exibir — o `twitter.card` logo acima
+    // prometia uma desde sempre, sem nada por trás.
+    googleBot: { "max-image-preview": "large", "max-snippet": -1 },
+  },
   /**
    * Verificação de propriedade no Bing Webmaster Tools.
    *

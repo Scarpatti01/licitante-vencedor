@@ -25,6 +25,7 @@ import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao
 import { deduplicar } from "../src/lib/fontes/deduplicacao.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
+import { gravarEditais } from "../src/lib/editais/gravar.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
 
 function arg(nome: string): string | undefined {
@@ -227,6 +228,43 @@ async function main() {
   }
   console.log(`valor total confiável: R$ ${somaConfiavel(editais).toLocaleString("pt-BR", { maximumFractionDigits: 0 })}`);
   console.log(`gravado em ${saida}`);
+
+  /*
+   * E, quando houver credencial, o mesmo lote vai para o Postgres.
+   *
+   * O JSON continua sendo gravado sempre e não vira legado: ele é o artefato de
+   * auditoria da rodada, a entrada das páginas regionais estáticas e o que o
+   * alerta lê hoje. O banco é o que torna possível o lado privado — triagem e
+   * oportunidades só existem com o edital cruzável com o perfil de cada empresa.
+   *
+   * Grava mesmo quando a coleta veio degradada, ao contrário do commit do
+   * agregado. Não é incoerência: o upsert nunca apaga, então um dia ruim não
+   * tem como desfazer um dia bom aqui. O agregado é substituído, o edital é
+   * acrescentado.
+   *
+   * Sem credencial, não é erro nem aviso barulhento: é o estado normal de quem
+   * roda a coleta na própria máquina para inspecionar o JSON.
+   */
+  const urlDoBanco = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const chaveDoBanco = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (urlDoBanco && chaveDoBanco) {
+    const gravacao = await gravarEditais(editais, { url: urlDoBanco, chave: chaveDoBanco });
+    console.log(`banco: ${gravacao.gravados}/${editais.length} editais gravados`);
+
+    for (const falha of gravacao.falhas) {
+      console.error(`  lote ${falha.lote} falhou: ${falha.motivo}`);
+    }
+
+    // Falha de gravação não derruba o run — o JSON já está salvo e a coleta
+    // custou meia hora contra um serviço instável. Mas sai como aviso visível,
+    // e o resumo acima diz exatamente quantos ficaram de fora.
+    if (gravacao.falhas.length > 0) {
+      console.error(`banco: ${gravacao.falhas.length} lote(s) não gravados — ver acima`);
+    }
+  } else {
+    console.log("banco: sem credencial, nada gravado (só o JSON)");
+  }
 
   // Dois artefatos versionados, e um não. O snapshot inteiro fica fora do
   // repositório — 3,6 MB por dia só das 6 UFs piloto é insustentável. O que

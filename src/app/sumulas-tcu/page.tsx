@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AUTHOR, SITE } from "@/lib/site";
+import { AUTHOR, SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { Citacao, Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   description: DESCRICAO,
   alternates: { canonical: "/sumulas-tcu/" },
   openGraph: {
+    images: IMAGENS_DE_COMPARTILHAMENTO,
     title: TITULO,
     description: DESCRICAO,
     url: `${SITE.url}/sumulas-tcu/`,

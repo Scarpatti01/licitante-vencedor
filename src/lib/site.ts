@@ -33,3 +33,34 @@ export const KNOWS_ABOUT = [
   "Dispensa de licitação",
   "Contratos administrativos",
 ] as const;
+
+/**
+ * As imagens de compartilhamento de uma página que declara `openGraph` próprio.
+ *
+ * Existe por causa de um defeito que só apareceu conferindo o HTML de VÁRIAS
+ * páginas, e não só o da home: **o `opengraph-image.tsx` da raiz não alcança
+ * quem define `openGraph` próprio.** O Next mescla metadata campo a campo, de
+ * forma rasa — uma página que declara `openGraph: { title, description, url }`
+ * substitui o objeto inteiro do layout e leva as imagens junto.
+ *
+ * O resultado era traiçoeiro: a home compartilhava com cartão, e treze páginas
+ * de conteúdo — o blog, os guias, a `/alerta-de-licitacao/`, que é a página de
+ * conversão — continuavam saindo como link pelado. Cada uma "funcionava", e o
+ * objetivo da mudança ficava por cumprir justamente onde ela mais valia.
+ *
+ * `/lei-14133/` e `/jurisprudencia/` NÃO usam esta constante: elas têm
+ * `opengraph-image.tsx` próprio, e o cartão do próprio segmento sobrevive à
+ * sobrescrita. Apontá-las para cá trocaria o cartão específico pelo genérico.
+ *
+ * A barra final não é enfeite: o site roda com `trailingSlash: true`, e
+ * `/opengraph-image` sem barra responde 308. Um redirecionamento a mais é uma
+ * chance a mais de um rastreador desistir antes de buscar a imagem.
+ */
+export const IMAGENS_DE_COMPARTILHAMENTO = [
+  {
+    url: `${SITE.url}/opengraph-image/`,
+    width: 1200,
+    height: 630,
+    alt: `${SITE.name} — ${SITE.tagline}`,
+  },
+];

@@ -15,7 +15,9 @@
     "pncp:testar": "node scripts/testar-pncp.ts",
     "db:novo": "supabase migration new",
     "db:aplicar": "supabase db push",
-    "db:status": "supabase migration list"
+    "db:status": "supabase migration list",
+    "alertas:enviar": "node --conditions=react-server scripts/enviar-alertas.ts",
+    "alertas:simular": "node --conditions=react-server scripts/enviar-alertas.ts --simular"
   },
   "dependencies": {
     "@google/genai": "^2.17.1",

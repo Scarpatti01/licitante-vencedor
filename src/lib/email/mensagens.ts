@@ -1,5 +1,5 @@
 import type { Mensagem } from "./tipos";
-import { SITE } from "../site";
+import { SITE } from "../site.ts";
 
 /**
  * As duas mensagens que o cadastro dispara: confirmação e boas-vindas.
@@ -28,6 +28,17 @@ import { SITE } from "../site";
 export type ItemDeLista = {
   rotulo: string;
   texto: string;
+  /**
+   * Quando presente, `texto` vira link para cá no HTML.
+   *
+   * Existe por causa do alerta diário, onde a linha mais importante do bloco é o
+   * endereço da publicação oficial. Sem isto, a URL sairia como texto puro: a
+   * maioria dos clientes de e-mail NÃO transforma URL em link dentro de HTML
+   * (fazem isso só no corpo em texto simples), e o leitor teria de selecionar e
+   * copiar o endereço para conferir o edital — atrito exatamente no clique que o
+   * e-mail existe para provocar.
+   */
+  url?: string;
 };
 
 export type BlocoDeLista = {
@@ -201,7 +212,12 @@ export function emTextoSimples(conteudo: ConteudoDeEmail): string {
   }
 
   for (const lista of conteudo.listas) {
-    const itens = lista.itens.map((i) => `- ${i.rotulo}: ${i.texto}`).join("\n");
+    // A URL vai depois do texto, e não no lugar dele: aqui o cliente de e-mail
+    // JÁ transforma endereço em link sozinho, então o que falta é o rótulo
+    // continuar legível para quem lê sem link nenhum.
+    const itens = lista.itens
+      .map((i) => `- ${i.rotulo}: ${i.texto}${i.url ? ` ${i.url}` : ""}`)
+      .join("\n");
     partes.push(`${lista.titulo}\n${itens}`);
   }
 
@@ -238,10 +254,12 @@ export function emHtml(conteudo: ConteudoDeEmail): string {
   const listas = conteudo.listas
     .map((lista) => {
       const linhas = lista.itens
-        .map(
-          (item) =>
-            `<tr><td style="padding:6px 12px 6px 0;font-size:14px;color:#5b6472;white-space:nowrap;vertical-align:top">${escapar(item.rotulo)}</td><td style="padding:6px 0;font-size:14px;line-height:1.5;color:#101418">${escapar(item.texto)}</td></tr>`,
-        )
+        .map((item) => {
+          const valor = item.url
+            ? `<a href="${escapar(item.url)}" style="color:#101418">${escapar(item.texto)}</a>`
+            : escapar(item.texto);
+          return `<tr><td style="padding:6px 12px 6px 0;font-size:14px;color:#5b6472;white-space:nowrap;vertical-align:top">${escapar(item.rotulo)}</td><td style="padding:6px 0;font-size:14px;line-height:1.5;color:#101418">${valor}</td></tr>`;
+        })
         .join("");
 
       return `<div style="border:1px solid #e3e6ea;border-radius:10px;padding:18px 20px;margin:0 0 16px">

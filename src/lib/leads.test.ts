@@ -22,14 +22,26 @@ afterEach(() => {
 });
 
 describe("gerarToken", () => {
-  it("é opaco: não carrega o e-mail nem nada legível", () => {
-    const token = gerarToken();
-
-    // Nem direto, nem escondido atrás de base64 — que é onde o "opaco" costuma
-    // vazar: alguém troca o gerador por `btoa(email)` e ninguém percebe.
-    expect(token).not.toContain("@");
-    const decodificado = atob(token.replace(/-/g, "+").replace(/_/g, "/"));
-    expect(decodificado).not.toContain("@");
+  /*
+   * A propriedade que importa é "o token não pode ser derivado do lead", e ela
+   * já esteve testada de um jeito que falhava sozinho.
+   *
+   * A versão anterior decodificava o token e afirmava que os bytes não continham
+   * `@`. Só que os bytes são 32 valores aleatórios, e `@` é o byte 0x40 como
+   * qualquer outro: a chance de ao menos um dos 32 sair 0x40 é
+   * `1 - (255/256)^32`, quase 12%. O teste reprovava em torno de uma execução a
+   * cada oito — sem nada ter mudado no código. Teste que falha por sorte ensina
+   * a rodar de novo até passar, e é assim que uma falha de verdade passa
+   * despercebida no meio.
+   *
+   * O que restou testa a mesma garantia pela estrutura, e não por amostragem:
+   * a função não recebe parâmetro nenhum. Não há e-mail a vazar porque não há
+   * e-mail a ver — `btoa(email)` no lugar do gerador não compilaria sem mudar
+   * a assinatura, e é a assinatura que este teste prende.
+   */
+  it("é opaco por construção: não recebe dado do lead", () => {
+    expect(gerarToken).toHaveLength(0);
+    expect(gerarToken()).not.toContain("@");
   });
 
   it("usa alfabeto que sobrevive a URL e a cliente de e-mail", () => {
