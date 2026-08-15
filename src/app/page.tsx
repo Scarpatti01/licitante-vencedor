@@ -2,6 +2,8 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { GUIAS_PUBLICADOS } from "@/lib/guias";
 import { AutorBio } from "@/components/AutorBio";
+import { pracasParaBusca } from "@/lib/regioes";
+import { BuscaDePracas } from "@/components/BuscaDePracas";
 
 const PILARES = [
   {
@@ -29,9 +31,12 @@ export default function Home() {
           <span className="text-base font-semibold tracking-tight">
             {SITE.name}
           </span>
-          <nav className="flex items-center gap-6 text-sm text-[var(--muted)]">
+          <nav className="flex items-center gap-4 text-sm text-[var(--muted)] sm:gap-6">
             <Link href="/blog/" className="underline-offset-4 hover:underline">Guias</Link>
-            <a href="/sobre/" className="underline-offset-4 hover:underline">Sobre</a>
+            {/* Some no celular para o campo de busca caber sem espremer o nome
+                do site; a página continua alcançável pelo rodapé. */}
+            <a href="/sobre/" className="hidden underline-offset-4 hover:underline sm:inline">Sobre</a>
+            <BuscaDePracas pracas={pracasParaBusca()} className="w-36 sm:w-56" />
           </nav>
         </div>
       </header>

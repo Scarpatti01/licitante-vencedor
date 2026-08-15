@@ -5,6 +5,7 @@ import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { Faq, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { PracasEmAcordeao } from "@/components/regioes/PracasEmAcordeao";
 import {
   caminhoDoMunicipio,
   MEDIDO_EM,
@@ -262,8 +263,16 @@ export default async function PaginaDoMunicipio({
  * A malha entre as regionais.
  *
  * Página regional isolada é folha solta — não distribui autoridade e não leva o
- * leitor a lugar nenhum. Com duas ou três páginas o bloco é modesto; ele cresce
- * junto com a cobertura, sem ninguém mexer aqui.
+ * leitor a lugar nenhum. Com duas ou três páginas o bloco era modesto; com 96 em
+ * lista corrida ele passou a ser um paredão no rodapé, e foi por isso que virou
+ * acordeão por estado.
+ *
+ * A UF do município atual vem ABERTA: quem lê sobre Sobral quer outra praça do
+ * Ceará muito mais do que uma de Sergipe, e o vizinho é o link que de fato leva
+ * a uma segunda página.
+ *
+ * A praça atual é removida ANTES do agrupamento, e não depois, para o contador
+ * do estado não anunciar uma praça a mais do que os links que ele contém.
  */
 function OutrosMunicipios({ atual }: { atual: MunicipioAgregado }) {
   const outros = municipiosPublicaveis().filter((m) => caminhoDoMunicipio(m) !== caminhoDoMunicipio(atual));
@@ -274,15 +283,9 @@ function OutrosMunicipios({ atual }: { atual: MunicipioAgregado }) {
       <h2 className="text-sm font-semibold tracking-wide text-[var(--muted)] uppercase">
         Outras praças medidas
       </h2>
-      <ul className="mt-3 flex flex-wrap gap-x-6 gap-y-2">
-        {outros.map((m) => (
-          <li key={caminhoDoMunicipio(m)}>
-            <Link href={caminhoDoMunicipio(m)}>
-              {m.municipio} ({m.uf})
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-3">
+        <PracasEmAcordeao municipios={outros} ufAberta={atual.uf} variante="compacta" />
+      </div>
     </nav>
   );
 }

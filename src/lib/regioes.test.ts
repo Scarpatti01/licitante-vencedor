@@ -6,6 +6,8 @@ import {
   MINIMO_DE_EDITAIS,
   MINIMO_DE_ORGAOS,
   modalidadesOrdenadas,
+  pracasPorUf,
+  pracasParaBusca,
   municipiosPublicaveis,
   temLastro,
   type MunicipioAgregado,
@@ -132,5 +134,97 @@ describe("estadoDaUf", () => {
     // Nunca afirmar cobertura sobre o que não foi medido.
     expect(estadoDaUf("ZZ")).toBe("desconhecida");
     expect(ufFoiCompleta("ZZ")).toBe(false);
+  });
+});
+
+describe("pracasPorUf", () => {
+  const lista = [
+    municipio({ uf: "CE", municipio: "Fortaleza", slug: "fortaleza", editais: 474, orgaos: 32 }),
+    municipio({ uf: "PE", municipio: "Recife", slug: "recife", editais: 289, orgaos: 70 }),
+    municipio({ uf: "CE", municipio: "Sobral", slug: "sobral", editais: 14, orgaos: 4 }),
+    municipio({ uf: "SE", municipio: "Aracaju", slug: "aracaju", editais: 161, orgaos: 46 }),
+  ];
+
+  it("agrupa por UF e soma as contratações", () => {
+    const grupos = pracasPorUf(lista);
+
+    // CE soma 488 (474 + 14) e passa PE, que tem 289 num município só. É o
+    // ponto do agrupamento: o estado é ordenado pelo total, não pela maior
+    // cidade dele.
+    expect(grupos.map((g) => g.uf)).toEqual(["CE", "PE", "SE"]);
+    expect(grupos[0].editais).toBe(474 + 14);
+    expect(grupos[0].municipios.map((m) => m.municipio)).toEqual(["Fortaleza", "Sobral"]);
+  });
+
+  it("rotula com o nome do estado por extenso", () => {
+    expect(pracasPorUf(lista)[0].nome).toBe("Ceará");
+  });
+
+  /**
+   * A soma que o acordeão NÃO faz.
+   *
+   * Somar `orgaos` entre municípios contaria duas vezes a secretaria estadual
+   * que compra em duas cidades — e o resumo afirmaria um número de órgãos maior
+   * que o real, sem ter como saber o quanto. O tipo do grupo não tem o campo
+   * justamente para ninguém somar por engano depois.
+   */
+  it("não expõe soma de órgãos", () => {
+    expect(pracasPorUf(lista)[0]).not.toHaveProperty("orgaos");
+  });
+
+  it("ordena os grupos por volume, e não alfabeticamente", () => {
+    // Vale para o agregado real também: a ordem é sempre decrescente em
+    // contratações, para a lista não embaralhar entre builds.
+    const grupos = pracasPorUf(lista);
+    for (let i = 1; i < grupos.length; i++) {
+      expect(grupos[i - 1].editais).toBeGreaterThanOrEqual(grupos[i].editais);
+    }
+  });
+
+  it("lista vazia devolve nenhum grupo", () => {
+    expect(pracasPorUf([])).toEqual([]);
+  });
+
+  /*
+   * O agregado real, e não só o sintético: se uma UF nova entrar na coleta sem
+   * rótulo em NOME_DA_UF, o acordeão exibiria a sigla crua como título.
+   */
+  it("toda UF publicável tem nome por extenso", () => {
+    for (const grupo of pracasPorUf()) {
+      expect(grupo.nome, grupo.uf).not.toBe(grupo.uf);
+    }
+  });
+
+  it("nenhuma praça se perde no agrupamento", () => {
+    const total = pracasPorUf().reduce((n, g) => n + g.municipios.length, 0);
+    expect(total).toBe(municipiosPublicaveis().length);
+  });
+});
+
+describe("pracasParaBusca", () => {
+  it("leva cidade, sigla e estado por extenso no texto de busca", () => {
+    const recife = pracasParaBusca().find((p) => p.nome === "Recife");
+    if (!recife) return;
+
+    expect(recife.busca).toContain("recife");
+    expect(recife.busca).toContain("pe");
+    expect(recife.busca).toContain("pernambuco");
+  });
+
+  it("o href aponta para a página regional daquela praça", () => {
+    for (const p of pracasParaBusca()) {
+      expect(p.href).toBe(`/licitacoes/${p.uf.toLowerCase()}/${p.href.split("/")[3]}/`);
+    }
+  });
+
+  /*
+   * O texto de busca é normalizado no SERVIDOR. Se um acento escapar para cá, o
+   * casador — que compara contra texto sem acento — nunca acharia aquela praça,
+   * e a falha seria silenciosa: a cidade simplesmente não apareceria.
+   */
+  it("nenhum texto de busca carrega acento ou maiúscula", () => {
+    for (const p of pracasParaBusca()) {
+      expect(p.busca, p.nome).toBe(p.busca.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase());
+    }
   });
 });
