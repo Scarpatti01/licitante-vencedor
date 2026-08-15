@@ -34,6 +34,9 @@ function arg(nome: string): string | undefined {
 }
 
 /** `yyyyMMdd` a N dias de hoje — é o formato que a API exige. */
+/** Presença de uma flag booleana na linha de comando. */
+const temFlag = (nome: string) => process.argv.includes(`--${nome}`);
+
 function dataFinalEm(dias: number): string {
   const d = new Date();
   d.setDate(d.getDate() + dias);
@@ -72,6 +75,21 @@ async function main() {
   const saida = resolve(process.cwd(), arg("saida") ?? "dados/editais.json");
   const pastaDados = dirname(saida);
   const pastaParciais = resolve(pastaDados, arg("parciais") ?? "parciais");
+  /*
+   * Modo shard: coleta uma UF, grava no banco, salva o snapshot e PARA.
+   *
+   * Existe para a coleta poder rodar em 27 jobs paralelos, um por UF. Nesse
+   * desenho quem agrega é `juntar-coleta.ts`, depois que todos terminam — porque
+   * agregar por UF isoladamente daria 27 agregados parciais em vez de um, e a
+   * auditoria de valores suspeitos, que compara editais ENTRE si, perderia
+   * sentido olhando um estado por vez.
+   *
+   * Aditiva e desligada por padrão: sem `--parcial`, este script se comporta
+   * exatamente como antes. É o que permite construir a paralelização sem tocar
+   * no caminho que a coleta agendada usa hoje.
+   */
+  const parcial = temFlag("parcial");
+
   const dataFinal = dataFinalEm(dias);
   const coletadoEm = new Date().toISOString();
   const prazoGlobal = Date.now() + orcamentoMin * 60_000;
@@ -273,6 +291,14 @@ async function main() {
     }
   } else {
     console.log("banco: sem credencial, nada gravado (só o JSON)");
+  }
+
+  if (parcial) {
+    console.log(
+      `\nmodo parcial: ${editais.length} edital(is) de ${ufs.join(", ")} salvos em ${saida}.` +
+        `\nA agregação e a classificação ficam para \`juntar-coleta.ts\`, depois que todas as UFs terminarem.`,
+    );
+    return;
   }
 
   // Dois artefatos versionados, e um não. O snapshot inteiro fica fora do
