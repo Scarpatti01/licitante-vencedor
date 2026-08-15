@@ -30,7 +30,9 @@ Estado em 2026-08-14.
 | Recomendação + próxima ação | **No ar** |
 | Camada de IA trocável, com prompts versionados e custo | **No ar**, inerte sem `GEMINI_API_KEY` |
 | Segmentação de edital longo antes do modelo | **No ar** |
-| Download e extração de PDF (Docling/OCR) | **Não existe** — ver "decisões em aberto" |
+| Extração de documento (PDF e zip) | **No ar** — `pdfjs` + `fflate`, medido contra 50 editais reais |
+| Download incremental de documento | **No ar** — corta ~93% do redownload (`documentos/incremental.ts`) |
+| OCR para digitalizado (1,2% dos PDFs) | **Não existe** — recusa declarada; ver `documentos-e-cadencia.md` |
 | Busca semântica (pgvector) | **Esquema pronto**, sem embeddings gerados |
 
 ## Fase 3 — Produto
@@ -153,9 +155,13 @@ clientes reais usando o produto. Construir agora seria inventar o insumo.
    com o repositório de demonstração e nada persiste.
 2. **Destino dos leads e do e-mail transacional.** O formulário público continua
    respondendo 503 declarado enquanto não houver destino — ver `src/lib/leads.ts`.
-3. **Extração de PDF.** Docling é Python; a decisão é entre subir um worker
-   separado, contratar serviço de extração, ou operar por mais tempo só com os
-   metadados da publicação (que é o que acontece hoje, declarado na interface).
+3. ~~**Extração de PDF.**~~ **Decidida em 2026-08-15, contra medição** — ver
+   [`documentos-e-cadencia.md`](documentos-e-cadencia.md). `pdfjs-dist` para PDF
+   e `fflate` para zip, sem worker Python: com 1,2% dos PDFs precisando de OCR,
+   o Docling carregaria um segundo runtime para um caso de borda. PyMuPDF foi
+   descartado por ser AGPL — num SaaS, obriga a abrir o código. O que resta em
+   aberto é só contratar OCR (~US$ 3/mês) para os 1,2%; até lá, a recusa é
+   declarada.
 4. **Retenção e exclusão de documentos** após cancelamento, e o que fazer com o
    histórico de triagem quando a empresa pede exclusão pela LGPD.
 5. **Chave de IA e teto de custo mensal** antes de ligar a análise profunda.
