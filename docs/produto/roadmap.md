@@ -63,7 +63,7 @@ leitor entendendo que há uma forma melhor de fazer aquilo.
 | Artigos relacionados nos hubs | **No ar** |
 | Envio do primeiro e-mail ao lead capturado | **No ar** — confirmação e boas-vindas, via Resend |
 | Tela para ler os leads e ver o que converte | **No ar** — `/administracao/leads/`, atrás de `ADMINS_DA_PLATAFORMA` |
-| Páginas regionais por município, do dado próprio | **Não existe** — ver abaixo |
+| Páginas regionais por município, do dado próprio | **No ar** — `/licitacoes/<uf>/<slug>/`, atrás de um portão de substância |
 
 **A regra que governa o blog**: `validarArtigo` roda em teste e reprova artigo
 sem fonte oficial, sem FAQ, curto demais ou **sem captura no corpo**. Há também
@@ -87,19 +87,39 @@ Conversão não é item de checklist de alguém: é condição de build.
 3. **Mais artigos, sempre atrás de um hub.** O gargalo não é volume, é intenção:
    três textos que respondem a dúvida de quem está executando valem mais que
    trinta sobre conceito.
-4. **Páginas regionais por município**, a partir de `dados/agregados.json` — é
-   para isso que a coleta versiona o agregado. Fica para depois de propósito: a
-   última coleta cobriu 2 UFs, e publicar centenas de páginas rasas com dado
-   parcial custaria a confiança que os guias construíram.
+4. ~~**Páginas regionais por município.**~~ **Feitas**, com um portão que é a
+   parte que importa. Os números que o motivaram: dos 63 municípios no agregado,
+   **37 tinham exatamente um edital** e só 3 tinham cinco ou mais. Publicar os 63
+   produziria 60 páginas quase vazias e quase idênticas — a versão em miniatura
+   das "centenas de páginas rasas" que este item sempre recusou, e o custo cairia
+   sobre o domínio inteiro, não só sobre elas.
 
-   **Reconferido em 2026-08-14, e a conclusão não mudou.** `dados/revisao.md`
-   registra 0 UFs completas, 2 parciais (PE e AL, interrompidas por timeout) e 4
-   sem nenhum edital (PB e SE por timeout, RN e CE com 500 do PNCP). O bloqueio
-   não é de escrita de página: é de cobertura. Uma coleta isolada de PE em 15
-   dias trouxe 633 editais sem falhar, o que sugere que o problema está no
-   tamanho da janela pedida por execução, e não na fonte — o caminho antes das
-   páginas regionais é ajustar o particionamento da coleta até 6 UFs saírem
-   inteiras, e só então publicar.
+   Uma praça vira página quando tem **≥5 contratações e ≥2 órgãos compradores**.
+   Volume sozinho engana: seis editais da mesma prefeitura descrevem aquela
+   prefeitura, não o município. Com o agregado de hoje isso publica **duas**
+   páginas — Recife e Maceió —, e elas aparecem sozinhas conforme a cobertura
+   melhora, sem ninguém decidir de novo.
+
+   As páginas descrevem o **mercado** (quanto se compra, por quais modalidades,
+   quantos órgãos), nunca "editais abertos": o agregado é um retrato do instante
+   da coleta e edital tem prazo, então uma lista de abertos montada de um arquivo
+   de dias atrás mandaria o leitor para certames encerrados. Toda afirmação vem
+   datada, e a página diz quando a UF não foi coletada por inteiro.
+
+   **A causa foi encontrada e corrigida em 2026-08-14, e o bloqueio caiu.** Não
+   era a janela de 90 dias nem o PNCP: o orçamento de tempo era conferido ENTRE
+   editais produzidos, enquanto o tempo se gastava DENTRO do `fetch`. Uma UF que
+   não conseguia a primeira página não produzia edital nenhum, nunca chegava à
+   conferência, e ficava presa em 6 tentativas × 60s — devorando o orçamento das
+   seguintes. Daí "0 UFs completas, 4 sem nada" com 30 minutos disponíveis.
+
+   Com o prazo propagado até a camada HTTP, uma coleta de teste com **5 minutos**
+   — seis vezes menos — trouxe 3.115 editais, 4 UFs completas, 2 parciais e
+   **nenhuma vazia**, com 640 municípios no agregado. Contra 150 editais e 4 UFs
+   vazias na coleta de 13/08.
+
+   O caminho está aberto: confirmar uma coleta agendada com as 6 UFs inteiras e
+   então publicar as páginas regionais a partir de `dados/agregados.json`.
 
 ## Fase 4 — Comunicação
 

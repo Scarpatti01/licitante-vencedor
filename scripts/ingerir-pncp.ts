@@ -118,7 +118,11 @@ async function main() {
 
     // Reparte o que sobrou entre as UFs que faltam. Quem termina rápido devolve
     // o tempo para as seguintes, sem cota fixa que desperdiça.
-    const prazoDaUf = Date.now() + restanteMs / (ufs.length - i);
+    // `floor` na origem: a divisão pelo número de UFs restantes produz
+    // milissegundo fracionário, e prazo fracionário já quebrou a coleta inteira
+    // uma vez ao chegar em `setTimeout`. O cliente também se defende disso, e
+    // as duas guardas são baratas.
+    const prazoDaUf = Math.floor(Date.now() + restanteMs / (ufs.length - i));
     const idsDaUf = new Set<string>();
     let motivo: string | null = null;
 
@@ -130,6 +134,11 @@ async function main() {
         dataFinal,
         maxPaginas,
         coletadoEm,
+        // O prazo agora vai para dentro da fonte, e é o que de fato corta.
+        // A conferência abaixo continua, mas passou a ser a segunda linha:
+        // ela só roda depois de um edital sair, e o caso que quebrou a coleta
+        // de 13/08 foi justamente o da UF que não conseguia produzir nenhum.
+        prazo: prazoDaUf,
         aoReceber: () => brutos++,
         aoDescartar: () => {
           descartados[uf] = (descartados[uf] ?? 0) + 1;
