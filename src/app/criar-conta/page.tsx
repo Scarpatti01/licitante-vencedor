@@ -27,6 +27,21 @@ export default function CriarConta() {
           </>
         }
       />
+
+      {/*
+        O aceite fica no ato de criar a conta, e não escondido num link de
+        rodapé, porque é aqui que ele tem peso: é o instante em que a relação
+        começa. Texto declarado acima do clique e links para as regras
+        completas — sem caixa pré-marcada, que a LGPD não aceita como
+        consentimento válido (art. 8º, § 3º) e que só serve para fingir que
+        alguém leu.
+      */}
+      <p className="mt-6 text-xs leading-relaxed text-[var(--muted)]">
+        Ao criar a conta você concorda com os{" "}
+        <LinkDeAcesso href="/termos/">termos de uso</LinkDeAcesso> e com a{" "}
+        <LinkDeAcesso href="/privacidade/">política de privacidade</LinkDeAcesso>
+        . Não usamos rastreador e não repassamos seus dados a terceiros.
+      </p>
     </main>
   );
 }

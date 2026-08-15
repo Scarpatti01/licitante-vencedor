@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { RodapeSite } from "@/components/RodapeSite";
 
 const TITULO = "Aviso legal";
 const DESCRICAO =
@@ -199,6 +200,8 @@ export default function AvisoLegal() {
           uso deste site.
         </p>
       </main>
+
+      <RodapeSite />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>

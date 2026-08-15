@@ -4,6 +4,7 @@ import { GUIAS_PUBLICADOS } from "@/lib/guias";
 import { AutorBio } from "@/components/AutorBio";
 import { pracasParaBusca } from "@/lib/regioes";
 import { BuscaDePracas } from "@/components/BuscaDePracas";
+import { RodapeSite } from "@/components/RodapeSite";
 
 const PILARES = [
   {
@@ -118,19 +119,12 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="border-t">
-        <div className="mx-auto max-w-5xl px-6 py-10 text-sm text-[var(--muted)]">
-          <p className="font-medium text-[var(--foreground)]">{SITE.name}</p>
-          <p className="mt-2 max-w-2xl">
-            Conteúdo informativo e triagem operacional de editais. Não constitui
-            parecer jurídico — a decisão de participar de um certame é sempre da
-            empresa licitante.
-          </p>
-          <p className="mt-4">
-            © {new Date().getFullYear()} {SITE.name}
-          </p>
-        </div>
-      </footer>
+      {/*
+        O rodapé próprio da home virou o global. Ele já dizia a ressalva
+        jurídica, mas era o único do site: as outras 26 páginas públicas
+        terminavam sem aviso legal, sem contato e sem saída.
+      */}
+      <RodapeSite />
     </div>
   );
 }

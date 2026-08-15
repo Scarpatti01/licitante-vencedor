@@ -6,6 +6,7 @@ import { Faq, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { PracasEmAcordeao } from "@/components/regioes/PracasEmAcordeao";
+import { RodapeSite } from "@/components/RodapeSite";
 import {
   caminhoDoMunicipio,
   MEDIDO_EM,
@@ -255,6 +256,8 @@ export default async function PaginaDoMunicipio({
 
         <OutrosMunicipios atual={m} />
       </article>
+
+      <RodapeSite />
     </>
   );
 }

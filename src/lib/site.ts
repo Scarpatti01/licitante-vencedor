@@ -13,6 +13,41 @@ export const SITE = {
   foundingYear: "2016",
 } as const;
 
+/**
+ * O canal de contato, e por que ele é uma constante e não texto solto.
+ *
+ * ## Ele estava faltando, e a interface já prometia que existia
+ *
+ * Quando o cadastro de leads recusa um e-mail, a mensagem manda "fale com a
+ * gente pelo contato" e aponta para `/sobre/` — que não tinha canal nenhum. A
+ * pessoa clicava e não achava para onde escrever. Promessa quebrada na tela é
+ * pior que ausência declarada.
+ *
+ * ## E a LGPD exige um
+ *
+ * O art. 18 dá ao titular o direito de pedir acesso, correção e eliminação dos
+ * dados dele, e o art. 9º manda informar como exercer isso. Direito sem endereço
+ * para exercê-lo não é direito. Por isso o mesmo endereço serve de contato geral
+ * e de canal do titular: um só, monitorado, em vez de dois em que um é esquecido.
+ *
+ * ⚠️ **Precisa ser uma caixa REAL e monitorada.** O domínio é nosso e já está em
+ * uso no Resend, então `contato@` está sob nosso controle — mas se a caixa não
+ * existir, pedido de titular volta com erro e o descumprimento é nosso. Trocar
+ * aqui muda em todo lugar: rodapé, privacidade, termos e o formulário.
+ */
+export const CONTATO = {
+  email: "contato@licitantevencedor.com.br",
+  /**
+   * O controlador, no vocabulário do art. 5º, VI da LGPD.
+   *
+   * Enquanto a operação é de pessoa física, o controlador é o titular do
+   * domínio. Quando houver CNPJ, é aqui que ele entra — e as páginas legais
+   * acompanham, porque leem deste objeto em vez de repetir o nome em cada
+   * parágrafo.
+   */
+  controlador: "Leandro Scarpatti",
+} as const;
+
 export const AUTHOR = {
   name: "Leandro Scarpatti",
   slug: "leandro-scarpatti",
