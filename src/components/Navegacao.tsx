@@ -23,6 +23,24 @@ import { BuscaDePracas } from "@/components/BuscaDePracas";
  * carrega 100 KB de agregado, e o componente de cliente não pode importá-lo sem
  * levar tudo junto para o navegador.
  */
+/**
+ * O menu, e por que ele é tão curto.
+ *
+ * As páginas internas não tinham menu nenhum — só o nome do site. Quem chegava
+ * por busca num guia tinha exatamente uma saída: voltar. O rodapé agora carrega
+ * o mapa completo; aqui em cima ficam os três destinos que respondem à pergunta
+ * de quem acabou de chegar — *o que é isso, como funciona, e como recebo?*
+ *
+ * Três, e não oito, porque o cabeçalho divide espaço com a busca e o nome do
+ * site. Menu que quebra em duas linhas no celular atrapalha mais do que ajuda, e
+ * a cobertura completa é responsabilidade do rodapé.
+ */
+const MENU = [
+  { href: "/como-funciona/", texto: "Como funciona" },
+  { href: "/alerta-de-licitacao/", texto: "Alertas" },
+  { href: "/blog/", texto: "Guias" },
+];
+
 export function CabecalhoSite() {
   return (
     <header className="border-b">
@@ -30,7 +48,28 @@ export function CabecalhoSite() {
         <Link href="/" prefetch={false} className="text-base font-semibold tracking-tight">
           {SITE.name}
         </Link>
-        <BuscaDePracas pracas={pracasParaBusca()} className="w-40 sm:w-56" />
+
+        <div className="flex items-center gap-4 sm:gap-6">
+          {/*
+            Some no celular para o nome do site e a busca caberem sem espremer.
+            Não é conteúdo perdido: os três destinos estão no rodapé, que existe
+            em toda página.
+          */}
+          <nav aria-label="Principal" className="hidden gap-6 text-sm text-[var(--muted)] md:flex">
+            {MENU.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                prefetch={false}
+                className="underline-offset-4 hover:underline"
+              >
+                {item.texto}
+              </Link>
+            ))}
+          </nav>
+
+          <BuscaDePracas pracas={pracasParaBusca()} className="w-36 sm:w-52" />
+        </div>
       </div>
     </header>
   );

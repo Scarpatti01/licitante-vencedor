@@ -4,6 +4,7 @@ import { SITE, AUTHOR, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { ARTIGOS_PUBLICADOS, artigoPorSlug, artigosRelacionados } from "@/lib/blog";
 import { GUIAS } from "@/lib/guias";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { RodapeSite } from "@/components/RodapeSite";
 import { Corpo, ancora } from "@/components/blog/Corpo";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 
@@ -240,6 +241,8 @@ export default async function PaginaDoArtigo({
           .
         </p>
       </main>
+
+      <RodapeSite />
 
       <script
         type="application/ld+json"

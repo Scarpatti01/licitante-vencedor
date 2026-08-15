@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { Faq, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 
 const TITULO = "Como funciona: do edital publicado ao seu e-mail";
@@ -348,6 +349,8 @@ export default function ComoFunciona() {
           divergência, prevalece o edital.
         </p>
       </main>
+
+      <RodapeSite />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>

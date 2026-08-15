@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AUTHOR, KNOWS_ABOUT, SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
+import { AUTHOR, CONTATO, KNOWS_ABOUT, SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { P, Secao } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { RodapeSite } from "@/components/RodapeSite";
 
 const TITULO = `Sobre o ${SITE.name}`;
 const DESCRICAO =
@@ -148,9 +149,27 @@ export default function Sobre() {
 
           <Secao id="contato" titulo="Contato">
             <P>
-              O canal de contato sob o novo domínio está sendo configurado e será
-              publicado aqui. Até lá, correções e sugestões sobre qualquer guia são
-              bem-vindas e serão respondidas por quem assina o texto.
+              Escreva para{" "}
+              <a
+                className="underline underline-offset-4"
+                href={`mailto:${CONTATO.email}`}
+              >
+                {CONTATO.email}
+              </a>
+              . Correção num guia, dúvida sobre o produto ou pedido relativo aos
+              seus dados — é o mesmo endereço, e quem responde é quem assina os
+              textos.
+            </P>
+            <P>
+              Achou um erro? Diga qual página e qual trecho. Conteúdo sobre norma
+              envelhece, e correção apontada por leitor é a forma mais barata de
+              manter o acervo confiável; as regras estão no{" "}
+              <Link href="/aviso-legal/">aviso legal</Link>.
+            </P>
+            <P>
+              Para exercer os direitos da LGPD — acesso, correção ou eliminação
+              dos seus dados — o caminho e o prazo estão em{" "}
+              <Link href="/privacidade/">privacidade</Link>.
             </P>
           </Secao>
         </div>
@@ -162,6 +181,8 @@ export default function Sobre() {
           da empresa licitante.
         </p>
       </main>
+
+      <RodapeSite />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>

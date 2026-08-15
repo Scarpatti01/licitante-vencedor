@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { RodapeSite } from "@/components/RodapeSite";
 
 const TITULO = "Metodologia: de onde vêm os dados e o que eles não cobrem";
 const DESCRICAO =
@@ -260,6 +261,8 @@ export default function Metodologia() {
           edital.
         </p>
       </main>
+
+      <RodapeSite />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>

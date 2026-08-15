@@ -5,6 +5,7 @@ import { GUIAS_EM_RECONSTRUCAO, GUIAS_PUBLICADOS } from "@/lib/guias";
 import { ARTIGOS_PUBLICADOS } from "@/lib/blog";
 import { redirecionamentosAtivos, urlsDoAcervo } from "@/lib/legacy";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
 
@@ -189,6 +190,8 @@ export default function Blog() {
           .
         </p>
       </main>
+
+      <RodapeSite />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>

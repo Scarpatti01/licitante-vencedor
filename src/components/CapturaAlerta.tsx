@@ -177,9 +177,22 @@ export function CapturaAlerta({
           {estado.tipo === "enviando" ? "Enviando…" : textoDoBotao}
         </button>
 
+        {/*
+          A frase já era honesta; faltava o lastro.
+          "Usamos seu e-mail apenas para X" é uma promessa sobre tratamento de
+          dado pessoal, e o art. 9º da LGPD manda dar ao titular acesso claro à
+          finalidade e aos direitos dele. Sem caminho para a política, a promessa
+          fica sem como ser conferida — e é justamente aqui, no instante de
+          entregar o e-mail, que a pessoa quer conferir.
+        */}
         <p className="text-xs leading-relaxed text-[var(--muted)]">
           Grátis, sem cartão. Usamos seu e-mail apenas para enviar os editais que
-          você pediu.
+          você pediu, e você sai com um clique. Sem rastreador e sem repasse a
+          terceiros — veja a{" "}
+          <a href="/privacidade/" className="underline underline-offset-4">
+            política de privacidade
+          </a>
+          .
         </p>
 
         {estado.tipo === "erro" ? (
