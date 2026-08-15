@@ -1,0 +1,206 @@
+# Coleta paralela do PNCP — uma UF por job.
+#
+# ⚠️ ESTE WORKFLOW NÃO TEM AGENDAMENTO, DE PROPÓSITO.
+#
+# Quem coleta todo dia continua sendo `coletar-pncp.yml`. Este existe pronto e
+# testável por disparo manual, para ser promovido só depois de a coleta
+# sequencial confirmar, numa rodada real, que a publicação diária de posts está
+# saindo certa. Duas cirurgias na mesma véspera, no workflow do qual dependem o
+# alerta, o produto e os posts, tornariam impossível saber qual das duas quebrou.
+#
+# Para promover: mover os dois `cron` de `coletar-pncp.yml` para cá e desligar o
+# agendamento de lá. Nada mais muda.
+#
+# ## Por que paralelizar
+#
+# Medido contra o PNCP em 2026-08-15, consultando `totalRegistros` das 27 UFs:
+#
+#   6 UFs piloto ....... 3.445 editais /  71 páginas
+#   Brasil inteiro .... 28.912 editais / 592 páginas   (8,4x)
+#
+# Em série, o Brasil leva 33 min num dia rápido e ~117 num dia normal — contra um
+# teto de 45 min no job. NÃO CABE. Em 27 jobs simultâneos, o tempo total é o do
+# estado mais lento: SP, com 109 páginas.
+#
+# Em repositório público os minutos de Actions são gratuitos, então o custo em
+# dinheiro disto é zero.
+#
+# ## O ganho que não é de tempo
+#
+# Hoje o PNCP cair no meio derruba a coleta inteira — aconteceu em 12/08 e em
+# 14/08. Com um job por UF, ele cair derruba UM estado, e os outros 26 publicam.
+# É o isolamento por UF que o script já faz internamente, levado até o runner.
+
+name: Coletar PNCP (paralelo)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ufs:
+        description: "UFs, separadas por vírgula. Vazio = as 27."
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+concurrency:
+  # O MESMO grupo do workflow sequencial. Os dois nunca podem coletar ao mesmo
+  # tempo: o upsert no banco aguenta, mas o commit do agregado não — um
+  # sobrescreveria o outro sem que ninguém visse.
+  group: coletar-pncp
+  cancel-in-progress: false
+
+jobs:
+  # Decide a lista de UFs uma vez, para a matriz e o resumo concordarem.
+  planejar:
+    runs-on: ubuntu-latest
+    outputs:
+      ufs: ${{ steps.lista.outputs.ufs }}
+    steps:
+      - id: lista
+        env:
+          PEDIDAS: ${{ inputs.ufs }}
+        run: |
+          set -euo pipefail
+          if [ -n "$PEDIDAS" ]; then
+            lista=$(echo "$PEDIDAS" | tr ',' '\n' | sed 's/ //g' | grep . | jq -R . | jq -cs .)
+          else
+            lista='["AC","AL","AM","AP","BA","CE","DF","ES","GO","MA","MG","MS","MT","PA","PB","PE","PI","PR","RJ","RN","RO","RR","RS","SC","SE","SP","TO"]'
+          fi
+          echo "ufs=$lista" >> "$GITHUB_OUTPUT"
+          echo "coletando: $lista"
+
+  coletar:
+    needs: planejar
+    runs-on: ubuntu-latest
+    # Um estado sozinho é muito menor que a coleta inteira: SP, o maior, tem 109
+    # páginas. 20 min dá folga larga mesmo num dia ruim.
+    timeout-minutes: 20
+    strategy:
+      # `fail-fast: false` é o coração do desenho. Com ele ligado, uma UF que
+      # falha cancelaria as outras 26 — reintroduzindo, na camada do runner,
+      # exatamente o modo de falha que paralelizar veio eliminar.
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        uf: ${{ fromJSON(needs.planejar.outputs.ufs) }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # `--parcial`: coleta, grava no banco e PARA antes de agregar. Quem agrega
+      # é o job `juntar`, com os editais de todas as UFs na mão — a auditoria de
+      # valores suspeitos compara editais entre si, e por UF ela perderia sentido.
+      - name: Coletar ${{ matrix.uf }}
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -o pipefail
+          mkdir -p shards
+          node scripts/ingerir-pncp.ts \
+            --uf "${{ matrix.uf }}" \
+            --dias 90 \
+            --orcamento-min 15 \
+            --parcial \
+            --saida "shards/editais-${{ matrix.uf }}.json"
+
+      - name: Guardar o parcial de ${{ matrix.uf }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: shard-${{ matrix.uf }}
+          path: shards/
+          retention-days: 3
+          if-no-files-found: ignore
+
+  juntar:
+    needs: [planejar, coletar]
+    # `always()` porque a junção precisa rodar mesmo com UFs falhando — juntar 24
+    # de 27 é o resultado certo de um dia em que o PNCP oscilou, e recusar isso
+    # jogaria fora uma coleta boa por causa de três estados.
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Baixar os parciais
+        uses: actions/download-artifact@v4
+        with:
+          pattern: shard-*
+          merge-multiple: true
+          path: shards
+
+      - name: Juntar num agregado só
+        run: |
+          set -o pipefail
+          node scripts/juntar-coleta.ts --parciais shards | tee saida-juncao.txt
+
+      - name: Ler a classificação
+        id: classe
+        run: |
+          arquivo=dados/parciais/classificacao.json
+          if [ ! -f "$arquivo" ]; then
+            echo "classe=ausente" >> "$GITHUB_OUTPUT"
+            echo "motivos=a junção não chegou a classificar o resultado" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # `replace(/[\r\n]+/g, ' ')` pela mesma razão do workflow sequencial:
+          # `motivos` carrega siglas vindas do PNCP, e uma quebra de linha aí
+          # encerraria a linha do $GITHUB_OUTPUT e deixaria o resto virar outra
+          # saída — inclusive um `classe=completa` forjado.
+          classe=$(node -p "String(require('./$arquivo').classe).replace(/[\r\n]+/g, ' ')")
+          motivos=$(node -p "String(require('./$arquivo').motivos.join(' | ')).replace(/[\r\n]+/g, ' ')")
+          echo "classe=$classe" >> "$GITHUB_OUTPUT"
+          echo "motivos=$motivos" >> "$GITHUB_OUTPUT"
+          echo "coleta classificada como: $classe"
+
+      - name: Publicar a leva de posts do dia
+        if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -o pipefail
+          node scripts/publicar-posts.ts | tee saida-posts.txt
+
+      # `${{ }}` NUNCA entra no corpo de um `run:`, pela mesma regra do workflow
+      # sequencial: a expressão é substituída no TEXTO do programa antes de o
+      # shell existir, e `motivos` deriva de dado do PNCP.
+      - name: Versionar agregado, revisão e posts
+        if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
+        env:
+          CLASSE: ${{ steps.classe.outputs.classe }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dados/agregados.json dados/revisao.md dados/posts/
+          if git diff --cached --quiet; then
+            echo "nada mudou, nada a commitar"
+            exit 0
+          fi
+          git commit -m "Coleta do PNCP de $(date -u +%Y-%m-%d) ($CLASSE)"
+          git push
+
+      - name: Avisar que a coleta foi recusada
+        if: steps.classe.outputs.classe != 'completa' && steps.classe.outputs.classe != 'parcial-aceitavel'
+        env:
+          CLASSE: ${{ steps.classe.outputs.classe }}
+          MOTIVOS: ${{ steps.classe.outputs.motivos }}
+        run: |
+          {
+            echo "## Coleta recusada — o agregado anterior foi preservado"
+            echo
+            echo "Classificação: \`$CLASSE\`"
+            echo
+            echo "Motivos: $MOTIVOS"
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::error title=Coleta paralela do PNCP recusada::$MOTIVOS"
+          exit 1
