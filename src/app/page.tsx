@@ -38,7 +38,24 @@ export default function Home() {
         exatamente na linha que o visitante olha primeiro. Absorvido, a primeira
         dobra vira um bloco só, e a chuva passa por trás do nome do site.
       */}
-      <header className="relative isolate overflow-hidden bg-[#030814]">
+      {/*
+        ## Sem `overflow-hidden` aqui, e com `z-30`
+
+        As duas coisas consertam o mesmo defeito, que foi visto em produção: o
+        painel da busca aparecia CORTADO na altura do cabeçalho — digitando
+        "rio", "Rio Largo (AL)" ficava metade visível e metade recortada.
+
+        `overflow-hidden` foi posto para conter a chuva, e recortava junto o
+        painel da busca, que é posicionado fora da caixa do cabeçalho. Não era
+        necessário: o canvas é `absolute inset-0`, então ele já está limitado à
+        caixa por construção — não havia nada para conter.
+
+        `z-30` resolve a segunda metade: o hero vem DEPOIS no documento e, com
+        os dois criando contexto de empilhamento no mesmo nível, ele pintaria
+        por cima do painel. Tirar só o recorte deixaria a lista aparecendo por
+        trás do título — trocaria um defeito por outro.
+      */}
+      <header className="relative z-30 bg-[#030814]">
         <ChuvaDeDados />
         <div
           aria-hidden
