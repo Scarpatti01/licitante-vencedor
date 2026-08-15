@@ -37,6 +37,7 @@
  */
 
 import agregados from "../../dados/agregados.json" with { type: "json" };
+import { normalizarParaBusca } from "./busca-de-pracas";
 
 export type MunicipioAgregado = {
   uf: string;
@@ -202,4 +203,104 @@ export function modalidadesOrdenadas(m: MunicipioAgregado): { nome: string; edit
   return Object.entries(m.modalidades)
     .map(([nome, editais]) => ({ nome, editais }))
     .sort((a, b) => b.editais - a.editais || a.nome.localeCompare(b.nome, "pt-BR"));
+}
+
+/**
+ * As 27 UFs por extenso.
+ *
+ * Existe para dois usos que precisam concordar: o rótulo do acordeão ("Ceará",
+ * não "CE") e a busca por estado — quem digita "pernambuco" espera as praças de
+ * PE, e quem digita "PE" espera exatamente a mesma coisa.
+ *
+ * Lista fechada e completa, e não só as UFs coletadas hoje, para o dia em que a
+ * cobertura crescer não deixar uma praça com rótulo faltando. É a mesma razão de
+ * `alertas/regiao.ts` fechar a lista dele: o conjunto não muda desde 1988.
+ */
+export const NOME_DA_UF: Readonly<Record<string, string>> = {
+  AC: "Acre", AL: "Alagoas", AM: "Amazonas", AP: "Amapá", BA: "Bahia",
+  CE: "Ceará", DF: "Distrito Federal", ES: "Espírito Santo", GO: "Goiás",
+  MA: "Maranhão", MG: "Minas Gerais", MS: "Mato Grosso do Sul",
+  MT: "Mato Grosso", PA: "Pará", PB: "Paraíba", PE: "Pernambuco",
+  PI: "Piauí", PR: "Paraná", RJ: "Rio de Janeiro", RN: "Rio Grande do Norte",
+  RO: "Rondônia", RR: "Roraima", RS: "Rio Grande do Sul", SC: "Santa Catarina",
+  SE: "Sergipe", SP: "São Paulo", TO: "Tocantins",
+};
+
+/** O nome por extenso, ou a própria sigla quando ela não for reconhecida. */
+export function nomeDaUf(uf: string): string {
+  return NOME_DA_UF[uf.toUpperCase()] ?? uf.toUpperCase();
+}
+
+export type GrupoDeUf = {
+  uf: string;
+  /** "Ceará". */
+  nome: string;
+  municipios: MunicipioAgregado[];
+  /** Soma das contratações do grupo. */
+  editais: number;
+};
+
+/**
+ * As praças agrupadas por UF, para o acordeão.
+ *
+ * **Soma contratações e NÃO soma órgãos, de propósito.** Cada contratação
+ * pertence a um município só, então somá-las é aritmética honesta. Órgãos, não:
+ * uma secretaria estadual que compra em três municípios aparece nas três linhas,
+ * e o total diria "138 órgãos compradores no Ceará" quando o número real é menor
+ * e desconhecido. Preferimos não afirmar a afirmar inflado — o mesmo critério
+ * que mantém `orgaos` visível por município, onde ele é exato.
+ *
+ * Ordem por volume, e nome no empate, para a lista não embaralhar entre builds.
+ */
+export function pracasPorUf(municipios: MunicipioAgregado[] = municipiosPublicaveis()): GrupoDeUf[] {
+  const grupos = new Map<string, MunicipioAgregado[]>();
+
+  for (const m of municipios) {
+    const atual = grupos.get(m.uf);
+    if (atual) atual.push(m);
+    else grupos.set(m.uf, [m]);
+  }
+
+  return [...grupos.entries()]
+    .map(([uf, lista]) => ({
+      uf,
+      nome: nomeDaUf(uf),
+      municipios: lista,
+      editais: lista.reduce((soma, m) => soma + m.editais, 0),
+    }))
+    .sort((a, b) => b.editais - a.editais || a.nome.localeCompare(b.nome, "pt-BR"));
+}
+
+/**
+ * Uma praça reduzida ao que a busca precisa.
+ *
+ * O recorte não é economia de digitação: este módulo carrega
+ * `dados/agregados.json`, que tem ~100 KB e 576 municípios. Um componente de
+ * cliente que importasse `regioes.ts` levaria o arquivo INTEIRO para o
+ * navegador, porque a normalização roda no topo do módulo e nenhum tree-shaking
+ * a remove.
+ *
+ * Por isso quem monta a lista é o servidor, e o cliente recebe só estas linhas —
+ * 96 hoje, ~7 KB. O casador vive em `busca-de-pracas.ts`, que não importa dado
+ * nenhum e por isso pode ser importado dos dois lados.
+ */
+export type PracaParaBusca = {
+  nome: string;
+  uf: string;
+  href: string;
+  /**
+   * O texto contra o qual o casador compara, já sem acento e em minúscula:
+   * `"fortaleza ce ceara"`. Normalizado aqui, no servidor, uma vez por build —
+   * e não 96 vezes a cada tecla digitada no navegador.
+   */
+  busca: string;
+};
+
+export function pracasParaBusca(): PracaParaBusca[] {
+  return municipiosPublicaveis().map((m) => ({
+    nome: m.municipio,
+    uf: m.uf,
+    href: caminhoDoMunicipio(m),
+    busca: normalizarParaBusca(`${m.municipio} ${m.uf} ${nomeDaUf(m.uf)}`),
+  }));
 }
