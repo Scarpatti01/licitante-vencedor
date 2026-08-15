@@ -1,30 +1,30 @@
 # Revisão da coleta
 
-> **Correção retroativa.** O bloco de cobertura deste relatório foi regerado.
-> A versão publicada originalmente afirmava que as 6 UFs solicitadas "não estão
-> representadas nos números abaixo" — mas PE e AL foram interrompidas DEPOIS de
-> entregar editais, e são justamente as duas únicas representadas nos 150. O
-> defeito estava na cobertura, que só tinha dois estados (coletada / falhou) e
-> classificava UF interrompida como falha total; ver `src/lib/fontes/cobertura.ts`.
-> Os números não mudaram: são os mesmos de `dados/agregados.json`, medidos na
-> coleta. O que mudou foi a declaração sobre eles.
-
 ```
-Revisão dos dados — 150 editais coletados em 2026-08-13T07:49:55.338Z.
+Revisão dos dados — 3128 editais coletados em 2026-08-15T06:55:33.656Z.
 
-ATENÇÃO — cobertura incompleta. Das 6 UFs solicitadas, 0 foram coletadas por inteiro, 2 ficaram parciais e 4 não trouxeram nada.
+ATENÇÃO — cobertura incompleta. Das 6 UFs solicitadas, 5 foram coletadas por inteiro, 1 ficou parcial e 0 não trouxeram nada.
 
+  Completas (representadas por inteiro nos números abaixo): PE, AL, RN, CE, SE
   Parciais (o que entrou ANTES da interrupção está nos números abaixo; o restante da UF, não):
-    PE: 100 editais coletados, interrompida — The operation was aborted due to timeout
-    AL: 50 editais coletados, interrompida — The operation was aborted due to timeout
-  Sem coleta (nenhum edital; NÃO estão representadas nos números abaixo):
-    PB: The operation was aborted due to timeout
-    RN: PNCP respondeu 500
-    CE: PNCP respondeu 500
-    SE: The operation was aborted due to timeout
+    PB: 150 editais coletados, interrompida — The operation was aborted due to timeout
 
-  Os 150 editais revisados vêm de PE, AL.
+  Os 3128 editais revisados vêm de PE, PB, AL, RN, CE, SE.
 
-Nenhuma incoerência encontrada nas verificações aplicadas: prazo, correspondência entre UF e código IBGE, dígitos do CNPJ, descrição do objeto e plausibilidade do valor.
-89% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
+Encontrados 0 erro(s), 1 suspeita(s) e 2 aviso(s).
+
+[AVISO] O edital 07954480000179-1-020875/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "COPA E COZINHA"
+  Edital: https://pncp.gov.br/app/editais/07954480000179/2026/20875
+
+[AVISO] O edital 33781055000135-1-001371/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "dfd 160 2026"
+  Edital: https://pncp.gov.br/app/editais/33781055000135/2026/1371
+
+[SUSPEITA] No edital 09444530000101-1-000082/2026, do órgão TRIBUNAL DE JUSTICA DO ESTADO DO CEARA, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
+  Evidência: valor declarado R$ 77.839.335.668,88, contra máximo de R$ 1.411.950.000,00 entre os demais Pregão - Eletrônico deste conjunto
+  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 100 daria R$ 778.393.356,69; dividido por 1.000 daria R$ 77.839.335,67; dividido por 10.000 daria R$ 7.783.933,57; dividido por 100.000 daria R$ 778.393,36). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
+  Edital: https://pncp.gov.br/app/editais/09444530000101/2026/82
+
+86% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
 ```
