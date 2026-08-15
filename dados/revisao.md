@@ -1,15 +1,7 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 3128 editais coletados em 2026-08-15T06:55:33.656Z.
-
-ATENÇÃO — cobertura incompleta. Das 6 UFs solicitadas, 5 foram coletadas por inteiro, 1 ficou parcial e 0 não trouxeram nada.
-
-  Completas (representadas por inteiro nos números abaixo): PE, AL, RN, CE, SE
-  Parciais (o que entrou ANTES da interrupção está nos números abaixo; o restante da UF, não):
-    PB: 150 editais coletados, interrompida — The operation was aborted due to timeout
-
-  Os 3128 editais revisados vêm de PE, PB, AL, RN, CE, SE.
+Revisão dos dados — 3444 editais coletados em 2026-08-15T14:48:10.944Z.
 
 Encontrados 0 erro(s), 1 suspeita(s) e 2 aviso(s).
 
