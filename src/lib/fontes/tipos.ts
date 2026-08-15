@@ -100,6 +100,15 @@ export type ParametrosDeColeta = {
   aoProgredir?: (info: { pagina: number; totalPaginas: number; acumulado: number }) => void;
   /** Avisa que entrou em espera por limite ou erro, para o CLI não parecer travado. */
   aoEsperar?: (motivo: string, ms: number) => void;
+  /**
+   * Instante (epoch ms) em que esta coleta tem de parar.
+   *
+   * Faz parte da porta, e não só do cliente do PNCP, porque toda fonte de rede
+   * terá o mesmo problema: ficar presa numa espera que o orçamento de quem
+   * chamou já não comporta, atrasando as UFs seguintes. Uma fonte que ignore o
+   * prazo continua funcionando — só volta a ser capaz de causar isso.
+   */
+  prazo?: number;
 };
 
 /**

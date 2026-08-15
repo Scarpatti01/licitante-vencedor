@@ -5,6 +5,8 @@ import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
+import { municipiosPublicaveis, pracasPorUf } from "@/lib/regioes";
+import { PracasEmAcordeao } from "@/components/regioes/PracasEmAcordeao";
 
 const TITULO = "Portais de licitação: onde o edital é publicado e onde a disputa acontece";
 const DESCRICAO =
@@ -354,6 +356,8 @@ export default function PortaisDeLicitacao() {
             <Faq itens={FAQ} />
           </Secao>
 
+          <PracasMedidas />
+
           <Secao id="fontes" titulo="Fontes e método">
             <P>
               Os dispositivos legais foram transcritos do texto oficial da Lei
@@ -437,5 +441,38 @@ export default function PortaisDeLicitacao() {
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>
+  );
+}
+
+/**
+ * A porta de entrada das páginas regionais.
+ *
+ * Sem um link de dentro do site, elas existiriam só no sitemap — e página órfã
+ * não recebe autoridade de lugar nenhum. Este hub é o lar natural delas: quem
+ * lê sobre onde os editais são publicados é exatamente quem quer saber o que se
+ * publica na praça dele.
+ *
+ * O bloco some sozinho quando não há praça com lastro, em vez de deixar um
+ * título sobre uma lista vazia — é o mesmo portão de `regioes.ts` decidindo, e
+ * não uma segunda regra que poderia discordar dele.
+ */
+function PracasMedidas() {
+  const pracas = municipiosPublicaveis();
+  if (pracas.length === 0) return null;
+
+  return (
+    <Secao id="pracas" titulo="Praças que já medimos">
+      <P>
+        A partir da mesma coleta, o retrato de mercado de alguns municípios:
+        quanto se compra, por quais modalidades e quantos órgãos compram. São
+        poucos de propósito — só entram as praças com dado suficiente para
+        sustentar a leitura.
+      </P>
+      <P>
+        São {pracas.length} praças em {pracasPorUf(pracas).length} estados. Abra
+        o estado para ver as cidades.
+      </P>
+      <PracasEmAcordeao municipios={pracas} />
+    </Secao>
   );
 }

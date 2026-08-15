@@ -51,3 +51,6 @@ next-env.d.ts
 # serie temporal do produto e so dado bom entra nela. O diagnostico vai como
 # artefato da execucao, que e onde ele serve.
 /dados/parciais/
+
+# Saída de execução dos scripts de agendamento — diagnóstico local, não artefato.
+saida-*.txt

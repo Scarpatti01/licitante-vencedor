@@ -75,12 +75,49 @@ const temFlag = (nome: string) => process.argv.includes(`--${nome}`);
  */
 const HORAS_ANTES_DE_RECUSAR = 36;
 
+/**
+ * Erro que já vem explicado — imprime só a mensagem, sem pilha.
+ *
+ * A pilha é útil quando o programa quebrou por um defeito; é ruído quando ele
+ * parou por uma condição prevista. E aqui a distinção é prática: a primeira
+ * coisa que o dono faz, segundo o roadmap, é rodar `npm run alertas:simular` —
+ * e receber trinta linhas de `ENOENT ... at async open (node:internal/...)` faz
+ * parecer que o projeto está quebrado, quando falta só um arquivo que nem
+ * deveria estar no repositório.
+ */
+class ErroDeOperacao extends Error {}
+
 async function lerEditais(caminho: string, ignorarIdade: boolean): Promise<Edital[]> {
-  const bruto = await readFile(caminho, "utf8");
+  let bruto: string;
+  try {
+    bruto = await readFile(caminho, "utf8");
+  } catch (e) {
+    /*
+     * O snapshot é artefato de CI, não arquivo versionado: a coleta o publica a
+     * cada execução e o `.gitignore` o mantém fora do repositório de propósito
+     * (são megabytes que mudam todo dia). Então "não existe aqui" é o estado
+     * NORMAL de um clone novo, e não um defeito — mas só quem já sabe disso
+     * consegue ler um ENOENT dessa forma.
+     */
+    if ((e as NodeJS.ErrnoException)?.code === "ENOENT") {
+      throw new ErroDeOperacao(
+        `${caminho} não existe — e num clone novo isso é o esperado: o snapshot é ` +
+          "artefato da coleta, não arquivo do repositório.\n\n" +
+          "Para conseguir um:\n" +
+          "  npm run pncp:ingerir -- --uf PE --dias 30     (coleta agora, grava o arquivo)\n" +
+          "  gh run download --name snapshot-pncp --dir .  (baixa o da última coleta do CI)\n\n" +
+          "Ou aponte para outro caminho com --editais <arquivo>.",
+      );
+    }
+    throw e;
+  }
+
   const snapshot = JSON.parse(bruto) as { editais?: unknown; coletadoEm?: unknown };
 
   if (!Array.isArray(snapshot.editais)) {
-    throw new Error(`${caminho}: sem a lista \`editais\`. É o snapshot de ingerir-pncp.ts?`);
+    throw new ErroDeOperacao(
+      `${caminho}: sem a lista \`editais\`. É o snapshot de ingerir-pncp.ts?`,
+    );
   }
 
   if (typeof snapshot.coletadoEm === "string") {
@@ -88,7 +125,7 @@ async function lerEditais(caminho: string, ignorarIdade: boolean): Promise<Edita
     if (Number.isFinite(horas) && horas > HORAS_ANTES_DE_RECUSAR) {
       const idade = `${Math.round(horas)}h (coletado em ${snapshot.coletadoEm})`;
       if (!ignorarIdade) {
-        throw new Error(
+        throw new ErroDeOperacao(
           `snapshot com ${idade}, acima do limite de ${HORAS_ANTES_DE_RECUSAR}h. ` +
             "A coleta de hoje falhou? Nada foi enviado. Use --ignorar-idade para mandar assim mesmo.",
         );
@@ -219,6 +256,8 @@ async function main() {
 }
 
 main().catch((e) => {
-  console.error(e);
+  // Condição prevista imprime só o texto; defeito imprime a pilha inteira, que
+  // é quando ela serve para alguma coisa.
+  console.error(e instanceof ErroDeOperacao ? e.message : e);
   process.exit(1);
 });

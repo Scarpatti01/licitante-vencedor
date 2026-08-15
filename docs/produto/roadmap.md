@@ -5,7 +5,7 @@ planejado parecer que existe. Um item só sai de "em construção" quando funcio
 está integrado, tem tratamento de erro, tem estado vazio e de carregamento, foi
 testado e não quebrou nada que já funcionava.
 
-Estado em 2026-08-14.
+Estado em 2026-08-15.
 
 ## Fase 1 — Fundação
 
@@ -19,7 +19,7 @@ Estado em 2026-08-14.
 | Detecção de mudança em edital já coletado | **No ar** |
 | Esquema multi-tenant com RLS, índices e pgvector | **Aplicado** — 21 tabelas no Postgres de produção, advisor limpo |
 | Autenticação e vínculo usuário↔empresa | **No ar** — Supabase Auth, sessão em `empresaAtual()`, cadastro de empresa por `criar_empresa_com_dono` |
-| Editais persistidos no Postgres | **No ar** — upsert por `(fonte, id_na_fonte)` na coleta |
+| Editais persistidos no Postgres | **No ar** — upsert por `(fonte, id_na_fonte)` em `editais/gravar.ts`, chamado pela coleta |
 | Perfil da empresa (modelo + telas) | **No ar** com repositório de demonstração |
 
 ## Fase 2 — Inteligência
@@ -31,7 +31,9 @@ Estado em 2026-08-14.
 | Recomendação + próxima ação | **No ar** |
 | Camada de IA trocável, com prompts versionados e custo | **No ar**, inerte sem `GEMINI_API_KEY` |
 | Segmentação de edital longo antes do modelo | **No ar** |
-| Download e extração de PDF (Docling/OCR) | **Não existe** — ver "decisões em aberto" |
+| Extração de documento (PDF e zip) | **No ar** — `pdfjs` + `fflate`, medido contra 50 editais reais |
+| Download incremental de documento | **No ar** — corta ~93% do redownload (`documentos/incremental.ts`) |
+| OCR para digitalizado (1,2% dos PDFs) | **Não existe** — recusa declarada; ver `documentos-e-cadencia.md` |
 | Busca semântica (pgvector) | **Esquema pronto**, sem embeddings gerados |
 
 ## Fase 3 — Produto
@@ -56,7 +58,7 @@ leitor entendendo que há uma forma melhor de fazer aquilo.
 | --- | --- |
 | 9 guias de referência (hubs) | **No ar** |
 | Sistema de artigos, com validação de publicação | **No ar** |
-| 3 artigos verificados no texto oficial | **No ar** |
+| 4 artigos verificados no texto oficial | **No ar** — um por hub: portais, habilitação, Lei 14.133 e vender para o governo |
 | Captura dentro do texto, contextual por assunto | **No ar** |
 | Registro de qual conteúdo converte (`origem`) | **No ar** |
 | Destino do lead (Supabase ou webhook) | **No ar**, em produção com `LEADS_DESTINO=supabase` |
@@ -64,7 +66,8 @@ leitor entendendo que há uma forma melhor de fazer aquilo.
 | Limite de taxa na rota de captura | **No ar** (por instância — ver o arquivo) |
 | Artigos relacionados nos hubs | **No ar** |
 | Envio do primeiro e-mail ao lead capturado | **No ar** — confirmação e boas-vindas, via Resend |
-| Páginas regionais por município, do dado próprio | **Não existe** — ver abaixo |
+| Tela para ler os leads e ver o que converte | **No ar** — `/administracao/leads/`, atrás de `ADMINS_DA_PLATAFORMA` |
+| Páginas regionais por município, do dado próprio | **No ar** — `/licitacoes/<uf>/<slug>/`, atrás de um portão de substância |
 
 **A regra que governa o blog**: `validarArtigo` roda em teste e reprova artigo
 sem fonte oficial, sem FAQ, curto demais ou **sem captura no corpo**. Há também
@@ -78,16 +81,39 @@ Conversão não é item de checklist de alguém: é condição de build.
    até `RESEND_API_KEY`, `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY`
    existirem como segredos do repositório. Rodar antes com
    `npm run alertas:simular` — ele imprime o que sairia sem enviar.
-2. **Uma tela para ver os leads.** Hoje a resposta a "quantos cadastros esta
-   semana" é uma consulta SQL feita à mão. Não precisa ser bonita; precisa
-   existir antes de o volume tornar a consulta um hábito caro.
+2. ~~**Uma tela para ver os leads.**~~ **Feita** — `/administracao/leads/`
+   responde "quantos cadastros esta semana" e "qual conteúdo converte", que eram
+   as duas consultas escritas à mão. Ela mostra número só quando tem base: sem
+   credencial do banco diz o que falta ligar, com a consulta falhando diz que
+   falhou, e vazia diz que ninguém se cadastrou — três telas, porque são três
+   coisas diferentes. O que ela ainda não tem, de propósito: filtro por período,
+   exportação e gráfico. Nenhum muda uma decisão com o volume de hoje.
 3. **Mais artigos, sempre atrás de um hub.** O gargalo não é volume, é intenção:
    três textos que respondem a dúvida de quem está executando valem mais que
    trinta sobre conceito.
-4. **Páginas regionais por município**, a partir de `dados/agregados.json` — é
-   para isso que a coleta versiona o agregado. Fica para depois de propósito: a
-   última coleta cobriu 2 UFs, e publicar centenas de páginas rasas com dado
-   parcial custaria a confiança que os guias construíram.
+4. ~~**Páginas regionais por município.**~~ **Feitas**, com um portão que é a
+   parte que importa. Os números que o motivaram: dos 63 municípios no agregado,
+   **37 tinham exatamente um edital** e só 3 tinham cinco ou mais. Publicar os 63
+   produziria 60 páginas quase vazias e quase idênticas — a versão em miniatura
+   das "centenas de páginas rasas" que este item sempre recusou, e o custo cairia
+   sobre o domínio inteiro, não só sobre elas.
+
+   Uma praça vira página quando tem **≥5 contratações e ≥2 órgãos compradores**.
+   Volume sozinho engana: seis editais da mesma prefeitura descrevem aquela
+   prefeitura, não o município. Quando o portão foi escrito o agregado dava
+   duas páginas; com a coleta de 15/08 ele dá **96**, sem ninguém decidir de
+   novo — que era a propriedade que o justificava.
+
+   As páginas descrevem o **mercado** (quanto se compra, por quais modalidades,
+   quantos órgãos), nunca "editais abertos": o agregado é um retrato do instante
+   da coleta e edital tem prazo, então uma lista de abertos montada de um arquivo
+   de dias atrás mandaria o leitor para certames encerrados. Toda afirmação vem
+   datada, e a página diz quando a UF não foi coletada por inteiro.
+
+   **Cobertura, que era o bloqueio real, deixou de ser.** A coleta agendada de
+   15/08 trouxe 5 das 6 UFs completas e nenhuma vazia, levando o agregado de 63
+   para 576 municípios — e as páginas publicáveis de 2 para **96**, sozinhas,
+   porque o portão é uma condição sobre o dado e não uma lista curada.
 
 ## Fase 4 — Comunicação
 
@@ -150,9 +176,17 @@ clientes reais usando o produto. Construir agora seria inventar o insumo.
 2. ~~Destino dos leads e do e-mail transacional~~ — **resolvido em 14/08.**
    `LEADS_DESTINO=supabase`, verificado ponta a ponta em produção: gravação,
    e-mail de confirmação, clique e idempotência do segundo clique.
-3. **Extração de PDF.** Docling é Python; a decisão é entre subir um worker
-   separado, contratar serviço de extração, ou operar por mais tempo só com os
-   metadados da publicação (que é o que acontece hoje, declarado na interface).
+3. ~~**Extração de PDF.**~~ **Decidida em 2026-08-15, contra medição** — ver
+   [`documentos-e-cadencia.md`](documentos-e-cadencia.md). `pdfjs-dist` para PDF
+   e `fflate` para zip, sem worker Python: o Docling carregaria um segundo
+   runtime, 58× mais lento, para um caso de borda. PyMuPDF foi descartado por ser
+   AGPL — num SaaS, obriga a abrir o código. O que resta em aberto é só contratar
+   OCR para os digitalizados; até lá, a recusa é declarada.
+
+   **Correção de 15/08:** o custo estimado subiu de ~US$ 3 para **~US$ 11/mês**.
+   A primeira medição era só de PE, onde 1,2% dos PDFs precisam de OCR; repetida
+   em CE, a necessidade é de **11,5%** — quase dez vezes maior. Um número só,
+   tirado de um estado, subdimensionava o custo por um fator de dez.
 4. **Os segredos do GitHub Actions.** `RESEND_API_KEY`,
    `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` no repositório;
    `NEXT_PUBLIC_SUPABASE_ANON_KEY` no Vercel. Sem os primeiros o alerta não sai

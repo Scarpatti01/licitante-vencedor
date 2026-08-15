@@ -63,6 +63,7 @@ export const fontePncp: FonteDeEditais & {
       aoEsperar,
       aoReceber,
       aoDescartar,
+      prazo,
       coletadoEm = new Date().toISOString(),
     } = parametros;
 
@@ -73,7 +74,14 @@ export const fontePncp: FonteDeEditais & {
       throw new Error("fontePncp.coletar: `dataFinal` (yyyyMMdd) é obrigatório");
     }
 
-    for await (const c of coletarEditaisAbertos({ uf, dataFinal, maxPaginas, aoProgredir, aoEsperar })) {
+    for await (const c of coletarEditaisAbertos({
+      uf,
+      dataFinal,
+      maxPaginas,
+      aoProgredir,
+      aoEsperar,
+      prazo,
+    })) {
       aoReceber?.();
       if (!ehUtilizavel(c)) {
         aoDescartar?.("campos-obrigatorios");
