@@ -27,15 +27,14 @@ afterEach(() => {
 });
 
 describe("orçamento de tempo da coleta", () => {
-  it("com o prazo já vencido, não chega a consultar o PNCP", async () => {
+  it("com o prazo já vencido, avisa e não consulta o PNCP", async () => {
     const buscar = vi.fn(async () => new Response(PAGINA_VAZIA));
     vi.stubGlobal("fetch", buscar);
 
-    const itens = await consumir(
-      coletarEditaisAbertos({ uf: "PE", dataFinal: "20260901", prazo: Date.now() - 1 }),
-    );
+    await expect(
+      consumir(coletarEditaisAbertos({ uf: "PE", dataFinal: "20260901", prazo: Date.now() - 1 })),
+    ).rejects.toBeInstanceOf(ErroDeOrcamento);
 
-    expect(itens).toEqual([]);
     // Gastar uma requisição cujo resultado já não caberia no orçamento é
     // exatamente o desperdício que tira tempo das UFs seguintes.
     expect(buscar).not.toHaveBeenCalled();
@@ -161,26 +160,45 @@ describe("orçamento de tempo da coleta", () => {
     expect(itens).toHaveLength(1);
   });
 
-  it("para entre páginas quando o tempo acaba, entregando o que já coletou", async () => {
-    // Duas páginas disponíveis, mas o orçamento acaba durante a primeira pausa.
+  /**
+   * Parar entre páginas não pode ser silencioso.
+   *
+   * `classificarUf` trata motivo nulo como UF COMPLETA. Uma parada muda no meio
+   * da paginação declararia "coletei tudo" para uma UF interrompida — que é
+   * exatamente a mentira sobre cobertura que a guarda de degradação existe para
+   * impedir, reintroduzida por baixo dela.
+   *
+   * A janela é a pausa de cortesia entre páginas, de até 800ms: é onde o
+   * orçamento costuma acabar, não uma borda rara.
+   */
+  it("interrompido entre páginas, avisa em vez de parecer completo", async () => {
     const pagina = JSON.stringify({
       data: [{ numeroControlePNCP: "a" }],
       totalPaginas: 5,
     });
     vi.stubGlobal("fetch", vi.fn(async () => new Response(pagina)));
 
-    const itens = await consumir(
-      coletarEditaisAbertos({
+    const entregues: unknown[] = [];
+    let capturado: unknown;
+
+    try {
+      for await (const item of coletarEditaisAbertos({
         uf: "PE",
         dataFinal: "20260901",
         prazo: Date.now() + 120,
         pausaMs: 800,
-      }),
-    );
+      })) {
+        entregues.push(item);
+      }
+    } catch (e) {
+      capturado = e;
+    }
 
-    // Coleta parcial honesta: o que veio da primeira página não se perde, e a
-    // paginação não continua além do orçamento.
-    expect(itens.length).toBeGreaterThanOrEqual(1);
-    expect(itens.length).toBeLessThan(5);
+    // Avisou: o script transforma isto em `motivo`, e motivo é o que separa
+    // "parcial" de "completa".
+    expect(capturado).toBeInstanceOf(ErroDeOrcamento);
+    // E não engoliu o que já tinha vindo: a coleta é parcial, não perdida.
+    expect(entregues.length).toBeGreaterThanOrEqual(1);
+    expect(entregues.length).toBeLessThan(5);
   });
 });

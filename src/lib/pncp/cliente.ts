@@ -248,11 +248,25 @@ export async function* coletarEditaisAbertos(
   while (pagina <= totalPaginas && pagina <= maxPaginas) {
     /*
      * Antes de pedir a próxima página, e não só depois de produzir um edital.
-     * Uma UF sem tempo restante para aqui em silêncio, com o que já coletou —
-     * que é uma coleta parcial honesta — em vez de começar uma requisição cujo
-     * resultado não caberia no orçamento.
+     *
+     * **Lança em vez de retornar**, e a diferença é a que mais importa neste
+     * arquivo. `classificarUf` trata motivo nulo como UF COMPLETA — então uma
+     * parada silenciosa aqui declararia "coletei tudo" para uma UF interrompida
+     * no meio da paginação. A janela não é teórica: é a pausa de cortesia entre
+     * páginas, de até 800ms, que é justamente onde o orçamento costuma acabar.
+     *
+     * O que já foi produzido não se perde: os editais das páginas anteriores já
+     * foram entregues ao consumidor, e o script os mantém — ele só passa a
+     * saber que a UF ficou pela metade. Coleta parcial declarada é o resultado
+     * certo; coleta parcial disfarçada de completa é o defeito que a guarda de
+     * degradação existe para impedir, e que uma parada muda reintroduziria por
+     * baixo dela.
      */
-    if (restanteAte(prazo) <= 0) return;
+    if (restanteAte(prazo) <= 0) {
+      throw new ErroDeOrcamento(
+        `orçamento de tempo esgotado após ${pagina - 1} página(s)`,
+      );
+    }
 
     const params = new URLSearchParams({
       dataFinal,
