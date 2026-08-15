@@ -2,9 +2,11 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { GUIAS_PUBLICADOS } from "@/lib/guias";
 import { AutorBio } from "@/components/AutorBio";
-import { pracasParaBusca } from "@/lib/regioes";
+import { numerosDaColeta, pracasParaBusca } from "@/lib/regioes";
 import { BuscaDePracas } from "@/components/BuscaDePracas";
 import { RodapeSite } from "@/components/RodapeSite";
+import { ChuvaDeDados } from "@/components/ChuvaDeDados";
+import { dataDeBrasilia } from "@/lib/dominio/datas";
 
 const PILARES = [
   {
@@ -25,14 +27,29 @@ const PILARES = [
 ];
 
 export default function Home() {
+  const coleta = numerosDaColeta();
+
   return (
     <div className="min-h-screen">
-      <header className="border-b">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-          <span className="text-base font-semibold tracking-tight">
+      {/*
+        O cabeçalho da home mora DENTRO do hero, e não acima dele.
+
+        Separado, ele deixava uma emenda dura: barra clara colada num hero preto,
+        exatamente na linha que o visitante olha primeiro. Absorvido, a primeira
+        dobra vira um bloco só, e a chuva passa por trás do nome do site.
+      */}
+      <header className="relative isolate overflow-hidden bg-[#030814]">
+        <ChuvaDeDados />
+        <div
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-r from-[#030814] via-[#030814]/85 to-[#030814]/40"
+        />
+
+        <div className="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
+          <span className="text-base font-semibold tracking-tight text-white">
             {SITE.name}
           </span>
-          <nav className="flex items-center gap-4 text-sm text-[var(--muted)] sm:gap-6">
+          <nav className="flex items-center gap-4 text-sm text-slate-300 sm:gap-6">
             <Link href="/blog/" className="underline-offset-4 hover:underline">Guias</Link>
             {/* Some no celular para o campo de busca caber sem espremer o nome
                 do site; a página continua alcançável pelo rodapé. */}
@@ -43,26 +60,89 @@ export default function Home() {
       </header>
 
       <main>
-        <section className="mx-auto max-w-5xl px-6 py-20 sm:py-28">
-          <p className="mb-5 inline-block rounded-full bg-[var(--accent-soft)] px-3 py-1 text-xs font-medium tracking-wide text-[var(--accent)] uppercase">
-            Novo site em construção
-          </p>
+        {/*
+          O hero é escuro nos dois temas, de propósito.
 
-          <h1 className="max-w-3xl text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-6xl">
-            Os editais que a sua empresa pode ganhar, já lidos.
-          </h1>
+          A chuva de caracteres só existe sobre fundo profundo — em tema claro
+          ela vira poluição cinza. Em vez de renderizar duas versões e manter as
+          duas, esta faixa declara a própria cor e o resto da página segue o tema
+          do visitante. É a única seção do site que faz isso.
 
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
-            Todo dia útil, às 7h, você recebe os editais do PNCP compatíveis com
-            o seu perfil — com o que eles pedem, o que falta na sua habilitação,
-            o prazo e o risco. Você só decide se participa.
-          </p>
+          O gradiente é pintado no CSS, e não pelo canvas: assim ele aparece no
+          primeiro quadro, antes de qualquer JavaScript — e continua lá se o
+          canvas nunca montar.
+        */}
+        <section className="relative isolate overflow-hidden bg-[#030814] pb-20 sm:pb-28">
+          <ChuvaDeDados />
 
-          <p className="mt-6 max-w-2xl leading-relaxed text-[var(--muted)]">
-            Não é mais uma lista de licitações para você garimpar. É a leitura
-            pronta, para a decisão sair em minutos em vez de tomar a manhã
-            inteira de alguém.
-          </p>
+          {/*
+            O véu entre a chuva e o texto. Sem ele o contraste do parágrafo cai
+            abaixo do mínimo legível justamente onde uma coluna brilhante passa,
+            e o texto pisca conforme a animação. Fixo, e não animado, para o
+            contraste ser uma garantia e não uma média.
+          */}
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-gradient-to-r from-[#030814] via-[#030814]/85 to-[#030814]/40"
+          />
+
+          <div className="relative mx-auto max-w-5xl px-6 pt-14 sm:pt-20">
+            <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-400/10 px-3 py-1 text-xs font-medium tracking-wide text-sky-300 uppercase">
+              <span aria-hidden className="size-1.5 animate-pulse rounded-full bg-sky-400" />
+              {coleta.editais.toLocaleString("pt-BR")} editais {coleta.abrangencia}
+              , varridos hoje
+            </p>
+
+            <h1 className="max-w-3xl text-4xl leading-[1.1] font-semibold tracking-tight text-balance text-white sm:text-6xl">
+              Os editais que a sua empresa pode ganhar, já lidos.
+            </h1>
+
+            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
+              Todo dia útil, às 7h, você recebe os editais do PNCP compatíveis
+              com o seu perfil — com o que eles pedem, o que falta na sua
+              habilitação, o prazo e o risco. Você só decide se participa.
+            </p>
+
+            <p className="mt-6 max-w-2xl leading-relaxed text-slate-400">
+              Não é mais uma lista de licitações para você garimpar. É a leitura
+              pronta, para a decisão sair em minutos em vez de tomar a manhã
+              inteira de alguém.
+            </p>
+
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <Link
+                href="/alerta-de-licitacao/"
+                className="rounded-md bg-sky-400 px-5 py-2.5 text-sm font-semibold text-[#030814] transition-colors hover:bg-sky-300"
+              >
+                Receber os editais do meu ramo
+              </Link>
+              <Link
+                href="/como-funciona/"
+                className="rounded-md border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-slate-400"
+              >
+                Como funciona
+              </Link>
+            </div>
+
+            {/*
+              A procedência do número, junto do número.
+
+              É a mesma regra das páginas regionais: toda afirmação medida diz
+              quando foi medida e de onde veio. Sem esta linha, a contagem do
+              hero é propaganda; com ela, é um dado que o visitante pode conferir
+              na fonte oficial.
+            */}
+            <p className="mt-8 text-xs text-slate-500">
+              Coleta própria do{" "}
+              <a href="https://www.pncp.gov.br/" rel="noopener" className="underline underline-offset-4">
+                Portal Nacional de Contratações Públicas
+              </a>{" "}
+              em {dataDeBrasilia(coleta.medidoEm)} · {coleta.siglas.join(", ")} ·{" "}
+              <Link href="/metodologia/" className="underline underline-offset-4">
+                como medimos
+              </Link>
+            </p>
+          </div>
         </section>
 
         <section className="border-y bg-[var(--surface)]">
