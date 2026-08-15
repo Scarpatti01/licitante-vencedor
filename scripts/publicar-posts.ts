@@ -10,13 +10,19 @@
  * acumulado, então um edital publicado ontem e ainda aberto continua elegível
  * hoje, enquanto o snapshot só tem a varredura da rodada.
  *
- * ## O que este script NÃO faz
+ * ## A leitura, que é o que justifica o post existir
  *
- * Não analisa o edital com IA. A leitura é o que dá valor ao post, e ela precisa
- * de `GEMINI_API_KEY` — enquanto ela não existir, o post sai com o contexto que
- * conseguimos afirmar sem modelo nenhum: o retrato do mercado daquele município,
- * o prazo de impugnação e o que a modalidade exige. É menos do que queremos, e é
- * verdade — que é a ordem certa das duas coisas.
+ * Para cada escolhido, o script baixa os documentos publicados, extrai o texto e
+ * manda para a análise. Sem isso a página seria o objeto do edital copiado do
+ * PNCP — e a fonte oficial sempre ranqueia melhor que a cópia dela.
+ *
+ * O custo é pequeno porque o volume é pequeno: 25 editais a ~4 MB e ~84 páginas
+ * cada dão ~100 MB de download e ~20 segundos de extração. É a diferença entre
+ * ler 25 e ler os 3.444 — e é a razão de a torneira ser estreita.
+ *
+ * **Sem `GEMINI_API_KEY` o script não simula nada.** Ele publica os posts sem
+ * análise e diz quantos ficaram assim. Post sem leitura é mais magro; post com
+ * leitura inventada é fraude.
  */
 
 import { mkdir, writeFile } from "node:fs/promises";
@@ -25,6 +31,7 @@ import { selecionarDoDia, POSTS_POR_DIA } from "../src/lib/posts/selecao.ts";
 import { slugDoPost } from "../src/lib/posts/slug.ts";
 import type { LevaDoDia, PostDeEdital } from "../src/lib/posts/tipos.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
+import type { AnaliseDoEdital } from "../src/lib/dominio/tipos.ts";
 
 function arg(nome: string): string | undefined {
   const i = process.argv.indexOf(`--${nome}`);
@@ -99,6 +106,66 @@ async function candidatos(url: string, chave: string): Promise<Edital[]> {
   return linhas.map(paraEdital);
 }
 
+/**
+ * Lê os documentos de um edital e devolve a análise.
+ *
+ * Devolve `null` — e não uma análise vazia — quando não deu para ler. O chamador
+ * publica o post sem leitura, com a página declarando isso. Um resumo de
+ * placeholder num post público seria o pior defeito que este produto pode ter.
+ *
+ * Falha aqui nunca derruba a leva: um edital cujo documento não abre não pode
+ * custar os outros 24, pelo mesmo princípio que isola UF na coleta.
+ */
+async function lerEAnalisar(
+  edital: Edital,
+): Promise<{ analise: AnaliseDoEdital | null; documentos: number }> {
+  try {
+    const { listarDocumentos, baixarDocumento } = await import("../src/lib/documentos/pncp.ts");
+    const { processarEdital } = await import("../src/lib/documentos/processar.ts");
+    const { textoParaAnalise } = await import("../src/lib/documentos/texto.ts");
+    const { analisarEdital } = await import("../src/lib/ia/analisar-edital.ts");
+
+    /*
+     * Reusa `processarEdital`, que já orquestra listar → baixar → extrair e tem
+     * o vocabulário de recusa testado. Reimplementar a sequência aqui duplicaria
+     * as decisões dela — o teto de 40 MB, o piso de caracteres por página, a
+     * diferença entre "lista indisponível" e "sem documento".
+     *
+     * O registro devolve `null` e a triagem devolve `true` porque este caminho é
+     * o da publicação, não o do incremental: o edital foi escolhido para virar
+     * post HOJE, então ele precisa ser lido agora, mesmo que já tenha sido
+     * baixado antes por outro motivo.
+     */
+    const resultado = await processarEdital(
+      {
+        id: edital.id,
+        idNaFonte: edital.idNaFonte,
+        encerramentoProposta: edital.encerramentoProposta,
+      },
+      {
+        listar: listarDocumentos,
+        baixar: baixarDocumento,
+        registro: async () => null,
+        interessaAAlguem: async () => true,
+      },
+    );
+
+    if (!resultado.processado) {
+      console.log(`  sem documento (${resultado.motivo}) · ${edital.local.municipio}`);
+      return { analise: null, documentos: 0 };
+    }
+
+    const texto = textoParaAnalise(resultado.documentos);
+    if (!texto) return { analise: null, documentos: 0 };
+
+    const analise = await analisarEdital(edital, { textoDoDocumento: texto });
+    return { analise, documentos: resultado.documentos.filter((d) => d.extracao.ok).length };
+  } catch (e) {
+    console.error(`  leitura falhou em ${edital.id}: ${(e as Error).message}`);
+    return { analise: null, documentos: 0 };
+  }
+}
+
 function paraPost(edital: Edital, postadoEm: string): PostDeEdital {
   return {
     slug: slugDoPost(edital),
@@ -152,15 +219,51 @@ async function main() {
     console.log(`  ${e.local.municipio}/${e.local.uf} · ${valor.padStart(16)} · ${e.objeto.slice(0, 58)}`);
   }
 
-  const leva: LevaDoDia = {
-    dia,
-    consideradosNoDia: editais.length,
-    posts: escolhidos.map((e) => paraPost(e, agora.toISOString())),
-  };
-
   if (simular) {
-    console.log("\nSIMULAÇÃO — nada gravado.");
+    console.log("\nSIMULAÇÃO — nada lido, nada gravado.");
     return;
+  }
+
+  /*
+   * A leitura roda DEPOIS da escolha, e uma de cada vez.
+   *
+   * Depois porque ler os 2.146 elegíveis para escolher 25 seria gastar 98% do
+   * download e do modelo no que não vai virar página. Uma de cada vez porque o
+   * PNCP é instável, e 25 downloads simultâneos contra uma fonte que já caiu
+   * duas vezes num dia é a forma mais rápida de ser bloqueado.
+   */
+  const temChave = Boolean(process.env.GEMINI_API_KEY?.trim());
+  console.log(
+    temChave
+      ? "\nlendo os documentos e analisando..."
+      : "\nsem GEMINI_API_KEY: os posts saem sem leitura, e a página declara isso.",
+  );
+
+  const posts: PostDeEdital[] = [];
+  let comLeitura = 0;
+
+  for (const [i, edital] of escolhidos.entries()) {
+    const post = paraPost(edital, agora.toISOString());
+
+    if (temChave) {
+      const { analise, documentos } = await lerEAnalisar(edital);
+      post.analise = analise;
+      post.documentosLidos = documentos;
+      if (analise?.analisadoEm) comLeitura++;
+
+      console.log(
+        `  [${String(i + 1).padStart(2)}/${escolhidos.length}] ${documentos} doc · ` +
+          `${analise?.analisadoEm ? "lido" : "sem leitura"} · ${edital.local.municipio}/${edital.local.uf}`,
+      );
+    }
+
+    posts.push(post);
+  }
+
+  const leva: LevaDoDia = { dia, consideradosNoDia: editais.length, posts };
+
+  if (temChave) {
+    console.log(`\ncom leitura: ${comLeitura} de ${posts.length}`);
   }
 
   const destino = resolve(process.cwd(), "dados/posts", `${dia}.json`);

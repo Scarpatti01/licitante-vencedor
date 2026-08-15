@@ -23,6 +23,8 @@
  * ninguém republicar nada.
  */
 
+import type { AnaliseDoEdital } from "../dominio/tipos.ts";
+
 export type PostDeEdital = {
   /** Parte final da URL: `pregao-eletronico-merenda-escolar-90012-2026`. */
   slug: string;
@@ -52,6 +54,29 @@ export type PostDeEdital = {
 
   /** Endereço do edital na fonte oficial. */
   link: string;
+
+  /**
+   * A leitura do edital, congelada junto do resto.
+   *
+   * `null` quando não foi possível ler — sem documento legível, sem credencial
+   * de IA, ou falha do provedor. **Nunca preenchida com placeholder**: um resumo
+   * inventado num post público é o pior defeito que este produto pode ter.
+   *
+   * Congelada pelo mesmo motivo do resto do post: ela cita trechos do documento
+   * que estava publicado naquele dia. Se o órgão retificar o edital depois, a
+   * análise antiga continua descrevendo com fidelidade o que foi lido — e a
+   * página diz a data em que foi lido.
+   */
+  analise?: AnaliseDoEdital | null;
+
+  /**
+   * Quantos documentos do edital foram lidos para produzir a análise.
+   *
+   * Vai para a página porque muda o peso do que se lê: uma leitura sobre 8
+   * documentos e 300 páginas não é a mesma coisa que uma sobre o aviso de
+   * publicação. `0` significa que a análise saiu só dos metadados.
+   */
+  documentosLidos?: number;
 };
 
 /** Um dia de publicação, como fica no arquivo versionado. */

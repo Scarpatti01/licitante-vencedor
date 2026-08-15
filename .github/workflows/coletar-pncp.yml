@@ -203,6 +203,29 @@ jobs:
           echo "motivos=$motivos" >> "$GITHUB_OUTPUT"
           echo "coleta classificada como: $classe"
 
+      # A leva do dia, publicada DEPOIS da coleta e ANTES do commit.
+      #
+      # Depois da coleta porque ela lê do Postgres, que a essa altura já recebeu
+      # os editais do dia. Antes do commit porque a leva entra no MESMO commit do
+      # agregado: um só push, um só deploy, e nunca um estado em que o agregado
+      # já mudou e os posts do dia ainda não existem.
+      #
+      # `continue-on-error` porque publicar post é o passo MENOS crítico do
+      # workflow. A coleta e a gravação no banco alimentam o alerta e o produto;
+      # o post é conteúdo. Um dia sem leva é um dia sem posts novos — os antigos
+      # continuam no ar, e o resto da operação não pode cair junto.
+      - name: Publicar a leva de posts do dia
+        id: posts
+        if: steps.decidir.outputs.pular != 'true' && (steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel')
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -o pipefail
+          node scripts/publicar-posts.ts | tee saida-posts.txt
+
       # `${{ }}` NUNCA entra no corpo de um `run:` aqui: a expressão é
       # substituída no texto do script ANTES de o shell rodar, então um valor
       # com aspa ou `$(...)` viraria comando executado no runner — que carrega
@@ -216,7 +239,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f dados/agregados.json dados/revisao.md
+          git add -f dados/agregados.json dados/revisao.md dados/posts/
           if git diff --cached --quiet; then
             echo "agregado idêntico ao do dia anterior, nada a commitar"
             exit 0
