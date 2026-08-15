@@ -156,14 +156,57 @@ assim, o caminho que preserva prazo é separar **urgente/alta aderência
 (imediato)** de **resumo (semanal)**, deixando a urgência ser decidida pelo
 edital e não pelo calendário.
 
-## O que ainda não foi medido
+## As duas medições que faltavam — e o que elas corrigiram
 
-Honestidade sobre os limites desta medição:
+Medidas em 2026-08-15, depois da primeira rodada.
 
-- **Velocidade de parse do `pdfjs` não foi isolada.** Na medição, download e as
-  pausas de cortesia dominaram o tempo. Irrelevante para ~100 editais/dia;
-  precisa ser medido antes de extrair os 3.128.
-- **A amostra é de uma UF (PE).** A fração de `.zip` pode variar entre estados;
-  vale repetir em CE, que é a maior da coleta.
-- **A janela aberta também é só de PE**, e prazo pode variar por região e
-  modalidade.
+### Velocidade de parse: resolvida, e com folga
+
+O `pdfjs` foi cronometrado isolado do download (20 documentos já em memória,
+778 páginas): **121,8 páginas por segundo**.
+
+Isso encerra a dúvida de escala. Extrair **todos** os 3.128 editais diários —
+~263 mil páginas — custaria **0,6 hora de CPU por dia**. Para comparação, o
+Docling roda a ~2,1 páginas/s: o estágio 1 é **~58× mais rápido**, além de não
+exigir um segundo runtime.
+
+### Cobertura em CE: a conclusão de PE não se generaliza
+
+A amostra original era só de PE. Repetida em CE — a maior UF da coleta — com o
+**extrator real do repositório**, em 40 editais e 78 documentos:
+
+| | PE | **CE** |
+| --- | --- | --- |
+| Páginas por edital (média) | 84,2 | **40,2** |
+| Mediana | 73 | 38 |
+| Documentos extraídos | 98,8% | **82,1%** |
+| **Precisa de OCR** | **1,2%** | **11,5%** |
+| Formato não suportado | 13,8% | 6,4% |
+| Editais sem nada legível | 18% | 5% |
+
+**A correção que isso força:** o 1,2% de OCR era um fato sobre **PE**, não sobre
+o PNCP. Em CE a necessidade é **quase dez vezes maior**. Um número só, tirado de
+um estado, teria subdimensionado o custo de OCR por um fator de dez — e é
+exatamente o tipo de erro que a segunda medição existe para pegar.
+
+Reciprocamente, o problema do zip é **mais** grave em PE (18% dos editais sem
+nada legível) do que em CE (5%). Os dois estados têm o mesmo produto e hábitos
+de publicação diferentes.
+
+**O que muda na decisão, e o que não muda:**
+
+- **Não muda a escolha do estágio 1.** `pdfjs` resolve de 82% a 99% conforme o
+  estado, a 121,8 páginas/s. Continua certo.
+- **Não muda a recusa do worker Python.** O Docling ajudaria os 11,5% de CE, mas
+  ao custo de um segundo runtime e 58× mais lento. Um OCR pago como fallback
+  resolve o mesmo caso por ~US$ 11/mês.
+- **Muda a urgência do OCR.** Com ~6% de média ponderada entre os dois estados
+  medidos, OCR deixou de ser ruído e passou a ser um item pequeno mas real. A
+  estimativa de ~US$ 3/mês vira **~US$ 11/mês** no volume triado.
+
+### O que continua sem medição
+
+- **A janela aberta (14,7 dias) é só de PE.** Prazo pode variar por região e
+  modalidade, e é ele que sustenta a decisão de cadência diária.
+- **Quatro das seis UFs nunca foram amostradas** para formato e OCR. A variação
+  entre as duas medidas foi grande o bastante para não extrapolar das outras.
