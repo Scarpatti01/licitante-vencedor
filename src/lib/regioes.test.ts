@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
+  estadoDaUf,
+  ufFoiCompleta,
   caminhoDoMunicipio,
   MINIMO_DE_EDITAIS,
   MINIMO_DE_ORGAOS,
@@ -97,5 +99,38 @@ describe("modalidadesOrdenadas", () => {
       { nome: "Concorrência", editais: 3 },
       { nome: "Credenciamento", editais: 3 },
     ]);
+  });
+});
+
+describe("estadoDaUf", () => {
+  /*
+   * Guarda contra o defeito que o compilador pegou ao chegar a coleta de 15/08.
+   *
+   * `cobertura.ufsCompletas` é um array de STRINGS e `ufsParciais` é um array de
+   * OBJETOS, no mesmo arquivo. A primeira versão de `ufFoiCompleta` assumia
+   * objetos nos dois e teria respondido `false` para toda UF — fazendo cada
+   * página declarar "esta UF não foi coletada por inteiro" mesmo quando foi.
+   *
+   * Passou despercebido enquanto o agregado anterior tinha a lista vazia, que é
+   * o tipo de coisa que só aparece quando o dado muda.
+   */
+  it("reconhece UF completa a partir de porUf", () => {
+    // Toda UF publicável vem de uma UF que a coleta classificou; nenhuma pode
+    // sair como "desconhecida", que seria leitura falhando em silêncio.
+    for (const m of municipiosPublicaveis()) {
+      expect(estadoDaUf(m.uf), m.uf).not.toBe("desconhecida");
+    }
+  });
+
+  it("aceita minúscula, como vem da URL", () => {
+    const m = municipiosPublicaveis()[0];
+    if (!m) return;
+    expect(estadoDaUf(m.uf.toLowerCase())).toBe(estadoDaUf(m.uf));
+  });
+
+  it("UF fora da coleta é desconhecida, não completa", () => {
+    // Nunca afirmar cobertura sobre o que não foi medido.
+    expect(estadoDaUf("ZZ")).toBe("desconhecida");
+    expect(ufFoiCompleta("ZZ")).toBe(false);
   });
 });

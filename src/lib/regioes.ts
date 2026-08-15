@@ -164,8 +164,37 @@ export function caminhoDoMunicipio(m: Pick<MunicipioAgregado, "uf" | "slug">): s
  * direito de saber disso antes de concluir que a cidade compra pouco.
  */
 export function ufFoiCompleta(uf: string): boolean {
-  const completas = (agregados.cobertura?.ufsCompletas ?? []) as { uf: string }[];
-  return completas.some((c) => c.uf === uf.toUpperCase());
+  return estadoDaUf(uf) === "completa";
+}
+
+/**
+ * O estado de coleta de uma UF, lido de `cobertura.porUf`.
+ *
+ * **Lê `porUf`, e não `ufsCompletas`, de propósito.** As duas listas descrevem a
+ * mesma coisa e têm formatos DIFERENTES no mesmo arquivo: `ufsCompletas` é um
+ * array de strings (`["PE","AL"]`) enquanto `ufsParciais` é um array de objetos
+ * (`[{uf:"PB",estado:"parcial",…}]`). A primeira versão disto assumia objetos
+ * nos dois e teria respondido `false` para toda UF — fazendo cada página
+ * declarar "esta UF não foi coletada por inteiro" mesmo quando foi. O
+ * compilador pegou, porque o agregado anterior tinha a lista vazia e a nova
+ * não.
+ *
+ * `porUf` cobre todas as UFs solicitadas com um formato só, e é o campo que a
+ * própria coleta usa para classificar. Depender dele elimina a chance de as
+ * duas leituras discordarem.
+ */
+export function estadoDaUf(uf: string): "completa" | "parcial" | "falha" | "desconhecida" {
+  const alvo = uf.toUpperCase();
+  const linhas = (agregados.cobertura?.porUf ?? []) as { uf?: unknown; estado?: unknown }[];
+
+  for (const linha of linhas) {
+    if (linha.uf !== alvo) continue;
+    return linha.estado === "completa" || linha.estado === "parcial" || linha.estado === "falha"
+      ? linha.estado
+      : "desconhecida";
+  }
+
+  return "desconhecida";
 }
 
 /** As modalidades ordenadas, para a página não decidir isso na renderização. */
