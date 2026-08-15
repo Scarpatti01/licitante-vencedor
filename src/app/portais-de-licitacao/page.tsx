@@ -4,9 +4,9 @@ import { Citacao, Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/compon
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
-import Link from "next/link";
 import { artigosDoGuia } from "@/lib/blog";
-import { caminhoDoMunicipio, municipiosPublicaveis } from "@/lib/regioes";
+import { municipiosPublicaveis, pracasPorUf } from "@/lib/regioes";
+import { PracasEmAcordeao } from "@/components/regioes/PracasEmAcordeao";
 
 const TITULO = "Portais de licitação: onde o edital é publicado e onde a disputa acontece";
 const DESCRICAO =
@@ -468,16 +468,11 @@ function PracasMedidas() {
         poucos de propósito — só entram as praças com dado suficiente para
         sustentar a leitura.
       </P>
-      <ul className="space-y-2 text-[var(--muted)]">
-        {pracas.map((m) => (
-          <li key={caminhoDoMunicipio(m)}>
-            <Link className="underline underline-offset-4" href={caminhoDoMunicipio(m)}>
-              Licitações em {m.municipio} ({m.uf})
-            </Link>{" "}
-            — {m.editais} contratações de {m.orgaos} órgãos
-          </li>
-        ))}
-      </ul>
+      <P>
+        São {pracas.length} praças em {pracasPorUf(pracas).length} estados. Abra
+        o estado para ver as cidades.
+      </P>
+      <PracasEmAcordeao municipios={pracas} />
     </Secao>
   );
 }
