@@ -1,10 +1,10 @@
-import type { Edital } from "../pncp/tipos";
-import { diasAteEncerrar } from "../pncp/normaliza";
-import type { AnaliseDoEdital, PerfilDaEmpresa } from "./tipos";
-import { montarChecklist, prontidaoDocumental, type Checklist } from "./checklist";
-import { coberturaDeTermos, termosEncontrados } from "./texto";
-import { dataEHoraDeBrasilia } from "./datas";
-import { type Campo, desconhecido, doEdital, doPerfil, inferido } from "./procedencia";
+import type { Edital } from "../pncp/tipos.ts";
+import { diasAteEncerrar } from "../pncp/normaliza.ts";
+import type { AnaliseDoEdital, PerfilDaEmpresa } from "./tipos.ts";
+import { montarChecklist, prontidaoDocumental, type Checklist } from "./checklist.ts";
+import { coberturaDeTermos, termosEncontrados } from "./texto.ts";
+import { dataEHoraDeBrasilia } from "./datas.ts";
+import { type Campo, desconhecido, doEdital, doPerfil, inferido } from "./procedencia.ts";
 
 /**
  * Score de aderência: o quanto ESTE edital combina com ESTA empresa.
@@ -70,6 +70,29 @@ export type Score = {
  * consegue defender na frente do cliente.
  */
 const COBERTURA_MINIMA = 0.5;
+
+/**
+ * A versão do algoritmo de score.
+ *
+ * Descoberta pela tabela, não pelo código: `oportunidades` e
+ * `decisoes_de_triagem` declaram `versao_do_score text not null`, e não havia
+ * constante nenhuma para preencher. O esquema estava certo e a implementação
+ * devia essa informação.
+ *
+ * Ela existe para responder a pergunta que um cliente faz meses depois: "por
+ * que este edital tinha 78 em março e teria 64 hoje?". Sem o carimbo, a
+ * resposta seria recalcular com as regras de hoje — que responde outra
+ * pergunta, e responde errado com toda a convicção.
+ *
+ * É também o que torna a reavaliação barata: mudou o algoritmo, mudou a versão,
+ * e o que precisa ser refeito é exatamente o que está carimbado com a versão
+ * antiga. A restrição `triagem_unica_por_versao` conta com isso.
+ *
+ * **Suba quando os PESOS, os cortes ou qualquer critério mudarem.** Não suba
+ * por refatoração que não altere um número — versão que muda sem o resultado
+ * mudar só faz reprocessar em vão.
+ */
+export const VERSAO_DO_SCORE = "score.v1";
 
 const PESOS = {
   objeto: 25,

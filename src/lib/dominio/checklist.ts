@@ -1,7 +1,7 @@
-import type { AnaliseDoEdital, DocumentoDaEmpresa, PerfilDaEmpresa, TipoDeDocumento } from "./tipos";
-import { NOME_DO_DOCUMENTO } from "./tipos";
-import { temValor } from "./procedencia";
-import { dataDeBrasilia } from "./datas";
+import type { AnaliseDoEdital, DocumentoDaEmpresa, PerfilDaEmpresa, TipoDeDocumento } from "./tipos.ts";
+import { NOME_DO_DOCUMENTO } from "./tipos.ts";
+import { temValor } from "./procedencia.ts";
+import { dataDeBrasilia } from "./datas.ts";
 
 /**
  * Checklist: a exigência do edital virando tarefa da empresa.

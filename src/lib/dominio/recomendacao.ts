@@ -1,8 +1,8 @@
-import type { Edital } from "../pncp/tipos";
-import { diasAteEncerrar } from "../pncp/normaliza";
-import type { AnaliseDoEdital, PerfilDaEmpresa } from "./tipos";
-import { calcularScore, type Score } from "./score";
-import type { Checklist } from "./checklist";
+import type { Edital } from "../pncp/tipos.ts";
+import { diasAteEncerrar } from "../pncp/normaliza.ts";
+import type { AnaliseDoEdital, PerfilDaEmpresa } from "./tipos.ts";
+import { calcularScore, type Score } from "./score.ts";
+import type { Checklist } from "./checklist.ts";
 
 /**
  * A recomendação e, principalmente, a próxima ação.

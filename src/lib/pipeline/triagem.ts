@@ -1,6 +1,6 @@
-import type { Edital } from "../pncp/tipos";
-import type { AnaliseDoEdital, PerfilDaEmpresa } from "../dominio/tipos";
-import { avaliarOportunidade, type Avaliacao } from "../dominio/recomendacao";
+import type { Edital } from "../pncp/tipos.ts";
+import type { AnaliseDoEdital, PerfilDaEmpresa } from "../dominio/tipos.ts";
+import { avaliarOportunidade, type Avaliacao } from "../dominio/recomendacao.ts";
 
 /**
  * A triagem: cruzar o que foi coletado com quem assina, e registrar o porquê.

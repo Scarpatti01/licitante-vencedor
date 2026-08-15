@@ -133,9 +133,25 @@ jobs:
             echo "último agregado é de $coletado, e hoje é $hoje — repetindo a coleta"
           fi
 
+      # As credenciais do banco existiam no workflow de ALERTAS e faltavam aqui.
+      #
+      # O efeito era silencioso, e por isso durou: `ingerir-pncp.ts` só grava no
+      # Postgres quando as duas variáveis estão no ambiente, e sem elas cai num
+      # ramo que imprime "banco: sem credencial, nada gravado (só o JSON)" — a
+      # mensagem CERTA para quem roda na própria máquina, e que passa
+      # despercebida no log de um cron que ninguém abre.
+      #
+      # Ou seja: `editais/gravar.ts` estava escrito, testado e nunca executado em
+      # produção. O roadmap declarava a persistência "no ar" e ela não estava.
+      #
+      # Sem o bloco `env:`, este passo não enxerga os segredos do repositório: o
+      # GitHub não injeta `secrets` no ambiente por conta própria.
       - name: Coletar e revisar
         id: coleta
         if: steps.decidir.outputs.pular != 'true'
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           set -o pipefail
           node scripts/ingerir-pncp.ts \

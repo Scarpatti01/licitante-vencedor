@@ -35,6 +35,28 @@ import { abrirRepositorio, type LeadParaAlerta } from "../src/lib/alertas/reposi
 import { criarProvedorResend, emHtml, emTextoSimples } from "../src/lib/email/index.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
 
+/**
+ * Código de saída para "faltou configuração", distinto de "deu errado".
+ *
+ * 78 é `EX_CONFIG` do `sysexits.h` — convenção antiga o bastante para não ser
+ * invenção deste projeto, e específica o bastante para o workflow decidir sem
+ * interpretar texto de log.
+ *
+ * A distinção existe por causa de um modo de falha de gente, não de máquina.
+ * Este script roda todo dia útil por agendamento; enquanto os segredos não
+ * existirem, ele falharia toda manhã, sempre pelo mesmo motivo conhecido. Falha
+ * diária previsível é como se ensina alguém a ignorar o X vermelho — e aí a
+ * falha de VERDADE se esconde no meio das outras.
+ *
+ * A coleta falha alto porque algo deu errado; aqui, algo ainda não foi feito.
+ * São coisas diferentes e merecem sinais diferentes: o workflow encerra limpo
+ * declarando o que falta, em vez de gritar.
+ *
+ * Note o que NÃO mudou: sem configuração, nada é simulado e nada finge ter
+ * saído. A diferença é só entre avisar e alarmar.
+ */
+const SEM_CONFIGURACAO = 78;
+
 function arg(nome: string): string | undefined {
   const i = process.argv.indexOf(`--${nome}`);
   return i === -1 ? undefined : process.argv[i + 1];
@@ -127,12 +149,10 @@ async function main() {
 
   const aberto = abrirRepositorio();
   if (!aberto) {
-    // Não é erro: é o mesmo princípio do resto do projeto — sem credencial, nada
-    // é simulado e nada finge ter saído.
     console.error(
       "sem NEXT_PUBLIC_SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY: não há de onde ler os cadastros. Nada foi enviado.",
     );
-    process.exitCode = 1;
+    process.exitCode = SEM_CONFIGURACAO;
     return;
   }
 
