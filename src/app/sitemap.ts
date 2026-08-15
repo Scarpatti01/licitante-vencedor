@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { GUIAS_PUBLICADOS, PAGINAS_INSTITUCIONAIS, PAGINAS_PRODUTO } from "@/lib/guias";
 import { ARTIGOS_PUBLICADOS } from "@/lib/blog";
+import { caminhoDoMunicipio, MEDIDO_EM, municipiosPublicaveis } from "@/lib/regioes";
 
 /**
  * Só entram no sitemap páginas com conteúdo próprio.
@@ -46,6 +47,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: agora,
       changeFrequency: "monthly" as const,
       priority: p.prioridade,
+    })),
+    /*
+     * As regionais entram sozinhas — e só as que passaram no portão de
+     * `regioes.ts`, porque a lista vem da mesma função que gera as rotas. Não
+     * existe um segundo lugar capaz de discordar dela e sitemapear uma página
+     * que não foi construída.
+     *
+     * `lastModified` é a data da COLETA, não a do build: é ela que diz quando o
+     * conteúdo mudou de fato. Carimbar `agora` faria toda regional parecer
+     * atualizada a cada deploy e ensinaria o rastreador a ignorar o campo.
+     *
+     * Prioridade abaixo dos artigos: elas atendem busca com intenção local, que
+     * é valiosa, mas o texto é gerado a partir de agregado e não substitui um
+     * guia escrito.
+     */
+    ...municipiosPublicaveis().map((m) => ({
+      url: `${SITE.url}${caminhoDoMunicipio(m)}`,
+      lastModified: new Date(MEDIDO_EM),
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
     })),
   ];
 }
