@@ -5,7 +5,7 @@ planejado parecer que existe. Um item só sai de "em construção" quando funcio
 está integrado, tem tratamento de erro, tem estado vazio e de carregamento, foi
 testado e não quebrou nada que já funcionava.
 
-Estado em 2026-08-14.
+Estado em 2026-08-15.
 
 ## Fase 1 — Fundação
 
@@ -98,9 +98,9 @@ Conversão não é item de checklist de alguém: é condição de build.
 
    Uma praça vira página quando tem **≥5 contratações e ≥2 órgãos compradores**.
    Volume sozinho engana: seis editais da mesma prefeitura descrevem aquela
-   prefeitura, não o município. Com o agregado de hoje isso publica **duas**
-   páginas — Recife e Maceió —, e elas aparecem sozinhas conforme a cobertura
-   melhora, sem ninguém decidir de novo.
+   prefeitura, não o município. Quando o portão foi escrito o agregado dava
+   duas páginas; com a coleta de 15/08 ele dá **96**, sem ninguém decidir de
+   novo — que era a propriedade que o justificava.
 
    As páginas descrevem o **mercado** (quanto se compra, por quais modalidades,
    quantos órgãos), nunca "editais abertos": o agregado é um retrato do instante
@@ -108,20 +108,10 @@ Conversão não é item de checklist de alguém: é condição de build.
    de dias atrás mandaria o leitor para certames encerrados. Toda afirmação vem
    datada, e a página diz quando a UF não foi coletada por inteiro.
 
-   **A causa foi encontrada e corrigida em 2026-08-14, e o bloqueio caiu.** Não
-   era a janela de 90 dias nem o PNCP: o orçamento de tempo era conferido ENTRE
-   editais produzidos, enquanto o tempo se gastava DENTRO do `fetch`. Uma UF que
-   não conseguia a primeira página não produzia edital nenhum, nunca chegava à
-   conferência, e ficava presa em 6 tentativas × 60s — devorando o orçamento das
-   seguintes. Daí "0 UFs completas, 4 sem nada" com 30 minutos disponíveis.
-
-   Com o prazo propagado até a camada HTTP, uma coleta de teste com **5 minutos**
-   — seis vezes menos — trouxe 3.115 editais, 4 UFs completas, 2 parciais e
-   **nenhuma vazia**, com 640 municípios no agregado. Contra 150 editais e 4 UFs
-   vazias na coleta de 13/08.
-
-   O caminho está aberto: confirmar uma coleta agendada com as 6 UFs inteiras e
-   então publicar as páginas regionais a partir de `dados/agregados.json`.
+   **Cobertura, que era o bloqueio real, deixou de ser.** A coleta agendada de
+   15/08 trouxe 5 das 6 UFs completas e nenhuma vazia, levando o agregado de 63
+   para 576 municípios — e as páginas publicáveis de 2 para **96**, sozinhas,
+   porque o portão é uma condição sobre o dado e não uma lista curada.
 
 ## Fase 4 — Comunicação
 
