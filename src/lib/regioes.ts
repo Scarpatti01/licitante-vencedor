@@ -304,3 +304,63 @@ export function pracasParaBusca(): PracaParaBusca[] {
     busca: normalizarParaBusca(`${m.municipio} ${m.uf} ${nomeDaUf(m.uf)}`),
   }));
 }
+
+/** O que o hero afirma, lido da última coleta versionada. */
+export type NumerosDaColeta = {
+  /** Editais varridos na última coleta boa. */
+  editais: number;
+  /** Quantas UFs foram varridas por inteiro ou em parte. */
+  ufs: number;
+  /** As siglas, para quem quiser conferir quais. */
+  siglas: string[];
+  /**
+   * Como dizer a abrangência em português, sem exagerar.
+   *
+   * Vira "todo o Brasil" **sozinho** no dia em que as 27 forem varridas. Até lá
+   * diz o número real de estados, porque a diferença entre "6 estados" e "todo o
+   * Brasil" é a diferença entre uma afirmação verificável e uma propaganda que o
+   * primeiro visitante do Sul desmente sozinho.
+   */
+  abrangencia: string;
+  /** ISO do instante da coleta. */
+  medidoEm: string;
+};
+
+/**
+ * Os números que a home exibe.
+ *
+ * ## Por que o hero lê daqui, e não de um número escrito à mão
+ *
+ * Um número chumbado no JSX é verdade no dia em que foi escrito e mentira em
+ * todos os outros. A coleta roda diariamente e commita o agregado; o hero
+ * acompanha sem ninguém lembrar de atualizá-lo — que é exatamente o tipo de
+ * lembrança que ninguém tem.
+ *
+ * Isto já evitou um erro concreto: o número pedido para o hero era "3.128
+ * editais em todo o Brasil", e a coleta do dia trouxe 3.444 em 6 UFs. As duas
+ * metades estavam erradas, e nenhuma teria sido percebida depois de publicada.
+ */
+export function numerosDaColeta(): NumerosDaColeta {
+  const linhas = (agregados.cobertura?.porUf ?? []) as { uf?: unknown; editais?: unknown }[];
+
+  const siglas: string[] = [];
+  let editais = 0;
+
+  for (const linha of linhas) {
+    if (typeof linha.uf === "string") siglas.push(linha.uf);
+    if (typeof linha.editais === "number" && Number.isFinite(linha.editais)) {
+      editais += linha.editais;
+    }
+  }
+
+  const ufs = siglas.length;
+
+  return {
+    editais,
+    ufs,
+    siglas,
+    // 27 unidades federativas: 26 estados e o Distrito Federal.
+    abrangencia: ufs >= 27 ? "em todo o Brasil" : `em ${ufs} ${ufs === 1 ? "estado" : "estados"}`,
+    medidoEm: MEDIDO_EM,
+  };
+}
