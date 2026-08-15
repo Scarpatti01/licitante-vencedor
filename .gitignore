@@ -54,3 +54,6 @@ next-env.d.ts
 
 # Saída de execução dos scripts de agendamento — diagnóstico local, não artefato.
 saida-*.txt
+
+# Saída dos scripts de publicação — diagnóstico local, não artefato.
+saida-posts.txt

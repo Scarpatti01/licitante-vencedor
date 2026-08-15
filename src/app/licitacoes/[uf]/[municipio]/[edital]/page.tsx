@@ -16,6 +16,7 @@ import {
 import { semCarimboDoPortal } from "@/lib/posts/slug";
 import { caminhoDoMunicipio, municipioPorSlug, nomeDaUf } from "@/lib/regioes";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
+import { LeituraDoEdital } from "@/components/posts/LeituraDoEdital";
 
 /**
  * A página de um edital publicado como notícia datada.
@@ -240,6 +241,36 @@ export default async function PaginaDoEdital({
             O valor final sai da disputa e costuma ficar abaixo do estimado.
           </P>
         </Secao>
+
+        {/*
+          A leitura vem logo depois do objeto, e antes de tudo o mais.
+
+          É a única parte da página que não existe na fonte oficial — e é ela que
+          responde a pergunta que trouxe o leitor até aqui: "eu consigo
+          participar disto?". Enterrá-la no fim seria esconder o que dá valor ao
+          post atrás do que qualquer um acha no PNCP.
+        */}
+        {post.analise?.analisadoEm ? (
+          <Secao id="leitura" titulo="O que o edital exige">
+            <LeituraDoEdital
+              analise={post.analise}
+              documentosLidos={post.documentosLidos ?? 0}
+            />
+          </Secao>
+        ) : (
+          <Secao id="leitura" titulo="A leitura deste edital">
+            <P>
+              Não conseguimos ler os documentos deste certame — ou o órgão não
+              publicou anexo legível, ou o arquivo veio em formato que ainda não
+              tratamos. Os dados acima vêm do registro da publicação no PNCP.
+            </P>
+            <P>
+              Preferimos declarar a lacuna a preencher a página com um resumo que
+              não teria como sustentar. O documento oficial está no link no fim
+              desta página.
+            </P>
+          </Secao>
+        )}
 
         {aindaDaParaImpugnar ? (
           <Secao id="impugnar" titulo="Até quando dá para questionar o edital">
