@@ -64,6 +64,33 @@ describe("o runner instala o que os scripts importam", () => {
   });
 });
 
+describe("a busca de candidatos não pode ser cortada em silêncio", () => {
+  /**
+   * O PostgREST tem teto próprio de linhas e ele vence o `limit` da URL.
+   *
+   * Em 16/08 o script pedia `limit=5000` e recebia 1.000 — sem erro e sem aviso.
+   * O corte não era aleatório: a ordem é `encerramento_proposta.asc`, então as
+   * 1.000 linhas eram as de prazo mais curto, e 643 delas foram recusadas por
+   * "prazo-curto-demais". Havia 2.108 editais elegíveis no banco que a seleção
+   * nunca viu.
+   */
+  it("a leitura é paginada", () => {
+    expect(
+      /offset=/.test(PUBLICAR),
+      "a busca voltou a pedir tudo numa requisição só. O `limit` da URL não " +
+        "vence o teto do servidor: a resposta vem cortada em silêncio, e como a " +
+        "ordem é por prazo crescente, o que sobra é justamente o que a seleção " +
+        "descarta por fechar cedo demais.",
+    ).toBe(true);
+  });
+
+  it("a parada olha o que chegou, não o que foi pedido", () => {
+    // `pagina.length < POR_PAGINA` é a condição certa. Comparar com o `limit`
+    // pedido faria o laço não terminar quando o servidor devolvesse menos.
+    expect(PUBLICAR).toMatch(/pagina\.length\s*<\s*POR_PAGINA/);
+  });
+});
+
 describe("leva sem nenhuma leitura não é publicada", () => {
   /**
    * A segunda guarda, e a que sobrevive à próxima causa.

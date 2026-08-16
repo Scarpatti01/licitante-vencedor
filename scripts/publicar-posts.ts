@@ -86,24 +86,56 @@ function paraEdital(linha: Record<string, unknown>): Edital {
  * desperdício de rede. O filtro fino fica em `selecionarDoDia`, que é puro e
  * testado.
  */
+const POR_PAGINA = 1000;
+
 async function candidatos(url: string, chave: string): Promise<Edital[]> {
   const agora = new Date().toISOString();
-  const destino =
-    `${url}/rest/v1/editais` +
-    `?select=*&encerramento_proposta=gt.${agora}` +
-    `&order=encerramento_proposta.asc&limit=5000`;
 
-  const resposta = await fetch(destino, {
-    headers: { apikey: chave, authorization: `Bearer ${chave}` },
-  });
+  /*
+   * Paginado, e não `limit=5000`, porque o `limit` MENTIA.
+   *
+   * O PostgREST tem um teto próprio de linhas por resposta — 1.000 nesta
+   * instância — e ele vence qualquer `limit` maior pedido na URL. Sem erro, sem
+   * cabeçalho de aviso: a resposta simplesmente vem cortada.
+   *
+   * O corte não seria grave se fosse aleatório. Ele é o pior possível: a
+   * consulta ordena por `encerramento_proposta.asc`, então as 1.000 linhas que
+   * chegavam eram exatamente as de prazo MAIS CURTO — e `motivoDaRecusa`
+   * descarta prazo abaixo de 3 dias. Medido em 16/08: das 1.000 recebidas, 643
+   * foram recusadas por "prazo-curto-demais", enquanto 2.108 editais elegíveis
+   * existiam no banco e nunca foram considerados.
+   *
+   * Ou seja: a seleção pescava no pior lago, jogava fora dois terços do que
+   * pegava, e escolhia os 25 do dia entre as sobras — sem que nada no log
+   * indicasse que 2/3 do acervo estava fora de alcance.
+   */
+  const todos: Record<string, unknown>[] = [];
+  for (let inicio = 0; ; inicio += POR_PAGINA) {
+    const destino =
+      `${url}/rest/v1/editais` +
+      `?select=*&encerramento_proposta=gt.${agora}` +
+      `&order=encerramento_proposta.asc` +
+      `&limit=${POR_PAGINA}&offset=${inicio}`;
 
-  if (!resposta.ok) {
-    const corpo = await resposta.text().catch(() => "");
-    throw new ErroDeOperacao(`banco recusou a leitura: ${resposta.status} ${corpo.slice(0, 200)}`);
+    const resposta = await fetch(destino, {
+      headers: { apikey: chave, authorization: `Bearer ${chave}` },
+    });
+
+    if (!resposta.ok) {
+      const corpo = await resposta.text().catch(() => "");
+      throw new ErroDeOperacao(`banco recusou a leitura: ${resposta.status} ${corpo.slice(0, 200)}`);
+    }
+
+    const pagina = (await resposta.json()) as Record<string, unknown>[];
+    todos.push(...pagina);
+
+    // Página incompleta significa fim do conjunto. O servidor pode devolver
+    // MENOS que o pedido por teto próprio, e é por isso que a condição de parada
+    // olha o que chegou, não o que foi pedido.
+    if (pagina.length < POR_PAGINA) break;
   }
 
-  const linhas = (await resposta.json()) as Record<string, unknown>[];
-  return linhas.map(paraEdital);
+  return todos.map(paraEdital);
 }
 
 /**
