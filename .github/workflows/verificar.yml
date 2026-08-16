@@ -1,0 +1,69 @@
+# A verificação que faltava.
+#
+# O repositório tem 760 testes e nenhum deles reprovava um PR: rodavam só quando
+# alguém lembrava de rodar na máquina. Isso vale para todos, mas é mais grave
+# aqui do que num projeto comum, porque boa parte desta suíte não testa função —
+# testa DECISÃO.
+#
+# Alguns exemplos do que estava desprotegido:
+#
+#   · `coleta-paralela.test.ts` — impede que os dois workflows de coleta ganhem
+#     agendamento ao mesmo tempo, o que comitaria o agregado duas vezes no mesmo
+#     dia com resultados diferentes;
+#   · `publicacao-no-workflow.test.ts` — exige que o runner instale as
+#     dependências, e que a leva sem nenhuma leitura seja recusada;
+#   · a guarda de degradação — "um dia ruim não apaga um dia bom", regra que
+#     custou uma série temporal para ser aprendida.
+#
+# Cada um desses testes existe porque a decisão que ele guarda é fácil de
+# desfazer sem perceber. Sem CI, a mensagem de falha que eles carregam só é lida
+# por quem já estava desconfiado — que é justamente quem não precisa dela.
+#
+# Roda em PR e em push para `main`. O push importa: a coleta diária comita
+# direto na main, e uma mudança de dado que quebrasse o build precisa aparecer
+# antes de a Vercel publicar.
+
+name: Verificar
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Um PR que recebe três pushes seguidos não precisa de três verificações: a
+# última é a única que responde à pergunta.
+concurrency:
+  group: verificar-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # `npm ci` inteiro, e não `--omit=dev`: aqui o que se quer é justamente o
+      # que os workflows de coleta dispensam — vitest, eslint, typescript e o
+      # próprio next para o build.
+      - run: npm ci
+
+      - name: Tipos
+        run: npm run tipos
+
+      - name: Lint
+        run: npx eslint .
+
+      - name: Testes
+        run: npm test
+
+      # O build entra porque três defeitos desta base só apareceram nele:
+      # `import.meta.glob` que o Turbopack não tem, `Date.now()` impuro durante
+      # a renderização, e `generateStaticParams` exigindo leitura síncrona.
+      # Nenhum deles falha em teste unitário.
+      - name: Build
+        run: npm run build
