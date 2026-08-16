@@ -264,6 +264,39 @@ async function main() {
 
   if (temChave) {
     console.log(`\ncom leitura: ${comLeitura} de ${posts.length}`);
+
+    /*
+     * Zero leituras com a chave presente é falha de sistema, não azar.
+     *
+     * `lerEAnalisar` captura a falha de CADA edital e devolve `analise: null`,
+     * para que um PDF corrompido não derrube a leva inteira. O efeito colateral
+     * é que a falha coletiva fica idêntica à individual — e foi assim que a
+     * primeira rodada real, em 16/08, gravou 25 posts sem uma única análise, com
+     * o job verde. A causa era uma só e valia para todos: o runner não instalava
+     * `pdfjs-dist`.
+     *
+     * Vinte e cinco editais independentes não falham todos por acaso. Quando
+     * nenhum é lido, o que quebrou está antes deles — e publicar assim entrega
+     * ao leitor exatamente o que o site promete não ser: a listagem crua que ele
+     * já acha no portal.
+     *
+     * Então a leva NÃO é gravada. Preferir o dia sem post ao dia com 25 posts
+     * ocos é a mesma escolha que a guarda de degradação da coleta já faz, e pela
+     * mesma razão: o que se perde num dia volta no seguinte; a confiança de quem
+     * leu, não.
+     *
+     * Leitura parcial passa. É o resultado esperado num dia normal — nem todo
+     * edital publica documento legível, e post sem análise ao lado de posts com
+     * análise continua sendo notícia honesta.
+     */
+    if (comLeitura === 0 && posts.length > 0) {
+      throw new ErroDeOperacao(
+        `nenhum dos ${posts.length} editais foi lido. Isso não é azar: é falha ` +
+          `comum a todos, anterior ao edital. A leva NÃO foi gravada — o dia sem ` +
+          `post é melhor que o dia com ${posts.length} posts sem a leitura, que ` +
+          `é o produto. A causa está no erro repetido acima ("leitura falhou em ...").`,
+      );
+    }
   }
 
   const destino = resolve(process.cwd(), "dados/posts", `${dia}.json`);

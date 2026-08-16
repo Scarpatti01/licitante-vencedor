@@ -3,6 +3,7 @@ import { SITE } from "@/lib/site";
 import { GUIAS_PUBLICADOS, PAGINAS_INSTITUCIONAIS, PAGINAS_PRODUTO } from "@/lib/guias";
 import { ARTIGOS_PUBLICADOS } from "@/lib/blog";
 import { caminhoDoMunicipio, MEDIDO_EM, municipiosPublicaveis } from "@/lib/regioes";
+import { caminhoDoPost, todosOsPosts } from "@/lib/posts/acervo";
 
 /**
  * Só entram no sitemap páginas com conteúdo próprio.
@@ -67,6 +68,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(MEDIDO_EM),
       changeFrequency: "weekly" as const,
       priority: 0.6,
+    })),
+
+    /*
+     * Os posts do dia. FALTAVAM AQUI, e a ausência esvaziava o modelo inteiro.
+     *
+     * O site é um guia que publica licitações como notícia datada, e é dessa
+     * publicação diária que vêm os leitores. Fora do sitemap e sem link em lugar
+     * nenhum — `postsDoMunicipio` existia e não era chamada por página alguma —,
+     * os 25 posts de 16/08 nasceram órfãos: URL válida, HTTP 200, e nenhum
+     * caminho até ela.
+     *
+     * `changeFrequency: "never"` é o valor honesto: post de edital é notícia
+     * datada e não muda depois de publicado. O que muda é o mundo em volta — o
+     * prazo encerra —, e disso a própria página cuida ao renderizar.
+     *
+     * Prioridade acima da página de município porque o post traz o objeto
+     * literal e as datas do certame: é ele que responde a busca de quem procura
+     * aquele edital específico.
+     */
+    ...todosOsPosts().map((post) => ({
+      url: `${SITE.url}${caminhoDoPost(post)}`,
+      lastModified: new Date(post.postadoEm),
+      changeFrequency: "never" as const,
+      priority: 0.7,
     })),
   ];
 }

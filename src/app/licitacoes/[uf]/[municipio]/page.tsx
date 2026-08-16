@@ -17,6 +17,8 @@ import {
   type MunicipioAgregado,
 } from "@/lib/regioes";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
+import { caminhoDoPost, postsDoMunicipio } from "@/lib/posts/acervo";
+import { encerrado, instanteDaPagina } from "@/lib/posts/tipos";
 
 /**
  * A página de mercado de um município.
@@ -105,6 +107,10 @@ export default async function PaginaDoMunicipio({
 
   const medido = dataDeBrasilia(MEDIDO_EM);
   const completa = ufFoiCompleta(m.uf);
+  const postsDaqui = postsDoMunicipio(m.uf, m.slug);
+  // Um relógio só para a página: `encerrado` chamado por item leria instantes
+  // diferentes e poderia marcar dois editais do mesmo segundo de forma distinta.
+  const agora = instanteDaPagina();
   const modalidades = modalidadesOrdenadas(m);
   const ticket = Math.round(m.valor / m.editais);
 
@@ -185,6 +191,46 @@ export default async function PaginaDoMunicipio({
               "com o prazo em destaque.",
           }}
         />
+
+        {/*
+          Os editais deste município que viraram post.
+
+          Este bloco é o link interno que faltava. Antes dele, os posts do dia
+          existiam em URL válida e NENHUMA página do site apontava para eles —
+          `postsDoMunicipio` estava escrita e não era chamada por ninguém. Post
+          órfão não é lido nem indexado, e um guia que publica notícia diária sem
+          caminho até ela não atrai leitor nenhum.
+
+          Cada item declara o prazo, e o que já passou vem marcado: a lista é de
+          notícia datada, não de "abertos agora" — que é exatamente o que a seção
+          seguinte explica não ter como prometer.
+        */}
+        {postsDaqui.length > 0 && (
+          <Secao id="editais" titulo="Editais deste município que publicamos">
+            <P>
+              Alguns certames de {m.municipio} viraram post, com a data em que
+              foram coletados e o prazo de cada um. Parte já encerrou — a lista
+              diz qual.
+            </P>
+            <ul className="mt-4 space-y-3">
+              {postsDaqui.map((post) => (
+                <li key={post.slug}>
+                  <Link
+                    href={caminhoDoPost(post)}
+                    className="font-medium text-sky-800 underline underline-offset-2 hover:text-sky-900"
+                  >
+                    {post.objeto.length > 110 ? `${post.objeto.slice(0, 110)}…` : post.objeto}
+                  </Link>
+                  <span className="block text-sm text-slate-600">
+                    {post.modalidade} · propostas até{" "}
+                    {dataDeBrasilia(post.encerramentoProposta)}
+                    {encerrado(post, agora) ? " · encerrado" : ""}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Secao>
+        )}
 
         <Secao id="agora" titulo="E o que está aberto agora?">
           <P>
