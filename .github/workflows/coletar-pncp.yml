@@ -72,6 +72,25 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
+          cache: npm
+
+      # ISTO FALTAVA, e o silêncio custou uma leva inteira de posts.
+      #
+      # A coleta nunca precisou de `node_modules`: ela usa só o `fetch` embutido,
+      # e por isso o workflow rodou meses sem instalar nada. A publicação de
+      # posts precisa — `pdfjs-dist` para ler o PDF e `@google/genai` para
+      # analisar o texto.
+      #
+      # Na primeira rodada real, em 16/08, o resultado foi `com leitura: 0 de 25`:
+      # 25 posts gravados sem análise nenhuma, com o job VERDE, porque
+      # `lerEAnalisar` captura a falha por edital e segue em frente. O erro era
+      # sempre o mesmo, `Cannot find package 'pdfjs-dist'`, e ninguém o veria sem
+      # abrir o log de um passo que terminou bem.
+      #
+      # `--omit=dev` porque nada aqui compila o site: só os pacotes de execução
+      # importam, e são exatamente eles que faltavam.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
 
       # A segunda tentativa do dia só coleta se a primeira não publicou.
       #

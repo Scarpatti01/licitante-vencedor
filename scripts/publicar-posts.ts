@@ -86,24 +86,56 @@ function paraEdital(linha: Record<string, unknown>): Edital {
  * desperdício de rede. O filtro fino fica em `selecionarDoDia`, que é puro e
  * testado.
  */
+const POR_PAGINA = 1000;
+
 async function candidatos(url: string, chave: string): Promise<Edital[]> {
   const agora = new Date().toISOString();
-  const destino =
-    `${url}/rest/v1/editais` +
-    `?select=*&encerramento_proposta=gt.${agora}` +
-    `&order=encerramento_proposta.asc&limit=5000`;
 
-  const resposta = await fetch(destino, {
-    headers: { apikey: chave, authorization: `Bearer ${chave}` },
-  });
+  /*
+   * Paginado, e não `limit=5000`, porque o `limit` MENTIA.
+   *
+   * O PostgREST tem um teto próprio de linhas por resposta — 1.000 nesta
+   * instância — e ele vence qualquer `limit` maior pedido na URL. Sem erro, sem
+   * cabeçalho de aviso: a resposta simplesmente vem cortada.
+   *
+   * O corte não seria grave se fosse aleatório. Ele é o pior possível: a
+   * consulta ordena por `encerramento_proposta.asc`, então as 1.000 linhas que
+   * chegavam eram exatamente as de prazo MAIS CURTO — e `motivoDaRecusa`
+   * descarta prazo abaixo de 3 dias. Medido em 16/08: das 1.000 recebidas, 643
+   * foram recusadas por "prazo-curto-demais", enquanto 2.108 editais elegíveis
+   * existiam no banco e nunca foram considerados.
+   *
+   * Ou seja: a seleção pescava no pior lago, jogava fora dois terços do que
+   * pegava, e escolhia os 25 do dia entre as sobras — sem que nada no log
+   * indicasse que 2/3 do acervo estava fora de alcance.
+   */
+  const todos: Record<string, unknown>[] = [];
+  for (let inicio = 0; ; inicio += POR_PAGINA) {
+    const destino =
+      `${url}/rest/v1/editais` +
+      `?select=*&encerramento_proposta=gt.${agora}` +
+      `&order=encerramento_proposta.asc` +
+      `&limit=${POR_PAGINA}&offset=${inicio}`;
 
-  if (!resposta.ok) {
-    const corpo = await resposta.text().catch(() => "");
-    throw new ErroDeOperacao(`banco recusou a leitura: ${resposta.status} ${corpo.slice(0, 200)}`);
+    const resposta = await fetch(destino, {
+      headers: { apikey: chave, authorization: `Bearer ${chave}` },
+    });
+
+    if (!resposta.ok) {
+      const corpo = await resposta.text().catch(() => "");
+      throw new ErroDeOperacao(`banco recusou a leitura: ${resposta.status} ${corpo.slice(0, 200)}`);
+    }
+
+    const pagina = (await resposta.json()) as Record<string, unknown>[];
+    todos.push(...pagina);
+
+    // Página incompleta significa fim do conjunto. O servidor pode devolver
+    // MENOS que o pedido por teto próprio, e é por isso que a condição de parada
+    // olha o que chegou, não o que foi pedido.
+    if (pagina.length < POR_PAGINA) break;
   }
 
-  const linhas = (await resposta.json()) as Record<string, unknown>[];
-  return linhas.map(paraEdital);
+  return todos.map(paraEdital);
 }
 
 /**
@@ -264,6 +296,39 @@ async function main() {
 
   if (temChave) {
     console.log(`\ncom leitura: ${comLeitura} de ${posts.length}`);
+
+    /*
+     * Zero leituras com a chave presente é falha de sistema, não azar.
+     *
+     * `lerEAnalisar` captura a falha de CADA edital e devolve `analise: null`,
+     * para que um PDF corrompido não derrube a leva inteira. O efeito colateral
+     * é que a falha coletiva fica idêntica à individual — e foi assim que a
+     * primeira rodada real, em 16/08, gravou 25 posts sem uma única análise, com
+     * o job verde. A causa era uma só e valia para todos: o runner não instalava
+     * `pdfjs-dist`.
+     *
+     * Vinte e cinco editais independentes não falham todos por acaso. Quando
+     * nenhum é lido, o que quebrou está antes deles — e publicar assim entrega
+     * ao leitor exatamente o que o site promete não ser: a listagem crua que ele
+     * já acha no portal.
+     *
+     * Então a leva NÃO é gravada. Preferir o dia sem post ao dia com 25 posts
+     * ocos é a mesma escolha que a guarda de degradação da coleta já faz, e pela
+     * mesma razão: o que se perde num dia volta no seguinte; a confiança de quem
+     * leu, não.
+     *
+     * Leitura parcial passa. É o resultado esperado num dia normal — nem todo
+     * edital publica documento legível, e post sem análise ao lado de posts com
+     * análise continua sendo notícia honesta.
+     */
+    if (comLeitura === 0 && posts.length > 0) {
+      throw new ErroDeOperacao(
+        `nenhum dos ${posts.length} editais foi lido. Isso não é azar: é falha ` +
+          `comum a todos, anterior ao edital. A leva NÃO foi gravada — o dia sem ` +
+          `post é melhor que o dia com ${posts.length} posts sem a leitura, que ` +
+          `é o produto. A causa está no erro repetido acima ("leitura falhou em ...").`,
+      );
+    }
   }
 
   const destino = resolve(process.cwd(), "dados/posts", `${dia}.json`);

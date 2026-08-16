@@ -90,6 +90,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
+          cache: npm
+
+      # O shard só coleta, e a coleta usa apenas o `fetch` embutido. Instala
+      # mesmo assim: o dia em que alguém importar um pacote aqui, o erro seria o
+      # mesmo que apagou a leitura dos posts em 16/08 — falha por item, capturada,
+      # com o job verde.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
 
       # `--parcial`: coleta, grava no banco e PARA antes de agregar. Quem agrega
       # é o job `juntar`, com os editais de todas as UFs na mão — a auditoria de
@@ -128,6 +136,12 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
+          cache: npm
+
+      # Aqui é obrigatório, não precaução: é este job que publica os posts, e
+      # `publicar-posts.ts` importa `pdfjs-dist` e `@google/genai`.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
 
       - name: Baixar os parciais
         uses: actions/download-artifact@v4
