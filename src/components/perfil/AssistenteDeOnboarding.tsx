@@ -1,13 +1,15 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { PerfilDaEmpresa } from "@/lib/dominio/tipos";
+import type { IdentidadeDaEmpresa } from "@/lib/dados";
 import { salvarPerfilDaEmpresa } from "@/app/(app)/perfil/acoes";
 import { BotaoDeEnvio, EstadoDoSalvamento } from "@/components/app/EnvioDeFormulario";
 import { Aviso, BOTAO, Cartao } from "@/components/app/ui";
 import { ResumoDeErros } from "./campos";
 import { ESTADO_INICIAL, type EstadoDoFormulario } from "./estado";
+import { usePreenchimentoPreservado } from "./preservarPreenchimento";
 import {
   rotuloDoCampo,
   SecaoAtestados,
@@ -84,15 +86,23 @@ function etapaDoCampo(chave: string): number {
 
 export function AssistenteDeOnboarding({
   perfil,
+  identidade = null,
   etapaInicial = 0,
 }: {
   perfil: PerfilDaEmpresa | null;
+  /**
+   * O que `/cadastrar-empresa/` já coletou. Sem isto, quem acabou de criar a
+   * empresa reencontra CNPJ e razão social em branco na primeira etapa, dois
+   * cliques depois de digitá-los.
+   */
+  identidade?: IdentidadeDaEmpresa | null;
   etapaInicial?: number;
 }) {
   const roteador = useRouter();
   const [etapa, setEtapa] = useState(etapaInicial);
   const tituloRef = useRef<HTMLHeadingElement>(null);
   const resumoDeErrosRef = useRef<HTMLDivElement>(null);
+  const { formularioRef, lembrar, restaurar } = usePreenchimentoPreservado();
 
   /**
    * A navegação do assistente mora AQUI, e não num efeito que observa o estado.
@@ -108,6 +118,10 @@ export function AssistenteDeOnboarding({
    */
   const [estado, acao, salvando] = useActionState(
     async (anterior: EstadoDoFormulario, dados: FormData) => {
+      // Antes de tudo: o React vai resetar este formulário no commit desta
+      // transição, e as quatro etapas moram nele. Ver `preservarPreenchimento`.
+      lembrar(dados);
+
       const resultado = await salvarPerfilDaEmpresa(anterior, dados);
       const intencao = dados.get("intencao");
 
@@ -132,6 +146,14 @@ export function AssistenteDeOnboarding({
     ESTADO_INICIAL,
   );
 
+  /*
+   * Roda DEPOIS do commit — que é quando o reset do React já foi aplicado. Um
+   * `restaurar()` dentro da ação seria desfeito segundos depois, no commit.
+   */
+  useEffect(() => {
+    restaurar();
+  }, [estado, restaurar]);
+
   const trocarEtapa = (proxima: number) => {
     setEtapa(proxima);
     // O foco acompanha a troca: sem isto, quem navega por teclado continua no
@@ -144,7 +166,7 @@ export function AssistenteDeOnboarding({
   const ultima = etapa === ETAPAS.length - 1;
 
   return (
-    <form action={acao} className="space-y-6">
+    <form ref={formularioRef} action={acao} className="space-y-6">
       <ol className="flex flex-wrap gap-2" aria-label="Etapas do cadastro">
         {ETAPAS.map((e, i) => {
           const ativa = i === etapa;
@@ -205,7 +227,7 @@ export function AssistenteDeOnboarding({
 
         <div className="mt-6">
           <div hidden={etapa !== 0}>
-            <SecaoEmpresa perfil={perfil} erros={estado.erros} />
+            <SecaoEmpresa perfil={perfil} identidade={identidade} erros={estado.erros} />
           </div>
           <div hidden={etapa !== 1}>
             <SecaoAtuacao perfil={perfil} erros={estado.erros} />

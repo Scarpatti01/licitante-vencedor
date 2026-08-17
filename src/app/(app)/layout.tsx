@@ -64,7 +64,7 @@ export default async function LayoutDoProduto({
     if (!vinculo) redirect("/cadastrar-empresa/");
   }
 
-  const repo = repositorio();
+  const repo = await repositorio();
   const empresaId = await empresaAtual();
   const perfil = await repo.perfil(empresaId);
   const diagnostico = diagnosticarPerfil(perfil);
@@ -79,7 +79,9 @@ export default async function LayoutDoProduto({
         Pular para o conteúdo
       </a>
 
-      {demonstracao ? <AvisoDeDemonstracao /> : null}
+      {demonstracao ? (
+        <AvisoDeDemonstracao cadastroPersiste={repo.cadastroPersiste(empresaId)} />
+      ) : null}
 
       <header className="sticky top-0 z-40 border-b bg-[var(--background)]/85 backdrop-blur">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-5 pt-4 pb-3 sm:px-8">

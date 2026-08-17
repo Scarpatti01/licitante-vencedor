@@ -33,7 +33,7 @@ type Props = { params: Promise<{ id: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const repo = repositorio();
+  const repo = await repositorio();
   const empresaId = await empresaAtual();
   const oportunidade = await repo.oportunidade(empresaId, decodeURIComponent(id));
 
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function EditalPagina({ params }: Props) {
   const { id } = await params;
   const agora = new Date();
-  const repo = repositorio();
+  const repo = await repositorio();
   const empresaId = await empresaAtual();
 
   const oportunidade = await repo.oportunidade(empresaId, decodeURIComponent(id));

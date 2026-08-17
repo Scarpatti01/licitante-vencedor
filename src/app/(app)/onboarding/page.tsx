@@ -29,10 +29,19 @@ export default async function PaginaDeOnboarding({
 }) {
   const { etapa } = await searchParams;
 
-  const repo = repositorio();
+  const repo = await repositorio();
   const empresaId = await empresaAtual();
   const perfil = await repo.perfil(empresaId);
   const diagnostico = diagnosticarPerfil(perfil);
+
+  /*
+   * Só quando ainda não há perfil — depois disso o perfil é a fonte, e reler a
+   * identidade seria uma consulta a mais para chegar ao mesmo lugar.
+   *
+   * Sem isto, quem acabou de criar a empresa chega aqui e encontra em branco os
+   * dois campos que `/cadastrar-empresa/` pediu dois cliques antes.
+   */
+  const identidade = perfil === null ? await repo.identidade(empresaId) : null;
 
   const indice = Math.max(0, CHAVES.indexOf((etapa ?? "") as (typeof CHAVES)[number]));
 
@@ -64,7 +73,7 @@ export default async function PaginaDeOnboarding({
         </Aviso>
       ) : null}
 
-      <AssistenteDeOnboarding perfil={perfil} etapaInicial={indice} />
+      <AssistenteDeOnboarding perfil={perfil} identidade={identidade} etapaInicial={indice} />
 
       <p className="text-xs leading-relaxed text-[var(--muted)]">
         O que você declara aqui vale como declaração sua e alimenta a triagem.

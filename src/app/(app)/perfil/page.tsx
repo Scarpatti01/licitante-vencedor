@@ -27,7 +27,7 @@ export default async function PaginaDePerfil({
   searchParams: Promise<{ salvo?: string }>;
 }) {
   const { salvo } = await searchParams;
-  const repo = repositorio();
+  const repo = await repositorio();
   const empresaId = await empresaAtual();
   const perfil = await repo.perfil(empresaId);
   const diagnostico = diagnosticarPerfil(perfil);

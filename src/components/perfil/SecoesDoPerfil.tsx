@@ -3,6 +3,7 @@ import {
   type PerfilDaEmpresa,
   type TipoDeDocumento,
 } from "@/lib/dominio/tipos";
+import type { IdentidadeDaEmpresa } from "@/lib/dados/porta";
 import { Aviso } from "@/components/app/ui";
 import { CampoDeLista, CampoDeSelecao, CampoDeTexto, GrupoDeMarcacoes } from "./campos";
 import { ListaDeAtestados } from "./ListaDeAtestados";
@@ -25,6 +26,16 @@ import { formatarCnae, MODALIDADES, PORTES, UFS } from "./validacao";
 export type PropsDaSecao = {
   perfil: PerfilDaEmpresa | null;
   erros: ErrosDoFormulario;
+  /**
+   * O que `empresas` já sabe, para quando ainda não existe perfil.
+   *
+   * Só `SecaoEmpresa` usa. Identidade e critérios nascem em momentos
+   * diferentes: CNPJ e razão social são coletados em `/cadastrar-empresa/`, o
+   * perfil só no onboarding — e no intervalo entre um e outro `perfil` é `null`
+   * com toda razão. Sem isto, a primeira etapa do assistente pede de novo, em
+   * branco, o que a pessoa digitou dois cliques antes.
+   */
+  identidade?: IdentidadeDaEmpresa | null;
 };
 
 /** Nomes legíveis para o resumo de erros no topo do formulário. */
@@ -55,14 +66,20 @@ export function rotuloDoCampo(chave: string): string {
 
 // ---------------------------------------------------------------------------
 
-export function SecaoEmpresa({ perfil, erros }: PropsDaSecao) {
+export function SecaoEmpresa({ perfil, erros, identidade = null }: PropsDaSecao) {
+  // O perfil manda quando existe; a identidade é o que preenche a primeira
+  // etapa de quem acabou de cadastrar a empresa e ainda não tem perfil nenhum.
+  const cnpj = perfil?.cnpj ?? identidade?.cnpj;
+  const razaoSocial = perfil?.razaoSocial ?? identidade?.razaoSocial;
+  const nomeFantasia = perfil?.nomeFantasia ?? identidade?.nomeFantasia ?? "";
+
   return (
     <div className="grid gap-5 sm:grid-cols-2">
       <CampoDeTexto
         nome="cnpj"
         rotulo="CNPJ"
         obrigatorio
-        valorInicial={perfil?.cnpj}
+        valorInicial={cnpj}
         erro={erros.cnpj}
         placeholder="00.000.000/0000-00"
         inputMode="numeric"
@@ -84,7 +101,7 @@ export function SecaoEmpresa({ perfil, erros }: PropsDaSecao) {
           nome="razaoSocial"
           rotulo="Razão social"
           obrigatorio
-          valorInicial={perfil?.razaoSocial}
+          valorInicial={razaoSocial}
           erro={erros.razaoSocial}
           ajuda="Como está no contrato social — é o nome que vai na proposta e nas declarações."
         />
@@ -92,7 +109,7 @@ export function SecaoEmpresa({ perfil, erros }: PropsDaSecao) {
       <CampoDeTexto
         nome="nomeFantasia"
         rotulo="Nome fantasia"
-        valorInicial={perfil?.nomeFantasia ?? ""}
+        valorInicial={nomeFantasia}
         ajuda="Só para você reconhecer a empresa nas telas quando houver mais de um CNPJ na conta."
       />
       <CampoDeTexto

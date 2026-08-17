@@ -27,7 +27,7 @@ import type { EstadoDoFormulario } from "@/components/perfil/estado";
  */
 
 async function gravar(dados: FormData): Promise<EstadoDoFormulario> {
-  const repo = repositorio();
+  const repo = await repositorio();
   const empresaId = await empresaAtual();
   const atual = await repo.perfil(empresaId);
 

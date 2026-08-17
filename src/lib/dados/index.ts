@@ -2,10 +2,18 @@ import "server-only";
 import { cache } from "react";
 import { connection } from "next/server";
 import { RepositorioDeDemonstracao, EMPRESA_DE_DEMONSTRACAO, ehDemonstracao } from "./demonstracao";
+import { RepositorioSupabase } from "./supabase";
 import type { RepositorioDoProduto } from "./porta";
+import { clienteDoServidor } from "../auth/cliente";
 import { vinculoDoUsuario } from "../auth/sessao";
 
-export type { RepositorioDoProduto, ResumoDaOportunidade, PainelDoDia, FiltroDeOportunidades } from "./porta";
+export type {
+  RepositorioDoProduto,
+  ResumoDaOportunidade,
+  PainelDoDia,
+  FiltroDeOportunidades,
+  IdentidadeDaEmpresa,
+} from "./porta";
 export { ehDemonstracao };
 
 /**
@@ -15,18 +23,35 @@ export { ehDemonstracao };
  * cliente importar este módulo por engano, o build quebra em vez de mandar
  * consulta e credencial para o navegador.
  *
- * Hoje devolve o repositório de demonstração, porque ainda não há projeto
- * Postgres provisionado — essa é decisão do dono, com custo mensal, e não cabe
- * a um agente tomá-la. Quando houver, a troca acontece só aqui: nenhuma tela
- * conhece a implementação.
+ * ## O que mudou em 17/08, e por quê
+ *
+ * Esta função devolvia o repositório de demonstração SEMPRE, com um comentário
+ * dizendo que era assim "porque ainda não há projeto Postgres provisionado". O
+ * projeto existe desde 14/08 e já guarda 3.483 editais; o comentário
+ * envelheceu, e a consequência não foi cosmética. O onboarding gravava num
+ * `Map` que morria com a requisição, respondia "Cadastro salvo", e o usuário
+ * era mandado de volta para a primeira etapa em branco com a mensagem de que
+ * não havia preenchido os campos obrigatórios.
+ *
+ * Nenhuma tela conhece a implementação — a promessa que a porta fez lá atrás se
+ * pagou aqui: a troca é este arquivo, e mais nada.
+ *
+ * ## Sem configuração, a demonstração continua
+ *
+ * `clienteDoServidor()` devolve `null` quando faltam as variáveis do Supabase.
+ * Aí volta o repositório sintético, que é o que mantém o produto navegável em
+ * pré-visualização e em teste local sem credencial. Não é fallback silencioso:
+ * `ehDemonstracao` continua `true` e a faixa de aviso continua na tela.
  *
  * `cache` do React memoiza por passagem de renderização, de modo que várias
  * partes da página compartilhem a mesma instância sem que ninguém precise
  * passá-la de componente em componente — que é justamente como uma instância
  * acaba vazando para o cliente.
  */
-export const repositorio = cache((): RepositorioDoProduto => {
-  return new RepositorioDeDemonstracao();
+export const repositorio = cache(async (): Promise<RepositorioDoProduto> => {
+  const supabase = await clienteDoServidor();
+  if (!supabase) return new RepositorioDeDemonstracao();
+  return new RepositorioSupabase(supabase);
 });
 
 /**
