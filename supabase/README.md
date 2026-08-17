@@ -3,9 +3,59 @@
 Schema do Licitante Vencedor como SaaS multi-tenant. Postgres no Supabase, com
 RLS negando por padrão em todas as tabelas.
 
-**Nada aqui foi aplicado em banco nenhum.** Não há projeto Supabase provisionado
-e a decisão de provisionar é do dono. As migrações estão escritas para rodar em
-ordem, do zero, em um projeto novo.
+## Estado real, em 17/08/2026
+
+Este parágrafo dizia **"nada aqui foi aplicado em banco nenhum"**. Estava errado
+desde 14/08, e o preço de deixar um texto desses envelhecer apareceu no mesmo
+dia em que ele foi corrigido: `src/lib/dados/index.ts` carregava o mesmo aviso
+(*"ainda não há projeto Postgres provisionado"*), e por causa dele o produto
+gravava o cadastro do cliente num `Map` que morria com a requisição. Ver o
+cabeçalho de `20260817120000_salvar_perfil_da_empresa.sql`.
+
+O projeto **existe e está em produção**: `Licitante Vencedor`, região
+`sa-east-1`, Postgres 17. Todas as migrações desta pasta estão aplicadas, e há
+dado real dentro — editais coletados diariamente, um tenant, um usuário.
+
+### O histórico do banco não usa as versões desta pasta
+
+Descoberto ao conferir `supabase_migrations.schema_migrations` contra os nomes
+de arquivo. As migrações foram aplicadas pelo painel/API, que carimba o próprio
+horário, então **nenhuma** versão do banco bate com o prefixo do arquivo
+correspondente:
+
+| Arquivo | Versão no banco |
+| --- | --- |
+| `20260814090000_fundacoes_extensoes_e_tipos` | `20260814125600` |
+| `20260814110000_leads_do_site` | `20260814120313` |
+| `20260817120000_salvar_perfil_da_empresa` | `20260817215530` |
+
+**Consequência prática: `npm run db:aplicar` (`supabase db push`) hoje é uma
+armadilha.** Ele compara versões, concluiria que nenhuma migração desta pasta
+foi aplicada, e tentaria rodar todas de novo — falhando no primeiro
+`create table` de tabela que já existe, depois de ter possivelmente executado o
+que vinha antes.
+
+Antes do primeiro `push`, reconcilie o histórico com a mesma ferramenta que o
+item 4 abaixo já indica, uma vez por migração:
+
+```bash
+supabase migration repair --status applied <versão-do-arquivo>
+```
+
+A ordem de aplicação também divergiu: no banco, `leads_do_site` entrou ANTES de
+`fundacoes_extensoes_e_tipos`; nesta pasta ela vem depois. Sem efeito aqui,
+porque `leads_do_site` não depende de nada das outras — mas é o motivo de o
+`supabase db reset` local continuar sendo o único teste honesto da ordem
+declarada.
+
+Há ainda uma migração no banco sem arquivo aqui:
+`20260814131615_fechar_execute_das_funcoes_de_trigger_authenticated`. Ela **não
+é uma diferença de efeito** — conferido statement por statement. O banco recebeu
+o revoke em dois passos (`from public`, depois `from anon, authenticated`) e o
+arquivo `20260814120000` desta pasta faz os dois numa linha só. Aplicada do
+zero, esta pasta chega ao mesmo estado, e o banco confirma: as quatro funções de
+trigger estão com `anon = false` e `authenticated = false`. Ao reparar o
+histórico essa versão sobra, e pode ficar.
 
 ---
 
@@ -71,7 +121,30 @@ arquivo já aplicado, mesmo que o erro esteja nele. O histórico é o contrato.
 | `20260814101000_fila_de_trabalhos.sql` | `fila_de_trabalhos` e o contrato de consumo: `reservar_trabalhos`, `concluir_trabalho`, `falhar_trabalho`, `enfileirar_trabalho`. |
 | `20260814102000_eventos_de_auditoria.sql` | `eventos_de_auditoria`, append-only. |
 | `20260814103000_storage_documentos_da_empresa.sql` | Bucket privado `documentos-da-empresa` e policies de Storage por pasta. |
-| `20260814104000_endurecer_privilegios.sql` | Revoga `TRUNCATE` (que **não** passa por RLS), `TRIGGER` e `REFERENCES` de `anon` e `authenticated`, inclusive para tabelas futuras. |
+| `20260814104000_endurecer_privilegios.sql` | Revoga `TRUNCATE` (que **não** passa por RLS), `TRIGGER` e `REFERENCES` de `anon` e `authenticated`, inclusive para tabelas futuras. **Não** cobre funções criadas depois — ver abaixo. |
+| `20260814110000_leads_do_site.sql` | `leads_do_site`, a captura de contato das páginas públicas. |
+| `20260814120000_fechar_execute_das_funcoes_de_trigger.sql` | Tira de `PUBLIC`, `anon` e `authenticated` o EXECUTE das quatro funções de trigger. |
+| `20260814130000_envios_de_alerta.sql` | `envios_de_alerta` — o registro do que já foi avisado, para não avisar duas vezes. |
+| `20260814170000_criar_empresa_com_dono.sql` | `criar_empresa_com_dono()`: único caminho para o primeiro membro de um tenant. `security definer`, com a checagem de sessão fazendo as vezes de porta. |
+| `20260817120000_salvar_perfil_da_empresa.sql` | `salvar_perfil_da_empresa()`: identidade, critérios, documentos e atestados numa transação só. `security invoker`, para a RLS continuar decidindo. Mais a auxiliar `texto_do_json()`. |
+| `20260817230000_fechar_execute_de_texto_do_json.sql` | Tira `texto_do_json()` de `anon`. Ela nasceu exposta pelo mecanismo descrito abaixo. |
+
+### A armadilha das funções novas, que já pegou duas vezes
+
+`20260814104000` faz `revoke all on all functions in schema public from anon`.
+Isso vale para o que existia naquele instante e **nada** para o futuro: toda
+função criada depois nasce outra vez alcançável, por dois caminhos
+independentes — o EXECUTE que o Postgres concede ao pseudo-papel `PUBLIC` (do
+qual `anon` herda) e o que o Supabase concede nominalmente a `anon` e
+`authenticated` por default privileges.
+
+Pegou as quatro funções de trigger em 14/08, e pegou `texto_do_json` em 17/08 —
+a função principal do mesmo arquivo trouxe o próprio revoke, a auxiliar não.
+
+Agora existe guarda: `src/lib/funcoes-nao-nascem-publicas.test.ts` falha se
+qualquer função criada depois de `20260814104000` não revogar EXECUTE de
+`public` e de `anon`. Ela roda em `npm run verificar`, antes de a migração
+chegar a banco nenhum.
 
 ### O que já foi verificado
 
@@ -87,6 +160,21 @@ policies de Storage.
 Duas coisas **não** foram exercitadas porque a `pgvector` não existia naquele
 Postgres: `extensions.vector(768)` e o índice HNSW. São as duas linhas a
 observar no primeiro `supabase db reset`.
+
+Em 17/08, `salvar_perfil_da_empresa` foi exercitada contra o **projeto de
+produção**, como o usuário real (`request.jwt.claims` + `set local role
+authenticated`, portanto com RLS valendo), dentro de transações revertidas por
+exceção — o cadastro do dono não podia terminar com dado de teste dentro:
+
+- grava os sete arrays, dois documentos com validade e `arquivo_anexado`
+  derivado, um atestado, e normaliza o CNPJ para dígitos;
+- gravar duas vezes não duplica, e o tipo de documento que sai do formulário sai
+  do banco;
+- não-membro recebe `empresa não encontrada`; sem sessão, `sem sessão`.
+
+Depois do revoke de `texto_do_json`, a gravação foi refeita para provar que o
+fechamento não atingiu quem precisa chamar. Estado atual: **0 de 17** funções de
+`public` alcançáveis por `anon`.
 
 ---
 
