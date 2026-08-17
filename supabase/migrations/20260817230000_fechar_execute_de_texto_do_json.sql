@@ -1,0 +1,35 @@
+-- Tira `texto_do_json` de `/rest/v1/rpc/`, alcançável por `anon`.
+--
+-- ## Como ela escapou
+--
+-- `20260814104000_endurecer_privilegios` fez `revoke all on all functions in
+-- schema public from anon`. Isso vale para as funções que EXISTIAM naquele
+-- momento; o Postgres não guarda a regra para as futuras. Toda função criada
+-- depois nasce, de novo, com EXECUTE para `PUBLIC` (regra do Postgres) e com
+-- EXECUTE nominal para `anon` e `authenticated` (default privileges do
+-- Supabase) — os dois mecanismos que `20260814120000` documenta.
+--
+-- Por isso `criar_empresa_com_dono` traz o próprio revoke, e por isso
+-- `salvar_perfil_da_empresa` também trouxe. A auxiliar dela, criada no mesmo
+-- arquivo, não trouxe — e ficou sendo a única função de `public` que `anon`
+-- podia chamar. Conferido no banco, não deduzido: `has_function_privilege` deu
+-- `anon = true` para ela e `false` para as outras dezesseis.
+--
+-- ## Por que `authenticated` FICA, e isso não é meia correção
+--
+-- `salvar_perfil_da_empresa` é `security invoker` de propósito, para a RLS
+-- continuar decidindo. Rodando como o papel de quem chamou, ela precisa que
+-- esse papel tenha EXECUTE na auxiliar — revogar de `authenticated` quebraria a
+-- gravação do cadastro, que é justamente o que ela existe para fazer.
+--
+-- E o risco que sobra é diferente em espécie do que motivou os outros revokes.
+-- Aqueles fecharam `security definer` — funções que rodam com privilégio que o
+-- chamador não tem. Esta é `immutable`, não lê tabela nenhuma, e devolve ao
+-- chamador a conversão do jsonb que ele mesmo mandou. Quem a chama por RPC
+-- aprende exatamente o que já sabia.
+--
+-- O que não podia ficar é o `anon`: uma função exposta a quem não tem conta é
+-- superfície pública, e superfície pública se justifica uma a uma.
+
+revoke execute on function public.texto_do_json(jsonb) from public, anon;
+grant execute on function public.texto_do_json(jsonb) to authenticated;
