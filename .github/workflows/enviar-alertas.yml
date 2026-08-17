@@ -72,20 +72,47 @@ jobs:
         with:
           node-version: "24"
 
-      - name: Baixar o snapshot da última coleta bem-sucedida
+      # A execução mais recente que TEM O ARTEFATO — não a mais recente que ficou
+      # verde. A diferença derrubou o primeiro alerta da história do projeto.
+      #
+      # `coletar-pncp.yml` tem duas rodadas por dia. A das 08:10 é a segunda
+      # tentativa e, quando a das 06:10 já publicou, ela decide não coletar e
+      # termina em ~18 segundos: verde, correta, e sem snapshot nenhum. Como era
+      # a mais recente com `--status=success`, era ela que o `--limit=1` pegava —
+      # e o download morria com "no valid artifacts found", todo dia útil.
+      #
+      # O próprio `coletar-pncp.yml` já tinha aprendido esta lição, do outro
+      # lado: ele recusa perguntar à API se já coletou hoje, porque
+      # "`conclusion == success` diz que o job terminou verde", que é a pergunta
+      # errada. Aqui a pergunta certa é "esta execução produziu o snapshot?" — e
+      # só a lista de artefatos responde isso.
+      #
+      # Olhar 10 candidatas em vez de 1 não afrouxa nada: `enviar-alertas.ts`
+      # recusa snapshot com mais de 36 horas, então uma coleta velha com artefato
+      # continua sendo rejeitada — pelo motivo certo, e com a mensagem certa.
+      - name: Baixar o snapshot da última coleta que produziu snapshot
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          id=$(gh run list \
-                --workflow=coletar-pncp.yml \
-                --status=success \
-                --limit=1 \
-                --json databaseId \
-                --jq '.[0].databaseId')
+
+          id=""
+          for candidata in $(gh run list \
+                              --workflow=coletar-pncp.yml \
+                              --status=success \
+                              --limit=10 \
+                              --json databaseId \
+                              --jq '.[].databaseId'); do
+            if gh api "repos/$GITHUB_REPOSITORY/actions/runs/$candidata/artifacts" \
+                 --jq '.artifacts[].name' 2>/dev/null | grep -qx snapshot-pncp; then
+              id="$candidata"
+              break
+            fi
+            echo "execução $candidata terminou verde sem snapshot — provavelmente a segunda tentativa do dia"
+          done
 
           if [ -z "$id" ]; then
-            echo "::error title=Sem coleta::nenhuma execução bem-sucedida de coletar-pncp.yml"
+            echo "::error title=Sem coleta::nenhuma das 10 execuções bem-sucedidas mais recentes de coletar-pncp.yml produziu o artefato snapshot-pncp"
             exit 1
           fi
 
