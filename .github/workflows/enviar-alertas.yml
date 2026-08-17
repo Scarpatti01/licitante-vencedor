@@ -71,6 +71,26 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "24"
+          cache: npm
+
+      # Sem isto o alerta não roda. NENHUMA vez.
+      #
+      # Descoberto em 17/08, na primeira execução disparada à mão depois de o
+      # produto ganhar um perfil de empresa real: o job morreu em 11 segundos
+      # com `Cannot find package 'server-only' imported from
+      # src/lib/email/resend.ts`. Repare que NÃO é o `server-only` lançando de
+      # propósito, que é o defeito que `--conditions=react-server` resolve lá
+      # embaixo — é o pacote não existir, porque `node_modules` nunca foi criado
+      # neste runner. Dois defeitos parecidos no mesmo import, e o segundo
+      # estava escondido atrás do primeiro.
+      #
+      # É a mesma causa que apagou a leitura dos 25 editais em 16/08 e que a
+      # PR #21 corrigiu — em `coletar-pncp.yml`. A correção não foi
+      # generalizada, e este workflow ficou para trás por um mês.
+      # `workflows-instalam-dependencias.test.ts` passa a cobrar de TODOS, e não
+      # do próximo que alguém lembrar.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
 
       # A execução mais recente que TEM O ARTEFATO — não a mais recente que ficou
       # verde. A diferença derrubou o primeiro alerta da história do projeto.
