@@ -79,13 +79,38 @@ export async function criarConta(
   /*
    * Projeto com confirmação de e-mail ligada devolve usuário SEM sessão. Mandar
    * essa pessoa para o painel a jogaria contra o proxy, que a devolveria para o
-   * login sem explicação — ela acharia que a conta não foi criada e tentaria de
-   * novo, agora recebendo "e-mail já cadastrado".
+   * login sem explicação — e ela concluiria que a conta não foi criada.
+   *
+   * ## Por que a mensagem não diz "conta criada"
+   *
+   * Esta resposta é IDÊNTICA em dois casos opostos, e o Supabase faz isso de
+   * propósito:
+   *
+   *   · e-mail novo — a conta nasce e o link de confirmação sai;
+   *   · e-mail já cadastrado — nada é criado e NENHUM e-mail é enviado.
+   *
+   * O segundo caso não devolve erro, e não devolve por segurança: se a resposta
+   * fosse diferente, qualquer um descobriria quem tem conta no site testando
+   * endereços um a um. Enumeração de contas é o primeiro passo de quem monta
+   * lista para phishing dirigido — protegê-la vale mais do que a clareza que se
+   * ganharia dizendo "esse e-mail já existe".
+   *
+   * A versão anterior desta mensagem afirmava as duas coisas — "Conta criada" e
+   * "o e-mail que acabamos de enviar" — e no segundo caso as duas eram falsas.
+   * O custo apareceu em 17/08: alguém com conta já confirmada ficou esperando um
+   * e-mail que não existia, quando bastava entrar.
+   *
+   * A mensagem abaixo descreve os DOIS caminhos sem revelar qual aconteceu.
+   * Continua sem enumerar, e para de afirmar o que pode não ter ocorrido — que é
+   * a regra que este projeto aplica ao edital, e vale igual para o próprio site.
    */
   if (!data.session) {
     return {
       erro: null,
-      aviso: "Conta criada. Confirme o e-mail que acabamos de enviar para entrar.",
+      aviso:
+        "Se este e-mail ainda não tinha conta, enviamos agora um link de confirmação — " +
+        "confira a caixa de entrada e o spam. Se já tinha, o link não é reenviado: " +
+        "use Entrar logo abaixo, ou recupere a senha.",
     };
   }
 
