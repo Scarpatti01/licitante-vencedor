@@ -29,22 +29,17 @@
 name: Coletar PNCP
 
 on:
-  schedule:
-    # 06:10 UTC = 03:10 em Brasília. Cedo o bastante para o alerta das 7h e
-    # fora do horário de pico do PNCP.
-    - cron: "10 6 * * *"
-    # 08:10 UTC = 05:10 em Brasília. SEGUNDA TENTATIVA, e ela quase sempre não
-    # faz nada — ver o passo "Decidir se esta rodada precisa coletar".
-    #
-    # Existe porque uma tentativa por dia se mostrou pouco contra esta fonte: o
-    # PNCP caiu duas vezes em 12/08, entregou 13/08 já degradado (PE parcial por
-    # timeout, PB zerado) e falhou por inteiro em 14/08. E o dia perdido não se
-    # recolhe — a janela desta coleta é "propostas abertas HOJE", então o edital
-    # que encerrou no intervalo saiu do alcance para sempre.
-    #
-    # 08:10, e não mais tarde, porque o envio de alertas é 10:10: a segunda
-    # tentativa tem de caber inteira antes dele.
-    - cron: "10 8 * * *"
+  # ⚠️ SEM AGENDAMENTO desde 18/08 — quem coleta todo dia agora é
+  # `coletar-pncp-paralelo.yml`, um job por UF, cobrindo as 27.
+  #
+  # Este workflow continua aqui inteiro e disparável à mão, e isso é
+  # deliberado: ele é o caminho que já provou funcionar contra esta fonte. Se a
+  # coleta paralela der problema, voltar é mover os dois `cron` de volta para
+  # cá — a mesma operação, na direção contrária.
+  #
+  # `coleta-paralela.test.ts` cobra que EXATAMENTE UM dos dois esteja agendado.
+  # Os dois juntos comitariam o agregado duas vezes no mesmo dia, com
+  # resultados diferentes; nenhum dos dois pararia a coleta em silêncio.
   workflow_dispatch:
 
 permissions:

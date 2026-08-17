@@ -1,15 +1,16 @@
 # Coleta paralela do PNCP — uma UF por job.
 #
-# ⚠️ ESTE WORKFLOW NÃO TEM AGENDAMENTO, DE PROPÓSITO.
+# ⚠️ ESTE É O WORKFLOW QUE COLETA TODO DIA, desde 18/08.
 #
-# Quem coleta todo dia continua sendo `coletar-pncp.yml`. Este existe pronto e
-# testável por disparo manual, para ser promovido só depois de a coleta
-# sequencial confirmar, numa rodada real, que a publicação diária de posts está
-# saindo certa. Duas cirurgias na mesma véspera, no workflow do qual dependem o
-# alerta, o produto e os posts, tornariam impossível saber qual das duas quebrou.
+# Nasceu desligado de propósito, esperando a coleta sequencial confirmar numa
+# rodada real que a publicação de posts estava saindo certa — duas cirurgias na
+# mesma véspera, no workflow do qual dependem o alerta, o produto e os posts,
+# tornariam impossível saber qual das duas quebrou. Essa confirmação veio, e a
+# promoção foi o que o cabeçalho antigo já descrevia: mover os dois `cron` para
+# cá e desligar o agendamento de lá. Nada mais mudou.
 #
-# Para promover: mover os dois `cron` de `coletar-pncp.yml` para cá e desligar o
-# agendamento de lá. Nada mais muda.
+# `coletar-pncp.yml` continua existindo, disparável à mão. Voltar atrás é mover
+# os dois `cron` de volta.
 #
 # ## Por que paralelizar
 #
@@ -34,6 +35,22 @@
 name: Coletar PNCP (paralelo)
 
 on:
+  schedule:
+    # 06:10 UTC = 03:10 em Brasília. Cedo o bastante para o alerta das 7h e
+    # fora do horário de pico do PNCP.
+    - cron: "10 6 * * *"
+    # 08:10 UTC = 05:10 em Brasília. SEGUNDA TENTATIVA, e ela quase sempre não
+    # faz nada.
+    #
+    # Existe porque uma tentativa por dia se mostrou pouco contra esta fonte: o
+    # PNCP caiu duas vezes em 12/08, entregou 13/08 já degradado (PE parcial por
+    # timeout, PB zerado) e falhou por inteiro em 14/08. E o dia perdido não se
+    # recolhe — a janela desta coleta é "propostas abertas HOJE", então o edital
+    # que encerrou no intervalo saiu do alcance para sempre.
+    #
+    # 08:10, e não mais tarde, porque o envio de alertas é 10:10: a segunda
+    # tentativa tem de caber inteira antes dele.
+    - cron: "10 8 * * *"
   workflow_dispatch:
     inputs:
       ufs:
