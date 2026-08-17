@@ -1,7 +1,7 @@
-import { NOME_DO_DOCUMENTO, TIPOS_DE_DOCUMENTO } from "../../dominio/tipos";
-import type { Edital } from "../../fontes/tipos";
-import { LIMITE_DE_EXIGENCIAS, LIMITE_DE_RISCOS } from "../schemas";
-import type { PromptVersionado } from "./tipos";
+import { NOME_DO_DOCUMENTO, TIPOS_DE_DOCUMENTO } from "../../dominio/tipos.ts";
+import type { Edital } from "../../fontes/tipos.ts";
+import { LIMITE_DE_EXIGENCIAS, LIMITE_DE_RISCOS } from "../schemas.ts";
+import type { PromptVersionado } from "./tipos.ts";
 
 /**
  * Prompt de análise de edital, versão 1.

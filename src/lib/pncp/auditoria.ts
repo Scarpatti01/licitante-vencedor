@@ -1,5 +1,5 @@
-import type { Edital } from "../fontes/tipos";
-import type { Cobertura } from "../fontes/cobertura";
+import type { Edital } from "../fontes/tipos.ts";
+import type { Cobertura } from "../fontes/cobertura.ts";
 
 /**
  * Revisão automática do que foi coletado, antes de qualquer publicação.

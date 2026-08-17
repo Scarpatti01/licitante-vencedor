@@ -1,4 +1,4 @@
-import type { Edital } from "../fontes/tipos";
+import type { Edital } from "../fontes/tipos.ts";
 import { diasAteEncerrar } from "../pncp/normaliza.ts";
 import { localCasaComRegiao, type Regiao } from "./regiao.ts";
 

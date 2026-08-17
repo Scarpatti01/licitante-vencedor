@@ -1,5 +1,5 @@
 import type { ConteudoDeEmail } from "../email/mensagens.ts";
-import type { Edital } from "../fontes/tipos";
+import type { Edital } from "../fontes/tipos.ts";
 import { selecionarParaLead, type PreferenciasDoLead } from "./lead.ts";
 import { conteudoDeAlertaDiario } from "./mensagem-do-lead.ts";
 import { interpretarRegiao } from "./regiao.ts";

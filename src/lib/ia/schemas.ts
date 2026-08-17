@@ -1,5 +1,5 @@
 import { z, type ZodType } from "zod";
-import { TIPOS_DE_DOCUMENTO } from "../dominio/tipos";
+import { TIPOS_DE_DOCUMENTO } from "../dominio/tipos.ts";
 
 /**
  * O contrato da resposta do modelo.

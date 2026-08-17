@@ -233,6 +233,15 @@ jobs:
       # workflow. A coleta e a gravação no banco alimentam o alerta e o produto;
       # o post é conteúdo. Um dia sem leva é um dia sem posts novos — os antigos
       # continuam no ar, e o resto da operação não pode cair junto.
+      # `--conditions=react-server` porque a cadeia da análise passa por
+      # `ia/gemini.ts`, que importa `server-only` — um pacote cuja única função
+      # é LANÇAR quando resolvido fora do servidor. Sem a flag, a importação
+      # falha nos 25 editais, um a um, e o job termina verde: foi assim que a
+      # leva de 17/08 saiu com `com leitura: 0 de 25`.
+      #
+      # `enviar-alertas.yml` já fazia isso e explicava o porquê. O que faltava
+      # era alguém cobrar — agora `scripts-resolvem.test.ts` cobra, descobrindo
+      # sozinho quais scripts alcançam `server-only`.
       - name: Publicar a leva de posts do dia
         id: posts
         if: steps.decidir.outputs.pular != 'true' && (steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel')
@@ -243,7 +252,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           set -o pipefail
-          node scripts/publicar-posts.ts | tee saida-posts.txt
+          node --conditions=react-server scripts/publicar-posts.ts | tee saida-posts.txt
 
       # `${{ }}` NUNCA entra no corpo de um `run:` aqui: a expressão é
       # substituída no texto do script ANTES de o shell rodar, então um valor
