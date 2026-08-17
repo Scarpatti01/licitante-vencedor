@@ -10,9 +10,15 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # PR verde, PR mesclada
 
-Decisão do dono, em 17/08: **mescle as PRs sem pedir autorização.** Ele testa em
-produção, e prefere o defeito aparecendo na tela dele hoje ao trabalho parado
-esperando a palavra dele amanhã.
+Decisão do dono, em 17/08: **mescle assim que o CI fechar verde**, sem pedir
+autorização e sem esperar nova palavra. Ele testa em produção, e prefere o
+defeito aparecendo na tela dele hoje ao trabalho parado esperando a palavra dele
+amanhã.
+
+O gatilho é o CI fechando, não o fim da conversa. Abriu a PR, ficou verde,
+mesclou — inclusive quando ninguém está lendo. Não deixe PR verde dormindo para
+"confirmar depois": é exatamente o que a seção seguinte deste arquivo existe
+para impedir.
 
 Isso é permissão para mesclar, não para deixar de julgar. Continua valendo:
 
