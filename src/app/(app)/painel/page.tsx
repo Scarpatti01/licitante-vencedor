@@ -41,7 +41,7 @@ export default async function PainelDoDiaPagina() {
   await connection();
 
   const agora = new Date();
-  const repo = repositorio();
+  const repo = await repositorio();
   const empresaId = await empresaAtual();
 
   const perfil = await repo.perfil(empresaId);

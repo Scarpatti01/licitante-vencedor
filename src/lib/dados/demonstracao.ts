@@ -3,6 +3,7 @@ import { analiseNaoRealizada, avaliarOportunidade } from "../dominio/recomendaca
 import type { PerfilDaEmpresa, SituacaoDaOportunidade } from "../dominio/tipos";
 import type {
   FiltroDeOportunidades,
+  IdentidadeDaEmpresa,
   PainelDoDia,
   RepositorioDoProduto,
   ResumoDaOportunidade,
@@ -32,13 +33,51 @@ const PERFIS: Record<string, PerfilDaEmpresa> = {
 
 export const EMPRESA_DE_DEMONSTRACAO = PERFIL_COMPLETO.empresaId;
 
+/**
+ * Este id é de empresa sintética?
+ *
+ * O prefixo `EXEMPLO-` é a marca que este arquivo declara acima e que a faixa
+ * de aviso mostra ao usuário. A implementação sobre Postgres precisa dela para
+ * desviar o visitante sem conta: `EXEMPLO-EMPRESA-1` não é um uuid, e consultar
+ * o banco por ele devolveria nada — apagando o produto justamente para quem
+ * ainda está decidindo se cria conta.
+ */
+export function ehEmpresaDeDemonstracao(empresaId: string): boolean {
+  return empresaId.startsWith("EXEMPLO-");
+}
+
+/**
+ * A tela precisa avisar que os editais não são reais?
+ *
+ * Pergunta à implementação em vez de testar a classe. `RepositorioSupabase`
+ * grava o perfil de verdade e ainda serve oportunidades de exemplo; um
+ * `instanceof` responderia "não é demonstração" e apagaria a faixa enquanto
+ * editais `EXEMPLO-` continuassem na tela.
+ */
 export function ehDemonstracao(repositorio: RepositorioDoProduto): boolean {
-  return repositorio instanceof RepositorioDeDemonstracao;
+  return repositorio.oportunidadesSimuladas;
 }
 
 export class RepositorioDeDemonstracao implements RepositorioDoProduto {
+  readonly oportunidadesSimuladas = true;
+
+  /** Nunca. O `Map` abaixo morre com a instância, e a instância com a requisição. */
+  cadastroPersiste(): boolean {
+    return false;
+  }
+
   private situacoes = new Map<string, SituacaoDaOportunidade>();
   private perfis = new Map(Object.entries(PERFIS));
+
+  async identidade(empresaId: string): Promise<IdentidadeDaEmpresa | null> {
+    const perfil = this.perfis.get(empresaId);
+    if (!perfil) return null;
+    return {
+      cnpj: perfil.cnpj,
+      razaoSocial: perfil.razaoSocial,
+      nomeFantasia: perfil.nomeFantasia,
+    };
+  }
 
   async perfil(empresaId: string): Promise<PerfilDaEmpresa | null> {
     return this.perfis.get(empresaId) ?? null;

@@ -7,6 +7,7 @@ import { BotaoDeEnvio, EstadoDoSalvamento } from "@/components/app/EnvioDeFormul
 import { Cartao } from "@/components/app/ui";
 import { ResumoDeErros } from "./campos";
 import { ESTADO_INICIAL } from "./estado";
+import { usePreenchimentoPreservado } from "./preservarPreenchimento";
 import {
   rotuloDoCampo,
   SecaoAtestados,
@@ -29,8 +30,27 @@ import {
  * faz alguém terminar o cadastro.
  */
 export function FormularioDoPerfil({ perfil }: { perfil: PerfilDaEmpresa | null }) {
-  const [estado, acao, salvando] = useActionState(salvarPerfilDaEmpresa, ESTADO_INICIAL);
   const resumoRef = useRef<HTMLDivElement>(null);
+  const { formularioRef, lembrar, restaurar } = usePreenchimentoPreservado();
+
+  /*
+   * O envelope existe só para guardar a `FormData` antes de a ação rodar: o
+   * React reseta o formulário no commit desta transição, e este aqui é o
+   * cadastro inteiro. Um erro num campo apagaria os outros trinta. Ver
+   * `preservarPreenchimento`.
+   */
+  const [estado, acao, salvando] = useActionState(
+    async (anterior: Parameters<typeof salvarPerfilDaEmpresa>[0], dados: FormData) => {
+      lembrar(dados);
+      return salvarPerfilDaEmpresa(anterior, dados);
+    },
+    ESTADO_INICIAL,
+  );
+
+  // Depois do commit, quando o reset já passou.
+  useEffect(() => {
+    restaurar();
+  }, [estado, restaurar]);
 
   useEffect(() => {
     if (estado.status === "erro" && Object.keys(estado.erros).length > 0) {
@@ -40,7 +60,7 @@ export function FormularioDoPerfil({ perfil }: { perfil: PerfilDaEmpresa | null 
   }, [estado.status, estado.erros]);
 
   return (
-    <form action={acao} className="space-y-6">
+    <form ref={formularioRef} action={acao} className="space-y-6">
       <div ref={resumoRef} tabIndex={-1} className="focus-visible:outline-none">
         <ResumoDeErros
           erros={estado.erros}

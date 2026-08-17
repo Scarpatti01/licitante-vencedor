@@ -57,7 +57,46 @@ export type PainelDoDia = {
   coletaCompleta: boolean;
 };
 
+/**
+ * Quem a empresa é, sem os critérios de busca.
+ *
+ * Existe separada de `PerfilDaEmpresa` porque os dois nascem em momentos
+ * diferentes: a identidade é criada em `/cadastrar-empresa/`, o perfil só no
+ * onboarding. Entre um e outro, `perfil()` devolve `null` com toda razão — e
+ * sem esta função a tela de onboarding pediria de novo o CNPJ e a razão social
+ * que a pessoa acabou de digitar, com os campos em branco.
+ */
+export type IdentidadeDaEmpresa = {
+  cnpj: string;
+  razaoSocial: string;
+  nomeFantasia: string | null;
+};
+
 export interface RepositorioDoProduto {
+  /**
+   * As oportunidades desta implementação são sintéticas?
+   *
+   * Property e não `instanceof`: a implementação sobre Postgres persiste o
+   * perfil de verdade e ainda serve oportunidades de exemplo, porque a triagem
+   * não existe. Um `instanceof RepositorioDeDemonstracao` responderia `false`
+   * para ela e apagaria a faixa de aviso enquanto editais `EXEMPLO-` continuam
+   * na tela — trocar metade da fonte não autoriza esconder a outra metade.
+   */
+  readonly oportunidadesSimuladas: boolean;
+
+  /**
+   * O cadastro DESTA empresa é gravado de verdade?
+   *
+   * Por empresa, e não pela implementação inteira, porque as duas coisas
+   * convivem na mesma instância: o visitante sem conta usa a empresa sintética
+   * e o cadastro dele morre com a requisição; o cliente logado grava em
+   * Postgres. A faixa de aviso precisa dizer qual dos dois é o caso, e uma
+   * resposta única para a implementação diria a coisa errada para metade.
+   */
+  cadastroPersiste(empresaId: string): boolean;
+
+  identidade(empresaId: string): Promise<IdentidadeDaEmpresa | null>;
+
   perfil(empresaId: string): Promise<PerfilDaEmpresa | null>;
   salvarPerfil(perfil: PerfilDaEmpresa): Promise<void>;
 

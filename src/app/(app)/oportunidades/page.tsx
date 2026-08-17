@@ -96,7 +96,7 @@ export default async function OportunidadesPagina({
   };
   const temFiltro = Object.values(valoresDosFiltros).some(Boolean);
 
-  const repo = repositorio();
+  const repo = await repositorio();
   const empresaId = await empresaAtual();
 
   const perfil = await repo.perfil(empresaId);

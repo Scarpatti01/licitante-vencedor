@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PaginaDeConfiguracoes() {
-  const repo = repositorio();
+  const repo = await repositorio();
   const empresaId = await empresaAtual();
   const [perfil, preferencias, assinatura] = await Promise.all([
     repo.perfil(empresaId),
