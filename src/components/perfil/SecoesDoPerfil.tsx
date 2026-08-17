@@ -6,6 +6,7 @@ import {
 import type { IdentidadeDaEmpresa } from "@/lib/dados/porta";
 import { Aviso } from "@/components/app/ui";
 import { CampoDeLista, CampoDeSelecao, CampoDeTexto, GrupoDeMarcacoes } from "./campos";
+import { LinhaDeDocumento } from "./LinhaDeDocumento";
 import { ListaDeAtestados } from "./ListaDeAtestados";
 import type { ErrosDoFormulario } from "./leitura";
 import { formatarCnae, MODALIDADES, PORTES, UFS } from "./validacao";
@@ -301,103 +302,6 @@ export function SecaoDocumentacao({ perfil, erros }: PropsDaSecao) {
         </fieldset>
       ))}
     </div>
-  );
-}
-
-function LinhaDeDocumento({
-  tipo,
-  documento,
-  erro,
-}: {
-  tipo: TipoDeDocumento;
-  documento: PerfilDaEmpresa["documentos"][number] | undefined;
-  erro?: string;
-}) {
-  const idValidade = `campo-validade-${tipo.replace(/_/g, "-")}`;
-
-  return (
-    <li className="px-4 py-3 has-[:checked]:bg-[var(--accent-soft)]/50">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-        <label className="flex flex-1 cursor-pointer items-start gap-2.5 text-sm">
-          <input
-            type="checkbox"
-            name="documento"
-            value={tipo}
-            defaultChecked={documento !== undefined}
-            className="mt-0.5 size-4 shrink-0 accent-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
-          />
-          <span>
-            <span className="font-medium">{NOME_DO_DOCUMENTO[tipo]}</span>
-            {/*
-              O estado do arquivo é informação, nunca campo editável: marcar uma
-              caixa não anexa nada, e um "arquivo anexado" declarado faria o
-              checklist dar o documento como pronto sem que ele exista.
-            */}
-            {documento?.arquivoAnexado ? (
-              <span className="mt-0.5 block text-xs text-emerald-700 dark:text-emerald-300">
-                Arquivo anexado no cadastro
-              </span>
-            ) : (
-              <span className="mt-0.5 block text-xs text-[var(--muted)]">
-                Sem arquivo anexado — entra no checklist como &ldquo;a verificar&rdquo;
-              </span>
-            )}
-          </span>
-        </label>
-
-        <div className="flex shrink-0 flex-wrap items-center gap-3">
-          <div>
-            <label htmlFor={idValidade} className="sr-only">
-              Válido até — {NOME_DO_DOCUMENTO[tipo]}
-            </label>
-            <input
-              id={idValidade}
-              name={`validade:${tipo}`}
-              type="date"
-              defaultValue={documento?.validoAte ?? ""}
-              aria-invalid={erro ? true : undefined}
-              aria-describedby={erro ? `${idValidade}-erro` : undefined}
-              className={`rounded-lg border bg-[var(--background)] px-2.5 py-1.5 text-sm focus:border-[var(--accent)] focus:outline-2 focus:outline-offset-1 focus:outline-[var(--accent)] ${
-                erro ? "border-rose-400 dark:border-rose-700" : ""
-              }`}
-            />
-          </div>
-          <label className="flex cursor-pointer items-center gap-2 text-xs text-[var(--muted)]">
-            <input
-              type="checkbox"
-              name={`semValidade:${tipo}`}
-              defaultChecked={documento?.semValidade ?? false}
-              className="size-4 accent-[var(--accent)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--accent)]"
-            />
-            sem prazo
-          </label>
-        </div>
-      </div>
-
-      {tipo === "outro" ? (
-        <div className="mt-3">
-          <label htmlFor={`campo-descricao-outro`} className="sr-only">
-            Qual documento
-          </label>
-          <input
-            id="campo-descricao-outro"
-            name="descricao:outro"
-            defaultValue={documento?.descricao ?? ""}
-            placeholder="Qual documento? Ex.: licença ambiental de operação"
-            className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-2 focus:outline-offset-1 focus:outline-[var(--accent)]"
-          />
-        </div>
-      ) : null}
-
-      {erro ? (
-        <p
-          id={`${idValidade}-erro`}
-          className="mt-2 text-xs font-medium text-rose-700 dark:text-rose-300"
-        >
-          {erro}
-        </p>
-      ) : null}
-    </li>
   );
 }
 
