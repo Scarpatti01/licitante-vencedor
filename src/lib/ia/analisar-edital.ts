@@ -1,11 +1,11 @@
-import type { AnaliseDoEdital, ExigenciaDoEdital } from "../dominio/tipos";
-import { desconhecido, type Campo } from "../dominio/procedencia";
-import type { Edital } from "../fontes/tipos";
-import { criarProvedorGemini, modelosGemini } from "./gemini";
-import { criarVerificador, paraCampo, type Conversao, type Verificador } from "./evidencia";
-import { PROMPT_DE_ANALISE_EM_USO } from "./prompts";
-import { respostaDeAnaliseDeEdital, type RespostaDeAnaliseDeEdital } from "./schemas";
-import { segmentarEdital, ORCAMENTO_PADRAO, type Segmentacao } from "./segmentacao";
+import type { AnaliseDoEdital, ExigenciaDoEdital } from "../dominio/tipos.ts";
+import { desconhecido, type Campo } from "../dominio/procedencia.ts";
+import type { Edital } from "../fontes/tipos.ts";
+import { criarProvedorGemini, modelosGemini } from "./gemini.ts";
+import { criarVerificador, paraCampo, type Conversao, type Verificador } from "./evidencia.ts";
+import { PROMPT_DE_ANALISE_EM_USO } from "./prompts/index.ts";
+import { respostaDeAnaliseDeEdital, type RespostaDeAnaliseDeEdital } from "./schemas.ts";
+import { segmentarEdital, ORCAMENTO_PADRAO, type Segmentacao } from "./segmentacao.ts";
 import {
   estimarCusto,
   evidenciasSuficientes,
@@ -14,13 +14,13 @@ import {
   type PlanoDeExecucao,
   type PrecoDoModelo,
   type RegistradorDeExecucao,
-} from "./custo";
+} from "./custo.ts";
 import {
   gerarComRetentativa,
   type OpcoesDeRetentativa,
   type ProvedorDeIA,
   type ResultadoDaGeracao,
-} from "./provedor";
+} from "./provedor.ts";
 
 /**
  * De edital para `AnaliseDoEdital`.

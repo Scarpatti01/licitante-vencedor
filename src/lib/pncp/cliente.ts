@@ -1,4 +1,4 @@
-import type { ContratacaoPncp, PaginaPncp } from "./tipos";
+import type { ContratacaoPncp, PaginaPncp } from "./tipos.ts";
 
 /**
  * Cliente da API pública de consulta do PNCP.

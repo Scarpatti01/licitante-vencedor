@@ -1,4 +1,4 @@
-import { normalizar } from "../dominio/texto";
+import { normalizar } from "../dominio/texto.ts";
 
 /**
  * Segmentação: escolher QUE PARTE do edital vai para o modelo.

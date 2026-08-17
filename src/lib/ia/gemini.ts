@@ -1,7 +1,7 @@
 import "server-only";
 
 import { ApiError, GoogleGenAI, type GenerateContentResponse } from "@google/genai";
-import { descreverErroDeValidacao, jsonSchemaParaModelo } from "./schemas";
+import { descreverErroDeValidacao, jsonSchemaParaModelo } from "./schemas.ts";
 import {
   SEM_USO,
   type ModoDeFalha,
@@ -9,8 +9,8 @@ import {
   type ProvedorDeIA,
   type ResultadoDaGeracao,
   type UsoDeTokens,
-} from "./provedor";
-import type { CatalogoDeModelos } from "./custo";
+} from "./provedor.ts";
+import type { CatalogoDeModelos } from "./custo.ts";
 
 /**
  * O único arquivo do projeto que fala Gemini.

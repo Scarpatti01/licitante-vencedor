@@ -1,4 +1,4 @@
-import type { ModoDeFalha, UsoDeTokens } from "./provedor";
+import type { ModoDeFalha, UsoDeTokens } from "./provedor.ts";
 
 /**
  * Quanto custou, e qual modelo merecia o trabalho.

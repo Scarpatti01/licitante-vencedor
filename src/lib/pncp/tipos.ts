@@ -90,4 +90,4 @@ export type ContratacaoPncp = {
  * porque, sendo `export type`, ele some na compilação: não cria dependência de
  * runtime de `pncp/` para `fontes/`.
  */
-export type { Edital } from "../fontes/tipos";
+export type { Edital } from "../fontes/tipos.ts";

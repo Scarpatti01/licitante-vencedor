@@ -1,4 +1,4 @@
-import type { Mensagem } from "./tipos";
+import type { Mensagem } from "./tipos.ts";
 import { SITE } from "../site.ts";
 
 /**

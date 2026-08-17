@@ -1,6 +1,6 @@
-import { normalizar } from "../dominio/texto";
-import { desconhecido, doEdital, type Campo, type Confianca } from "../dominio/procedencia";
-import type { CampoExtraido } from "./schemas";
+import { normalizar } from "../dominio/texto.ts";
+import { desconhecido, doEdital, type Campo, type Confianca } from "../dominio/procedencia.ts";
+import type { CampoExtraido } from "./schemas.ts";
 
 /**
  * A trava contra invenção.

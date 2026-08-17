@@ -174,6 +174,15 @@ jobs:
           echo "motivos=$motivos" >> "$GITHUB_OUTPUT"
           echo "coleta classificada como: $classe"
 
+      # `--conditions=react-server` porque a cadeia da análise passa por
+      # `ia/gemini.ts`, que importa `server-only` — um pacote cuja única função
+      # é LANÇAR quando resolvido fora do servidor. Sem a flag, a importação
+      # falha nos 25 editais, um a um, e o job termina verde: foi assim que a
+      # leva de 17/08 saiu com `com leitura: 0 de 25`.
+      #
+      # `enviar-alertas.yml` já fazia isso e explicava o porquê. O que faltava
+      # era alguém cobrar — agora `scripts-resolvem.test.ts` cobra, descobrindo
+      # sozinho quais scripts alcançam `server-only`.
       - name: Publicar a leva de posts do dia
         if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
         continue-on-error: true
@@ -183,7 +192,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           set -o pipefail
-          node scripts/publicar-posts.ts | tee saida-posts.txt
+          node --conditions=react-server scripts/publicar-posts.ts | tee saida-posts.txt
 
       # `${{ }}` NUNCA entra no corpo de um `run:`, pela mesma regra do workflow
       # sequencial: a expressão é substituída no TEXTO do programa antes de o

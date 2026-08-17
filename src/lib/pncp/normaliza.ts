@@ -1,5 +1,5 @@
-import type { ContratacaoPncp } from "./tipos";
-import type { Edital } from "../fontes/tipos";
+import type { ContratacaoPncp } from "./tipos.ts";
+import type { Edital } from "../fontes/tipos.ts";
 
 /**
  * Converte o DTO do PNCP no registro que o projeto usa.
