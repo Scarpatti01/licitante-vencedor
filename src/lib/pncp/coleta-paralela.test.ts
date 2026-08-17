@@ -25,27 +25,58 @@ const SEQUENCIAL = readFileSync(
   "utf8",
 );
 
-describe("a coleta paralela fica pronta, e desligada", () => {
+/** `schedule:` citado em comentário não é agendamento. */
+function agendado(yaml: string): boolean {
+  return /^\s*schedule:/m.test(yaml.replace(/^\s*#.*$/gm, ""));
+}
+
+describe("exatamente um dos dois coleta por agendamento", () => {
   /**
-   * A garantia principal.
+   * A garantia principal, e ela mudou de forma em 18/08.
    *
-   * Se este teste falhar, os dois workflows passaram a coletar no mesmo dia — e
-   * o `concurrency` compartilhado faria um esperar o outro em vez de os dois
-   * rodarem, mas o commit do agregado seria feito duas vezes com resultados
-   * diferentes.
+   * Antes da promoção este bloco cobrava "o paralelo não tem agendamento" e "o
+   * sequencial tem". Escrito assim, ele travava a promoção que o próprio
+   * cabeçalho do workflow paralelo descrevia como o passo seguinte — e quem
+   * promovesse teria de INVERTER dois testes, que é a operação em que se erra o
+   * sinal e se aprova exatamente o estado que o teste existia para impedir.
+   *
+   * O que importa não é qual dos dois está agendado. É que seja UM:
+   *
+   *   · os DOIS agendados — o `concurrency` compartilhado faz um esperar o
+   *     outro em vez de rodarem juntos, mas o agregado é comitado duas vezes no
+   *     mesmo dia, com resultados diferentes;
+   *   · NENHUM agendado — a coleta simplesmente para, e para em silêncio: não
+   *     há job vermelho, não há alerta, só um agregado que envelhece.
+   *
+   * Nesta forma o teste sobrevive à promoção e ao retorno, e continua pegando
+   * os dois desastres.
    */
-  it("o paralelo não tem agendamento", () => {
+  it("um, e só um, tem `schedule:`", () => {
+    const comAgendamento = [
+      ["coletar-pncp.yml", SEQUENCIAL],
+      ["coletar-pncp-paralelo.yml", PARALELO],
+    ]
+      .filter(([, yaml]) => agendado(yaml))
+      .map(([nome]) => nome);
+
     expect(
-      PARALELO.includes("schedule:"),
-      "o workflow paralelo ganhou agendamento. Se a promoção é intencional, o " +
-        "agendamento do SEQUENCIAL precisa sair no mesmo commit — os dois " +
-        "coletando no mesmo dia comitam o agregado duas vezes.",
-    ).toBe(false);
+      comAgendamento,
+      comAgendamento.length === 0
+        ? "NENHUM dos dois workflows coleta por agendamento. A coleta parou, e " +
+          "vai parar em silêncio: sem job agendado não há job vermelho."
+        : "os DOIS workflows coletam por agendamento. No mesmo dia, os dois " +
+          "comitam `dados/agregados.json` com resultados diferentes — o " +
+          "`concurrency` compartilhado serializa a execução, não o commit.",
+    ).toHaveLength(1);
   });
 
-  it("o sequencial continua sendo quem coleta todo dia", () => {
-    expect(SEQUENCIAL).toContain("schedule:");
-    expect(SEQUENCIAL).toContain('cron: "10 6 * * *"');
+  it("quem está agendado coleta duas vezes por dia", () => {
+    // A segunda tentativa não é redundância: o PNCP caiu duas vezes em 12/08,
+    // veio degradado em 13/08 e falhou inteiro em 14/08 — e dia perdido não se
+    // recolhe, porque a janela é "propostas abertas HOJE".
+    const quemColeta = agendado(SEQUENCIAL) ? SEQUENCIAL : PARALELO;
+    expect(quemColeta).toContain('cron: "10 6 * * *"');
+    expect(quemColeta).toContain('cron: "10 8 * * *"');
   });
 
   /**
