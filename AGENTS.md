@@ -8,6 +8,26 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
+# PR verde, PR mesclada
+
+Decisão do dono, em 17/08: **mescle as PRs sem pedir autorização.** Ele testa em
+produção, e prefere o defeito aparecendo na tela dele hoje ao trabalho parado
+esperando a palavra dele amanhã.
+
+Isso é permissão para mesclar, não para deixar de julgar. Continua valendo:
+
+  **Verde primeiro.** `verificar` (tipos, lint, testes, build) precisa ter
+  passado. Mesclar vermelho não é agilidade, é empurrar o problema para a
+  produção dele.
+
+  **O que você mesmo marcou como pendente, continua pendente.** Se a PR depende
+  de uma decisão que você levantou — promover a coleta paralela, mudar preço,
+  apagar dado —, ela espera. Autorização para mesclar não é autorização para
+  decidir no lugar dele.
+
+  **Diga o que entrou.** Depois de mesclar, o que mudou em produção e o que
+  observar. Ele está testando lá.
+
 # Antes de fechar qualquer etapa: olhe as PRs abertas
 
 Toda vez que uma evolução do projeto for concluída, liste as pull requests
