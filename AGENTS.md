@@ -34,6 +34,45 @@ Isso é permissão para mesclar, não para deixar de julgar. Continua valendo:
   **Diga o que entrou.** Depois de mesclar, o que mudou em produção e o que
   observar. Ele está testando lá.
 
+# Antes de limpar a conversa: a conferência
+
+Combinado com o dono em 17/08: quando ele achar que a sessão terminou, ele
+avisa, e **você confere e responde se pode limpar ou não**. Não é formalidade —
+`/clear` apaga o histórico, e o que você sabia por ter conversado some junto.
+
+Este bloco está escrito aqui, e não só na conversa, porque um acordo sobre
+limpar a conversa que vive dentro dela morre na primeira limpeza.
+
+Confira, nesta ordem, e responda com o que encontrou:
+
+  **1. Nada por commitar.** `git status` limpo em todos os clones em uso.
+
+  **2. Nada empurrado e não mesclado.** PR aberta, ou ramo à frente da `main`
+  sem PR. Se houver PR verde, mescle antes de responder — é a regra acima.
+
+  **3. Nenhuma PR esperando CI.** Verde depois da limpeza não tem quem mescle.
+
+  **4. Nenhum check-in agendado prestes a disparar.** O relatório cai na
+  conversa, e uma conversa recém-limpa recebe um relatório sem o contexto que o
+  originou. Se falta pouco, vale esperar ele chegar.
+
+  **5. Nada prometido e não entregue.** Pergunta em aberto, decisão que ele
+  pediu para tomar depois, achado que você viu e não relatou.
+
+  **6. — E ESTE É O QUE IMPORTA — nada aprendido que exista só na conversa.**
+  Decisão de conduta, regra nova, causa-raiz descoberta, medição feita: tudo
+  isso precisa estar em arquivo (`AGENTS.md`, comentário no código, corpo da PR,
+  texto do agendamento) ANTES de a conversa sumir. Se estiver só no histórico,
+  escreva primeiro e responda depois.
+
+O que sobrevive a `/clear`: código, commits, comentários, este arquivo, os
+agendamentos guardados no servidor, o banco e os deploys. O que se perde: o
+raciocínio em andamento e o fio da conversa.
+
+Responder "pode limpar" sem ter conferido o item 6 é o modo de falha caro: o
+projeto continua funcionando e ninguém percebe que a razão de uma decisão
+evaporou — até alguém desfazê-la sem saber que ela existia.
+
 # Antes de fechar qualquer etapa: olhe as PRs abertas
 
 Toda vez que uma evolução do projeto for concluída, liste as pull requests
