@@ -1,0 +1,90 @@
+# Dispara a triagem por perfil (`scripts/triar-editais.ts`) à mão.
+#
+# ⚠️ SEM AGENDAMENTO, DE PROPÓSITO — mesma disciplina de
+# `coletar-pncp-paralelo.yml` antes de ser promovido. O processo que lê perfis
+# e editais e grava oportunidades e decisões existe desde 18/08, mas a cadência
+# de quando ele deve rodar ainda não foi decidida (ver "O próximo passo" em
+# `docs/produto/roadmap.md`). Até lá, este workflow serve para rodar uma vez,
+# ver o resultado — quantas empresas, quantos editais, quantas oportunidades —
+# e só depois decidir se e quando agendar.
+#
+# Para promover: acrescentar um `schedule:` aqui. Nada mais muda.
+
+name: Triar editais por perfil
+
+on:
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Não gravar nada — só imprimir o que gravaria"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  # Duas execuções em paralelo gravando os mesmos pares empresa×edital não
+  # corrompem o banco (upsert absorve), mas disputariam a mesma leitura de
+  # editais abertos e duplicariam trabalho à toa. Uma de cada vez.
+  group: triar-editais
+  cancel-in-progress: false
+
+jobs:
+  triar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # Sem isto o script morre no primeiro `import` de pacote. Mesmo defeito
+      # que já apagou a leitura de posts (16/08) e o alerta por e-mail (17/08)
+      # — ver `src/lib/workflows-instalam-dependencias.test.ts`.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Triar
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SIMULAR: ${{ inputs.simular && '--simular' || '' }}
+        run: |
+          set -o pipefail
+
+          # `|| codigo=$?` em vez de deixar `set -e` matar: o código de saída é
+          # informação aqui, não só sucesso ou fracasso — ver `SEM_CONFIGURACAO`
+          # no script.
+          codigo=0
+          node scripts/triar-editais.ts $SIMULAR | tee saida-triagem.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Triagem não rodou — faltam segredos"
+              echo
+              echo "O workflow rodou e parou de propósito. Nada foi lido e nada foi gravado."
+              echo
+              echo "Para ligar, crie em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Triagem inerte::faltam segredos — ver o resumo desta execução"
+            exit 0
+          fi
+
+          exit "$codigo"
+
+      - name: Publicar o log da triagem
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-triagem
+          path: saida-triagem.txt
+          retention-days: 30
+          if-no-files-found: ignore
