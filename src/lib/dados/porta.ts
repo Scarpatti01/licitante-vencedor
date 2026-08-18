@@ -74,15 +74,20 @@ export type IdentidadeDaEmpresa = {
 
 export interface RepositorioDoProduto {
   /**
-   * As oportunidades desta implementação são sintéticas?
+   * As oportunidades DESTA empresa são sintéticas?
    *
-   * Property e não `instanceof`: a implementação sobre Postgres persiste o
-   * perfil de verdade e ainda serve oportunidades de exemplo, porque a triagem
-   * não existe. Um `instanceof RepositorioDeDemonstracao` responderia `false`
-   * para ela e apagaria a faixa de aviso enquanto editais `EXEMPLO-` continuam
-   * na tela — trocar metade da fonte não autoriza esconder a outra metade.
+   * Por empresa, e não uma `readonly` da implementação inteira — desde que a
+   * triagem por perfil existe (18/08), `RepositorioSupabase` serve as duas
+   * coisas ao mesmo tempo, pela mesma razão de `cadastroPersiste`: o visitante
+   * sem conta cai na empresa de demonstração e continua vendo editais
+   * `EXEMPLO-`; o cliente com CNPJ real vê `oportunidades` de verdade — vazias
+   * quando a triagem não encontrou nada para ele, mas reais. Uma resposta única
+   * para a implementação inteira diria a coisa errada para um dos dois.
+   *
+   * Método e não `instanceof`, pela razão de sempre: checar a classe
+   * responderia igual para os dois casos que esta função existe para separar.
    */
-  readonly oportunidadesSimuladas: boolean;
+  oportunidadesSimuladas(empresaId: string): boolean;
 
   /**
    * O cadastro DESTA empresa é gravado de verdade?

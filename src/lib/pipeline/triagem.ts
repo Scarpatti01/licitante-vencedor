@@ -166,8 +166,17 @@ export function triar(
  * Recebe a decisão registrada — não recalcula. Recalcular responderia com o
  * estado de hoje uma pergunta sobre o que aconteceu na terça-feira, depois de o
  * perfil ter mudado, e produziria uma explicação sinceramente errada.
+ *
+ * O parâmetro pede só os quatro campos que a função de fato lê, e não
+ * `DecisaoDeTriagem` inteira: `decisoes_de_triagem` (o banco) não guarda
+ * `avaliacao` — só `oportunidades` guarda, e só para quem foi entregue. Exigir
+ * o objeto inteiro obrigaria quem lê o descarte de um edital a forjar uma
+ * avaliação que não existe só para poder chamar esta função.
  */
-export function explicarDecisao(decisao: DecisaoDeTriagem | null, editalId: string): string {
+export function explicarDecisao(
+  decisao: Pick<DecisaoDeTriagem, "entregue" | "decididoEm" | "explicacao" | "motivoDoDescarte"> | null,
+  editalId: string,
+): string {
   if (!decisao) {
     return `Não há registro de triagem para o edital ${editalId} nesta empresa. Isso normalmente significa que ele não foi coletado — verifique se o estado dele está na cobertura da coleta daquele dia.`;
   }

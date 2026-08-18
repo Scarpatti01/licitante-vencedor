@@ -302,15 +302,22 @@ describe("a empresa de demonstração continua na demonstração", () => {
 
 describe("a faixa de aviso continua dizendo a verdade", () => {
   /**
-   * Metade real, metade não: o perfil persiste, o painel e as oportunidades
-   * ainda são sintéticos. Um `instanceof RepositorioDeDemonstracao` responderia
-   * "não é demonstração" para a implementação sobre Postgres e apagaria a faixa
-   * enquanto editais `EXEMPLO-` seguem na tela.
+   * Desde que a triagem por perfil existe (18/08), `RepositorioSupabase` serve
+   * as duas coisas: o visitante sem conta continua na empresa de demonstração,
+   * com editais `EXEMPLO-` e a faixa de aviso; o tenant com CNPJ real vê
+   * `oportunidades` de verdade — mesmo vazias, quando a triagem não achou nada
+   * — e a faixa não pode mais aparecer para ele. Um `instanceof
+   * RepositorioDeDemonstracao` responderia igual para os dois, que é
+   * exatamente o que `oportunidadesSimuladas` virou método (por empresa) para
+   * evitar.
    */
-  it("o aviso permanece enquanto as oportunidades forem de exemplo", () => {
+  it("o aviso continua para a empresa de demonstração, some para o tenant real", () => {
     const { cliente } = clienteFalso({});
-    expect(ehDemonstracao(new RepositorioSupabase(cliente))).toBe(true);
-    expect(ehDemonstracao(new RepositorioDeDemonstracao())).toBe(true);
+    const supabase = new RepositorioSupabase(cliente);
+
+    expect(ehDemonstracao(supabase, EMPRESA_DE_DEMONSTRACAO)).toBe(true);
+    expect(ehDemonstracao(supabase, EMPRESA_REAL)).toBe(false);
+    expect(ehDemonstracao(new RepositorioDeDemonstracao(), EMPRESA_REAL)).toBe(true);
   });
 
   /** E o texto do aviso precisa distinguir os dois casos que hoje convivem. */

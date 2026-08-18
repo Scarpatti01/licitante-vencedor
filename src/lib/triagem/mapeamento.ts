@@ -1,5 +1,6 @@
-import type { Avaliacao } from "../dominio/recomendacao.ts";
-import { VERSAO_DO_SCORE } from "../dominio/score.ts";
+import type { Avaliacao, NivelDaRecomendacao, ProximaAcao } from "../dominio/recomendacao.ts";
+import { VERSAO_DO_SCORE, type CriterioAvaliado, type FaixaDoScore } from "../dominio/score.ts";
+import type { Checklist } from "../dominio/checklist.ts";
 import type { DecisaoDeTriagem } from "../pipeline/triagem.ts";
 import type { Edital } from "../fontes/tipos.ts";
 
@@ -119,5 +120,99 @@ export function decisaoParaLinha(dados: {
     criterios: [],
     versao_do_score: VERSAO_DO_SCORE,
     avaliado_em: decisao.decididoEm,
+  };
+}
+
+/** A linha de `oportunidades` que `avaliacaoDaLinha` sabe reconstruir. */
+export type LinhaDeOportunidade = {
+  score: number | null;
+  faixa: FaixaDoScore;
+  /** `numeric(4,3)` — chega como string do PostgREST. */
+  cobertura: number | string;
+  criterios: CriterioAvaliado[];
+  checklist: Checklist;
+  recomendacao: NivelDaRecomendacao;
+  justificativa: string;
+  proxima_acao: ProximaAcao | null;
+  /** Cópia de `editais.encerramento_proposta`, mantida por trigger — ver a migração. */
+  encerra_em: string | null;
+};
+
+/**
+ * O caminho de volta: a linha de `oportunidades` virando a `Avaliacao` que a
+ * tela consome. O par de `oportunidadeParaLinha`.
+ *
+ * Duas coisas que a tabela NÃO guarda, e por isso são recalculadas aqui em vez
+ * de lidas:
+ *
+ *   `Recomendacao.urgente` — de propósito, ver o comentário da migração: depende
+ *   de quantos dias faltam a partir de AGORA, então uma coluna seria verdadeira
+ *   hoje e mentira amanhã sem ninguém tocar na linha. A fórmula abaixo é a
+ *   mesma de `avaliarOportunidade` (`../dominio/recomendacao.ts`) — mudou lá,
+ *   muda aqui.
+ *
+ *   `Score.motivo` — só existe quando `score` é `null`, e `oportunidadeParaLinha`
+ *   grava `recomendacao.resumo` (uma frase fixa por nível) em `justificativa`,
+ *   não a frase específica que lista os critérios indeterminados. Como
+ *   `criterios` guarda o status de cada um, a frase é reconstruída aqui pela
+ *   mesma fórmula de `calcularScore` (`../dominio/score.ts`) — mudou lá, muda
+ *   aqui.
+ */
+export function avaliacaoDaLinha(linha: LinhaDeOportunidade, agora: Date): Avaliacao {
+  const criterios = linha.criterios ?? [];
+  const positivos = criterios.filter((c) => c.status === "positivo");
+  const atencoes = criterios.filter((c) => c.status === "atencao");
+  const impedimentos = criterios.filter((c) => c.status === "impedimento");
+  const indeterminados = criterios.filter((c) => c.status === "indeterminado");
+
+  const cobertura = typeof linha.cobertura === "string" ? Number(linha.cobertura) : linha.cobertura;
+
+  const motivo =
+    linha.score === null
+      ? "Faltam informações demais para pontuar com honestidade: " +
+        indeterminados.map((c) => c.nome.toLowerCase()).join(", ") +
+        "."
+      : null;
+
+  // Mesma fórmula de `diasAteEncerrar` (`../pncp/normaliza.ts`), sem importar
+  // um `Edital` só para ter onde pendurar uma data: a coluna já é a data solta.
+  const dias = linha.encerra_em ? Math.ceil((new Date(linha.encerra_em).getTime() - agora.getTime()) / 86_400_000) : null;
+
+  if (!linha.proxima_acao) {
+    throw new Error(
+      "oportunidades.proxima_acao veio nula — toda linha gravada por oportunidadeParaLinha traz uma, " +
+        "então isto é um dado gravado por outro caminho ou corrompido, não um caso normal de leitura.",
+    );
+  }
+
+  return {
+    score: {
+      valor: linha.score,
+      faixa: linha.faixa,
+      cobertura,
+      criterios,
+      positivos,
+      atencoes,
+      impedimentos,
+      indeterminados,
+      motivo,
+    },
+    checklist: linha.checklist,
+    recomendacao: {
+      nivel: linha.recomendacao,
+      resumo: linha.justificativa,
+      justificativa: {
+        positivos: positivos.map((c) => c.frase),
+        atencoes: atencoes.map((c) => c.frase),
+        impedimentos: impedimentos.map((c) => c.frase),
+        naoDeterminados: indeterminados.map((c) => c.frase),
+      },
+      proximaAcao: linha.proxima_acao,
+      urgente:
+        dias !== null &&
+        dias >= 0 &&
+        dias <= 3 &&
+        (linha.recomendacao === "recomendada_forte" || linha.recomendacao === "recomendada"),
+    },
   };
 }

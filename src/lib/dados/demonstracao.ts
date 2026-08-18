@@ -50,16 +50,19 @@ export function ehEmpresaDeDemonstracao(empresaId: string): boolean {
  * A tela precisa avisar que os editais não são reais?
  *
  * Pergunta à implementação em vez de testar a classe. `RepositorioSupabase`
- * grava o perfil de verdade e ainda serve oportunidades de exemplo; um
- * `instanceof` responderia "não é demonstração" e apagaria a faixa enquanto
- * editais `EXEMPLO-` continuassem na tela.
+ * grava o perfil de verdade e serve `oportunidades` de verdade para quem tem
+ * CNPJ real; um `instanceof` responderia "não é demonstração" para as duas
+ * empresas que passam por ela, mesmo a que ainda cai na sintética.
  */
-export function ehDemonstracao(repositorio: RepositorioDoProduto): boolean {
-  return repositorio.oportunidadesSimuladas;
+export function ehDemonstracao(repositorio: RepositorioDoProduto, empresaId: string): boolean {
+  return repositorio.oportunidadesSimuladas(empresaId);
 }
 
 export class RepositorioDeDemonstracao implements RepositorioDoProduto {
-  readonly oportunidadesSimuladas = true;
+  /** Sempre — as três empresas deste repositório são todas `EXEMPLO-`. */
+  oportunidadesSimuladas(): boolean {
+    return true;
+  }
 
   /** Nunca. O `Map` abaixo morre com a instância, e a instância com a requisição. */
   cadastroPersiste(): boolean {
