@@ -43,6 +43,18 @@ export type DecisaoDeTriagem = {
   nivel: Avaliacao["recomendacao"]["nivel"];
   /** Versão da análise que sustentou a decisão, para reprocessar com honestidade. */
   versaoDaAnalise: string | null;
+  /**
+   * A avaliação inteira, e não só o resumo acima.
+   *
+   * `decisoes_de_triagem` (o "por que descartou") precisa só do resumo — score,
+   * nível, explicação. Quem grava `oportunidades` (o "o que a empresa vê")
+   * precisa de mais: `criterios` com cada frase e peso, `checklist`,
+   * `proximaAcao`, `cobertura` — ver `src/lib/triagem/mapeamento.ts`. Sem este
+   * campo, quem grava `oportunidades` teria de chamar `avaliarOportunidade` uma
+   * segunda vez para o mesmo par, e as duas chamadas divergirem é o jeito mais
+   * silencioso de o placar do e-mail discordar do que a tela mostra.
+   */
+  avaliacao: Avaliacao;
 };
 
 export type ResultadoDaTriagem = {
@@ -137,6 +149,7 @@ export function triar(
       score: avaliacao.score.valor,
       nivel: avaliacao.recomendacao.nivel,
       versaoDaAnalise: analise.versaoDoPrompt,
+      avaliacao,
     } satisfies DecisaoDeTriagem;
   });
 

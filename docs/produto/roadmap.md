@@ -45,7 +45,7 @@ Estado em 2026-08-15.
 | Página do edital com score explicado e checklist | **No ar** |
 | Onboarding guiado | **No ar** |
 | Registro de "por que este edital não apareceu" | **No ar** (`src/lib/pipeline/triagem.ts`) |
-| Triagem gravando oportunidades e decisões | **Metade** — mapeamento pronto e conferido contra o banco; falta o processo que lê e grava |
+| Triagem gravando oportunidades e decisões | **Processo pronto e testado** (`scripts/triar-editais.ts`), não agendado — falta decidir a cadência, e a leitura das telas ainda vem da demonstração (ver "O próximo passo" abaixo) |
 | Histórico de participação e resultado | **Esquema pronto**, sem tela |
 
 ## Aquisição — o blog
@@ -137,30 +137,31 @@ Conversão não é item de checklist de alguém: é condição de build.
 
 ## O próximo passo, e a armadilha dele
 
-A segunda metade da triagem: o processo que lê editais e perfis do banco, roda
-`avaliarOportunidade`, e grava pelo mapeamento que já existe em
-`src/lib/triagem/mapeamento.ts` (conferido contra o Postgres, inclusive nas
-recusas).
+~~A segunda metade da triagem~~ **Feita, em 18/08.** O processo que lê editais e
+perfis do banco, roda `avaliarOportunidade` e grava pelo mapeamento de
+`src/lib/triagem/mapeamento.ts` existe em `scripts/triar-editais.ts`
+(`npm run triagem:simular` para ver o que gravaria sem gravar).
 
-O que falta é o **caminho inverso**: reconstruir um `PerfilDaEmpresa` a partir de
-quatro tabelas — `empresas` (cnpj, razão social), `perfis_da_empresa` (critérios),
-`documentos_da_empresa` e `atestados`.
+O caminho inverso — reconstruir um `PerfilDaEmpresa` a partir de quatro
+tabelas (`empresas`, `perfis_da_empresa`, `documentos_da_empresa`, `atestados`)
+— está em `src/lib/triagem/repositorio.ts`, com a defesa que este documento
+pedia: um teste de ida e volta campo a campo (`repositorio.test.ts`), contra um
+perfil com valores DISTINTOS em cada par do mesmo tipo, para que uma troca como
+`ticketMaximo` lido como `ticketMinimo` derrube o teste em vez de só pontuar
+errado em produção sem ninguém perceber.
 
-**É aí que mora o risco, e ele não é o de quebrar.** Um campo trocado na volta
-não derruba nada: produz um score plausível e errado. `ticketMaximo` lido como
-`ticketMinimo` faz o critério de valor pontuar ao contrário, e o número que sai —
-71, digamos — parece tão razoável quanto o certo. Ninguém percebe pela tela; só
-pelo cliente reclamando meses depois que os editais não têm nada a ver com ele.
+**O que ainda falta, em ordem:**
 
-Duas coisas que reduzem isso a um custo aceitável:
-
-  Um teste de ida e volta. Grave um `PerfilDaEmpresa` conhecido, leia de novo, e
-  exija igualdade campo a campo. É o único formato que pega troca entre dois
-  campos do mesmo tipo, que é justamente o erro que revisão de código não vê.
-
-  Conferir contra o banco, não contra o que se acha das colunas. Foi assim que a
-  primeira metade achou a `versao_do_score` que faltava, e foi assim que os
-  `check` de `oportunidades` se provaram — inclusive recusando o que deviam.
+1. **Decidir a cadência.** O script não está em nenhum workflow — mesma
+   disciplina de `coletar-pncp-paralelo.yml` antes de ser promovido: correto e
+   testado primeiro, agendado depois de alguém decidir quando.
+2. **Ligar a leitura.** `RepositorioSupabase` (`src/lib/dados/supabase.ts`)
+   ainda delega os cinco métodos de oportunidade para a demonstração, e
+   `oportunidadesSimuladas` continua `true` — de propósito, documentado no
+   próprio arquivo: "no dia em que a triagem existir, estes cinco métodos
+   passam a consultar o Postgres e a propriedade vira `false` — no mesmo
+   commit, ou o aviso vira mentira nos dois sentidos possíveis". A triagem
+   agora existe do lado de gravar; falta o lado de ler.
 
 ## Fase 6 — Inteligência avançada
 
