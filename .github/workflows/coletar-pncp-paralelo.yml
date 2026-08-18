@@ -150,7 +150,12 @@ jobs:
           merge-multiple: true
           path: shards
 
+      # As credenciais aqui são para `execucoes_de_coleta` (o veredito da
+      # rodada, que `painelDoDia` lê) — a junção em si não toca no banco.
       - name: Juntar num agregado só
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           set -o pipefail
           node scripts/juntar-coleta.ts --parciais shards | tee saida-juncao.txt

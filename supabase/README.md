@@ -28,6 +28,7 @@ correspondente:
 | `20260814090000_fundacoes_extensoes_e_tipos` | `20260814125600` |
 | `20260814110000_leads_do_site` | `20260814120313` |
 | `20260817120000_salvar_perfil_da_empresa` | `20260817215530` |
+| `20260818200000_execucoes_de_coleta` | `20260818195119` |
 
 **Consequência prática: `npm run db:aplicar` (`supabase db push`) hoje é uma
 armadilha.** Ele compara versões, concluiria que nenhuma migração desta pasta
@@ -128,6 +129,7 @@ arquivo já aplicado, mesmo que o erro esteja nele. O histórico é o contrato.
 | `20260814170000_criar_empresa_com_dono.sql` | `criar_empresa_com_dono()`: único caminho para o primeiro membro de um tenant. `security definer`, com a checagem de sessão fazendo as vezes de porta. |
 | `20260817120000_salvar_perfil_da_empresa.sql` | `salvar_perfil_da_empresa()`: identidade, critérios, documentos e atestados numa transação só. `security invoker`, para a RLS continuar decidindo. Mais a auxiliar `texto_do_json()`. |
 | `20260817230000_fechar_execute_de_texto_do_json.sql` | Tira `texto_do_json()` de `anon`. Ela nasceu exposta pelo mecanismo descrito abaixo. |
+| `20260818200000_execucoes_de_coleta.sql` | `execucoes_de_coleta` — o veredito completa/parcial-aceitável/degradada de cada rodada de coleta, para `painelDoDia.coletaCompleta` deixar de ser sempre `true`. |
 
 ### A armadilha das funções novas, que já pegou duas vezes
 

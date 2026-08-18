@@ -39,6 +39,7 @@ import { resumirCobertura, type ColetaDeUf } from "../src/lib/fontes/cobertura.t
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
 import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao.ts";
+import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
 import { fontePncp } from "../src/lib/fontes/pncp.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
 
@@ -181,6 +182,22 @@ async function main() {
     JSON.stringify({ coletadoEm, ...classificacao }, null, 1),
     "utf8",
   );
+
+  // Mesmo registro que a coleta sequencial grava, pela mesma razão — ver o
+  // comentário em `ingerir-pncp.ts`. Não derruba a junção por falta ou falha
+  // de credencial: o agregado e a revisão já estão gravados a esta altura.
+  const urlDoBanco = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const chaveDoBanco = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (urlDoBanco && chaveDoBanco) {
+    try {
+      await gravarExecucaoDeColeta(
+        { fonte: fontePncp.nome, coletadoEm, classificacao },
+        { url: urlDoBanco, chave: chaveDoBanco },
+      );
+    } catch (e) {
+      console.error(`execucoes_de_coleta: não gravou — ${e instanceof Error ? e.message : e}`);
+    }
+  }
 
   console.log(
     `\n${arquivos.length} parcial(is) · ${coletados.length} recebidos · ` +

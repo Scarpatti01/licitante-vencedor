@@ -172,9 +172,16 @@ dois lados — gravar e ler.
   coleta ainda cobre só as 6 UFs do piloto (Nordeste) — nenhum RJ. Até a
   coleta paralela (27 UFs) ser promovida, a triagem roda certa e não entrega
   nada para ela. Ver "Decisões em aberto" e a validação da coleta de 19/08.
-- **`painelDoDia.coletaCompleta` sempre `true`.** Não existe, em Postgres, o
-  equivalente ao `classificacao.json` que a coleta grava só no repositório
-  (completa/parcial/degradada) — ver o comentário em `supabase.ts`.
+
+~~`painelDoDia.coletaCompleta` sempre `true`.~~ **Feita, em 18/08.**
+`execucoes_de_coleta` (migração `20260818200000`) guarda o veredito
+completa/parcial-aceitável/degradada de cada rodada — o mesmo que
+`classificacao.json` já registrava no repositório, agora também alcançável
+por quem lê o Postgres. `ingerir-pncp.ts` e `juntar-coleta.ts` gravam a
+linha logo depois de classificar; `painelDoDia` lê a mais recente e só marca
+`coletaCompleta: false` para `degradada` — `completa` e `parcial-aceitavel`
+contam como utilizável, a mesma regra que já decide se o workflow commita o
+agregado.
 
 ## Fase 6 — Inteligência avançada
 

@@ -134,7 +134,7 @@ describe("painelDoDia", () => {
   it("conta novas, recomendadas, excelentes, urgentes e documentos pendentes", async () => {
     const { cliente } = clienteFalso({
       oportunidades: [linhaDaOportunidade(EDITAL_URGENTE, "u1", "nova")],
-      editais: [{ coletado_em: "2026-08-18T06:00:00.000Z" }],
+      execucoes_de_coleta: [{ classe: "completa", coletado_em: "2026-08-18T06:00:00.000Z" }],
     });
 
     const painel = await new RepositorioSupabase(cliente).painelDoDia(EMPRESA_REAL, AGORA);
@@ -150,6 +150,31 @@ describe("painelDoDia", () => {
     expect(painel.documentosPendentes).toBe(0);
     expect(painel.coletadoEm).toBe("2026-08-18T06:00:00.000Z");
     expect(painel.coletaCompleta).toBe(true);
+  });
+
+  it("coletaCompleta é falso quando a última execução veio degradada", async () => {
+    const { cliente } = clienteFalso({
+      oportunidades: [],
+      execucoes_de_coleta: [{ classe: "degradada", coletado_em: "2026-08-18T06:00:00.000Z" }],
+    });
+    const painel = await new RepositorioSupabase(cliente).painelDoDia(EMPRESA_REAL, AGORA);
+    expect(painel.coletaCompleta).toBe(false);
+  });
+
+  it("coletaCompleta é verdadeiro para parcial-aceitavel — mesma regra que o workflow usa para commitar", async () => {
+    const { cliente } = clienteFalso({
+      oportunidades: [],
+      execucoes_de_coleta: [{ classe: "parcial-aceitavel", coletado_em: "2026-08-18T06:00:00.000Z" }],
+    });
+    const painel = await new RepositorioSupabase(cliente).painelDoDia(EMPRESA_REAL, AGORA);
+    expect(painel.coletaCompleta).toBe(true);
+  });
+
+  it("sem nenhuma execução registrada, trata como completa e coletadoEm como null", async () => {
+    const { cliente } = clienteFalso({ oportunidades: [], execucoes_de_coleta: [] });
+    const painel = await new RepositorioSupabase(cliente).painelDoDia(EMPRESA_REAL, AGORA);
+    expect(painel.coletaCompleta).toBe(true);
+    expect(painel.coletadoEm).toBeNull();
   });
 
   it("delega para a demonstração quando a empresa é a de exemplo", async () => {
