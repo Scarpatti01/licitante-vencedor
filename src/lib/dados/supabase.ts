@@ -3,6 +3,10 @@ import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { PerfilDaEmpresa, SituacaoDaOportunidade, TipoDeDocumento } from "../dominio/tipos";
 import type { Avaliacao } from "../dominio/recomendacao";
+import { diasAteEncerrar } from "../pncp/normaliza";
+import { explicarDecisao, type MotivoDeDescarte } from "../pipeline/triagem";
+import { avaliacaoDaLinha, type LinhaDeOportunidade } from "../triagem/mapeamento";
+import { editalDaLinha, type LinhaDoEdital } from "../triagem/repositorio";
 import type {
   FiltroDeOportunidades,
   IdentidadeDaEmpresa,
@@ -32,14 +36,29 @@ import { RepositorioDeDemonstracao, ehEmpresaDeDemonstracao } from "./demonstrac
  * Nada disso aparecia em teste, tipo ou build: as três camadas estavam certas.
  * O que faltava era a implementação da porta.
  *
- * ## Metade real, metade ainda sintética — e a tela precisa dizer qual
+ * ## Painel e oportunidades, desde 18/08, também de verdade
  *
- * Perfil, identidade e listas são gravados de verdade aqui. Painel e
- * oportunidades continuam vindo da demonstração, porque a triagem que cruza os
- * 3.483 editais coletados com o perfil ainda não existe. Por isso
- * `oportunidadesSimuladas` continua `true`: enquanto um edital `EXEMPLO-`
- * aparecer na tela, a faixa de aviso tem de continuar aparecendo junto. Trocar
- * a metade que persiste NÃO autoriza esconder a metade que não é real.
+ * A triagem por perfil (`scripts/triar-editais.ts`, `src/lib/triagem/`) grava
+ * `oportunidades` e `decisoes_de_triagem` no Postgres; os cinco métodos abaixo
+ * — que até então delegavam inteiro para a demonstração — passam a ler de lá
+ * para qualquer empresa que não seja a de demonstração. `oportunidadesSimuladas`
+ * virou método por empresa exatamente por causa disto: o visitante sem conta
+ * continua vendo editais `EXEMPLO-`, o cliente com CNPJ real vê o que a
+ * triagem de fato produziu para ele — inclusive quando é uma lista vazia,
+ * porque a triagem não achou nada (o caso real de hoje: a única empresa
+ * cadastrada atende só o RJ, e a coleta ainda não chega lá).
+ *
+ * `avaliacaoDaLinha` (`../triagem/mapeamento.ts`) e `editalDaLinha`
+ * (`../triagem/repositorio.ts`) fazem o trabalho de reconstrução — são os
+ * mesmos usados pelo script de triagem e pelos testes de ida e volta que
+ * provam que a leitura não inventa nem perde campo.
+ *
+ * ## O que ainda não está aqui
+ *
+ * `painelDoDia.coletaCompleta` é sempre `true`: não existe hoje, em Postgres,
+ * o equivalente ao `classificacao.json` que `scripts/ingerir-pncp.ts` grava no
+ * repositório (completa/parcial/degradada). É uma simplificação sabida, não
+ * uma checagem que roda e sempre dá certo — ver o comentário no método.
  *
  * ## Empresa de demonstração continua na demonstração
  *
@@ -160,12 +179,38 @@ const SELECAO_DO_PERFIL =
   "documentos_da_empresa(tipo, descricao, valido_ate, sem_validade, arquivo_anexado), " +
   "atestados(objeto, valor, orgao, ano)";
 
+/** Formato da linha de `oportunidades` juntando o que `avaliacaoDaLinha` lê com o que a lista/painel também precisam. */
+type LinhaDaOportunidade = LinhaDeOportunidade & {
+  situacao: SituacaoDaOportunidade;
+  editais: LinhaDoEdital;
+};
+
+const SELECAO_DA_OPORTUNIDADE =
+  "score, faixa, cobertura, criterios, checklist, recomendacao, justificativa, " +
+  "proxima_acao, situacao, encerra_em, editais!inner(*)";
+
+/** Mesmo teto de página de `triagem/repositorio.ts`, pelo mesmo motivo: o PostgREST corta em 1000 sem avisar. */
+const POR_PAGINA = 1000;
+
+function resumoDaLinha(linha: LinhaDaOportunidade, agora: Date): ResumoDaOportunidade {
+  const edital = editalDaLinha(linha.editais);
+  return {
+    id: edital.id,
+    edital,
+    avaliacao: avaliacaoDaLinha(linha, agora),
+    situacao: linha.situacao,
+    // Nunca preenchido — nem aqui, nem na demonstração. Rastrear "visto em"
+    // exigiria uma escrita a cada leitura da lista, e nada no produto lê este
+    // campo ainda.
+    vistaEm: null,
+  };
+}
+
 export class RepositorioSupabase implements RepositorioDoProduto {
-  /**
-   * Ainda `true`. Ver o cabeçalho: painel e oportunidades continuam sintéticos,
-   * e o aviso na tela precisa continuar de pé enquanto isso for verdade.
-   */
-  readonly oportunidadesSimuladas = true;
+  /** Sintéticas só para a empresa de demonstração. Ver o cabeçalho. */
+  oportunidadesSimuladas(empresaId: string): boolean {
+    return ehEmpresaDeDemonstracao(empresaId);
+  }
 
   constructor(
     private readonly supabase: SupabaseClient,
@@ -269,41 +314,266 @@ export class RepositorioSupabase implements RepositorioDoProduto {
     }
   }
 
-  // ---- A metade que ainda não tem fonte real -------------------------------
+  // ---- Painel e oportunidades, lidos do que a triagem gravou ---------------
   //
-  // Delegar é honesto e explícito: enquanto `oportunidadesSimuladas` for `true`,
-  // a faixa de aviso está na tela dizendo que nenhum edital ali é real. O dia em
-  // que a triagem existir, estes cinco métodos passam a consultar o Postgres e a
-  // propriedade vira `false` — no mesmo commit, ou o aviso vira mentira nos dois
-  // sentidos possíveis.
+  // A empresa de demonstração continua desviada para `this.demonstracao` em
+  // todo método, pela mesma razão de `perfil`/`identidade`: `EXEMPLO-EMPRESA-1`
+  // não é um uuid, e consultar o Postgres por ele devolveria vazio — apagando o
+  // produto para quem ainda está decidindo se cria conta.
 
-  painelDoDia(empresaId: string, agora?: Date): Promise<PainelDoDia> {
-    return this.demonstracao.painelDoDia(empresaId, agora);
-  }
-
-  listarOportunidades(
+  /**
+   * Todas as oportunidades da empresa, já viradas `ResumoDaOportunidade`.
+   *
+   * Compartilhado por `painelDoDia` e `listarOportunidades`: os dois precisam
+   * da lista inteira reconstruída para contar e para filtrar por `urgente`, que
+   * não é coluna (ver `avaliacaoDaLinha`) — filtrar isso em SQL exigiria
+   * recalcular a mesma fórmula em dois lugares, e um dos dois acabaria
+   * divergindo do domínio.
+   */
+  private async oportunidadesDaEmpresa(
     empresaId: string,
-    filtro?: FiltroDeOportunidades,
+    agora: Date,
+    situacoes?: SituacaoDaOportunidade[],
   ): Promise<ResumoDaOportunidade[]> {
-    return this.demonstracao.listarOportunidades(empresaId, filtro);
+    const linhas: LinhaDaOportunidade[] = [];
+
+    for (let inicio = 0; ; inicio += POR_PAGINA) {
+      let consulta = this.supabase
+        .from("oportunidades")
+        .select(SELECAO_DA_OPORTUNIDADE)
+        .eq("empresa_id", empresaId)
+        .range(inicio, inicio + POR_PAGINA - 1);
+
+      // Vazio devolve tudo que não foi descartado — mesma regra de
+      // `FiltroDeOportunidades.situacoes`, documentada em `porta.ts`.
+      consulta = situacoes?.length ? consulta.in("situacao", situacoes) : consulta.neq("situacao", "descartada");
+
+      const { data, error } = await consulta;
+      if (error) throw new Error(`oportunidades: supabase respondeu com erro — ${error.message}`);
+
+      const pagina = (data as unknown as LinhaDaOportunidade[] | null) ?? [];
+      linhas.push(...pagina);
+      if (pagina.length < POR_PAGINA) break;
+    }
+
+    return linhas.map((linha) => resumoDaLinha(linha, agora));
   }
 
-  oportunidade(empresaId: string, id: string): Promise<ResumoDaOportunidade | null> {
-    return this.demonstracao.oportunidade(empresaId, id);
+  async painelDoDia(empresaId: string, agora: Date = new Date()): Promise<PainelDoDia> {
+    if (ehEmpresaDeDemonstracao(empresaId)) return this.demonstracao.painelDoDia(empresaId, agora);
+
+    const oportunidades = await this.oportunidadesDaEmpresa(empresaId, agora);
+    const recomendadas = oportunidades.filter(
+      (o) =>
+        o.avaliacao.recomendacao.nivel === "recomendada" ||
+        o.avaliacao.recomendacao.nivel === "recomendada_forte",
+    );
+
+    const { data: ultimaColeta } = await this.supabase
+      .from("editais")
+      .select("coletado_em")
+      .order("coletado_em", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    return {
+      novas: oportunidades.filter((o) => o.situacao === "nova").length,
+      recomendadas: recomendadas.length,
+      excelentes: oportunidades.filter((o) => o.avaliacao.score.faixa === "excelente").length,
+      urgentes: oportunidades.filter((o) => o.avaliacao.recomendacao.urgente).length,
+      documentosPendentes: recomendadas.reduce(
+        (soma, o) => soma + o.avaliacao.checklist.totais.ausentes + o.avaliacao.checklist.totais.verificar,
+        0,
+      ),
+      coletadoEm: (ultimaColeta as { coletado_em: string } | null)?.coletado_em ?? null,
+      /*
+       * Sempre `true`. `scripts/ingerir-pncp.ts` classifica cada coleta como
+       * completa, parcial ou degradada e grava o veredito em
+       * `dados/parciais/classificacao.json` — um arquivo no repositório, não
+       * uma linha no banco. Esta implementação não tem, hoje, como perguntar ao
+       * Postgres "a última coleta veio inteira?". Afirmar sempre `true` é uma
+       * simplificação sabida e documentada, não uma checagem que roda e
+       * silenciosamente acerta: o dia em que isso importar de verdade (cliente
+       * vendo "17 oportunidades hoje" com metade dos estados fora), o sinal
+       * precisa ser persistido em algum lugar que esta consulta alcance.
+       */
+      coletaCompleta: true,
+    };
   }
 
-  registrarAcao(
+  async listarOportunidades(
+    empresaId: string,
+    filtro: FiltroDeOportunidades = {},
+  ): Promise<ResumoDaOportunidade[]> {
+    if (ehEmpresaDeDemonstracao(empresaId)) return this.demonstracao.listarOportunidades(empresaId, filtro);
+
+    const agora = new Date();
+    let lista = await this.oportunidadesDaEmpresa(empresaId, agora, filtro.situacoes);
+
+    if (filtro.apenasUrgentes) lista = lista.filter((o) => o.avaliacao.recomendacao.urgente);
+
+    if (filtro.encerrandoEmDias !== undefined) {
+      lista = lista.filter((o) => {
+        const dias = diasAteEncerrar(o.edital, agora);
+        return dias !== null && dias >= 0 && dias <= filtro.encerrandoEmDias!;
+      });
+    }
+
+    if (filtro.scoreMinimo !== undefined) {
+      // Oportunidade sem score não entra em filtro por score — não é "abaixo
+      // do mínimo", é "sem base para comparar".
+      lista = lista.filter(
+        (o) => o.avaliacao.score.valor !== null && o.avaliacao.score.valor >= filtro.scoreMinimo!,
+      );
+    }
+
+    lista.sort((a, b) => {
+      if (a.avaliacao.recomendacao.urgente !== b.avaliacao.recomendacao.urgente) {
+        return a.avaliacao.recomendacao.urgente ? -1 : 1;
+      }
+      return (b.avaliacao.score.valor ?? -1) - (a.avaliacao.score.valor ?? -1);
+    });
+
+    return filtro.limite ? lista.slice(0, filtro.limite) : lista;
+  }
+
+  async oportunidade(empresaId: string, id: string): Promise<ResumoDaOportunidade | null> {
+    if (ehEmpresaDeDemonstracao(empresaId)) return this.demonstracao.oportunidade(empresaId, id);
+
+    /*
+     * `id`, aqui e em toda a porta, é o id canônico do edital (o que vai para a
+     * URL — ver o comentário de `[id]/page.tsx`), não o uuid interno de
+     * `oportunidades`. O filtro precisa do `!inner` em `SELECAO_DA_OPORTUNIDADE`
+     * para o `.eq` na tabela embutida virar de fato uma condição de busca, e
+     * não só uma seleção de colunas.
+     */
+    const { data, error } = await this.supabase
+      .from("oportunidades")
+      .select(SELECAO_DA_OPORTUNIDADE)
+      .eq("empresa_id", empresaId)
+      .eq("editais.id_canonico", id)
+      .maybeSingle();
+
+    if (error || !data) return null;
+
+    return resumoDaLinha(data as unknown as LinhaDaOportunidade, new Date());
+  }
+
+  async registrarAcao(
     empresaId: string,
     oportunidadeId: string,
     situacao: SituacaoDaOportunidade,
   ): Promise<void> {
-    return this.demonstracao.registrarAcao(empresaId, oportunidadeId, situacao);
+    if (ehEmpresaDeDemonstracao(empresaId)) {
+      return this.demonstracao.registrarAcao(empresaId, oportunidadeId, situacao);
+    }
+
+    // Resolve o id canônico do edital para o uuid interno de `oportunidades`:
+    // `acoes_na_oportunidade` referencia a chave composta `(id, empresa_id)`
+    // dessa tabela, e não conhece a chave da fonte.
+    const { data: oportunidade, error: erroDaBusca } = await this.supabase
+      .from("oportunidades")
+      .select("id, editais!inner(id_canonico)")
+      .eq("empresa_id", empresaId)
+      .eq("editais.id_canonico", oportunidadeId)
+      .maybeSingle();
+
+    if (erroDaBusca || !oportunidade) {
+      throw new Error(`oportunidade não encontrada para registrar a ação: ${oportunidadeId}`);
+    }
+
+    // `feita_por` fica em branco quando não há sessão (não deveria acontecer
+    // nesta rota, mas a policy aceita `null` de propósito — ver a migração) em
+    // vez de travar o registro da ação por não saber quem clicou.
+    const {
+      data: { user },
+    } = await this.supabase.auth.getUser();
+
+    const { error } = await this.supabase.from("acoes_na_oportunidade").insert({
+      oportunidade_id: (oportunidade as { id: string }).id,
+      empresa_id: empresaId,
+      situacao,
+      feita_por: user?.id ?? null,
+    });
+
+    if (error) {
+      throw new Error(`falha ao registrar a ação na oportunidade: ${error.message}`);
+    }
   }
 
-  explicarTriagem(
+  async explicarTriagem(
     empresaId: string,
     editalId: string,
   ): Promise<{ encontrado: boolean; explicacao: string; avaliacao: Avaliacao | null }> {
-    return this.demonstracao.explicarTriagem(empresaId, editalId);
+    if (ehEmpresaDeDemonstracao(empresaId)) return this.demonstracao.explicarTriagem(empresaId, editalId);
+
+    const agora = new Date();
+
+    // As duas tabelas respondem perguntas diferentes (ver o header de
+    // `mapeamento.ts`): `oportunidades` tem a avaliação inteira, mas só existe
+    // para quem foi entregue; `decisoes_de_triagem` tem o motivo do descarte,
+    // e existe para todo mundo. Buscar as duas em paralelo é mais barato do que
+    // decidir qual pedir primeiro.
+    const [{ data: linhaDaOportunidade }, { data: linhaDaDecisao }] = await Promise.all([
+      this.supabase
+        .from("oportunidades")
+        .select(SELECAO_DA_OPORTUNIDADE)
+        .eq("empresa_id", empresaId)
+        .eq("editais.id_canonico", editalId)
+        .maybeSingle(),
+      this.supabase
+        .from("decisoes_de_triagem")
+        .select("recomendado, motivo, regra_de_exclusao, avaliado_em, editais!inner(id_canonico)")
+        .eq("empresa_id", empresaId)
+        .eq("editais.id_canonico", editalId)
+        .order("avaliado_em", { ascending: false })
+        .limit(1)
+        .maybeSingle(),
+    ]);
+
+    const avaliacao = linhaDaOportunidade
+      ? avaliacaoDaLinha(linhaDaOportunidade as unknown as LinhaDaOportunidade, agora)
+      : null;
+
+    const decisao = linhaDaDecisao
+      ? (() => {
+          const d = linhaDaDecisao as unknown as {
+            recomendado: boolean;
+            motivo: string | null;
+            regra_de_exclusao: string | null;
+            avaliado_em: string;
+          };
+          return {
+            entregue: d.recomendado,
+            decididoEm: d.avaliado_em,
+            explicacao: d.motivo ?? "",
+            motivoDoDescarte: d.regra_de_exclusao as MotivoDeDescarte | null,
+          };
+        })()
+      : // Sem linha em `decisoes_de_triagem` mas com `oportunidades`: as duas
+        // deveriam nascer juntas (ver `scripts/triar-editais.ts`) — isto só
+        // acontece se uma gravação anterior ficou pela metade. A oportunidade
+        // continua respondendo pela avaliação; a frase de "entregue" é montada
+        // a partir dela em vez de a pergunta virar "não há registro" para um
+        // edital que claramente está na lista do cliente.
+        avaliacao
+          ? {
+              entregue: true,
+              decididoEm: agora.toISOString(),
+              explicacao: avaliacao.recomendacao.resumo,
+              motivoDoDescarte: null,
+            }
+          : null;
+
+    if (!decisao) {
+      return {
+        encontrado: false,
+        explicacao:
+          "Este edital não está entre os coletados para a sua empresa, ou ainda não passou pela triagem. Verifique se o estado dele está na cobertura da coleta.",
+        avaliacao: null,
+      };
+    }
+
+    return { encontrado: true, explicacao: explicarDecisao(decisao, editalId), avaliacao };
   }
 }

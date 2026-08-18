@@ -33,8 +33,17 @@ import type { decisaoParaLinha, oportunidadeParaLinha } from "./mapeamento.ts";
  * conhecido, lê de novo, e exige igualdade campo a campo.
  */
 
-/** Como o Postgres devolve uma linha de `editais` (mesmas colunas de `editais/gravar.ts:paraLinha`). */
-type LinhaDoEdital = {
+/**
+ * Como o Postgres devolve uma linha de `editais` (mesmas colunas de
+ * `editais/gravar.ts:paraLinha`).
+ *
+ * Exportado para `dados/supabase.ts` reusar junto de `editalDaLinha`: a leitura
+ * da tela e a leitura do script de triagem precisam do mesmo `Edital` a partir
+ * da mesma tabela, e duplicar o formato das colunas numa terceira cópia é
+ * exatamente o tipo de divergência silenciosa que este arquivo existe para
+ * evitar em relação a `editais/gravar.ts`.
+ */
+export type LinhaDoEdital = {
   id: string;
   id_canonico: string;
   fonte: string;

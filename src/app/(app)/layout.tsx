@@ -68,7 +68,7 @@ export default async function LayoutDoProduto({
   const empresaId = await empresaAtual();
   const perfil = await repo.perfil(empresaId);
   const diagnostico = diagnosticarPerfil(perfil);
-  const demonstracao = ehDemonstracao(repo);
+  const demonstracao = ehDemonstracao(repo, empresaId);
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--surface)]">

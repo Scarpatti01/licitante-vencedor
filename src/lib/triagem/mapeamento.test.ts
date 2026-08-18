@@ -4,7 +4,7 @@ import { analiseNaoRealizada, avaliarOportunidade } from "../dominio/recomendaca
 import { VERSAO_DO_SCORE } from "../dominio/score";
 import { edital } from "../fontes/fixtures";
 import { triar } from "../pipeline/triagem";
-import { decisaoParaLinha, oportunidadeParaLinha, prontidaoDocumental } from "./mapeamento";
+import { avaliacaoDaLinha, decisaoParaLinha, oportunidadeParaLinha, prontidaoDocumental } from "./mapeamento";
 
 /**
  * Cada caso aqui corresponde a uma restrição de `oportunidades` ou de
@@ -158,5 +158,90 @@ describe("decisaoParaLinha", () => {
   it("guarda a explicação legível, não só o código da regra", () => {
     // É o texto que o suporte lê para responder ao cliente.
     expect(paraLinha(PERFIL_INCOMPLETO).motivo.length).toBeGreaterThan(10);
+  });
+});
+
+describe("avaliacaoDaLinha — o caminho de volta", () => {
+  it("ida e volta: score, faixa, criterios e checklist saem iguais ao que entrou", () => {
+    const avaliacao = avaliar();
+    const linha = linhaDe();
+    const reconstruida = avaliacaoDaLinha(linha, agora);
+
+    expect(reconstruida.score.valor).toBe(avaliacao.score.valor);
+    expect(reconstruida.score.faixa).toBe(avaliacao.score.faixa);
+    expect(reconstruida.score.criterios).toEqual(avaliacao.score.criterios);
+    expect(reconstruida.checklist).toEqual(avaliacao.checklist);
+    expect(reconstruida.recomendacao.nivel).toBe(avaliacao.recomendacao.nivel);
+    expect(reconstruida.recomendacao.proximaAcao).toEqual(avaliacao.recomendacao.proximaAcao);
+  });
+
+  it("cobertura ida e volta tolera só o arredondamento de numeric(4,3)", () => {
+    const avaliacao = avaliar();
+    const reconstruida = avaliacaoDaLinha(linhaDe(), agora);
+    expect(reconstruida.score.cobertura).toBeCloseTo(avaliacao.score.cobertura, 3);
+  });
+
+  it("cobertura chegando como string (numeric do PostgREST) converte para número", () => {
+    const linha = { ...linhaDe(), cobertura: String(linhaDe().cobertura) };
+    expect(typeof avaliacaoDaLinha(linha, agora).score.cobertura).toBe("number");
+  });
+
+  it("positivos/atencoes/impedimentos/indeterminados vêm de `criterios`, filtrados por status", () => {
+    const avaliacao = avaliar();
+    const reconstruida = avaliacaoDaLinha(linhaDe(), agora);
+    expect(reconstruida.score.positivos).toEqual(avaliacao.score.positivos);
+    expect(reconstruida.score.atencoes).toEqual(avaliacao.score.atencoes);
+    expect(reconstruida.score.impedimentos).toEqual(avaliacao.score.impedimentos);
+    expect(reconstruida.score.indeterminados).toEqual(avaliacao.score.indeterminados);
+  });
+
+  it("justificativa reconstrói positivos/atencoes/impedimentos/naoDeterminados como frases", () => {
+    const avaliacao = avaliar();
+    const reconstruida = avaliacaoDaLinha(linhaDe(), agora);
+    expect(reconstruida.recomendacao.justificativa).toEqual(avaliacao.recomendacao.justificativa);
+  });
+
+  it("score nulo: motivo é reconstruído a partir dos indeterminados, não perdido", () => {
+    // `oportunidadeParaLinha` só grava o resumo fixo do nível em `justificativa`
+    // ("Ainda não há informação suficiente..."), não a frase específica de
+    // `Score.motivo` que lista os critérios. `avaliacaoDaLinha` reconstrói essa
+    // frase a partir de `criterios`, e este teste garante que ela não vira
+    // texto vazio nem o resumo genérico.
+    const avaliacao = avaliar(PERFIL_INCOMPLETO);
+    expect(avaliacao.score.valor).toBeNull();
+
+    const reconstruida = avaliacaoDaLinha(linhaDe(PERFIL_INCOMPLETO), agora);
+    expect(reconstruida.score.motivo).not.toBeNull();
+    expect(reconstruida.score.motivo).toContain("Faltam informações demais");
+  });
+
+  it("score não nulo: motivo reconstruído é null", () => {
+    const reconstruida = avaliacaoDaLinha(linhaDe(), agora);
+    expect(reconstruida.score.motivo).toBeNull();
+  });
+
+  it("urgente é recalculado a partir de encerra_em e agora, não lido de coluna", () => {
+    // Objeto escolhido para casar com as palavras-chave de PERFIL_COMPLETO e
+    // garantir uma recomendação boa — "urgente" só existe na interseção de
+    // "vale a pena" com "acaba logo", e o teste precisa da primeira metade
+    // para poder testar a segunda.
+    const editalCompativel = edital({
+      objeto: "Contratação de empresa para limpeza predial e conservação de próprios municipais",
+      encerramentoProposta: "2026-08-30T14:00:00-03:00",
+    });
+    const linha = linhaDe(PERFIL_COMPLETO, editalCompativel);
+    const nivel = avaliar(PERFIL_COMPLETO, editalCompativel).recomendacao.nivel;
+    expect(["recomendada", "recomendada_forte"]).toContain(nivel);
+
+    const pertoDoFim = new Date("2026-08-29T09:00:00-03:00");
+    const longeDoFim = new Date("2026-08-14T09:00:00-03:00");
+
+    expect(avaliacaoDaLinha(linha, pertoDoFim).recomendacao.urgente).toBe(true);
+    expect(avaliacaoDaLinha(linha, longeDoFim).recomendacao.urgente).toBe(false);
+  });
+
+  it("proxima_acao nula é um erro de dado, não um valor a esconder", () => {
+    const linha = { ...linhaDe(), proxima_acao: null };
+    expect(() => avaliacaoDaLinha(linha, agora)).toThrow(/proxima_acao/);
   });
 });
