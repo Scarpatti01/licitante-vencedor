@@ -254,6 +254,30 @@ jobs:
           set -o pipefail
           node --conditions=react-server scripts/publicar-posts.ts | tee saida-posts.txt
 
+      # A cadência da triagem: logo depois de os editais do dia estarem no
+      # Postgres, e não numa hora fixa própria. `scripts/triar-editais.ts` lê
+      # `editaisAbertos()` diretamente do banco, então "acabou de coletar" já é
+      # a condição certa — nenhuma outra hora do dia traz editais mais frescos.
+      #
+      # Roda mesmo quando a coleta veio degradada (`classe` diferente de
+      # `completa`/`parcial-aceitavel`), ao contrário dos dois passos vizinhos:
+      # `editais/gravar.ts:gravarEditais` faz upsert e nunca apaga, então um dia
+      # ruim não desfaz o que dias bons já gravaram — a triagem cruza o que
+      # existe agora no banco, não o snapshot de hoje.
+      #
+      # `continue-on-error`, mesma razão de "Publicar a leva de posts do dia":
+      # é o passo menos crítico do workflow. O commit do agregado é a série
+      # pública do projeto e não pode esperar a triagem nem cair com ela.
+      - name: Triar editais por perfil
+        if: steps.decidir.outputs.pular != 'true'
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -o pipefail
+          node scripts/triar-editais.ts | tee saida-triagem.txt
+
       # `${{ }}` NUNCA entra no corpo de um `run:` aqui: a expressão é
       # substituída no texto do script ANTES de o shell rodar, então um valor
       # com aspa ou `$(...)` viraria comando executado no runner — que carrega
