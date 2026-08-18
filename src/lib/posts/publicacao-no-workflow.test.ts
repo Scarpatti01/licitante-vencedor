@@ -131,3 +131,51 @@ describe("leva sem nenhuma leitura não é publicada", () => {
     expect(trecho).not.toMatch(/comLeitura\s*<\s*[1-9]/);
   });
 });
+
+describe("leva sem leitura tem de dizer POR QUÊ", () => {
+  /**
+   * A guarda que faltava, e que custou duas rodadas.
+   *
+   * Em 18/08 a publicação recusou gravar com `com leitura: 0 de 25` — o
+   * comportamento certo. Mas o log não continha uma única linha explicando a
+   * causa, e a mensagem da própria recusa mandava procurar um erro que não
+   * existia ali.
+   *
+   * O motivo estava sendo calculado e descartado. `analisarEdital` NÃO lança
+   * quando o provedor recusa: devolve análise sem `analisadoEm` e entrega a
+   * causa real por `registrar`. `publicar-posts.ts` não passava esse callback,
+   * então `sem_credencial`, quota estourada, modelo inexistente e resposta fora
+   * do schema chegavam todos ao log como o mesmo silêncio.
+   *
+   * Recusar sem dizer por quê é meio caminho: protege o produto e não permite
+   * consertar.
+   */
+  it("a análise passa `registrar`, que é por onde a recusa se explica", () => {
+    const chamada = PUBLICAR.slice(PUBLICAR.indexOf("analisarEdital(edital"));
+    expect(
+      /registrar\s*:/.test(chamada.slice(0, 900)),
+      "`publicar-posts.ts` voltou a chamar `analisarEdital` sem `registrar`. " +
+        "Sem esse callback a recusa do provedor de IA é silenciosa: a leva é " +
+        "corretamente recusada, e ninguém consegue descobrir a causa. Foi o que " +
+        "aconteceu em 18/08 — log inteiro sem uma linha de motivo.",
+    ).toBe(true);
+  });
+
+  it("a recusa vai para o log de erro, não some numa variável", () => {
+    const trecho = PUBLICAR.slice(PUBLICAR.indexOf("registrar:"));
+    expect(trecho.slice(0, 600)).toMatch(/console\.error/);
+  });
+
+  /**
+   * A mensagem da recusa precisa apontar para os erros que EXISTEM.
+   *
+   * A versão anterior mandava procurar só `leitura falhou em ...`, que é
+   * impresso apenas quando há exceção — e recusa de provedor não é exceção.
+   * Mandar alguém procurar a linha errada é pior que não mandar nada.
+   */
+  it("a mensagem da recusa cita as duas origens possíveis", () => {
+    const trecho = PUBLICAR.slice(PUBLICAR.indexOf("comLeitura === 0"));
+    expect(trecho.slice(0, 900)).toContain("análise recusada");
+    expect(trecho.slice(0, 900)).toContain("leitura falhou");
+  });
+});

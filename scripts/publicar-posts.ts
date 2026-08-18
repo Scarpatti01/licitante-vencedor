@@ -190,7 +190,33 @@ async function lerEAnalisar(
     const texto = textoParaAnalise(resultado.documentos);
     if (!texto) return { analise: null, documentos: 0 };
 
-    const analise = await analisarEdital(edital, { textoDoDocumento: texto });
+    /*
+     * `registrar` não é telemetria opcional aqui — é a única forma de saber por
+     * que uma leitura falhou.
+     *
+     * `analisarEdital` NÃO lança quando o provedor recusa: ela devolve uma
+     * análise sem `analisadoEm` e entrega o motivo real (`sem_credencial`,
+     * quota, modelo inexistente, resposta fora do schema) por este callback. Sem
+     * passá-lo, o motivo é calculado e jogado fora.
+     *
+     * Foi o que aconteceu em 18/08: `com leitura: 0 de 25`, a guarda recusou
+     * gravar — corretamente —, e o log inteiro não continha UMA linha dizendo o
+     * porquê. Pior: a própria mensagem da guarda mandava procurar um erro
+     * (`leitura falhou em ...`) que só aparece quando há EXCEÇÃO, e recusa do
+     * provedor não é exceção. Duas rodadas perdidas sem diagnóstico.
+     */
+    const analise = await analisarEdital(edital, {
+      textoDoDocumento: texto,
+      registrar: (execucao) => {
+        if (execucao.resultado !== "falha") return;
+        console.error(
+          `  análise recusada em ${edital.id}: ${execucao.falha}` +
+            `${execucao.modelo ? ` (modelo ${execucao.modelo}` +
+              `${execucao.tentativas > 1 ? `, ${execucao.tentativas} tentativas` : ""})` : ""}` +
+            ` — ${execucao.motivo ?? "sem motivo declarado"}`,
+        );
+      },
+    });
     return { analise, documentos: resultado.documentos.filter((d) => d.extracao.ok).length };
   } catch (e) {
     console.error(`  leitura falhou em ${edital.id}: ${(e as Error).message}`);
@@ -326,7 +352,9 @@ async function main() {
         `nenhum dos ${posts.length} editais foi lido. Isso não é azar: é falha ` +
           `comum a todos, anterior ao edital. A leva NÃO foi gravada — o dia sem ` +
           `post é melhor que o dia com ${posts.length} posts sem a leitura, que ` +
-          `é o produto. A causa está no erro repetido acima ("leitura falhou em ...").`,
+          `é o produto. A causa está nas linhas de erro acima: "análise recusada ` +
+          `em ..." quando o provedor de IA recusou, "leitura falhou em ..." ` +
+          `quando o download ou a extração lançou.`,
       );
     }
   }
