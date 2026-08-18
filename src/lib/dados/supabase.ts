@@ -53,12 +53,10 @@ import { RepositorioDeDemonstracao, ehEmpresaDeDemonstracao } from "./demonstrac
  * mesmos usados pelo script de triagem e pelos testes de ida e volta que
  * provam que a leitura não inventa nem perde campo.
  *
- * ## O que ainda não está aqui
- *
- * `painelDoDia.coletaCompleta` é sempre `true`: não existe hoje, em Postgres,
- * o equivalente ao `classificacao.json` que `scripts/ingerir-pncp.ts` grava no
- * repositório (completa/parcial/degradada). É uma simplificação sabida, não
- * uma checagem que roda e sempre dá certo — ver o comentário no método.
+ * `painelDoDia.coletaCompleta` lê `execucoes_de_coleta` — o mesmo veredito
+ * completa/parcial-aceitável/degradada que `scripts/ingerir-pncp.ts` grava em
+ * `dados/parciais/classificacao.json`, agora também em uma linha de banco, só
+ * para isso (ver a migração `20260818200000_execucoes_de_coleta.sql`).
  *
  * ## Empresa de demonstração continua na demonstração
  *
@@ -369,12 +367,18 @@ export class RepositorioSupabase implements RepositorioDoProduto {
         o.avaliacao.recomendacao.nivel === "recomendada_forte",
     );
 
-    const { data: ultimaColeta } = await this.supabase
-      .from("editais")
-      .select("coletado_em")
+    // `execucoes_de_coleta` (não `editais.coletado_em`): a linha carrega o
+    // instante da rodada E a classificação juntos, gravados na mesma escrita.
+    // Duas consultas separadas correriam o risco de casar o "quando" de uma
+    // rodada com o "completa?" de outra, se um dia rodarem em paralelo.
+    const { data: ultimaExecucao } = await this.supabase
+      .from("execucoes_de_coleta")
+      .select("classe, coletado_em")
       .order("coletado_em", { ascending: false })
       .limit(1)
       .maybeSingle();
+
+    const execucao = ultimaExecucao as { classe: string; coletado_em: string } | null;
 
     return {
       novas: oportunidades.filter((o) => o.situacao === "nova").length,
@@ -385,19 +389,13 @@ export class RepositorioSupabase implements RepositorioDoProduto {
         (soma, o) => soma + o.avaliacao.checklist.totais.ausentes + o.avaliacao.checklist.totais.verificar,
         0,
       ),
-      coletadoEm: (ultimaColeta as { coletado_em: string } | null)?.coletado_em ?? null,
-      /*
-       * Sempre `true`. `scripts/ingerir-pncp.ts` classifica cada coleta como
-       * completa, parcial ou degradada e grava o veredito em
-       * `dados/parciais/classificacao.json` — um arquivo no repositório, não
-       * uma linha no banco. Esta implementação não tem, hoje, como perguntar ao
-       * Postgres "a última coleta veio inteira?". Afirmar sempre `true` é uma
-       * simplificação sabida e documentada, não uma checagem que roda e
-       * silenciosamente acerta: o dia em que isso importar de verdade (cliente
-       * vendo "17 oportunidades hoje" com metade dos estados fora), o sinal
-       * precisa ser persistido em algum lugar que esta consulta alcance.
-       */
-      coletaCompleta: true,
+      coletadoEm: execucao?.coletado_em ?? null,
+      // `null` (nenhuma execução registrada ainda) trata como completa: é o
+      // estado de antes de existir QUALQUER dado, e não há "coleta incompleta"
+      // do que já é vazio. `degradada` é a única classe que vira `false` —
+      // `completa` e `parcial-aceitavel` são as duas que o próprio workflow já
+      // trata como "agregado utilizável" (mesma condição que decide commitar).
+      coletaCompleta: execucao?.classe !== "degradada",
     };
   }
 

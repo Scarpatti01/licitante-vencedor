@@ -26,6 +26,7 @@ import { deduplicar } from "../src/lib/fontes/deduplicacao.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
 import { gravarEditais } from "../src/lib/editais/gravar.ts";
+import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
 
 function arg(nome: string): string | undefined {
@@ -352,6 +353,22 @@ async function main() {
     JSON.stringify({ coletadoEm, ...classificacao }, null, 1),
     "utf8",
   );
+
+  // O mesmo veredito, agora também no banco — é o que `painelDoDia` (produto)
+  // lê; `classificacao.json` continua sendo o que este workflow lê para
+  // decidir commitar. Não derruba a rodada: a esta altura o mais importante já
+  // foi gravado (editais no Postgres, agregado e revisão no disco), e perder
+  // só este registro histórico não justifica um job vermelho.
+  if (urlDoBanco && chaveDoBanco) {
+    try {
+      await gravarExecucaoDeColeta(
+        { fonte: fonte.nome, coletadoEm, classificacao },
+        { url: urlDoBanco, chave: chaveDoBanco },
+      );
+    } catch (e) {
+      console.error(`execucoes_de_coleta: não gravou — ${e instanceof Error ? e.message : e}`);
+    }
+  }
 
   if (classificacao.preservarAnterior) {
     const dia = coletadoEm.slice(0, 10);
