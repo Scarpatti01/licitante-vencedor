@@ -194,6 +194,21 @@ jobs:
           set -o pipefail
           node --conditions=react-server scripts/publicar-posts.ts | tee saida-posts.txt
 
+      # Mesma cadência de `coletar-pncp.yml`: logo depois de os editais estarem
+      # no banco, e sem a guarda de `classe` — a triagem lê o que existe agora em
+      # `editais`, não o snapshot desta rodada, e um upsert de dia ruim não
+      # desfaz o que dias bons já gravaram. `continue-on-error` pelo mesmo
+      # motivo do passo anterior: nem o post nem a triagem podem custar o
+      # commit do agregado.
+      - name: Triar editais por perfil
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -o pipefail
+          node scripts/triar-editais.ts | tee saida-triagem.txt
+
       # `${{ }}` NUNCA entra no corpo de um `run:`, pela mesma regra do workflow
       # sequencial: a expressão é substituída no TEXTO do programa antes de o
       # shell existir, e `motivos` deriva de dado do PNCP.

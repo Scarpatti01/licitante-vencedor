@@ -45,7 +45,7 @@ Estado em 2026-08-15.
 | Página do edital com score explicado e checklist | **No ar** |
 | Onboarding guiado | **No ar** |
 | Registro de "por que este edital não apareceu" | **No ar** (`src/lib/pipeline/triagem.ts`) |
-| Triagem gravando oportunidades e decisões | **Processo pronto e testado** (`scripts/triar-editais.ts`), não agendado — falta decidir a cadência, e a leitura das telas ainda vem da demonstração (ver "O próximo passo" abaixo) |
+| Triagem gravando oportunidades e decisões | **No ar** — `scripts/triar-editais.ts` roda a cada coleta, e `RepositorioSupabase` lê o resultado de verdade (ver "O próximo passo" abaixo) |
 | Histórico de participação e resultado | **Esquema pronto**, sem tela |
 
 ## Aquisição — o blog
@@ -150,18 +150,31 @@ perfil com valores DISTINTOS em cada par do mesmo tipo, para que uma troca como
 `ticketMaximo` lido como `ticketMinimo` derrube o teste em vez de só pontuar
 errado em produção sem ninguém perceber.
 
-**O que ainda falta, em ordem:**
+~~**Decidir a cadência.**~~ **Feita, em 18/08.** `scripts/triar-editais.ts`
+roda como passo de `coletar-pncp.yml` (e de `coletar-pncp-paralelo.yml`, em
+paridade), logo depois de os editais do dia estarem no Postgres — sem hora
+própria, porque o script lê `editaisAbertos()` direto do banco, e "acabou de
+coletar" já é a condição mais fresca possível. Roda mesmo com coleta
+degradada (o upsert de `editais/gravar.ts` nunca apaga o que dias bons já
+gravaram) e não bloqueia o commit do agregado (`continue-on-error`, mesma
+regra da publicação de posts). O disparo manual (`triar-editais.yml`)
+continua existindo, para rodar fora do horário do cron quando fizer sentido.
 
-1. **Decidir a cadência.** O script não está em nenhum workflow — mesma
-   disciplina de `coletar-pncp-paralelo.yml` antes de ser promovido: correto e
-   testado primeiro, agendado depois de alguém decidir quando.
-2. **Ligar a leitura.** `RepositorioSupabase` (`src/lib/dados/supabase.ts`)
-   ainda delega os cinco métodos de oportunidade para a demonstração, e
-   `oportunidadesSimuladas` continua `true` — de propósito, documentado no
-   próprio arquivo: "no dia em que a triagem existir, estes cinco métodos
-   passam a consultar o Postgres e a propriedade vira `false` — no mesmo
-   commit, ou o aviso vira mentira nos dois sentidos possíveis". A triagem
-   agora existe do lado de gravar; falta o lado de ler.
+~~**Ligar a leitura.**~~ **Feita, em 18/08.** `RepositorioSupabase`
+(`src/lib/dados/supabase.ts`) lê `oportunidades` e `decisoes_de_triagem` de
+verdade para qualquer empresa que não seja a de demonstração;
+`oportunidadesSimuladas` virou método por empresa. A triagem existe hoje dos
+dois lados — gravar e ler.
+
+**O que ainda falta:**
+
+- **Cobertura de UF.** A única empresa cadastrada hoje atende só o RJ, e a
+  coleta ainda cobre só as 6 UFs do piloto (Nordeste) — nenhum RJ. Até a
+  coleta paralela (27 UFs) ser promovida, a triagem roda certa e não entrega
+  nada para ela. Ver "Decisões em aberto" e a validação da coleta de 19/08.
+- **`painelDoDia.coletaCompleta` sempre `true`.** Não existe, em Postgres, o
+  equivalente ao `classificacao.json` que a coleta grava só no repositório
+  (completa/parcial/degradada) — ver o comentário em `supabase.ts`.
 
 ## Fase 6 — Inteligência avançada
 
