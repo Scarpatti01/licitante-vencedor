@@ -46,7 +46,7 @@ Estado em 2026-08-15.
 | Onboarding guiado | **No ar** |
 | Registro de "por que este edital não apareceu" | **No ar** (`src/lib/pipeline/triagem.ts`) |
 | Triagem gravando oportunidades e decisões | **No ar** — `scripts/triar-editais.ts` roda a cada coleta, e `RepositorioSupabase` lê o resultado de verdade (ver "O próximo passo" abaixo) |
-| Histórico de participação e resultado | **Esquema pronto**, sem tela |
+| ~~Histórico de participação e resultado~~ | **Feito, em 19/08.** `/historico/` — duas seções (em andamento, concluídas), e os botões que alimentam `oportunidades.situacao` na página do edital (`AcoesDoStatus`), sem os quais a tela nunca teria dado para mostrar |
 
 ## Aquisição — o blog
 
