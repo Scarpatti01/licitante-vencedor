@@ -1,13 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 3509 editais coletados em 2026-08-18T07:01:22.637Z.
+Revisão dos dados — 3505 editais coletados em 2026-08-19T07:02:16.103Z.
 
-Encontrados 0 erro(s), 1 suspeita(s) e 3 aviso(s).
-
-[AVISO] O edital 33781055000135-1-001371/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "dfd 160 2026"
-  Edital: https://pncp.gov.br/app/editais/33781055000135/2026/1371
+Encontrados 0 erro(s), 1 suspeita(s) e 4 aviso(s).
 
 [AVISO] O edital 11049830000120-1-000343/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Mobiliário"
@@ -21,6 +17,14 @@ Encontrados 0 erro(s), 1 suspeita(s) e 3 aviso(s).
 [AVISO] O edital 07954480000179-1-021293/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "FERRAMENTAS"
   Edital: https://pncp.gov.br/app/editais/07954480000179/2026/21293
+
+[AVISO] O edital 07954480000179-1-021353/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Pincel e Refil"
+  Edital: https://pncp.gov.br/app/editais/07954480000179/2026/21353
+
+[AVISO] O edital 10783898000175-1-000178/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Carro-pipa"
+  Edital: https://pncp.gov.br/app/editais/10783898000175/2026/178
 
 86% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
 ```
