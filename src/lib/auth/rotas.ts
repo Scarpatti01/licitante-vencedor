@@ -12,6 +12,7 @@
 export const ROTAS_DO_PRODUTO = [
   "/painel",
   "/oportunidades",
+  "/historico",
   "/perfil",
   "/configuracoes",
   "/onboarding",

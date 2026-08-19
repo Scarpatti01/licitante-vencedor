@@ -9,6 +9,8 @@ import { Checklist } from "@/components/oportunidades/Checklist";
 import { DetalhesDaPublicacao, FichaDoEdital } from "@/components/oportunidades/FichaDoEdital";
 import { Riscos } from "@/components/oportunidades/Riscos";
 import { BlocoDeProximaAcao } from "@/components/oportunidades/ProximaAcao";
+import { AcoesDoStatus } from "@/components/oportunidades/AcoesDoStatus";
+import { acoesDisponiveis } from "@/components/oportunidades/transicoes";
 import { RECOMENDACAO, SITUACAO } from "@/components/oportunidades/estilo";
 
 /**
@@ -165,6 +167,15 @@ export default async function EditalPagina({ params }: Props) {
         </Secao>
 
         <BlocoDeProximaAcao acao={recomendacao.proximaAcao} linkOficial={edital.link} />
+
+        {acoesDisponiveis(situacao).length > 0 ? (
+          <Secao
+            titulo="O que você decidiu"
+            descricao="A recomendação acima é a leitura do produto. Esta é a sua — e é ela que fica no histórico."
+          >
+            <AcoesDoStatus oportunidadeId={oportunidade.id} situacao={situacao} />
+          </Secao>
+        ) : null}
       </div>
     </div>
   );
