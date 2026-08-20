@@ -208,12 +208,31 @@ clientes reais usando o produto. Construir agora seria inventar o insumo.
    A primeira medição era só de PE, onde 1,2% dos PDFs precisam de OCR; repetida
    em CE, a necessidade é de **11,5%** — quase dez vezes maior. Um número só,
    tirado de um estado, subdimensionava o custo por um fator de dez.
-4. **Os segredos do GitHub Actions.** `RESEND_API_KEY`,
-   `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` no repositório;
-   `NEXT_PUBLIC_SUPABASE_ANON_KEY` no Vercel. Sem os primeiros o alerta não sai
-   (o workflow encerra verde avisando); sem o último a tela de entrar não entra,
-   e por isso ainda não há link de "Entrar" na navegação — botão levando a tela
-   morta é pior que botão nenhum.
+4. ~~**Os segredos do GitHub Actions e do Vercel.**~~ **Confirmados em 20/08,
+   por evidência de produção, não por abrir os dois painéis.** `RESEND_API_KEY`,
+   `NEXT_PUBLIC_SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` precisam existir
+   nos DOIS lugares — não só no GitHub: `leads-destinos.ts` (a rota
+   `/api/alerta`, rodando no Vercel) usa a mesma chave de serviço que os
+   scripts agendados usam, e `email/resend.ts` é chamado tanto por
+   `enviar-alertas.ts` (GitHub) quanto pela confirmação de cadastro do site
+   (Vercel).
+
+   A prova veio do que já aconteceu: 10 alertas reais enviados pelo script
+   agendado, 3.964 decisões de triagem e 4.740 editais gravados pela coleta
+   (os três só acontecem com `NEXT_PUBLIC_SUPABASE_URL` +
+   `SUPABASE_SERVICE_ROLE_KEY` funcionando no GitHub), e — do lado do
+   Vercel — o e-mail de confirmação do teste ponta a ponta de 14/08 saiu e
+   foi clicado (`leads.confirmado_em` preenchido), e a única empresa
+   cadastrada hoje só existe porque o cadastro persistiu de verdade. Os três
+   segredos funcionam nos dois lugares.
+
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Vercel, diferente dos três acima — é a
+   chave pública que a tela de login usa no navegador) também está
+   confirmada pela mesma evidência: sem ela, a empresa cadastrada não teria
+   conseguido criar conta. **O que falta não é segredo, é navegação:** ainda
+   não existe link de "Entrar" no menu público do site — botão levando a
+   tela morta é pior que botão nenhum, e por isso ele nunca foi adicionado;
+   agora que a chave está confirmada, adicionar o link é só um item de UI.
 5. **Retenção e exclusão de documentos** após cancelamento, e o que fazer com o
    histórico de triagem quando a empresa pede exclusão pela LGPD.
 6. ~~**Teto de custo mensal de IA.**~~ **Decidido em 20/08: R$ 300/mês.**
