@@ -213,6 +213,50 @@ export function modalidadesOrdenadas(m: MunicipioAgregado): { nome: string; edit
 }
 
 /**
+ * O limiar que decide se uma modalidade "domina" o município.
+ *
+ * 70%: alto o bastante para só disparar a frase específica quando a
+ * concentração É o fato mais relevante daquele número — não uma maioria
+ * qualquer, que sobraria de qualquer distribuição com poucas modalidades.
+ */
+const LIMIAR_DE_CONCENTRACAO_DE_MODALIDADE = 0.7;
+
+/**
+ * A frase que acompanha a tabela de modalidades, reagindo ao próprio número.
+ *
+ * Sem isto, a prosa ao redor da tabela é fixa — só os números mudam — e é
+ * exatamente essa repetição que faz páginas de municípios diferentes lerem
+ * igual. Quando uma modalidade concentra a maioria das contratações, dizer
+ * isso é mais específico e mais útil do que a explicação genérica de como
+ * modalidade funciona.
+ *
+ * "Pregão - Eletrônico" ganha frase própria porque é a única modalidade cuja
+ * concentração muda a decisão de quem lê: ela dispensa presença física. Para
+ * as demais, concentração não autoriza a mesma afirmação — presença,
+ * credenciamento prévio e outras exigências variam por modalidade e por
+ * edital, e afirmar acessibilidade genérica seria inventar o que o dado não
+ * disse.
+ */
+export function fraseSobreModalidades(m: MunicipioAgregado): string {
+  const [principal] = modalidadesOrdenadas(m);
+  const participacao = principal ? principal.editais / m.editais : 0;
+
+  if (principal && participacao >= LIMIAR_DE_CONCENTRACAO_DE_MODALIDADE) {
+    return principal.nome === "Pregão - Eletrônico"
+      ? `${m.municipio} compra quase só por pregão eletrônico — acessível de qualquer lugar do país.`
+      : `${m.municipio} concentra ${Math.round(participacao * 100)}% das contratações medidas em ${principal.nome} — vale conhecer o rito dela antes de disputar aqui.`;
+  }
+
+  return (
+    "A modalidade determina o rito e, com ele, o esforço de participar. É a " +
+    "primeira coisa a olhar depois do objeto: um município que compra " +
+    "majoritariamente por pregão eletrônico é acessível de qualquer lugar " +
+    "do país, enquanto presença física e credenciamento mudam a conta de " +
+    "quem está longe."
+  );
+}
+
+/**
  * Os maiores compradores do município, do maior para o menor volume.
  *
  * `limite = 5`: o suficiente para a página dizer algo específico sem virar
@@ -230,6 +274,55 @@ export function principaisCompradores(
   return Object.values(m.compradores)
     .sort((a, b) => b.editais - a.editais || a.nome.localeCompare(b.nome, "pt-BR"))
     .slice(0, limite);
+}
+
+/**
+ * O limiar que decide se os dois maiores compradores "concentram" o mercado.
+ *
+ * Metade: passar disso é o ponto em que conhecer só esses dois nomes já
+ * descreve a maior parte do que se compra ali — o tipo de fato que muda a
+ * frase, e não só um adjetivo em cima do mesmo texto.
+ */
+const LIMIAR_DE_CONCENTRACAO_DE_COMPRADORES = 0.5;
+
+/**
+ * A frase que acompanha a tabela de compradores, reagindo à concentração real
+ * — e não descrevendo sempre a mesma coisa com números diferentes por dentro.
+ *
+ * Três casos, porque são três situações distintas: um comprador só (o portão
+ * de `temLastro` deveria impedir isso hoje, mas a frase não depende dele para
+ * estar certa); dois compradores que já respondem por mais da metade do
+ * medido, o fato mais acionável que existe para quem decide onde focar; e o
+ * resto, em que o mercado está distribuído o bastante para o número sozinho
+ * já contar a história, sem precisar de um rótulo de "concentrado".
+ */
+export function fraseSobreCompradores(m: MunicipioAgregado): string {
+  const top = principaisCompradores(m);
+  if (top.length === 0) return "";
+
+  if (top.length === 1) {
+    return (
+      "Um órgão concentra as contratações medidas aqui — vender para ele é " +
+      "vender para quase todo o mercado local."
+    );
+  }
+
+  const doisPrimeiros = top.slice(0, 2);
+  const participacaoDosDois = doisPrimeiros.reduce((soma, c) => soma + c.editais, 0) / m.editais;
+
+  if (participacaoDosDois >= LIMIAR_DE_CONCENTRACAO_DE_COMPRADORES) {
+    return (
+      `Os dois maiores compradores respondem por ${Math.round(participacaoDosDois * 100)}% ` +
+      "das contratações medidas aqui — atender bem os dois cobre a maior parte do mercado local."
+    );
+  }
+
+  const participacaoTotal = top.reduce((soma, c) => soma + c.editais, 0) / m.editais;
+  return (
+    `Os ${top.length} maiores compradores somam ${Math.round(participacaoTotal * 100)}% ` +
+    "das contratações medidas. Conhecer o nome de quem compra ajuda a decidir onde vale " +
+    "a pena acompanhar de perto."
+  );
 }
 
 /**

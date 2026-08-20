@@ -3,6 +3,8 @@ import {
   estadoDaUf,
   ufFoiCompleta,
   caminhoDoMunicipio,
+  fraseSobreCompradores,
+  fraseSobreModalidades,
   MINIMO_DE_EDITAIS,
   MINIMO_DE_ORGAOS,
   modalidadesOrdenadas,
@@ -102,6 +104,90 @@ describe("modalidadesOrdenadas", () => {
       { nome: "Concorrência", editais: 3 },
       { nome: "Credenciamento", editais: 3 },
     ]);
+  });
+});
+
+describe("fraseSobreModalidades", () => {
+  it("reage à concentração de pregão eletrônico com a frase de acessibilidade", () => {
+    const m = municipio({
+      editais: 10,
+      modalidades: { "Pregão - Eletrônico": 8, Dispensa: 2 },
+    });
+    expect(fraseSobreModalidades(m)).toBe(
+      "Recife compra quase só por pregão eletrônico — acessível de qualquer lugar do país.",
+    );
+  });
+
+  it("reage à concentração de outra modalidade sem afirmar acessibilidade", () => {
+    // Concorrência concentrada não autoriza a mesma frase de pregão: presença
+    // e credenciamento variam por modalidade, e afirmar o contrário seria
+    // inventar o que o dado não disse.
+    const m = municipio({
+      editais: 10,
+      modalidades: { Concorrência: 9, Dispensa: 1 },
+    });
+    expect(fraseSobreModalidades(m)).toBe(
+      "Recife concentra 90% das contratações medidas em Concorrência — vale conhecer o rito dela antes de disputar aqui.",
+    );
+  });
+
+  it("sem modalidade dominante, devolve o texto explicativo genérico", () => {
+    const m = municipio({
+      editais: 10,
+      modalidades: { "Pregão - Eletrônico": 5, Dispensa: 3, Concorrência: 2 },
+    });
+    expect(fraseSobreModalidades(m)).toContain("A modalidade determina o rito");
+  });
+
+  it("o limiar é inclusivo — exatamente 70%, já dispara a frase específica", () => {
+    const m = municipio({ editais: 10, modalidades: { "Pregão - Eletrônico": 7, Dispensa: 3 } });
+    expect(fraseSobreModalidades(m)).not.toContain("A modalidade determina o rito");
+  });
+});
+
+describe("fraseSobreCompradores", () => {
+  it("sem comprador nomeado, devolve string vazia — a seção nem aparece", () => {
+    expect(fraseSobreCompradores(municipio({ compradores: {} }))).toBe("");
+  });
+
+  it("um comprador só, concentra o mercado inteiro", () => {
+    const m = municipio({
+      editais: 5,
+      compradores: { "1": { nome: "PREFEITURA", editais: 5 } },
+    });
+    expect(fraseSobreCompradores(m)).toContain("Um órgão concentra");
+  });
+
+  it("dois maiores compradores somando mais da metade, frase de concentração", () => {
+    const m = municipio({
+      editais: 10,
+      compradores: {
+        "1": { nome: "PREFEITURA", editais: 4 },
+        "2": { nome: "SECRETARIA DE SAUDE", editais: 3 },
+        "3": { nome: "SECRETARIA DE EDUCACAO", editais: 3 },
+      },
+    });
+    expect(fraseSobreCompradores(m)).toBe(
+      "Os dois maiores compradores respondem por 70% das contratações medidas aqui — " +
+        "atender bem os dois cobre a maior parte do mercado local.",
+    );
+  });
+
+  it("mercado distribuído, frase genérica com a soma dos maiores mostrados", () => {
+    const m = municipio({
+      editais: 10,
+      compradores: {
+        "1": { nome: "PREFEITURA", editais: 2 },
+        "2": { nome: "SECRETARIA DE SAUDE", editais: 2 },
+        "3": { nome: "SECRETARIA DE EDUCACAO", editais: 2 },
+        "4": { nome: "SECRETARIA DE OBRAS", editais: 2 },
+        "5": { nome: "SECRETARIA DE CULTURA", editais: 2 },
+      },
+    });
+    expect(fraseSobreCompradores(m)).toBe(
+      "Os 5 maiores compradores somam 100% das contratações medidas. Conhecer o nome de " +
+        "quem compra ajuda a decidir onde vale a pena acompanhar de perto.",
+    );
   });
 });
 
