@@ -69,6 +69,20 @@ export function CabecalhoSite() {
           </nav>
 
           <BuscaDePracas pracas={pracasParaBusca()} className="w-36 sm:w-52" />
+
+          {/*
+            Fora do `nav` de cima, e não escondido no celular: login e cadastro
+            já funcionam (chave confirmada, ver `roadmap.md`) e este era o único
+            caminho que faltava — sem ele, quem lê um artigo e quer testar o
+            produto só entrava digitando o endereço de cabeça.
+          */}
+          <Link
+            href="/entrar/"
+            prefetch={false}
+            className="shrink-0 text-sm font-medium underline-offset-4 hover:underline"
+          >
+            Entrar
+          </Link>
         </div>
       </div>
     </header>
