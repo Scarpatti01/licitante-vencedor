@@ -38,17 +38,9 @@
 
 import agregados from "../../dados/agregados.json" with { type: "json" };
 import { normalizarParaBusca } from "./busca-de-pracas";
+import type { MunicipioAgregado } from "./pncp/agregarPorMunicipio.ts";
 
-export type MunicipioAgregado = {
-  uf: string;
-  municipio: string;
-  slug: string;
-  ibge: string;
-  editais: number;
-  valor: number;
-  orgaos: number;
-  modalidades: Record<string, number>;
-};
+export type { MunicipioAgregado };
 
 /**
  * Volume mínimo para um município virar página.
@@ -106,6 +98,20 @@ function normalizar(bruto: unknown): MunicipioAgregado[] {
       }
     }
 
+    // Ausente em todo agregado gerado antes desta coluna existir — `{}`, e
+    // não descarte do município: o resto da página continua tendo o que
+    // mostrar, só a seção de compradores nomeados fica de fora até a
+    // próxima coleta regravar o arquivo com o campo novo.
+    const compradores: Record<string, { nome: string; editais: number }> = {};
+    if (m.compradores && typeof m.compradores === "object") {
+      for (const [cnpj, valor] of Object.entries(m.compradores as Record<string, unknown>)) {
+        const c = valor as Record<string, unknown>;
+        if (typeof c?.nome === "string" && c.nome && typeof c?.editais === "number" && Number.isFinite(c.editais)) {
+          compradores[cnpj] = { nome: c.nome, editais: c.editais };
+        }
+      }
+    }
+
     return [
       {
         uf: m.uf as string,
@@ -116,6 +122,7 @@ function normalizar(bruto: unknown): MunicipioAgregado[] {
         valor: m.valor as number,
         orgaos: m.orgaos as number,
         modalidades,
+        compradores,
       },
     ];
   });
@@ -203,6 +210,26 @@ export function modalidadesOrdenadas(m: MunicipioAgregado): { nome: string; edit
   return Object.entries(m.modalidades)
     .map(([nome, editais]) => ({ nome, editais }))
     .sort((a, b) => b.editais - a.editais || a.nome.localeCompare(b.nome, "pt-BR"));
+}
+
+/**
+ * Os maiores compradores do município, do maior para o menor volume.
+ *
+ * `limite = 5`: o suficiente para a página dizer algo específico sem virar
+ * lista de todo órgão que comprou uma vez. Município com menos compradores
+ * que o limite devolve todos — o portão em `temLastro` já garante pelo menos
+ * `MINIMO_DE_ORGAOS`.
+ *
+ * Vazio para todo agregado gerado antes de `compradores` existir no arquivo —
+ * a página trata isso como "sem esta seção", não como erro.
+ */
+export function principaisCompradores(
+  m: MunicipioAgregado,
+  limite = 5,
+): { nome: string; editais: number }[] {
+  return Object.values(m.compradores)
+    .sort((a, b) => b.editais - a.editais || a.nome.localeCompare(b.nome, "pt-BR"))
+    .slice(0, limite);
 }
 
 /**

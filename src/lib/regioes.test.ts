@@ -23,6 +23,7 @@ function municipio(extra: Partial<MunicipioAgregado> = {}): MunicipioAgregado {
     valor: 235847326,
     orgaos: 12,
     modalidades: { "Pregão - Eletrônico": 11 },
+    compradores: {},
     ...extra,
   };
 }

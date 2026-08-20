@@ -13,6 +13,7 @@ import {
   modalidadesOrdenadas,
   municipioPorSlug,
   municipiosPublicaveis,
+  principaisCompradores,
   ufFoiCompleta,
   type MunicipioAgregado,
 } from "@/lib/regioes";
@@ -112,6 +113,7 @@ export default async function PaginaDoMunicipio({
   // diferentes e poderia marcar dois editais do mesmo segundo de forma distinta.
   const agora = instanteDaPagina();
   const modalidades = modalidadesOrdenadas(m);
+  const compradores = principaisCompradores(m);
   const ticket = Math.round(m.valor / m.editais);
 
   return (
@@ -180,6 +182,31 @@ export default async function PaginaDoMunicipio({
             quem está longe.
           </P>
         </Secao>
+
+        {/*
+          Ausente em todo agregado gerado antes de `compradores` existir no
+          arquivo (ver `regioes.ts`) — a seção some, o resto da página
+          continua de pé. Nome do órgão sai exatamente como o PNCP publicou,
+          sem reformatar: mesma regra de `estilo.ts:orgaoDoEdital` para a
+          página do edital — o produto não corrige o que a fonte disse.
+        */}
+        {compradores.length > 0 ? (
+          <Secao id="compradores" titulo="Quem mais compra aqui">
+            <Tabela
+              cabecalho={["Órgão", "Contratações", "Parte do total"]}
+              linhas={compradores.map((c) => [
+                c.nome,
+                String(c.editais),
+                `${Math.round((100 * c.editais) / m.editais)}%`,
+              ])}
+            />
+            <P>
+              {compradores.length === 1
+                ? "Um órgão concentra as contratações medidas aqui — vender para ele é vender para quase todo o mercado local."
+                : `Os ${compradores.length} maiores compradores somam ${Math.round((100 * compradores.reduce((soma, c) => soma + c.editais, 0)) / m.editais)}% das contratações medidas. Conhecer o nome de quem compra ajuda a decidir onde vale a pena acompanhar de perto.`}
+            </P>
+          </Secao>
+        ) : null}
 
         <CapturaAlerta
           origem={`regiao/${m.uf.toLowerCase()}-${m.slug}`}
