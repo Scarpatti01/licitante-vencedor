@@ -9,6 +9,8 @@ import { PracasEmAcordeao } from "@/components/regioes/PracasEmAcordeao";
 import { RodapeSite } from "@/components/RodapeSite";
 import {
   caminhoDoMunicipio,
+  fraseSobreCompradores,
+  fraseSobreModalidades,
   MEDIDO_EM,
   modalidadesOrdenadas,
   municipioPorSlug,
@@ -174,13 +176,7 @@ export default async function PaginaDoMunicipio({
             cabecalho={["Modalidade", "Contratações"]}
             linhas={modalidades.map((mod) => [mod.nome, String(mod.editais)])}
           />
-          <P>
-            A modalidade determina o rito e, com ele, o esforço de participar. É a
-            primeira coisa a olhar depois do objeto: um município que compra
-            majoritariamente por pregão eletrônico é acessível de qualquer lugar
-            do país, enquanto presença física e credenciamento mudam a conta de
-            quem está longe.
-          </P>
+          <P>{fraseSobreModalidades(m)}</P>
         </Secao>
 
         {/*
@@ -200,11 +196,7 @@ export default async function PaginaDoMunicipio({
                 `${Math.round((100 * c.editais) / m.editais)}%`,
               ])}
             />
-            <P>
-              {compradores.length === 1
-                ? "Um órgão concentra as contratações medidas aqui — vender para ele é vender para quase todo o mercado local."
-                : `Os ${compradores.length} maiores compradores somam ${Math.round((100 * compradores.reduce((soma, c) => soma + c.editais, 0)) / m.editais)}% das contratações medidas. Conhecer o nome de quem compra ajuda a decidir onde vale a pena acompanhar de perto.`}
-            </P>
+            <P>{fraseSobreCompradores(m)}</P>
           </Secao>
         ) : null}
 
