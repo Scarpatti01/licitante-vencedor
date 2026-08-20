@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { AUTHOR, KNOWS_ABOUT, SITE } from "@/lib/site";
 
@@ -101,6 +102,14 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(entityGraph) }}
         />
+        {/*
+         * Sem isto o produto não tinha nenhuma visibilidade de tráfego — nem
+         * Search Console, nem analytics. "Por que o blog captou só 1 lead"
+         * ficava sem resposta possível: não dava para saber se o problema era
+         * visita ou conversão. Web Analytics da própria Vercel, sem custo
+         * adicional no plano já em uso, sem cookie e sem banner de consentimento.
+         */}
+        <Analytics />
       </body>
     </html>
   );
