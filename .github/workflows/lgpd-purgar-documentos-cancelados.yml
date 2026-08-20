@@ -1,0 +1,72 @@
+# Varredura de carência: apaga documento e atestado de toda empresa cuja
+# assinatura mais recente encerrou há mais que 30 dias. Nunca toca no
+# histórico de triagem — ver `src/lib/lgpd/retencao.ts`.
+#
+# SEM `schedule:`, DE PROPÓSITO. `assinaturas` está vazia até existir
+# cobrança de verdade (Fase 5 do roadmap) — agendar contra uma tabela sempre
+# vazia não erra, só não faz nada, e um cron que nunca encontra trabalho é
+# fácil de esquecer que existe. Ligar o agendamento é trabalho de quando a
+# primeira assinatura for cancelada de verdade, não antes.
+
+name: LGPD — purgar documentos de empresas canceladas
+
+on:
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Não apagar nada — só imprimir quem seria afetado"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  purgar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Purgar
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SIMULAR: ${{ inputs.simular && '--simular' || '' }}
+        run: |
+          set -o pipefail
+
+          codigo=0
+          node scripts/lgpd-purgar-documentos-cancelados.ts $SIMULAR | tee saida-purga.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Purga não rodou — faltam segredos"
+              echo
+              echo "Configure em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          exit "$codigo"
+
+      - name: Publicar o log da purga
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-lgpd-purga
+          path: saida-purga.txt
+          retention-days: 90
+          if-no-files-found: ignore

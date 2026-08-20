@@ -85,11 +85,20 @@ rede da outra.
 da análise (`src/lib/pipeline/triagem.ts`). Serve ao cliente que pergunta por
 que não recebeu um edital, e serve à auditoria.
 
-**Retenção e exclusão.** Pendente de decisão do dono: por quanto tempo guardar
-documento de habilitação depois do cancelamento, e o que fazer com o histórico
-de triagem (que é insumo do produto) quando a empresa pede exclusão. Está
-listado em `docs/produto/roadmap.md` como decisão em aberto, e não deve ser
-resolvido por padrão silencioso.
+**Retenção e exclusão.** Decidido em 20/08, implementado em
+`src/lib/lgpd/`. Duas trilhas com prazos diferentes, porque respondem a
+perguntas diferentes:
+
+- **Carência após cancelamento** (`retencao.ts`): documento de habilitação
+  (arquivo + linha) some sozinho 30 dias depois de `assinaturas.encerrada_em`
+  — varredura em `scripts/lgpd-purgar-documentos-cancelados.ts`. O histórico
+  de triagem não segue este prazo: continua respondendo "por que este edital
+  não apareceu" mesmo depois do cancelamento.
+- **Pedido explícito de exclusão** (`exclusao.ts`, LGPD art. 18, IX): some
+  documento, atestado, perfil declarado e histórico de triagem daquela
+  empresa — `scripts/lgpd-excluir-empresa.ts`. O que fica, sob a exceção do
+  art. 16, IV (uso exclusivo do controlador): `acoes_na_oportunidade` e
+  `eventos_de_auditoria`, que já nasceram sem policy de DELETE para ninguém.
 
 ## 6. Onde a IA pode e não pode opinar
 
