@@ -1,0 +1,76 @@
+# Dispara o pedido explícito de exclusão de dados (LGPD, art. 18, IX) para
+# UMA empresa, à mão — não há tela de autoatendimento para isto ainda.
+#
+# O que é apagado, e o que não é: ver o comentário no topo de
+# `src/lib/lgpd/exclusao.ts`. Resumindo — sai documento, atestado, perfil
+# declarado e histórico de triagem daquela empresa; fica a linha de
+# `empresas`, `acoes_na_oportunidade` e `eventos_de_auditoria` (trilha de
+# auditoria, sem policy de DELETE para ninguém).
+
+name: LGPD — excluir dados de uma empresa
+
+on:
+  workflow_dispatch:
+    inputs:
+      empresa:
+        description: "UUID da empresa (coluna empresas.id)"
+        type: string
+        required: true
+      simular:
+        description: "Não apagar nada — só imprimir o que apagaria"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  excluir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Excluir
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          EMPRESA: ${{ inputs.empresa }}
+          SIMULAR: ${{ inputs.simular && '--simular' || '' }}
+        run: |
+          set -o pipefail
+
+          codigo=0
+          node scripts/lgpd-excluir-empresa.ts --empresa "$EMPRESA" $SIMULAR | tee saida-exclusao.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Exclusão não rodou — faltam segredos"
+              echo
+              echo "Nada foi apagado. Configure em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          exit "$codigo"
+
+      - name: Publicar o log da exclusão
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-lgpd-exclusao
+          path: saida-exclusao.txt
+          retention-days: 90
+          if-no-files-found: ignore

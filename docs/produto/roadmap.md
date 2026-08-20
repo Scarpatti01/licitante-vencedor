@@ -233,8 +233,11 @@ clientes reais usando o produto. Construir agora seria inventar o insumo.
    não existe link de "Entrar" no menu público do site — botão levando a
    tela morta é pior que botão nenhum, e por isso ele nunca foi adicionado;
    agora que a chave está confirmada, adicionar o link é só um item de UI.
-5. **Retenção e exclusão de documentos** após cancelamento, e o que fazer com o
-   histórico de triagem quando a empresa pede exclusão pela LGPD.
+5. ~~**Retenção e exclusão de documentos.**~~ **Decidido e implementado em
+   20/08** — `src/lib/lgpd/`, dois scripts (`lgpd-purgar-documentos-
+   cancelados.ts` para a carência de 30 dias, `lgpd-excluir-empresa.ts` para
+   o pedido explícito) e dois workflows manuais. Detalhe em
+   `posicionamento-e-limites.md`, seção 5.
 6. ~~**Teto de custo mensal de IA.**~~ **Decidido em 20/08: R$ 300/mês.**
 
    A análise profunda é feita uma vez por edital e reaproveitada por todos os
