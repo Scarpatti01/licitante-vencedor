@@ -38,6 +38,7 @@ import { deduplicar } from "../src/lib/fontes/deduplicacao.ts";
 import { resumirCobertura, type ColetaDeUf } from "../src/lib/fontes/cobertura.ts";
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
+import { agregarPorMunicipio } from "../src/lib/pncp/agregarPorMunicipio.ts";
 import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao.ts";
 import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
 import { fontePncp } from "../src/lib/fontes/pncp.ts";
@@ -135,34 +136,11 @@ async function main() {
   const { marcados, corte } = marcarValoresSuspeitos(editais);
   const auditoria = auditar(editais, coletadoEm);
 
-  const porMunicipio = new Map<string, {
-    uf: string; municipio: string; slug: string; ibge: string;
-    editais: number; valor: number; orgaos: Set<string>; modalidades: Record<string, number>;
-  }>();
-
-  for (const e of editais) {
-    const chave = `${e.local.uf}/${e.local.municipioSlug}`;
-    let m = porMunicipio.get(chave);
-    if (!m) {
-      m = {
-        uf: e.local.uf, municipio: e.local.municipio, slug: e.local.municipioSlug,
-        ibge: e.local.codigoIbge, editais: 0, valor: 0, orgaos: new Set(), modalidades: {},
-      };
-      porMunicipio.set(chave, m);
-    }
-    m.editais++;
-    if (!e.valorSuspeito) m.valor += e.valorEstimado ?? 0;
-    m.orgaos.add(e.orgao.cnpj);
-    m.modalidades[e.modalidade] = (m.modalidades[e.modalidade] ?? 0) + 1;
-  }
-
   const agregados = {
     coletadoEm,
     fonte: fontePncp.nome,
     cobertura,
-    municipios: [...porMunicipio.values()]
-      .map((m) => ({ ...m, valor: Math.round(m.valor), orgaos: m.orgaos.size }))
-      .sort((a, b) => b.editais - a.editais),
+    municipios: agregarPorMunicipio(editais),
   };
 
   const relatorio = relatorioEmTexto(auditoria, cobertura);
