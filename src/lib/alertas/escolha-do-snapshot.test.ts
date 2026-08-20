@@ -94,11 +94,26 @@ describe("a escolha do snapshot", () => {
   /**
    * As duas rodadas continuam existindo.
    *
-   * Se a segunda tentativa sair, este teste vira decoração — e vale saber, porque
-   * ela é a razão de todo o cuidado acima.
+   * Se a segunda tentativa sair, este teste vira decoração — e vale saber,
+   * porque ela é a razão de todo o cuidado acima: é a execução das 08:10 que
+   * termina verde sem produzir snapshot, e foi ela que derrubou o primeiro
+   * alerta.
+   *
+   * Olha QUEM COLETA, e não um arquivo fixo. Em 18/08 a coleta diária passou de
+   * `coletar-pncp.yml` para `coletar-pncp-paralelo.yml`, e uma asserção presa ao
+   * nome do arquivo transformaria uma promoção planejada em teste vermelho —
+   * ruído que ensina a mexer no teste em vez de olhar o que ele diz.
+   * `coleta-paralela.test.ts` cobra que exatamente um dos dois esteja agendado.
    */
   it("a coleta ainda tem a segunda tentativa que originou o defeito", () => {
-    expect(COLETA).toContain('cron: "10 6 * * *"');
-    expect(COLETA).toContain('cron: "10 8 * * *"');
+    const PARALELA = readFileSync(
+      join(".github", "workflows", "coletar-pncp-paralelo.yml"),
+      "utf8",
+    );
+    const semComentarios = (y: string) => y.replace(/^\s*#.*$/gm, "");
+    const quemColeta = /^\s*schedule:/m.test(semComentarios(COLETA)) ? COLETA : PARALELA;
+
+    expect(quemColeta).toContain('cron: "10 6 * * *"');
+    expect(quemColeta).toContain('cron: "10 8 * * *"');
   });
 });
