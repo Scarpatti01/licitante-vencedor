@@ -216,7 +216,35 @@ clientes reais usando o produto. Construir agora seria inventar o insumo.
    morta é pior que botão nenhum.
 5. **Retenção e exclusão de documentos** após cancelamento, e o que fazer com o
    histórico de triagem quando a empresa pede exclusão pela LGPD.
-6. **Chave de IA e teto de custo mensal** antes de ligar a análise profunda.
+6. ~~**Teto de custo mensal de IA.**~~ **Decidido em 20/08: R$ 300/mês.**
+
+   A análise profunda é feita uma vez por edital e reaproveitada por todos os
+   assinantes (`analises_de_edital` é chaveada só por `edital_id`, sem
+   `empresa_id`) — o custo cresce com quantos editais distintos passam na
+   triagem de alguém, não com o número de clientes multiplicado. Ao preço
+   público do Gemini 2.5 Flash/Pro em 20/08 (US$ 0,30–1,25 por milhão de
+   tokens de entrada, US$ 2,50–10,00 de saída), um edital analisado custa em
+   média ~US$ 0,01. Mesmo um cliente com perfil muito amplo (milhares de
+   editais compatíveis por mês, sem nenhuma sobreposição com outro cliente)
+   fica bem abaixo dos R$ 800/mês cogitados de mensalidade — a IA é uma fração
+   pequena do custo por cliente, não o que decide a margem.
+
+   **R$ 300/mês é teto operacional dos primeiros meses, não limite de
+   margem** — deve subir conforme a base de clientes crescer. E,
+   deliberadamente, **não é um interruptor**: ultrapassar o teto gera alerta
+   para revisão com dado real (quantos editais, de que porte, quanto por
+   execução — o que `ExecucaoDeIA` em `custo.ts` já registra), nunca
+   interrompe a análise sozinho. Um corte automático transformaria "o mês
+   veio mais caro que o previsto" em "o produto parou de entregar o que o
+   cliente paga" — o segundo é bem pior que o primeiro, e é sempre uma pessoa
+   que deve decidir entre os dois, olhando o motivo do excesso.
+
+   **O que ainda falta, tecnicamente:** `GEMINI_API_KEY` (a análise continua
+   inerte sem ela — `analises_feitas = 0` em produção até hoje) e o próprio
+   mecanismo de alerta, que não existe ainda: `custo.ts` registra e estima
+   custo por execução, mas não soma o mês nem avisa ninguém. Fica para
+   quando a chave for configurada — construir o alerta antes disso é testar
+   contra dado que não existe.
 
 ## O que eu não construiria em seguida, e por quê
 
