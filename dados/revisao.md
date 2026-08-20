@@ -1,9 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 3505 editais coletados em 2026-08-19T07:02:16.103Z.
+Revisão dos dados — 3599 editais coletados em 2026-08-20T07:03:13.772Z.
 
-Encontrados 0 erro(s), 1 suspeita(s) e 4 aviso(s).
+Encontrados 0 erro(s), 1 suspeita(s) e 8 aviso(s).
 
 [AVISO] O edital 11049830000120-1-000343/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Mobiliário"
@@ -21,6 +21,22 @@ Encontrados 0 erro(s), 1 suspeita(s) e 4 aviso(s).
 [AVISO] O edital 07954480000179-1-021353/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Pincel e Refil"
   Edital: https://pncp.gov.br/app/editais/07954480000179/2026/21353
+
+[AVISO] O edital 07954480000179-1-021454/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "GLP-P13"
+  Edital: https://pncp.gov.br/app/editais/07954480000179/2026/21454
+
+[AVISO] O edital 07954480000179-1-021552/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "GÁS DE COZINHA"
+  Edital: https://pncp.gov.br/app/editais/07954480000179/2026/21552
+
+[AVISO] O edital 07954480000179-1-021473/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Alimentação"
+  Edital: https://pncp.gov.br/app/editais/07954480000179/2026/21473
+
+[AVISO] O edital 08241754000145-1-000220/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Insulinas"
+  Edital: https://pncp.gov.br/app/editais/08241754000145/2026/220
 
 [AVISO] O edital 10783898000175-1-000178/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Carro-pipa"
