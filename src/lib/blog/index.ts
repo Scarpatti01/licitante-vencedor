@@ -1,4 +1,5 @@
 import type { Artigo } from "./tipos";
+import { ATRASO_NO_PAGAMENTO } from "./artigos/atraso-no-pagamento-de-contrato-administrativo";
 import { COMO_SABER_SE_SAIU_UMA_LICITACAO } from "./artigos/como-saber-se-saiu-uma-licitacao";
 import { DOCUMENTOS_PARA_PARTICIPAR } from "./artigos/documentos-para-participar-de-licitacao";
 import { PRAZO_PARA_IMPUGNAR_EDITAL } from "./artigos/prazo-para-impugnar-edital-de-licitacao";
@@ -16,6 +17,7 @@ export { validarArtigo, contarPalavras, textoDoArtigo } from "./tipos";
  * vez neste projeto.
  */
 const CATALOGO: readonly Artigo[] = [
+  ATRASO_NO_PAGAMENTO,
   COMO_SABER_SE_SAIU_UMA_LICITACAO,
   DOCUMENTOS_PARA_PARTICIPAR,
   PRAZO_PARA_IMPUGNAR_EDITAL,
