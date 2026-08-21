@@ -37,11 +37,44 @@ import type { CatalogoDeModelos } from "./custo.ts";
  *
  * O econômico é o padrão para praticamente todo edital; ver a política em
  * `custo.ts`.
+ *
+ * ## O aviso acima não era hipotético
+ *
+ * Em 21/08 a primeira leitura real de oportunidade de cliente falhou nos 21
+ * editais, todos com o mesmo erro: `gemini-2.5-pro is no longer available to
+ * new users`. Este comentário previu a categoria do defeito e mesmo assim ele
+ * aconteceu — porque prever não conserta; o que conserta é ter como
+ * DESCOBRIR o id certo. É o que `scripts/listar-modelos-de-ia.ts` passou a
+ * fazer.
+ *
+ * A lição que ficou, e que o script agora incorpora: **estar listado não é
+ * estar disponível.** `gemini-2.5-pro` continua aparecendo na listagem da API
+ * e devolve 404 na chamada, para esta chave. A única prova é chamar.
+ *
+ * ## Por que estes dois, e por que fixados
+ *
+ * Conferidos contra a listagem real da nossa chave em 21/08. `gemini-3.7-flash`
+ * é o flash estável mais novo (1M de contexto de entrada, o mesmo do pro).
+ * O premium é a assimetria da vez: não existe pro estável — só
+ * `gemini-3.1-pro-preview` (que o próprio erro do fornecedor indicou) e o
+ * apelido móvel `gemini-pro-latest`.
+ *
+ * Fixados em vez de apelido (`gemini-flash-latest`) de propósito:
+ * `analises_de_edital.modelo` existe para dizer o que REALMENTE rodou, e um
+ * apelido gravaria "latest" — duas análises com o mesmo registro poderiam ter
+ * sido modelos diferentes, e a coluna perderia a função. É a mesma disciplina
+ * de `versaoDoPrompt` em `prompts/tipos.ts`: prompt em produção não se edita,
+ * se versiona.
+ *
+ * O preço disso é saber que isto vai quebrar de novo quando o fornecedor
+ * aposentar estes ids — e é um preço aceito, porque a quebra é RUIDOSA (falha
+ * em bloco, nada gravado, motivo no log) enquanto a alternativa silenciosa
+ * seria a análise mudar de modelo sem ninguém notar.
  */
 export function modelosGemini(): CatalogoDeModelos {
   return {
-    economico: process.env.GEMINI_MODELO_ECONOMICO?.trim() || "gemini-2.5-flash",
-    premium: process.env.GEMINI_MODELO_PREMIUM?.trim() || "gemini-2.5-pro",
+    economico: process.env.GEMINI_MODELO_ECONOMICO?.trim() || "gemini-3.7-flash",
+    premium: process.env.GEMINI_MODELO_PREMIUM?.trim() || "gemini-3.1-pro-preview",
   };
 }
 
