@@ -261,12 +261,29 @@ clientes reais usando o produto. Construir agora seria inventar o insumo.
    cliente paga" — o segundo é bem pior que o primeiro, e é sempre uma pessoa
    que deve decidir entre os dois, olhando o motivo do excesso.
 
-   **O que ainda falta, tecnicamente:** `GEMINI_API_KEY` (a análise continua
-   inerte sem ela — `analises_feitas = 0` em produção até hoje) e o próprio
-   mecanismo de alerta, que não existe ainda: `custo.ts` registra e estima
-   custo por execução, mas não soma o mês nem avisa ninguém. Fica para
-   quando a chave for configurada — construir o alerta antes disso é testar
-   contra dado que não existe.
+   ~~**O que ainda falta, tecnicamente:**~~ **Feito, em 21/08.**
+   `GEMINI_API_KEY` está configurada — a leitura profunda passa a acontecer de
+   verdade em `scripts/publicar-posts.ts`, o único caminho de produção que
+   chama `analisarEdital` hoje (`scripts/triar-editais.ts` continua deliberada
+   e explicitamente sem leitura de IA — ver o header do arquivo). Cada
+   execução agora é gravada em `execucoes_de_ia` (`src/lib/ia/repositorio.ts`,
+   `mapeamento.ts`).
+
+   O mecanismo de alerta existe: `scripts/verificar-custo-de-ia.ts` soma o mês
+   corrente (`src/lib/ia/tetoDeCusto.ts`) e avisa `ADMINS_DA_PLATAFORMA` por
+   e-mail quando passa do teto — uma vez por mês
+   (`avisos_de_custo_de_ia`), nunca cortando a análise. `workflow_dispatch`
+   só, por ora: mesma disciplina de `triar-editais.yml` antes de ser
+   promovido — primeiro correto contra um mês real de dado, depois em cron.
+
+   **O que continua em aberto, e é decisão do dono, não técnica:**
+   `PRECOS_POR_MODELO` (`custo.ts`) segue vazia. Preencher com o preço
+   público do Gemini seria a mesma invenção de certeza que o resto do produto
+   recusa fazer com edital — o preço precisa ser conferido contra a fatura
+   real do Google Cloud, não contra a lista de preços. Até lá, o script soma
+   e mostra o volume real (execuções, tokens, por modelo) em todo log, mas só
+   manda e-mail quando o piso conhecido já basta para confirmar o estouro
+   sozinho.
 
 ## O que eu não construiria em seguida, e por quê
 

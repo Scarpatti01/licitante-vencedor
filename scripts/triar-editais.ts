@@ -28,9 +28,13 @@
  * `mapeamento.ts`), e reprocessar não pode apagar o que o cliente já fez com
  * uma oportunidade.
  *
- * Não é chamado por nenhum workflow ainda. Fica de fora do agendamento até
- * alguém decidir a cadência — mesma disciplina de `coletar-pncp-paralelo.yml`
- * antes de ser promovido: primeiro correto e testado, depois ligado.
+ * ## Cadência
+ *
+ * Roda como passo de `coletar-pncp.yml` e `coletar-pncp-paralelo.yml`, logo
+ * depois de os editais do dia estarem no Postgres — sem hora própria, porque
+ * lê `editaisAbertos()` direto do banco, e "acabou de coletar" já é a
+ * condição mais fresca possível. Ver `docs/produto/roadmap.md`, "O próximo
+ * passo, e a armadilha dele".
  */
 
 import { analiseNaoRealizada } from "../src/lib/dominio/recomendacao.ts";
