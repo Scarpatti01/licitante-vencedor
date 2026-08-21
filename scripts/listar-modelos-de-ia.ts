@@ -92,14 +92,66 @@ async function main() {
   }
 
   const atuais = {
-    economico: process.env.GEMINI_MODELO_ECONOMICO?.trim() || "gemini-2.5-flash",
-    premium: process.env.GEMINI_MODELO_PREMIUM?.trim() || "gemini-2.5-pro",
+    economico: process.env.GEMINI_MODELO_ECONOMICO?.trim() || "gemini-3.7-flash",
+    premium: process.env.GEMINI_MODELO_PREMIUM?.trim() || "gemini-3.1-pro-preview",
   };
 
   console.log("\nem uso hoje (ver `modelosGemini` em src/lib/ia/gemini.ts):");
   for (const [papel, id] of Object.entries(atuais)) {
-    const existe = geram.some((m) => (m.name ?? "").replace(/^models\//, "") === id);
-    console.log(`  ${papel.padEnd(10)} ${id.padEnd(42)} ${existe ? "OK" : "NÃO ESTÁ NA LISTA"}`);
+    const listado = geram.some((m) => (m.name ?? "").replace(/^models\//, "") === id);
+    const chamada = await tentarChamar(id, chave);
+    console.log(
+      `  ${papel.padEnd(10)} ${id.padEnd(42)} listado: ${listado ? "sim" : "NÃO"} · chamada: ${chamada}`,
+    );
+  }
+}
+
+/**
+ * A única prova que vale: chamar.
+ *
+ * A primeira versão deste script (21/08) conferia só se o id aparecia na
+ * listagem, e por isso ANUNCIOU `gemini-2.5-pro` como OK no mesmo dia em que
+ * ele devolveu 404 em 21 editais seguidos:
+ *
+ *   This model models/gemini-2.5-pro is no longer available to new users.
+ *
+ * Ou seja, o modelo continua listado — e não é utilizável POR ESTA CHAVE. Um
+ * diagnóstico que responde "OK" para o modelo que acabou de derrubar a
+ * produção é pior que nenhum diagnóstico: ele dá confiança onde não há.
+ *
+ * O pedido é o menor possível: um prompt de uma palavra e teto baixo de saída.
+ * Custa frações de centavo e responde a única pergunta que importa aqui — o
+ * fornecedor aceita gerar com este id, para esta chave, agora?
+ */
+async function tentarChamar(id: string, chave: string): Promise<string> {
+  try {
+    const resposta = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(id)}:generateContent`,
+      {
+        method: "POST",
+        headers: { "x-goog-api-key": chave, "content-type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: "ping" }] }],
+          generationConfig: { maxOutputTokens: 16 },
+        }),
+      },
+    );
+
+    if (resposta.ok) return "OK";
+
+    // O corpo do erro é onde mora a explicação útil ("no longer available to
+    // new users" não aparece no código HTTP, só no texto).
+    const corpo = await resposta.text().catch(() => "");
+    let motivo = corpo.slice(0, 160).replace(/\s+/g, " ");
+    try {
+      const json = JSON.parse(corpo) as { error?: { message?: string } };
+      if (json.error?.message) motivo = json.error.message.slice(0, 160);
+    } catch {
+      // Corpo não-JSON: o recorte cru acima já serve.
+    }
+    return `RECUSADA (HTTP ${resposta.status}) — ${motivo}`;
+  } catch (e) {
+    return `FALHOU — ${e instanceof Error ? e.message : e}`;
   }
 }
 
