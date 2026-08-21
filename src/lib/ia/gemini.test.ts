@@ -7,8 +7,10 @@ import {
   criarProvedorGemini,
   desembrulharJson,
   modelosGemini,
+  noDialetoDoGemini,
   type ChamadaDeGeracao,
 } from "./gemini";
+import { jsonSchemaParaModelo, respostaDeAnaliseDeEdital } from "./schemas";
 
 /**
  * O adaptador é testado sem tocar a rede: a chamada ao SDK é injetada.
@@ -191,5 +193,81 @@ describe("gerarEstruturado", () => {
     const r = await provedor.gerarEstruturado(pedido);
 
     expect(r.uso.total).toBe(120);
+  });
+});
+
+describe("noDialetoDoGemini", () => {
+  /*
+   * A tradução que fez a leitura funcionar, em 21/08.
+   *
+   * O diagnóstico (`scripts/diagnosticar-requisicao-de-ia.ts`) provou o que
+   * nenhuma leitura de documentação teria dado: as chaves são inofensivas
+   * ISOLADAS e fatais no schema inteiro. Estes testes guardam a remoção — sem
+   * eles, alguém "limpando" a função devolveria o INVALID_ARGUMENT que custou
+   * seis rodadas para localizar.
+   */
+  it("remove as quatro chaves que o Gemini recusa, em qualquer profundidade", () => {
+    const traduzido = noDialetoDoGemini({
+      $schema: "https://json-schema.org/draft/2020-12/schema",
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        itens: {
+          type: "array",
+          maxItems: 60,
+          minItems: 1,
+          items: { type: "object", additionalProperties: false, properties: { a: { type: "string" } } },
+        },
+      },
+    });
+
+    const texto = JSON.stringify(traduzido);
+    for (const proibida of ["$schema", "additionalProperties", "maxItems", "minItems"]) {
+      expect(texto, `${proibida} sobreviveu à tradução`).not.toContain(proibida);
+    }
+  });
+
+  it("preserva tudo o que o modelo precisa para responder certo", () => {
+    // Remover demais é o outro jeito de quebrar: sem `enum` o modelo inventa
+    // categoria de documento, sem `required` ele omite campo.
+    const traduzido = noDialetoDoGemini(jsonSchemaParaModelo(respostaDeAnaliseDeEdital)) as Record<
+      string,
+      unknown
+    >;
+    const texto = JSON.stringify(traduzido);
+
+    expect(traduzido.type).toBe("object");
+    expect(traduzido.required).toBeDefined();
+    expect(traduzido.properties).toBeDefined();
+    expect(texto).toContain("enum");
+    expect(texto).toContain("anyOf");
+    // As sete chaves da resposta continuam de pé.
+    expect(Object.keys(traduzido.properties as object)).toHaveLength(7);
+  });
+
+  it("não altera o schema original — a validação local continua estrita", () => {
+    /*
+     * A separação que torna a remoção segura: o schema enviado é uma INSTRUÇÃO
+     * ao modelo; quem decide o que vira dado é o `zod`, e ele continua com
+     * `.max(LIMITE_DE_EXIGENCIAS)` e com o `z.object` que descarta campo extra.
+     */
+    const original = jsonSchemaParaModelo(respostaDeAnaliseDeEdital);
+    const antes = JSON.stringify(original);
+    noDialetoDoGemini(original);
+
+    expect(JSON.stringify(original)).toBe(antes);
+    expect(antes).toContain("maxItems");
+  });
+
+  it("atravessa array sem transformá-lo em objeto", () => {
+    // `anyOf` é uma LISTA de schemas. Uma travessia que só entendesse objeto a
+    // devolveria como `{0: ..., 1: ...}` — schema silenciosamente inválido.
+    const traduzido = noDialetoDoGemini({
+      anyOf: [{ type: "string", maxItems: 3 }, { type: "null" }],
+    }) as { anyOf: unknown[] };
+
+    expect(Array.isArray(traduzido.anyOf)).toBe(true);
+    expect(traduzido.anyOf).toHaveLength(2);
+    expect(traduzido.anyOf[0]).toEqual({ type: "string" });
   });
 });
