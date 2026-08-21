@@ -194,6 +194,51 @@ async function bissecarSchema(cliente: GoogleGenAI, modelo: string): Promise<voi
         responseJsonSchema: aninhado(11),
       },
     },
+
+    /*
+     * Os dois que faltavam — e que estavam no schema desde sempre.
+     *
+     * A primeira rodada de construtos (5d–5g) passou em TODOS, o que só podia
+     * significar uma coisa: o suspeito não estava entre os que eu tinha
+     * listado. Foi preciso voltar e ler o schema inteiro, chave por chave, em
+     * vez de conferir os candidatos que a memória sugeria — `additionalProperties`
+     * e `maxItems` estavam lá o tempo todo, em todo nível de objeto e nos dois
+     * arrays.
+     */
+    {
+      nome: "5h. additionalProperties: false",
+      config: {
+        responseMimeType: "application/json",
+        responseJsonSchema: {
+          type: "object",
+          properties: { valor: { type: "string" } },
+          required: ["valor"],
+          additionalProperties: false,
+        },
+      },
+    },
+    {
+      nome: "5i. array com maxItems",
+      config: {
+        responseMimeType: "application/json",
+        responseJsonSchema: {
+          type: "object",
+          properties: { itens: { type: "array", maxItems: 60, items: { type: "string" } } },
+          required: ["itens"],
+        },
+      },
+    },
+    {
+      // O candidato a CORREÇÃO, não só a diagnóstico: se o schema real passa
+      // depois de removidas estas chaves, a conserto é uma tradução na saída
+      // de `jsonSchemaParaModelo` — sem tocar no domínio nem no contrato de
+      // `Campo`.
+      nome: "5j. schema REAL sem additionalProperties e sem maxItems",
+      config: {
+        responseMimeType: "application/json",
+        responseJsonSchema: semChaves(semDialeto, ["additionalProperties", "maxItems", "minItems"]),
+      },
+    },
   ];
 
   console.log("           --- bisseção do schema ---");
@@ -211,6 +256,19 @@ async function bissecarSchema(cliente: GoogleGenAI, modelo: string): Promise<voi
       console.log(`                    ${m.slice(0, 220).replace(/\s+/g, " ")}`);
     }
   }
+}
+
+/** Remove as chaves indicadas em TODOS os níveis, sem alterar o original. */
+function semChaves(schema: unknown, chaves: string[]): unknown {
+  if (Array.isArray(schema)) return schema.map((i) => semChaves(i, chaves));
+  if (schema === null || typeof schema !== "object") return schema;
+
+  const saida: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(schema as Record<string, unknown>)) {
+    if (chaves.includes(k)) continue;
+    saida[k] = semChaves(v, chaves);
+  }
+  return saida;
 }
 
 /** Um objeto com `niveis` de aninhamento, para medir o teto de profundidade. */
