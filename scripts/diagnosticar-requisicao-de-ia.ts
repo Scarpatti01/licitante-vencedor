@@ -83,9 +83,74 @@ async function testar(cliente: GoogleGenAI, modelo: string): Promise<void> {
       const mensagem = e instanceof Error ? e.message : String(e);
       console.log(`  FALHOU   ${nome}`);
       console.log(`           ${mensagem.slice(0, 300).replace(/\s+/g, " ")}`);
+
+      // O degrau do schema merece uma segunda rodada: saber que "é o schema"
+      // não diz se o problema é o CAMPO (`responseJsonSchema` não suportado)
+      // ou o CONTEÚDO (algo dentro do nosso schema). São correções
+      // diferentes, e a diferença não aparece na mensagem do fornecedor.
+      if (nome.includes("responseJsonSchema")) await bissecarSchema(cliente, modelo);
+
       // Para no primeiro erro: os degraus seguintes contêm este, então
       // continuar só repetiria a mesma falha com ruído a mais.
       return;
+    }
+  }
+}
+
+/**
+ * "É o schema" é resposta incompleta. Qual parte dele?
+ *
+ * Rodado em 21/08, o degrau 5 falhou com `INVALID_ARGUMENT` e a mensagem não
+ * disse mais nada. O schema real tem três suspeitos que a inspeção local
+ * revelou — `$schema` (chave de topo do draft-2020-12), `anyOf` (a união dos
+ * quatro tipos de `Campo`) e `additionalProperties` — e cada um tem uma
+ * correção diferente. Testar um schema mínimo primeiro separa "o campo não
+ * serve" de "o nosso schema não serve", que é a bifurcação mais cara de errar.
+ */
+async function bissecarSchema(cliente: GoogleGenAI, modelo: string): Promise<void> {
+  const real = jsonSchemaParaModelo(respostaDeAnaliseDeEdital);
+
+  // Sem a chave de topo do dialeto. Fornecedor que valida o schema contra uma
+  // lista própria de chaves permitidas costuma recusar `$schema` justamente
+  // por não conhecê-la.
+  const semDialeto = { ...real };
+  delete (semDialeto as Record<string, unknown>).$schema;
+
+  const variantes: { nome: string; config: Record<string, unknown> }[] = [
+    {
+      nome: "5a. schema MÍNIMO via responseJsonSchema",
+      config: {
+        responseMimeType: "application/json",
+        responseJsonSchema: {
+          type: "object",
+          properties: { resumo: { type: "string" } },
+          required: ["resumo"],
+        },
+      },
+    },
+    {
+      nome: "5b. schema real SEM a chave $schema",
+      config: { responseMimeType: "application/json", responseJsonSchema: semDialeto },
+    },
+    {
+      nome: "5c. schema real pelo campo responseSchema (não JsonSchema)",
+      config: { responseMimeType: "application/json", responseSchema: semDialeto },
+    },
+  ];
+
+  console.log("           --- bisseção do schema ---");
+  for (const { nome, config } of variantes) {
+    try {
+      await cliente.models.generateContent({
+        model: modelo,
+        contents: "Resuma em uma frase: Pregão Eletrônico 1/2026, material de limpeza.",
+        config,
+      });
+      console.log(`           OK       ${nome}`);
+    } catch (e) {
+      const m = e instanceof Error ? e.message : String(e);
+      console.log(`           FALHOU   ${nome}`);
+      console.log(`                    ${m.slice(0, 220).replace(/\s+/g, " ")}`);
     }
   }
 }
