@@ -136,6 +136,64 @@ async function bissecarSchema(cliente: GoogleGenAI, modelo: string): Promise<voi
       nome: "5c. schema real pelo campo responseSchema (não JsonSchema)",
       config: { responseMimeType: "application/json", responseSchema: semDialeto },
     },
+
+    /*
+     * Os construtos, um a um.
+     *
+     * Provado que o CAMPO serve (5a passou) e que nem `$schema` nem a troca de
+     * campo explicam (5b e 5c falharam), sobra o conteúdo. A inspeção local
+     * apontou quatro candidatos, e cada um tem uma correção diferente — de
+     * "traduzir o dialeto na saída de `jsonSchemaParaModelo`" a "mudar o
+     * contrato do domínio". Testar isolado é a diferença entre corrigir e
+     * tentar.
+     */
+    {
+      // O suspeito nº 1: é assim que `zod` escreve `.nullable()`, e são 32
+      // ocorrências no schema real — quase todo campo de `Campo`.
+      nome: "5d. anulável como anyOf [string, null]",
+      config: {
+        responseMimeType: "application/json",
+        responseJsonSchema: {
+          type: "object",
+          properties: { valor: { anyOf: [{ type: "string" }, { type: "null" }] } },
+          required: ["valor"],
+        },
+      },
+    },
+    {
+      // O mesmo campo anulável, escrito no dialeto que o fornecedor costuma
+      // preferir. Se este passar e o 5d falhar, a correção é uma tradução na
+      // saída de `jsonSchemaParaModelo` — sem tocar no domínio.
+      nome: "5e. anulável como nullable: true",
+      config: {
+        responseMimeType: "application/json",
+        responseJsonSchema: {
+          type: "object",
+          properties: { valor: { type: "string", nullable: true } },
+          required: ["valor"],
+        },
+      },
+    },
+    {
+      nome: "5f. enum (como em `confianca`)",
+      config: {
+        responseMimeType: "application/json",
+        responseJsonSchema: {
+          type: "object",
+          properties: { confianca: { type: "string", enum: ["alta", "media", "baixa"] } },
+          required: ["confianca"],
+        },
+      },
+    },
+    {
+      // O schema real tem profundidade 11. Alguns fornecedores limitam o
+      // aninhamento, e o sintoma é o mesmo INVALID_ARGUMENT genérico.
+      nome: "5g. aninhamento profundo (11 níveis)",
+      config: {
+        responseMimeType: "application/json",
+        responseJsonSchema: aninhado(11),
+      },
+    },
   ];
 
   console.log("           --- bisseção do schema ---");
@@ -153,6 +211,15 @@ async function bissecarSchema(cliente: GoogleGenAI, modelo: string): Promise<voi
       console.log(`                    ${m.slice(0, 220).replace(/\s+/g, " ")}`);
     }
   }
+}
+
+/** Um objeto com `niveis` de aninhamento, para medir o teto de profundidade. */
+function aninhado(niveis: number): Record<string, unknown> {
+  let atual: Record<string, unknown> = { type: "string" };
+  for (let i = 0; i < niveis; i++) {
+    atual = { type: "object", properties: { n: atual }, required: ["n"] };
+  }
+  return atual;
 }
 
 async function main() {
