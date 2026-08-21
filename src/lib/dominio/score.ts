@@ -389,16 +389,27 @@ function criterioDocumentacao(checklist: Checklist): CriterioAvaliado {
   const prontidao = prontidaoDocumental(checklist);
 
   if (!checklist.derivadoDoDocumento || prontidao === null) {
-    return {
-      ...base,
-      status: "indeterminado",
-      aproveitamento: null,
-      frase:
-        "O texto do edital ainda não foi lido, então não sabemos quais documentos ele exige.",
-      procedencia: desconhecido(
-        "Análise ainda no nível da publicação: as exigências de habilitação não foram extraídas.",
-      ),
-    };
+    return checklist.analiseLeuTexto
+      ? {
+          ...base,
+          status: "indeterminado",
+          aproveitamento: null,
+          frase:
+            "O edital foi lido, mas nenhuma exigência de habilitação foi confirmada no texto — comparamos com o que a Lei 14.133 torna usual.",
+          procedencia: desconhecido(
+            "O documento foi lido; nenhuma exigência de habilitação sobreviveu à checagem de evidência contra o texto.",
+          ),
+        }
+      : {
+          ...base,
+          status: "indeterminado",
+          aproveitamento: null,
+          frase:
+            "O texto do edital ainda não foi lido, então não sabemos quais documentos ele exige.",
+          procedencia: desconhecido(
+            "Análise ainda no nível da publicação: as exigências de habilitação não foram extraídas.",
+          ),
+        };
   }
 
   const { disponiveis, obrigatorios, ausentes } = checklist.totais;

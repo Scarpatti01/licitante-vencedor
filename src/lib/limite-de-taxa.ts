@@ -78,10 +78,10 @@ function limpar(agora: number): void {
  * pior caso é o limite virar por-cabeçalho em vez de por-IP — degradação, não
  * brecha, já que nada aqui autoriza nada.
  */
-export function identificarChamador(request: Request): string {
-  const encaminhado = request.headers.get("x-forwarded-for");
+export function identificarChamador(cabecalhos: Headers): string {
+  const encaminhado = cabecalhos.get("x-forwarded-for");
   if (encaminhado) return encaminhado.split(",")[0].trim();
-  return request.headers.get("x-real-ip") ?? "desconhecido";
+  return cabecalhos.get("x-real-ip") ?? "desconhecido";
 }
 
 /** Só para teste: zera o estado entre casos. */

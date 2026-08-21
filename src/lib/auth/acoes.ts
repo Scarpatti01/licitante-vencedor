@@ -1,9 +1,11 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { clienteDoServidor } from "./cliente";
 import { MINIMO_DA_SENHA, type EstadoDaEntrada } from "./estado";
 import { destinoSeguro } from "./rotas";
+import { dentroDoLimite, identificarChamador } from "../limite-de-taxa";
 
 /**
  * Entrar, criar conta e sair.
@@ -24,6 +26,23 @@ import { destinoSeguro } from "./rotas";
 const texto = (v: FormDataEntryValue | null, max: number): string =>
   typeof v === "string" ? v.trim().slice(0, max) : "";
 
+/**
+ * Dez tentativas por 5 minutos e por IP.
+ *
+ * `/api/alerta` já tinha essa trava; `entrar` e `criarConta` — os dois outros
+ * Server Actions públicos deste arquivo — não tinham nenhuma, e são exatamente
+ * onde falta mais: força bruta de senha e criação de conta em volume. O número
+ * cobre alguém errando a senha algumas vezes com folga e ainda assim encarece
+ * um ataque scriptado. Mesma limitação de sempre: em memória, por instância —
+ * ver o comentário em `limite-de-taxa.ts`.
+ */
+const LIMITE_DE_AUTENTICACAO = { maximo: 10, janelaSegundos: 300 };
+
+async function dentroDoLimiteDeAutenticacao(prefixo: string): Promise<boolean> {
+  const chamador = identificarChamador(await headers());
+  return dentroDoLimite(`${prefixo}:${chamador}`, LIMITE_DE_AUTENTICACAO).permitido;
+}
+
 export async function entrar(
   _anterior: EstadoDaEntrada,
   dados: FormData,
@@ -31,6 +50,10 @@ export async function entrar(
   const supabase = await clienteDoServidor();
   if (!supabase) {
     return { erro: "A entrada ainda não está disponível. Tente mais tarde.", aviso: null };
+  }
+
+  if (!(await dentroDoLimiteDeAutenticacao("entrar"))) {
+    return { erro: "Muitas tentativas seguidas. Aguarde alguns minutos.", aviso: null };
   }
 
   const email = texto(dados.get("email"), 254);
@@ -60,6 +83,10 @@ export async function criarConta(
   const supabase = await clienteDoServidor();
   if (!supabase) {
     return { erro: "A criação de conta ainda não está disponível.", aviso: null };
+  }
+
+  if (!(await dentroDoLimiteDeAutenticacao("criar-conta"))) {
+    return { erro: "Muitas tentativas seguidas. Aguarde alguns minutos.", aviso: null };
   }
 
   const email = texto(dados.get("email"), 254);

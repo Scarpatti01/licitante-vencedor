@@ -25,8 +25,19 @@ describe("montarChecklist", () => {
   it("sem leitura do edital, não devolve lista vazia — devolve o usual marcado como não identificado", () => {
     const checklist = montarChecklist(analiseNaoRealizada("X", "não lido"), PERFIL_INCOMPLETO, AGORA);
     expect(checklist.derivadoDoDocumento).toBe(false);
+    expect(checklist.analiseLeuTexto).toBe(false);
     expect(checklist.itens.length).toBeGreaterThan(0);
     expect(checklist.itens.every((i) => i.status === "nao_identificado")).toBe(true);
+  });
+
+  it("lido mas sem exigência sustentada: cai no usual, mas analiseLeuTexto continua true", () => {
+    // Distingue "nunca lido" de "lido, e nada sobreviveu à checagem de
+    // evidência" — os dois caem no mesmo checklist de fallback, mas só o
+    // primeiro pode dizer honestamente que o edital não foi lido.
+    const lidoSemExigencias: AnaliseDoEdital = { ...comExigencias(), exigencias: [] };
+    const checklist = montarChecklist(lidoSemExigencias, PERFIL_INCOMPLETO, AGORA);
+    expect(checklist.derivadoDoDocumento).toBe(false);
+    expect(checklist.analiseLeuTexto).toBe(true);
   });
 
   it("documento anexado e válido fica disponível", () => {
@@ -54,6 +65,24 @@ describe("montarChecklist", () => {
     const checklist = montarChecklist(comExigencias(), PERFIL_INCOMPLETO, AGORA);
     expect(checklist.itens.every((i) => i.status === "ausente")).toBe(true);
     expect(checklist.totais.ausentes).toBe(3);
+  });
+
+  it("entre dois documentos do mesmo tipo, prefere o que tem arquivo anexado — mesmo com validade menor", () => {
+    // Um cadastro sem arquivo (validade distante, talvez um placeholder) não
+    // pode vencer um documento pronto só porque a data é maior. Escolher o
+    // errado faria o checklist pedir "verificar" quando a empresa já tem o
+    // documento válido em mãos.
+    const perfil = {
+      ...PERFIL_COMPLETO,
+      documentos: [
+        { tipo: "certidao_federal" as const, descricao: null, validoAte: "2026-12-01", semValidade: false, arquivoAnexado: true },
+        { tipo: "certidao_federal" as const, descricao: null, validoAte: "2099-12-31", semValidade: false, arquivoAnexado: false },
+      ],
+    };
+    const checklist = montarChecklist(comExigencias(), perfil, AGORA);
+    const federal = checklist.itens.find((i) => i.tipo === "certidao_federal")!;
+    expect(federal.status).toBe("disponivel");
+    expect(federal.observacao).toContain("2026");
   });
 
   it("obrigatoriedade não determinada é tratada como obrigatória", () => {

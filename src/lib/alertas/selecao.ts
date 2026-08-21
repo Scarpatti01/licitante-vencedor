@@ -62,6 +62,18 @@ export function selecionarParaAlerta(
   oportunidades: ResumoDaOportunidade[],
   preferencias: PreferenciasDeAlerta = PREFERENCIAS_PADRAO,
   agora: Date = new Date(),
+  /**
+   * Ids de oportunidade já alertados nesta janela, um `${id}|${motivo}` por
+   * combinação (a mesma oportunidade pode alertar de novo por um motivo
+   * diferente — "ficou urgente" depois de "aderência alta" é notícia nova).
+   *
+   * Sem isto, nada aqui muda `situacao` depois de alertar: uma oportunidade
+   * que segue "nova" ou "vista" — porque o cliente ainda não abriu, salvou ou
+   * descartou — seria selecionada de novo no próximo envio, e no seguinte, até
+   * alguém agir. O e-mail de lead já tem essa guarda (`jaEnviados`, gravada em
+   * `envios_de_alerta`); este é o mesmo desenho para o alerta por empresa.
+   */
+  jaAlertados: ReadonlySet<`${string}|${MotivoDoAlerta}`> = new Set(),
 ): SelecaoDeAlerta {
   const selecionados: ItemSelecionado[] = [];
 
@@ -74,7 +86,13 @@ export function selecionarParaAlerta(
     if (dias !== null && dias < 0) continue;
     if (oportunidade.situacao === "descartada") continue;
 
-    if (preferencias.avisarPrazoDeSalvas && oportunidade.situacao === "salva" && dias !== null && dias <= 3) {
+    if (
+      preferencias.avisarPrazoDeSalvas &&
+      oportunidade.situacao === "salva" &&
+      dias !== null &&
+      dias <= 3 &&
+      !jaAlertados.has(`${oportunidade.id}|salva_com_prazo_curto`)
+    ) {
       selecionados.push({
         oportunidade,
         motivo: "salva_com_prazo_curto",
@@ -94,6 +112,7 @@ export function selecionarParaAlerta(
     if (oportunidade.situacao !== "nova" && oportunidade.situacao !== "vista") continue;
 
     if (recomendacao.urgente) {
+      if (jaAlertados.has(`${oportunidade.id}|prazo_acabando`)) continue;
       selecionados.push({
         oportunidade,
         motivo: "prazo_acabando",
@@ -102,6 +121,7 @@ export function selecionarParaAlerta(
       continue;
     }
 
+    if (jaAlertados.has(`${oportunidade.id}|alta_aderencia`)) continue;
     selecionados.push({
       oportunidade,
       motivo: "alta_aderencia",

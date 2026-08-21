@@ -55,6 +55,36 @@ describe("selecionarParaAlerta", () => {
     expect(selecao.vazio).toBe(true);
     expect(selecao.itens).toHaveLength(0);
   });
+
+  it("não alerta de novo pelo mesmo motivo — a oportunidade continua 'nova' até o cliente agir", async () => {
+    // Nada aqui muda `situacao` depois de um alerta: sem a guarda de
+    // `jaAlertados`, a mesma oportunidade seria selecionada de novo amanhã,
+    // e no dia seguinte, até o cliente abrir, salvar ou descartar.
+    const todas = await oportunidades();
+    const primeira = selecionarParaAlerta(todas, PREFERENCIAS_PADRAO, AGORA);
+    expect(primeira.itens.length).toBeGreaterThan(0);
+
+    const jaAlertados = new Set(
+      primeira.itens.map((i) => `${i.oportunidade.id}|${i.motivo}` as const),
+    );
+    const segunda = selecionarParaAlerta(todas, PREFERENCIAS_PADRAO, AGORA, jaAlertados);
+    for (const item of primeira.itens) {
+      expect(segunda.itens.some((i) => i.oportunidade.id === item.oportunidade.id)).toBe(false);
+    }
+  });
+
+  it("motivo novo na mesma oportunidade ainda alerta — não é a mesma notícia", async () => {
+    const todas = await oportunidades();
+    const alvo = todas.find((o) => o.avaliacao.score.valor !== null && o.avaliacao.recomendacao.nivel !== "nao_recomendada");
+    if (!alvo) return;
+    // Já alertado por "alta_aderencia"; nada impede o mesmo id alertar de novo
+    // por "prazo_acabando", que é informação nova.
+    const jaAlertados = new Set([`${alvo.id}|alta_aderencia` as const]);
+    const selecao = selecionarParaAlerta(todas, PREFERENCIAS_PADRAO, AGORA, jaAlertados);
+    // O id some da seleção só se o único motivo aplicável a ele já tiver sido usado.
+    const item = selecao.itens.find((i) => i.oportunidade.id === alvo.id);
+    if (item) expect(item.motivo).not.toBe("alta_aderencia");
+  });
 });
 
 describe("montarMensagem", () => {

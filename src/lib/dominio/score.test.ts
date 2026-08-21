@@ -94,8 +94,26 @@ describe("calcularScore — o que ele se recusa a afirmar", () => {
 
   it("sem leitura do edital, documentação e complexidade ficam indeterminadas", () => {
     const { score } = calcularScore(EDITAL_COMPATIVEL, semAnalise(EDITAL_COMPATIVEL.id), PERFIL_COMPLETO, AGORA);
-    expect(score.criterios.find((c) => c.chave === "documentacao")!.status).toBe("indeterminado");
+    const documentacao = score.criterios.find((c) => c.chave === "documentacao")!;
+    expect(documentacao.status).toBe("indeterminado");
     expect(score.criterios.find((c) => c.chave === "complexidade")!.status).toBe("indeterminado");
+    expect(documentacao.frase).toContain("ainda não foi lido");
+  });
+
+  it("lido mas sem exigência sustentada NÃO é a mesma frase de 'ainda não foi lido'", () => {
+    // O modelo pode ler o edital inteiro e nenhuma exigência sobreviver à
+    // checagem de evidência (todas descartadas por falta de base no texto).
+    // Dizer "ainda não foi lido" nesse caso seria falso — o documento foi lido,
+    // só não tinha exigência de habilitação que se sustentasse.
+    const lidoSemExigencias: AnaliseDoEdital = {
+      ...analiseCompleta(EDITAL_COMPATIVEL.id),
+      exigencias: [],
+    };
+    const { score } = calcularScore(EDITAL_COMPATIVEL, lidoSemExigencias, PERFIL_COMPLETO, AGORA);
+    const documentacao = score.criterios.find((c) => c.chave === "documentacao")!;
+    expect(documentacao.status).toBe("indeterminado");
+    expect(documentacao.frase).not.toContain("ainda não foi lido");
+    expect(documentacao.frase).toContain("nenhuma exigência de habilitação foi confirmada");
   });
 });
 
