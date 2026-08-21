@@ -132,6 +132,7 @@ arquivo já aplicado, mesmo que o erro esteja nele. O histórico é o contrato.
 | `20260817230000_fechar_execute_de_texto_do_json.sql` | Tira `texto_do_json()` de `anon`. Ela nasceu exposta pelo mecanismo descrito abaixo. |
 | `20260818200000_execucoes_de_coleta.sql` | `execucoes_de_coleta` — o veredito completa/parcial-aceitável/degradada de cada rodada de coleta, para `painelDoDia.coletaCompleta` deixar de ser sempre `true`. |
 | `20260820130000_justifica_retencao_da_auditoria.sql` | Só comentário: registra por escrito por que `acoes_na_oportunidade` e `eventos_de_auditoria` sobrevivem até a um pedido de exclusão LGPD (art. 16, IV) — a política já existia no código (sem policy de DELETE), faltava o motivo por escrito. Ver `src/lib/lgpd/exclusao.ts`. |
+| `20260821140000_avisos_de_custo_de_ia.sql` | `avisos_de_custo_de_ia` — um aviso por mês quando o custo de IA passa do teto, para `scripts/verificar-custo-de-ia.ts` não reenviar o mesmo e-mail todo dia. Só `service_role`; sem policy de leitura. |
 
 ### A armadilha das funções novas, que já pegou duas vezes
 

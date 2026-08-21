@@ -1,0 +1,78 @@
+# Soma o custo de IA do mês e avisa os administradores quando passar do teto
+# (`docs/produto/roadmap.md`, decisão de 20/08 — R$300/mês, alerta e não corte).
+#
+# `workflow_dispatch` só, por ora: mesma disciplina de `triar-editais.yml`
+# antes de ser promovido — primeiro correto e testado contra um mês real de
+# `execucoes_de_ia`, depois em cron. `scripts/publicar-posts.ts` é hoje o único
+# caminho de produção que grava naquela tabela; até ele acumular algumas
+# semanas de execução real, rodar isto todo dia só repetiria "sem preço
+# conferido" sem nada novo para ver.
+
+name: Verificar custo de IA
+
+on:
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Não enviar e-mail nem gravar aviso — só imprimir o resumo do mês"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Verificar
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          ADMINS_DA_PLATAFORMA: ${{ secrets.ADMINS_DA_PLATAFORMA }}
+          SIMULAR: ${{ inputs.simular && '--simular' || '' }}
+        run: |
+          set -o pipefail
+
+          # `--conditions=react-server` faz o pacote `server-only` resolver para
+          # o módulo vazio (o script alcança `criarProvedorResend`, que importa
+          # `server-only`). Sem isso ele LANÇA na importação — ver
+          # `src/lib/scripts-resolvem.test.ts`, que guarda exatamente isto.
+          codigo=0
+          node --conditions=react-server scripts/verificar-custo-de-ia.ts $SIMULAR | tee saida-custo-de-ia.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Verificação não rodou — faltam segredos"
+              echo
+              echo "Configure em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          exit "$codigo"
+
+      - name: Publicar o log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-custo-de-ia
+          path: saida-custo-de-ia.txt
+          retention-days: 90
+          if-no-files-found: ignore

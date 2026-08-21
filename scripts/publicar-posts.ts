@@ -32,6 +32,8 @@ import { slugDoPost } from "../src/lib/posts/slug.ts";
 import type { LevaDoDia, PostDeEdital } from "../src/lib/posts/tipos.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
 import type { AnaliseDoEdital } from "../src/lib/dominio/tipos.ts";
+import { abrirRepositorioDeIA } from "../src/lib/ia/repositorio.ts";
+import type { ExecucaoDeIA } from "../src/lib/ia/custo.ts";
 
 function arg(nome: string): string | undefined {
   const i = process.argv.indexOf(`--${nome}`);
@@ -150,6 +152,15 @@ async function candidatos(url: string, chave: string): Promise<Edital[]> {
  */
 async function lerEAnalisar(
   edital: Edital,
+  /**
+   * Grava a execução em `execucoes_de_ia`, quando há repositório aberto.
+   *
+   * Fica de fora do `registrar` de `analisarEdital` (que é síncrono, pensado
+   * para log em memória) e vira, aqui, um disparo assíncrono empilhado em
+   * `gravacoesPendentes` — `main()` espera todas antes de sair, para o
+   * processo não morrer com uma escrita ainda em voo.
+   */
+  gravarExecucao?: (execucao: ExecucaoDeIA) => void,
 ): Promise<{ analise: AnaliseDoEdital | null; documentos: number }> {
   try {
     const { listarDocumentos, baixarDocumento } = await import("../src/lib/documentos/pncp.ts");
@@ -208,6 +219,8 @@ async function lerEAnalisar(
     const analise = await analisarEdital(edital, {
       textoDoDocumento: texto,
       registrar: (execucao) => {
+        gravarExecucao?.(execucao);
+
         if (execucao.resultado !== "falha") return;
         console.error(
           `  análise recusada em ${edital.id}: ${execucao.falha}` +
@@ -297,6 +310,29 @@ async function main() {
       : "\nsem GEMINI_API_KEY: os posts saem sem leitura, e a página declara isso.",
   );
 
+  /*
+   * Cada leitura real de edital é uma execução de IA — e até hoje nenhuma
+   * ficava gravada em `execucoes_de_ia` (só em memória, só para este log). É o
+   * único caminho de produção que chama `analisarEdital` de verdade; sem
+   * registrar aqui, o teto de custo do roadmap não tem o que somar.
+   *
+   * `registrar` de `analisarEdital` é síncrono, então a gravação é disparada e
+   * empilhada aqui, não esperada linha a linha — esperar todas de uma vez, no
+   * fim, é mais barato e não atrasa a leitura do próximo edital por causa de
+   * uma escrita lenta no banco.
+   */
+  const repositorioDeIA = abrirRepositorioDeIA();
+  const gravacoesPendentes: Promise<unknown>[] = [];
+  const gravarExecucao = repositorioDeIA
+    ? (execucao: ExecucaoDeIA) => {
+        gravacoesPendentes.push(
+          repositorioDeIA
+            .gravarExecucao(execucao, { empresaId: null, editalId: null })
+            .catch((e) => console.error(`  execucoes_de_ia: não gravou — ${e instanceof Error ? e.message : e}`)),
+        );
+      }
+    : undefined;
+
   const posts: PostDeEdital[] = [];
   let comLeitura = 0;
 
@@ -304,7 +340,7 @@ async function main() {
     const post = paraPost(edital, agora.toISOString());
 
     if (temChave) {
-      const { analise, documentos } = await lerEAnalisar(edital);
+      const { analise, documentos } = await lerEAnalisar(edital, gravarExecucao);
       post.analise = analise;
       post.documentosLidos = documentos;
       if (analise?.analisadoEm) comLeitura++;
@@ -317,6 +353,10 @@ async function main() {
 
     posts.push(post);
   }
+
+  // Espera toda gravação de execução de IA antes de seguir — o processo não
+  // pode sair com uma escrita ainda em voo.
+  await Promise.allSettled(gravacoesPendentes);
 
   const leva: LevaDoDia = { dia, consideradosNoDia: editais.length, posts };
 

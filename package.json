@@ -20,7 +20,9 @@
     "alertas:simular": "node --conditions=react-server scripts/enviar-alertas.ts --simular",
     "documentos:extrair": "node scripts/extrair-documentos.ts",
     "triagem:executar": "node scripts/triar-editais.ts",
-    "triagem:simular": "node scripts/triar-editais.ts --simular"
+    "triagem:simular": "node scripts/triar-editais.ts --simular",
+    "custo-de-ia:verificar": "node --conditions=react-server scripts/verificar-custo-de-ia.ts",
+    "custo-de-ia:simular": "node --conditions=react-server scripts/verificar-custo-de-ia.ts --simular"
   },
   "dependencies": {
     "@google/genai": "^2.17.1",
