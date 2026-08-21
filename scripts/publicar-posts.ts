@@ -31,9 +31,9 @@ import { selecionarDoDia, POSTS_POR_DIA } from "../src/lib/posts/selecao.ts";
 import { slugDoPost } from "../src/lib/posts/slug.ts";
 import type { LevaDoDia, PostDeEdital } from "../src/lib/posts/tipos.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
-import type { AnaliseDoEdital } from "../src/lib/dominio/tipos.ts";
 import { abrirRepositorioDeIA } from "../src/lib/ia/repositorio.ts";
 import type { ExecucaoDeIA } from "../src/lib/ia/custo.ts";
+import { lerEAnalisar } from "../src/lib/ia/lerEdital.ts";
 
 function arg(nome: string): string | undefined {
   const i = process.argv.indexOf(`--${nome}`);
@@ -138,103 +138,6 @@ async function candidatos(url: string, chave: string): Promise<Edital[]> {
   }
 
   return todos.map(paraEdital);
-}
-
-/**
- * Lê os documentos de um edital e devolve a análise.
- *
- * Devolve `null` — e não uma análise vazia — quando não deu para ler. O chamador
- * publica o post sem leitura, com a página declarando isso. Um resumo de
- * placeholder num post público seria o pior defeito que este produto pode ter.
- *
- * Falha aqui nunca derruba a leva: um edital cujo documento não abre não pode
- * custar os outros 24, pelo mesmo princípio que isola UF na coleta.
- */
-async function lerEAnalisar(
-  edital: Edital,
-  /**
-   * Grava a execução em `execucoes_de_ia`, quando há repositório aberto.
-   *
-   * Fica de fora do `registrar` de `analisarEdital` (que é síncrono, pensado
-   * para log em memória) e vira, aqui, um disparo assíncrono empilhado em
-   * `gravacoesPendentes` — `main()` espera todas antes de sair, para o
-   * processo não morrer com uma escrita ainda em voo.
-   */
-  gravarExecucao?: (execucao: ExecucaoDeIA) => void,
-): Promise<{ analise: AnaliseDoEdital | null; documentos: number }> {
-  try {
-    const { listarDocumentos, baixarDocumento } = await import("../src/lib/documentos/pncp.ts");
-    const { processarEdital } = await import("../src/lib/documentos/processar.ts");
-    const { textoParaAnalise } = await import("../src/lib/documentos/texto.ts");
-    const { analisarEdital } = await import("../src/lib/ia/analisar-edital.ts");
-
-    /*
-     * Reusa `processarEdital`, que já orquestra listar → baixar → extrair e tem
-     * o vocabulário de recusa testado. Reimplementar a sequência aqui duplicaria
-     * as decisões dela — o teto de 40 MB, o piso de caracteres por página, a
-     * diferença entre "lista indisponível" e "sem documento".
-     *
-     * O registro devolve `null` e a triagem devolve `true` porque este caminho é
-     * o da publicação, não o do incremental: o edital foi escolhido para virar
-     * post HOJE, então ele precisa ser lido agora, mesmo que já tenha sido
-     * baixado antes por outro motivo.
-     */
-    const resultado = await processarEdital(
-      {
-        id: edital.id,
-        idNaFonte: edital.idNaFonte,
-        encerramentoProposta: edital.encerramentoProposta,
-      },
-      {
-        listar: listarDocumentos,
-        baixar: baixarDocumento,
-        registro: async () => null,
-        interessaAAlguem: async () => true,
-      },
-    );
-
-    if (!resultado.processado) {
-      console.log(`  sem documento (${resultado.motivo}) · ${edital.local.municipio}`);
-      return { analise: null, documentos: 0 };
-    }
-
-    const texto = textoParaAnalise(resultado.documentos);
-    if (!texto) return { analise: null, documentos: 0 };
-
-    /*
-     * `registrar` não é telemetria opcional aqui — é a única forma de saber por
-     * que uma leitura falhou.
-     *
-     * `analisarEdital` NÃO lança quando o provedor recusa: ela devolve uma
-     * análise sem `analisadoEm` e entrega o motivo real (`sem_credencial`,
-     * quota, modelo inexistente, resposta fora do schema) por este callback. Sem
-     * passá-lo, o motivo é calculado e jogado fora.
-     *
-     * Foi o que aconteceu em 18/08: `com leitura: 0 de 25`, a guarda recusou
-     * gravar — corretamente —, e o log inteiro não continha UMA linha dizendo o
-     * porquê. Pior: a própria mensagem da guarda mandava procurar um erro
-     * (`leitura falhou em ...`) que só aparece quando há EXCEÇÃO, e recusa do
-     * provedor não é exceção. Duas rodadas perdidas sem diagnóstico.
-     */
-    const analise = await analisarEdital(edital, {
-      textoDoDocumento: texto,
-      registrar: (execucao) => {
-        gravarExecucao?.(execucao);
-
-        if (execucao.resultado !== "falha") return;
-        console.error(
-          `  análise recusada em ${edital.id}: ${execucao.falha}` +
-            `${execucao.modelo ? ` (modelo ${execucao.modelo}` +
-              `${execucao.tentativas > 1 ? `, ${execucao.tentativas} tentativas` : ""})` : ""}` +
-            ` — ${execucao.motivo ?? "sem motivo declarado"}`,
-        );
-      },
-    });
-    return { analise, documentos: resultado.documentos.filter((d) => d.extracao.ok).length };
-  } catch (e) {
-    console.error(`  leitura falhou em ${edital.id}: ${(e as Error).message}`);
-    return { analise: null, documentos: 0 };
-  }
 }
 
 function paraPost(edital: Edital, postadoEm: string): PostDeEdital {

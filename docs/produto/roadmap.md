@@ -297,6 +297,34 @@ clientes reais usando o produto. Construir agora seria inventar o insumo.
    manda e-mail quando o piso conhecido já basta para confirmar o estouro
    sozinho.
 
+   **A leitura real chega às oportunidades de cliente, em 21/08.** Até aqui só
+   os posts do blog eram lidos de verdade — a tagline do site ("já lidos") e o
+   e-mail de alerta prometiam leitura que nenhuma oportunidade de cliente
+   jamais recebia (`analiseLeuTexto` sempre `false`, confirmado contra os
+   dados de produção: 1.169 oportunidades entregues para a única empresa
+   cadastrada, zero linhas em `execucoes_de_ia` fora do blog). `scripts/
+   ler-recomendados.ts`, novo, roda logo depois de `triar-editais.ts` e lê de
+   verdade o topo-25 por empresa com score ≥ 70 sem leitura — o mesmo corte
+   que já separa "recomendada"/"recomendada forte" e que já é o piso do
+   alerta por e-mail, não um número novo. `triar-editais.ts` continua sem
+   chamar `analisarEdital`, deliberadamente — quem lê agora é o script
+   companheiro, e as oportunidades afetadas são regravadas com a análise
+   real por cima do score "de ficha" que já existia.
+
+   A leitura é por EDITAL, compartilhada entre toda empresa cujo topo a
+   inclui (`analises_de_edital`, finalmente escrita — a tabela existia desde
+   14/08 e nunca tinha recebido uma linha). O limite de 25/empresa/dia é
+   deliberadamente por empresa, não um teto global: cada empresa nova soma um
+   custo teto prévisível, em vez de competir por uma cota compartilhada.
+   Medido contra o perfil de teste, o corte de score já reduz de 1.169 para
+   21 editais abertos — dentro do mesmo teto de R$ 300/mês.
+
+   **O que não foi possível confirmar antes de mesclar:** a chave de serviço
+   do Supabase não estava disponível para rodar o script contra produção
+   antes do merge — a validação real acontece na primeira execução agendada,
+   com `continue-on-error` protegendo o resto do workflow caso algo precise
+   de ajuste.
+
 ## O que eu não construiria em seguida, e por quê
 
 **Mais fontes de dados.** A arquitetura já aceita, mas cobertura maior sem

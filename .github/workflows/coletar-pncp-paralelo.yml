@@ -231,6 +231,22 @@ jobs:
           set -o pipefail
           node scripts/triar-editais.ts | tee saida-triagem.txt
 
+      # Logo depois da triagem, mesma cadência: precisa do score "de ficha" do
+      # dia já gravado para saber quem é candidato a leitura (score ≥ 70 — ver
+      # o cabeçalho de `ler-recomendados.ts`). `--conditions=react-server`
+      # pela mesma razão de "Publicar a leva de posts do dia" — a cadeia da
+      # análise passa por `ia/gemini.ts`. `continue-on-error`, mesmo motivo dos
+      # vizinhos.
+      - name: Ler os editais mais recomendados
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -o pipefail
+          node --conditions=react-server scripts/ler-recomendados.ts | tee saida-leitura.txt
+
       # `${{ }}` NUNCA entra no corpo de um `run:`, pela mesma regra do workflow
       # sequencial: a expressão é substituída no TEXTO do programa antes de o
       # shell existir, e `motivos` deriva de dado do PNCP.

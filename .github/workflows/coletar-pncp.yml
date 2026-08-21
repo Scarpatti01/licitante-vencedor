@@ -273,6 +273,24 @@ jobs:
           set -o pipefail
           node scripts/triar-editais.ts | tee saida-triagem.txt
 
+      # Logo depois da triagem, pela mesma razão de cadência: precisa que
+      # `oportunidades` já tenha o score "de ficha" do dia para saber quem é
+      # candidato a leitura (score ≥ 70 — ver o cabeçalho de
+      # `ler-recomendados.ts`). `--conditions=react-server` pela mesma razão de
+      # "Publicar a leva de posts do dia": a cadeia da análise passa por
+      # `ia/gemini.ts`. `continue-on-error`, mesmo motivo dos dois vizinhos —
+      # não é o passo crítico do workflow.
+      - name: Ler os editais mais recomendados
+        if: steps.decidir.outputs.pular != 'true'
+        continue-on-error: true
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -o pipefail
+          node --conditions=react-server scripts/ler-recomendados.ts | tee saida-leitura.txt
+
       # `${{ }}` NUNCA entra no corpo de um `run:` aqui: a expressão é
       # substituída no texto do script ANTES de o shell rodar, então um valor
       # com aspa ou `$(...)` viraria comando executado no runner — que carrega
