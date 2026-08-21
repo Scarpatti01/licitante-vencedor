@@ -97,3 +97,41 @@ O par de perguntas que resolve cada uma:
 
 PR aberta parada não é trabalho guardado. É trabalho apodrecendo — o custo de
 mesclá-la sobe todo dia, e o benefício que ela não entrega é cobrado todo dia.
+
+# Pendência aberta: a leitura dos posts (21/08)
+
+**Pedido do dono, para a próxima sessão: rodar a leitura dos posts.**
+
+Antes de rodar, confira — porque provavelmente já rodou sozinha. O script
+`publicar-posts.ts` é passo das duas coletas, e a coleta roda 06:10 e 08:10
+UTC. Se a madrugada passou entre aquela sessão e esta, o trabalho está feito e
+a pergunta vira "funcionou?".
+
+Como conferir, na ordem:
+
+```sh
+ls dados/posts/            # existe leva com a data de hoje?
+```
+
+```sql
+-- a leitura de post é a que NÃO tem oportunidade associada
+select date(criado_em), modelo, sucesso, count(*)
+from execucoes_de_ia group by 1,2,3 order by 1 desc;
+```
+
+Se não houver leva de hoje, ou se houver mas sem leitura, dispare
+`publicar-posts.yml` à mão (com **simular** desmarcado) e leia o resumo da
+execução — ele carrega a saída inteira de propósito.
+
+**O que torna isso traiçoeiro, e por que não basta olhar se o job ficou verde:**
+o passo dentro da coleta é `continue-on-error: true`, e o script publica os
+posts SEM leitura quando a chave do Gemini não serve, declarando isso na
+página. Ou seja: falha e sucesso degradado são ambos verdes. A única prova é
+contar quantos posts saíram com leitura.
+
+Estado em 21/08, para comparar: levas pararam em 16/08, e as de 15 e 16/08 têm
+**0 de 25** posts com leitura. As causas conhecidas — modelo aposentado (#58) e
+dialeto de schema recusado (#63) — foram corrigidas no mesmo dia, e a leitura
+de oportunidades voltou a funcionar com elas. **Que isso conserte os posts é
+expectativa, não fato conferido.** Se a primeira leva depois da correção sair
+com leitura, apague esta seção.
