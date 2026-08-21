@@ -2,6 +2,7 @@ import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { pracasParaBusca } from "@/lib/regioes";
 import { BuscaDePracas } from "@/components/BuscaDePracas";
+import { Logo } from "@/components/Logo";
 
 /**
  * Cabeçalho e trilha das páginas internas.
@@ -45,8 +46,8 @@ export function CabecalhoSite() {
   return (
     <header className="border-b">
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-6 py-5">
-        <Link href="/" prefetch={false} className="text-base font-semibold tracking-tight">
-          {SITE.name}
+        <Link href="/" prefetch={false} aria-label={SITE.name}>
+          <Logo />
         </Link>
 
         <div className="flex items-center gap-4 sm:gap-6">
@@ -61,7 +62,7 @@ export function CabecalhoSite() {
                 key={item.href}
                 href={item.href}
                 prefetch={false}
-                className="underline-offset-4 hover:underline"
+                className="underline-offset-4 hover:underline whitespace-nowrap"
               >
                 {item.texto}
               </Link>

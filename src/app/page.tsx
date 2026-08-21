@@ -7,6 +7,7 @@ import { BuscaDePracas } from "@/components/BuscaDePracas";
 import { RodapeSite } from "@/components/RodapeSite";
 import { ChuvaDeDados } from "@/components/ChuvaDeDados";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
+import { Logo } from "@/components/Logo";
 
 const PILARES = [
   {
@@ -63,8 +64,8 @@ export default function Home() {
         />
 
         <div className="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-          <span className="text-base font-semibold tracking-tight text-white">
-            {SITE.name}
+          <span aria-label={SITE.name}>
+            <Logo />
           </span>
           <nav className="flex items-center gap-4 text-sm text-slate-300 sm:gap-6">
             <Link href="/blog/" className="underline-offset-4 hover:underline">Guias</Link>
