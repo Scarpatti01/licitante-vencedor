@@ -129,18 +129,17 @@ export function conteudoDeAlertaDiario(dados: DadosDoAlertaDiario): ConteudoDeEm
   // geográfico. É mais barato repetir a limitação do que descobrir que alguém
   // deixou de ler um edital achando que nós teríamos avisado se servisse.
   //
-  // A segunda frase é nova: nomeia o que já é real hoje (score por CNAE,
-  // faturamento e experiência — tudo em `dominio/score.ts`, sem precisar de
-  // leitura do texto) para o botão abaixo não ser um link solto sem contexto.
-  // Não menciona leitura de propósito: ela ainda não está no ar (ver o bloco
-  // "o que ainda não está no ar" em `conteudoDeBoasVindas`), e prometer aqui o
-  // que aquele e-mail já disse que falta seria desmentir a própria mensagem
-  // anterior.
+  // A segunda frase nomeia o que a empresa cadastrada ganha, para o botão
+  // abaixo não ser um link solto sem contexto. Desde 21/08 ela pode citar a
+  // leitura: `scripts/ler-recomendados.ts` lê de verdade os de maior aderência
+  // de cada empresa. Diz "os de maior aderência", e não "os editais",
+  // justamente porque o volume é limitado por dia — a frase que promete tudo
+  // seria a mesma que o produto passou meses sem cumprir.
   fecho.push(
     "O recorte deste alerta é geográfico: são os editais publicados na região que você cadastrou, sem filtro por ramo de atividade nem leitura do texto do edital. Confira sempre o documento oficial antes de decidir participar.",
   );
   fecho.push(
-    "Cadastrando sua empresa, o corte deixa de ser só a cidade: comparamos cada edital com o seu ramo, faturamento e experiência, e o que passa nesse filtro aparece no seu painel com uma pontuação de aderência.",
+    "Cadastrando sua empresa, o corte deixa de ser só a cidade: comparamos cada edital com o seu ramo, faturamento e experiência, e os de maior aderência chegam com o documento lido — o que exigem de habilitação, o que falta no seu cadastro e os riscos do texto.",
   );
 
   return {
@@ -162,9 +161,12 @@ export function conteudoDeAlertaDiario(dados: DadosDoAlertaDiario): ConteudoDeEm
      * esperar aviso nenhum.
      */
     acao: {
-      rotulo: "Filtrar pelo meu ramo de atuação",
+      rotulo: "Receber os editais do meu ramo, já lidos",
       url: `${dados.urlBase ?? SITE.url}/criar-conta/`,
     },
+    // Depois dos editais: a pessoa abriu para vê-los, e é o `fecho` acima que
+    // explica o que "já lidos" quer dizer — ver `acaoDepoisDasListas`.
+    acaoDepoisDasListas: true,
     listas: itens.map(bloco),
     fecho,
     rodape: {

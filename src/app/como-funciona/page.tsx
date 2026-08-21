@@ -27,7 +27,7 @@ const FAQ = [
   {
     pergunta: "Vocês leem o edital para mim?",
     resposta:
-      "Na etapa gratuita, não. O alerta traz objeto, órgão, valor, prazo e o link direto para o registro oficial, para a decisão de abrir ser rápida. A leitura prévia com checklist de habilitação é o serviço pago, e mesmo ele não substitui a leitura do edital inteiro antes de disputar.",
+      "No alerta gratuito, não: ele traz objeto, órgão, valor, prazo e o link direto para o registro oficial, para a decisão de abrir ser rápida. Com a empresa cadastrada, sim — mas não todos. Todo dia lemos os de maior aderência ao seu perfil, e é neles que aparecem as exigências de habilitação, a garantia, a visita técnica e os riscos extraídos do texto. Nos demais, o que você vê é o que o órgão publicou, e a tela diz explicitamente qual é o caso. Nem a leitura substitui ler o edital inteiro antes de disputar: quando o nosso resumo divergir do documento, vale o documento.",
   },
   {
     pergunta: "Como vocês sabem que um edital é do meu ramo?",

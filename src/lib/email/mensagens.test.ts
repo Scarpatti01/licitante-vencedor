@@ -147,17 +147,35 @@ describe("boas-vindas", () => {
   /*
    * O teste que mais importa deste arquivo. Preferimos perder um cadastro a
    * conquistá-lo por omissão: se alguém "limpar" a boas-vindas tirando o bloco
-   * do que ainda não existe, o cadastro passa a ser conquistado com o assinante
-   * acreditando em um filtro que não roda.
+   * do que este alerta não faz, o cadastro passa a ser conquistado com o
+   * assinante acreditando em um filtro que não roda para ele.
    */
-  it("declara, com todas as letras, o que ainda NÃO está no ar", () => {
+  it("declara, com todas as letras, o que este alerta NÃO faz", () => {
+    /*
+     * A redação mudou em 21/08 — de "o que ainda NÃO está no ar" para "o que
+     * este alerta gratuito NÃO faz" — porque as duas coisas passaram a existir
+     * para quem cadastra a empresa (`ler-recomendados.ts`). O que NÃO mudou, e
+     * é o que este teste guarda, é a divulgação: quem assina o alerta gratuito
+     * continua tendo de saber que o recorte é geográfico e que nada aqui é
+     * lido.
+     */
     for (const t of [texto, html]) {
-      expect(t).toMatch(/ainda NÃO está no ar/);
+      expect(t).toMatch(/NÃO faz/);
       expect(t).toMatch(/filtro fino por perfil/i);
-      expect(t).toMatch(/ainda não filtramos por CNAE/i);
+      expect(t).toMatch(/não filtra por CNAE/i);
       expect(t).toMatch(/vai chegar edital que não serve para você/i);
-      expect(t).toMatch(/leitura do edital em profundidade/i);
-      expect(t).toMatch(/ainda não lemos o texto integral nem os anexos/i);
+      expect(t).toMatch(/leitura do edital/i);
+      expect(t).toMatch(/não lemos o texto nem os anexos dos editais deste alerta/i);
+    }
+  });
+
+  it("a leitura só é prometida para quem cadastra a empresa, nunca para este alerta", () => {
+    // O fecho vende o produto pago; o bloco acima nega a leitura AQUI. As duas
+    // frases têm de conviver — sem a segunda, o assinante entende que o e-mail
+    // que está recebendo já vem lido.
+    for (const t of [texto, html]) {
+      expect(t).toMatch(/existem para quem cadastra a empresa/i);
+      expect(t).toMatch(/os de maior aderência chegam com o documento lido/i);
     }
   });
 

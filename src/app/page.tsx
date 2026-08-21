@@ -122,14 +122,16 @@ export default function Home() {
 
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
               Todo dia útil, às 7h, você recebe os editais do PNCP compatíveis
-              com o seu perfil — com o que eles pedem, o que falta na sua
-              habilitação, o prazo e o risco. Você só decide se participa.
+              com o seu perfil, ordenados por aderência. Os mais aderentes vão
+              com o documento lido: o que exigem de habilitação, o que falta no
+              seu cadastro, o prazo e o risco. Você só decide se participa.
             </p>
 
             <p className="mt-6 max-w-2xl leading-relaxed text-slate-400">
-              Não é mais uma lista de licitações para você garimpar. É a leitura
-              pronta, para a decisão sair em minutos em vez de tomar a manhã
-              inteira de alguém.
+              Não é mais uma lista de licitações para você garimpar. No topo da
+              sua lista a leitura já está feita, para a decisão sair em minutos
+              em vez de tomar a manhã inteira de alguém — e cada edital diz se
+              foi lido ou se ainda está só no que o órgão publicou.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">

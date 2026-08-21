@@ -76,8 +76,10 @@ export default function Sobre() {
             <P>
               Duas frentes atacam esse problema aqui. Os guias, que explicam as
               regras do jogo em português, e a triagem diária, que separa os
-              editais compatíveis com o seu perfil e entrega a leitura pronta —
+              editais compatíveis com o seu perfil e lê os de maior aderência —
               o que pedem, o que falta na sua habilitação, o prazo e o risco.
+              Nos demais, o que a triagem mostra é o que o órgão publicou, e a
+              tela diz qual é qual.
             </P>
           </Secao>
 
