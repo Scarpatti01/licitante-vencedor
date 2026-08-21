@@ -104,6 +104,20 @@ describe("conteudoDeAlertaDiario", () => {
     expect(montar().fecho.join(" ")).toContain("recorte deste alerta é geográfico");
   });
 
+  it("leva botão para criar conta, sem prometer leitura", () => {
+    // O botão vende o que já é real hoje (filtro por perfil, no painel) — não o
+    // que `conteudoDeBoasVindas` já disse que ainda falta (leitura do edital).
+    const conteudo = montar();
+    expect(conteudo.acao).not.toBeNull();
+    expect(conteudo.acao!.url).toBe("https://licitantevencedor.com.br/criar-conta/");
+    expect(conteudo.acao!.rotulo.toLowerCase()).not.toContain("lido");
+    expect(emHtml(conteudo)).toContain(conteudo.acao!.url);
+  });
+
+  it("explica o botão citando o que o filtro por perfil já compara", () => {
+    expect(montar().fecho.join(" ")).toContain("ramo, faturamento e experiência");
+  });
+
   it("leva link de descadastro — é o que separa lista de denúncia de spam", () => {
     const conteudo = montar();
     expect(conteudo.rodape.descadastro).toContain("/descadastrar/?t=");

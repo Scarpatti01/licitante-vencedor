@@ -110,6 +110,7 @@ export interface RepositorioDoProduto {
   listarOportunidades(
     empresaId: string,
     filtro?: FiltroDeOportunidades,
+    agora?: Date,
   ): Promise<ResumoDaOportunidade[]>;
 
   oportunidade(empresaId: string, id: string): Promise<ResumoDaOportunidade | null>;

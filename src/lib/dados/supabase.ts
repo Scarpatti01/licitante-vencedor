@@ -402,10 +402,12 @@ export class RepositorioSupabase implements RepositorioDoProduto {
   async listarOportunidades(
     empresaId: string,
     filtro: FiltroDeOportunidades = {},
+    agora: Date = new Date(),
   ): Promise<ResumoDaOportunidade[]> {
-    if (ehEmpresaDeDemonstracao(empresaId)) return this.demonstracao.listarOportunidades(empresaId, filtro);
+    if (ehEmpresaDeDemonstracao(empresaId)) {
+      return this.demonstracao.listarOportunidades(empresaId, filtro, agora);
+    }
 
-    const agora = new Date();
     let lista = await this.oportunidadesDaEmpresa(empresaId, agora, filtro.situacoes);
 
     if (filtro.apenasUrgentes) lista = lista.filter((o) => o.avaliacao.recomendacao.urgente);

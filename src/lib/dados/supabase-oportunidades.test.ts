@@ -193,7 +193,11 @@ describe("listarOportunidades", () => {
       ],
     });
 
-    const lista = await new RepositorioSupabase(cliente).listarOportunidades(EMPRESA_REAL, { limite: 1 });
+    const lista = await new RepositorioSupabase(cliente).listarOportunidades(
+      EMPRESA_REAL,
+      { limite: 1 },
+      AGORA,
+    );
 
     expect(lista).toHaveLength(1);
     // O edital que encerra antes (EDITAL_URGENTE) deve vir primeiro quando os
@@ -208,9 +212,11 @@ describe("listarOportunidades", () => {
     const linha = { ...semBase, score: null, faixa: "indeterminada" as const };
     const { cliente } = clienteFalso({ oportunidades: [linha] });
 
-    const lista = await new RepositorioSupabase(cliente).listarOportunidades(EMPRESA_REAL, {
-      scoreMinimo: 0,
-    });
+    const lista = await new RepositorioSupabase(cliente).listarOportunidades(
+      EMPRESA_REAL,
+      { scoreMinimo: 0 },
+      AGORA,
+    );
     expect(lista).toHaveLength(0);
   });
 

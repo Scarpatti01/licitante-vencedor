@@ -2,6 +2,7 @@ import type { BlocoDeLista, ConteudoDeEmail } from "../email/mensagens.ts";
 import { LIMITES, urlDeDescadastro } from "../email/mensagens.ts";
 import { emReais, prazoEmTexto } from "./formato.ts";
 import type { ItemDoAlertaDeLead, SelecaoParaLead } from "./lead.ts";
+import { SITE } from "../site.ts";
 
 /**
  * O texto do alerta diário do lead.
@@ -127,8 +128,19 @@ export function conteudoDeAlertaDiario(dados: DadosDoAlertaDiario): ConteudoDeEm
   // meses já esqueceu o que leu nas boas-vindas, e o recorte continua sendo
   // geográfico. É mais barato repetir a limitação do que descobrir que alguém
   // deixou de ler um edital achando que nós teríamos avisado se servisse.
+  //
+  // A segunda frase é nova: nomeia o que já é real hoje (score por CNAE,
+  // faturamento e experiência — tudo em `dominio/score.ts`, sem precisar de
+  // leitura do texto) para o botão abaixo não ser um link solto sem contexto.
+  // Não menciona leitura de propósito: ela ainda não está no ar (ver o bloco
+  // "o que ainda não está no ar" em `conteudoDeBoasVindas`), e prometer aqui o
+  // que aquele e-mail já disse que falta seria desmentir a própria mensagem
+  // anterior.
   fecho.push(
     "O recorte deste alerta é geográfico: são os editais publicados na região que você cadastrou, sem filtro por ramo de atividade nem leitura do texto do edital. Confira sempre o documento oficial antes de decidir participar.",
+  );
+  fecho.push(
+    "Cadastrando sua empresa, o corte deixa de ser só a cidade: comparamos cada edital com o seu ramo, faturamento e experiência, e o que passa nesse filtro aparece no seu painel com uma pontuação de aderência.",
   );
 
   return {
@@ -139,10 +151,20 @@ export function conteudoDeAlertaDiario(dados: DadosDoAlertaDiario): ConteudoDeEm
         ? `Um edital foi publicado em ${dados.regiao} e está com propostas abertas. Os dados abaixo são os da publicação oficial no Portal Nacional de Contratações Públicas.`
         : `Estes editais estão com propostas abertas em ${dados.regiao}, ordenados pelo prazo mais curto. Os dados são os da publicação oficial no Portal Nacional de Contratações Públicas.`,
     ],
-    // Sem botão: um alerta com vários editais não tem UMA ação. O botão único
-    // teria de escolher um deles por conta própria, e o link de cada bloco já é
-    // a ação daquele item.
-    acao: null,
+    /*
+     * Agora tem botão. A razão original de não ter ("um alerta com vários
+     * editais não tem UMA ação") continua valendo para os editais em si —
+     * por isso o botão não escolhe um deles, e o link de cada bloco continua
+     * sendo a ação daquele item. Este é um botão de outra categoria: sai do
+     * e-mail, não aponta pra edital nenhum, cumpre o que `conteudoDeBoasVindas`
+     * já prometeu ("quando [filtro fino] entrar no ar, você recebe um
+     * aviso") ao dar o caminho pra quem já quer aquele filtro agora, sem
+     * esperar aviso nenhum.
+     */
+    acao: {
+      rotulo: "Filtrar pelo meu ramo de atuação",
+      url: `${dados.urlBase ?? SITE.url}/criar-conta/`,
+    },
     listas: itens.map(bloco),
     fecho,
     rodape: {
