@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
+import { COBERTURA } from "@/lib/cobertura";
 import { Faq, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
@@ -8,7 +9,7 @@ import { CapturaAlerta } from "@/components/CapturaAlerta";
 const TITULO = "Como funciona: do edital publicado ao seu e-mail";
 const DESCRICAO =
   "As quatro etapas entre um órgão publicar um edital no PNCP e ele chegar filtrado no seu e-mail: coleta diária, revisão automática dos dados, filtro pelo seu perfil e entrega. Com o que já está no ar e o que ainda não está.";
-const ATUALIZADO = "2026-08-12";
+const ATUALIZADO = "2026-08-21";
 
 export const metadata: Metadata = {
   title: "Como funciona o alerta de licitações",
@@ -128,9 +129,11 @@ export default function ComoFunciona() {
             <P>
               Não raspamos sites de prefeitura nem dependemos de portal privado.
               A coleta usa a API pública do PNCP, com ritmo controlado para não
-              sobrecarregar um serviço público. Na última execução foram{" "}
-              <strong>3.312 editais abertos</strong>, em{" "}
-              <strong>639 municípios</strong> de seis estados.
+              sobrecarregar um serviço público. Ela cobre{" "}
+              <strong>{COBERTURA.extensao}</strong>: na coleta de{" "}
+              {COBERTURA.dataPorExtenso} foram{" "}
+              <strong>{COBERTURA.editais} editais</strong>, em{" "}
+              <strong>{COBERTURA.municipios} municípios</strong>.
             </P>
             <P>
               Isso importa por um motivo concreto: a disputa acontece espalhada
@@ -182,9 +185,9 @@ export default function ComoFunciona() {
 
           <Secao id="etapa-3" titulo="3. Filtro: o que é seu, e só o que é seu">
             <P>
-              De 3.312 editais abertos, a esmagadora maioria não interessa a
-              você. O filtro trabalha sobre três coisas que você declara no
-              cadastro:
+              Dos {COBERTURA.editais} editais da última coleta, a esmagadora
+              maioria não interessa a você. O filtro trabalha sobre três coisas
+              que você declara no cadastro:
             </P>
             <Tabela
               cabecalho={["Critério", "Por quê"]}
@@ -292,19 +295,20 @@ export default function ComoFunciona() {
             <Tabela
               cabecalho={["Etapa", "Estado hoje"]}
               linhas={[
-                ["Coleta diária do PNCP", "No ar, automatizada, com execução diária agendada"],
+                ["Coleta diária do PNCP", "No ar, agendada — 3h10 da manhã, com segunda tentativa às 5h10"],
                 ["Revisão automática dos dados", "No ar, rodando a cada coleta"],
-                ["Cobertura geográfica", "Seis estados: PE, PB, AL, RN, CE e SE"],
-                ["Filtro por perfil", "Em construção"],
-                ["Envio automático do e-mail", "Em construção — os primeiros envios serão feitos à mão"],
+                ["Cobertura geográfica", `No ar — ${COBERTURA.extensao}`],
+                ["Filtro por perfil", "No ar, rodando como etapa de cada coleta"],
+                ["Leitura dos editais de maior aderência", "No ar — todo dia, logo depois do filtro, para quem tem empresa cadastrada"],
+                ["Envio automático do e-mail", "No ar — dias úteis, 7h10 da manhã"],
                 ["Planos pagos", "Ainda não abertos"],
               ]}
             />
             <P>
-              O motor de dados existe e funciona. O que está sendo montado é a
-              camada de entrega. Enquanto ela não está pronta, o cadastro não
-              está aberto — e o formulário desta página diz isso em vez de
-              guardar o seu e-mail sem ter como cumprir a promessa.
+              As quatro etapas descritas acima rodam sozinhas, todo dia. O que
+              ainda não existe é cobrança: não há plano pago aberto, e por isso
+              não há nada a contratar nesta página. O alerta gratuito, esse
+              sim, já sai.
             </P>
             <div className="mt-2">
               <CapturaAlerta origem="/como-funciona/" />

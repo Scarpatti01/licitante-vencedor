@@ -7,7 +7,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 const TITULO = "Metodologia: de onde vêm os dados e o que eles não cobrem";
 const DESCRICAO =
   "Como coletamos, tratamos e revisamos os dados de editais do PNCP: fonte, frequência, regras de normalização, revisão automática antes de publicar e as limitações conhecidas — inclusive o que a coleta não alcança.";
-const ATUALIZADO = "2026-08-12";
+const ATUALIZADO = "2026-08-21";
 
 export const metadata: Metadata = {
   title: "Metodologia dos dados de licitações",
@@ -98,16 +98,18 @@ export default function Metodologia() {
               linhas={[
                 ["Fonte", "API pública de consulta do PNCP, sem autenticação"],
                 ["O que é coletado", "Contratações com recebimento de propostas aberto, com prazo de encerramento nos 90 dias seguintes"],
-                ["Frequência", "Diária, às 03h10 de Brasília"],
-                ["Abrangência atual", "Piloto em Pernambuco, Paraíba, Alagoas, Rio Grande do Norte, Ceará e Sergipe"],
+                ["Frequência", "Diária, às 03h10 de Brasília, com segunda tentativa às 05h10"],
+                ["Abrangência atual", "Nacional — as 27 unidades da federação"],
                 ["Ritmo da coleta", "Sequencial, com pausa entre requisições, para não sobrecarregar um serviço público"],
               ]}
             />
             <P>
-              A abrangência é deliberadamente parcial nesta fase. Preferimos seis
-              estados coletados de forma verificável a uma cobertura nacional que
-              não conseguíssemos revisar. Ela cresce à medida que a revisão
-              acompanha.
+              A coleta começou deliberadamente pequena — seis estados do
+              Nordeste —, para que a revisão fosse verificável antes de a
+              abrangência crescer. Hoje ela pede as 27 UFs, e o critério não
+              mudou junto: um dia em que algum estado não vem inteiro é
+              classificado como parcial, com a lista do que faltou, em vez de
+              ser publicado como se fosse o país todo.
             </P>
           </Secao>
 
@@ -196,7 +198,7 @@ export default function Metodologia() {
                 ["Valor estimado nem sempre é informado", "Parte dos editais chega sem valor. Eles aparecem, sinalizados, e ficam fora dos totais"],
                 ["A fonte tem erro de digitação", "Detectamos e sinalizamos os casos gritantes. Erros dentro da faixa plausível passam despercebidos por qualquer método"],
                 ["A API do PNCP fica indisponível", "Aconteceu duas vezes no dia da implantação. Quando uma UF falha, a coleta segue nas demais e a cobertura incompleta é declarada"],
-                ["Cobertura limitada a seis estados", "Editais de outras UFs não estão no conjunto — ausência aqui não significa ausência no PNCP"],
+                ["Cobertura nacional, mas nem sempre inteira", "A coleta pede as 27 UFs. Quando alguma não vem completa, o dia é classificado como parcial e o relatório diz qual faltou — ausência aqui não significa ausência no PNCP"],
                 ["Retrato do momento da coleta", "Alteração, suspensão ou revogação posterior só aparece na coleta seguinte"],
               ]}
             />

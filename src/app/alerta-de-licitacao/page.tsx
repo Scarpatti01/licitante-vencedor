@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
+import { COBERTURA } from "@/lib/cobertura";
 import { Faq, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
@@ -8,7 +9,7 @@ import { CapturaAlerta } from "@/components/CapturaAlerta";
 const TITULO = "Alerta de licitação: os editais da sua cidade no seu e-mail";
 const DESCRICAO =
   "Receba todos os dias úteis os editais abertos da sua cidade, filtrados pelo que a sua empresa vende. Sem abrir dezenas de portais. Grátis para uma cidade, sem cartão.";
-const ATUALIZADO = "2026-08-12";
+const ATUALIZADO = "2026-08-21";
 
 export const metadata: Metadata = {
   title: "Alerta de licitação: editais da sua cidade por e-mail",
@@ -32,7 +33,7 @@ const FAQ = [
   {
     pergunta: "Vocês cobrem todo o Brasil?",
     resposta:
-      "Ainda não. A operação começou por seis estados do Nordeste — Pernambuco, Paraíba, Alagoas, Rio Grande do Norte, Ceará e Sergipe — porque preferimos cobertura que conseguimos revisar a uma cobertura nacional sem conferência. Se a sua cidade não estiver na lista, o cadastro registra o interesse.",
+      "Sim — as 27 unidades da federação, coletadas todo dia. A operação começou por seis estados do Nordeste, para ser revisada antes de crescer, e hoje pede o país inteiro. Quando um estado não vem completo, o dia é classificado como parcial e o relatório diz qual faltou: ausência aqui não significa ausência no PNCP.",
   },
   {
     pergunta: "O alerta substitui a leitura do edital?",
@@ -165,20 +166,21 @@ export default function AlertaDeLicitacao() {
 
           <Secao id="cobertura" titulo="Onde já funciona">
             <P>
-              A operação começou por seis estados: Pernambuco, Paraíba, Alagoas,
-              Rio Grande do Norte, Ceará e Sergipe. Na última coleta eram{" "}
-              <strong>639 municípios</strong> com pelo menos um edital aberto.
+              No país inteiro — {COBERTURA.extensao}. Na coleta de{" "}
+              {COBERTURA.dataPorExtenso} eram{" "}
+              <strong>{COBERTURA.municipios} municípios</strong> com pelo menos
+              um edital.
             </P>
             <P>
-              A cobertura é parcial de propósito. Preferimos seis estados
-              coletados e revisados a uma cobertura nacional que não
-              conseguíssemos conferir — e a{" "}
+              A operação começou por seis estados do Nordeste, coletados e
+              revisados antes de crescer, e só depois abriu para as demais UFs.
+              O que não mudou foi a conferência: quando um estado não vem
+              inteiro, o dia é classificado como parcial e o relatório diz qual
+              faltou, em vez de somar o que sobrou como se fosse o total. A{" "}
               <a className="underline underline-offset-4" href="/metodologia/">
                 metodologia
               </a>{" "}
-              publica as limitações em vez de escondê-las. Se a sua cidade ainda
-              não está coberta, o cadastro registra o interesse e ele pesa na
-              ordem de expansão.
+              publica as limitações em vez de escondê-las.
             </P>
           </Secao>
 
