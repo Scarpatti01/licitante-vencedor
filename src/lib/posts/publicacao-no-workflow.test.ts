@@ -22,6 +22,12 @@ import { join } from "node:path";
 const SEQUENCIAL = readFileSync(join(".github", "workflows", "coletar-pncp.yml"), "utf8");
 const PARALELO = readFileSync(join(".github", "workflows", "coletar-pncp-paralelo.yml"), "utf8");
 const PUBLICAR = readFileSync(join("scripts", "publicar-posts.ts"), "utf8");
+/**
+ * A chamada a `analisarEdital` e o `registrar` que a acompanha vivem aqui
+ * desde que `ler-recomendados.ts` passou a precisar da mesma sequência —
+ * antes eram privados de `publicar-posts.ts`.
+ */
+const LER_EDITAL = readFileSync(join("src", "lib", "ia", "lerEdital.ts"), "utf8");
 
 describe("o runner instala o que os scripts importam", () => {
   /**
@@ -61,6 +67,44 @@ describe("o runner instala o que os scripts importam", () => {
       instala < publica,
       "`npm ci` precisa vir ANTES do passo que publica os posts.",
     ).toBe(true);
+  });
+
+  /**
+   * O mesmo defeito de 16/08 é possível em `ler-recomendados.ts`: ele chama a
+   * mesma cadeia (`ia/gemini.ts` → `server-only`) e precisa das mesmas
+   * dependências e da mesma flag.
+   */
+  it("o workflow sequencial roda a leitura de recomendados com a flag certa", () => {
+    expect(
+      /--conditions=react-server scripts\/ler-recomendados\.ts/.test(SEQUENCIAL),
+      "`ler-recomendados.ts` sumiu ou perdeu `--conditions=react-server` no " +
+        "workflow sequencial — sem a flag, a importação de `ia/gemini.ts` falha " +
+        "em todo edital, e o job termina verde do mesmo jeito que aconteceu " +
+        "com `publicar-posts.ts` em 16/08.",
+    ).toBe(true);
+  });
+
+  it("o workflow paralelo roda a leitura de recomendados com a flag certa", () => {
+    const juntar = PARALELO.slice(PARALELO.indexOf("juntar:"));
+    expect(/--conditions=react-server scripts\/ler-recomendados\.ts/.test(juntar)).toBe(true);
+  });
+
+  it("a instalação vem antes da leitura de recomendados", () => {
+    const instala = SEQUENCIAL.indexOf("npm ci");
+    const le = SEQUENCIAL.indexOf("ler-recomendados.ts");
+    expect(instala).toBeGreaterThan(-1);
+    expect(le).toBeGreaterThan(-1);
+    expect(instala < le).toBe(true);
+  });
+
+  it("a leitura de recomendados roda depois da triagem", () => {
+    // Precisa que `oportunidades` já tenha o score "de ficha" do dia — ver o
+    // cabeçalho de `ler-recomendados.ts`.
+    const triagem = SEQUENCIAL.indexOf("triar-editais.ts");
+    const leitura = SEQUENCIAL.indexOf("ler-recomendados.ts");
+    expect(triagem).toBeGreaterThan(-1);
+    expect(leitura).toBeGreaterThan(-1);
+    expect(triagem < leitura).toBe(true);
   });
 });
 
@@ -151,18 +195,18 @@ describe("leva sem leitura tem de dizer POR QUÊ", () => {
    * consertar.
    */
   it("a análise passa `registrar`, que é por onde a recusa se explica", () => {
-    const chamada = PUBLICAR.slice(PUBLICAR.indexOf("analisarEdital(edital"));
+    const chamada = LER_EDITAL.slice(LER_EDITAL.indexOf("analisarEdital(edital"));
     expect(
       /registrar\s*:/.test(chamada.slice(0, 900)),
-      "`publicar-posts.ts` voltou a chamar `analisarEdital` sem `registrar`. " +
-        "Sem esse callback a recusa do provedor de IA é silenciosa: a leva é " +
+      "`lerEdital.ts` voltou a chamar `analisarEdital` sem `registrar`. Sem " +
+        "esse callback a recusa do provedor de IA é silenciosa: a leva é " +
         "corretamente recusada, e ninguém consegue descobrir a causa. Foi o que " +
         "aconteceu em 18/08 — log inteiro sem uma linha de motivo.",
     ).toBe(true);
   });
 
   it("a recusa vai para o log de erro, não some numa variável", () => {
-    const trecho = PUBLICAR.slice(PUBLICAR.indexOf("registrar:"));
+    const trecho = LER_EDITAL.slice(LER_EDITAL.indexOf("registrar:"));
     expect(trecho.slice(0, 600)).toMatch(/console\.error/);
   });
 
