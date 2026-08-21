@@ -90,8 +90,10 @@ export default function Termos() {
         <div className="mt-8 space-y-6">
           <RespostaDireta>
             Entregamos triagem e leitura de editais publicados no PNCP:
-            selecionamos o que é compatível com o perfil da sua empresa e
-            explicamos o que cada um exige.{" "}
+            selecionamos o que é compatível com o perfil da sua empresa e, nos
+            de maior aderência, lemos o documento para explicar o que exigem.
+            A leitura tem volume diário limitado e depende de o órgão publicar
+            um documento legível — cada edital mostra se foi lido ou não.{" "}
             <strong>Não prometemos que você vencerá certame algum</strong>, não
             damos parecer jurídico e não participamos da licitação por você.
             Quando o nosso resumo divergir do edital, vale o edital.

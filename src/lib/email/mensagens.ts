@@ -53,6 +53,19 @@ export type ConteudoDeEmail = {
   paragrafos: string[];
   /** O botão. `null` quando não há nada a clicar — a boas-vindas não pede ação. */
   acao: { rotulo: string; url: string } | null;
+  /**
+   * Põe o botão DEPOIS das listas, e não antes.
+   *
+   * O padrão (antes) é o certo quando o e-mail existe PARA a ação: na
+   * confirmação de cadastro, o botão é o conteúdo, e tudo o mais é moldura.
+   *
+   * O alerta diário é o contrário. A pessoa abriu para ver editais, e o botão
+   * vende outra coisa — cadastrar a empresa. Antes da lista, ele chega como
+   * anúncio na frente do que foi pedido; e, pior, a frase do `fecho` que
+   * EXPLICA o que o botão promete ficaria a uma tela inteira de distância dele.
+   * Promessa longe da explicação é como se escreve uma isca sem querer.
+   */
+  acaoDepoisDasListas?: boolean;
   listas: BlocoDeLista[];
   /** Fechamento, depois das listas. */
   fecho: string[];
@@ -157,25 +170,36 @@ export function conteudoDeBoasVindas(dados: DadosDeBoasVindas): ConteudoDeEmail 
         ],
       },
       {
-        // Este bloco existe para a pessoa não descobrir sozinha, no terceiro
-        // alerta fora do ramo dela, que o recorte ainda é grosso.
-        titulo: "O que ainda NÃO está no ar — para você não contar com isso",
+        /*
+         * Este bloco existe para a pessoa não descobrir sozinha, no terceiro
+         * alerta fora do ramo dela, que o recorte é grosso.
+         *
+         * Até 21/08 ele se chamava "o que ainda NÃO está no ar", e as duas
+         * coisas listadas de fato não existiam em lugar nenhum do produto.
+         * Agora existem — para quem cadastra a empresa (`triar-editais.ts` e
+         * `ler-recomendados.ts`). O título mudou porque a limitação deixou de
+         * ser temporal ("ainda não construímos") e passou a ser de escopo
+         * ("este e-mail não faz isso"), e as duas afirmações pedem palavras
+         * diferentes: a antiga viraria mentira sobre o produto, a nova
+         * continua verdade sobre este alerta.
+         */
+        titulo: "O que este alerta gratuito NÃO faz — para você não contar com isso",
         itens: [
           {
             rotulo: "Filtro fino por perfil",
             texto:
-              "hoje o recorte é geográfico. Ainda não filtramos por CNAE, por faixa de valor nem pelo histórico da sua empresa, então vai chegar edital que não serve para você",
+              "aqui o recorte é geográfico. Este alerta não filtra por CNAE, por faixa de valor nem pelo histórico da sua empresa, então vai chegar edital que não serve para você",
           },
           {
-            rotulo: "Leitura do edital em profundidade",
+            rotulo: "Leitura do edital",
             texto:
-              "ainda não lemos o texto integral nem os anexos. O alerta não afirma o que o edital exige de habilitação, de garantia ou de qualificação técnica — isso continua sendo leitura sua, no documento oficial",
+              "não lemos o texto nem os anexos dos editais deste alerta. Ele não afirma o que o edital exige de habilitação, de garantia ou de qualificação técnica — isso continua sendo leitura sua, no documento oficial",
           },
         ],
       },
     ],
     fecho: [
-      "Preferimos dizer isso agora a deixar você descobrir depois. Quando essas duas coisas entrarem no ar, você recebe um aviso — sem virar plano pago sem você pedir.",
+      "Preferimos dizer isso agora a deixar você descobrir depois. As duas coisas existem para quem cadastra a empresa: aí a triagem compara cada edital com o seu ramo, faturamento e experiência, e os de maior aderência chegam com o documento lido. O alerta gratuito continua como está, sem virar plano pago sem você pedir.",
     ],
     rodape: {
       cadastradoComo: dados.email,
@@ -206,10 +230,9 @@ function escapar(texto: string): string {
 /** Versão texto puro. É o que o filtro de spam lê e o que sobra sem imagens. */
 export function emTextoSimples(conteudo: ConteudoDeEmail): string {
   const partes: string[] = [conteudo.titulo, ...conteudo.paragrafos];
+  const acao = conteudo.acao ? `${conteudo.acao.rotulo}: ${conteudo.acao.url}` : null;
 
-  if (conteudo.acao) {
-    partes.push(`${conteudo.acao.rotulo}: ${conteudo.acao.url}`);
-  }
+  if (acao && !conteudo.acaoDepoisDasListas) partes.push(acao);
 
   for (const lista of conteudo.listas) {
     // A URL vai depois do texto, e não no lugar dele: aqui o cliente de e-mail
@@ -222,6 +245,9 @@ export function emTextoSimples(conteudo: ConteudoDeEmail): string {
   }
 
   partes.push(...conteudo.fecho);
+  // Depois do `fecho`, e não entre a lista e ele: é o `fecho` que explica o que
+  // o botão promete, e a explicação vem antes da promessa.
+  if (acao && conteudo.acaoDepoisDasListas) partes.push(acao);
   partes.push("———");
   partes.push(conteudo.rodape.limites);
   partes.push(
@@ -278,9 +304,13 @@ ${linhas}
     )
     .join("");
 
+  const antes = conteudo.acaoDepoisDasListas ? "" : acao;
+  // Depois do `fecho`, e não entre a lista e ele — ver `acaoDepoisDasListas`.
+  const depois = conteudo.acaoDepoisDasListas ? acao : "";
+
   return `<div style="font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#ffffff">
 <p style="margin:0 0 18px;font-size:20px;line-height:1.3;font-weight:600;color:#101418">${escapar(conteudo.titulo)}</p>
-${paragrafos}${acao}${listas}${fecho}
+${paragrafos}${antes}${listas}${fecho}${depois}
 <p style="margin:24px 0 0;font-size:12px;line-height:1.6;color:#5b6472">${escapar(conteudo.rodape.limites)}</p>
 <p style="margin:10px 0 0;font-size:12px;line-height:1.6;color:#5b6472">Você recebe este e-mail porque cadastrou ${escapar(conteudo.rodape.cadastradoComo)} no alerta do ${escapar(SITE.name)}. <a href="${escapar(conteudo.rodape.descadastro)}" style="color:#5b6472">Não quero mais receber</a>.</p>
 </div>`;

@@ -104,18 +104,57 @@ describe("conteudoDeAlertaDiario", () => {
     expect(montar().fecho.join(" ")).toContain("recorte deste alerta é geográfico");
   });
 
-  it("leva botão para criar conta, sem prometer leitura", () => {
-    // O botão vende o que já é real hoje (filtro por perfil, no painel) — não o
-    // que `conteudoDeBoasVindas` já disse que ainda falta (leitura do edital).
+  it("leva botão para criar conta", () => {
     const conteudo = montar();
     expect(conteudo.acao).not.toBeNull();
     expect(conteudo.acao!.url).toBe("https://licitantevencedor.com.br/criar-conta/");
-    expect(conteudo.acao!.rotulo.toLowerCase()).not.toContain("lido");
     expect(emHtml(conteudo)).toContain(conteudo.acao!.url);
+  });
+
+  it("o botão vem DEPOIS dos editais e da frase que o explica", () => {
+    /*
+     * A pessoa abriu para ver editais; o botão vende outra coisa. Antes da
+     * lista ele chega como anúncio na frente do que foi pedido — e a frase que
+     * explica o que "já lidos" significa ficaria a uma tela inteira de
+     * distância da promessa.
+     */
+    const conteudo = montar([emRecife("a", 3)]);
+    const html = emHtml(conteudo);
+
+    const edital = html.indexOf("abrir a publicação oficial");
+    const explicacao = html.indexOf("o documento lido");
+    const botao = html.indexOf(conteudo.acao!.url);
+
+    expect(edital).toBeGreaterThan(-1);
+    expect(explicacao).toBeGreaterThan(edital);
+    expect(botao).toBeGreaterThan(explicacao);
+
+    // Mesma ordem no texto puro, que é o que o filtro de spam lê.
+    const texto = emTextoSimples(conteudo);
+    expect(texto.indexOf("o documento lido")).toBeLessThan(texto.indexOf(conteudo.acao!.url));
   });
 
   it("explica o botão citando o que o filtro por perfil já compara", () => {
     expect(montar().fecho.join(" ")).toContain("ramo, faturamento e experiência");
+  });
+
+  it("o alerta gratuito continua declarando que NÃO lê o edital", () => {
+    /*
+     * O botão passou a prometer leitura (21/08, quando `ler-recomendados.ts`
+     * entrou), e é justamente por isso que esta guarda existe: quem recebe
+     * ESTE e-mail não tem empresa cadastrada, e para ele nada é lido. As duas
+     * frases têm de conviver — a promessa é sobre o que ele ganha SE
+     * cadastrar, não sobre o que está recebendo agora.
+     */
+    const fecho = montar().fecho.join(" ");
+    expect(fecho).toContain("sem filtro por ramo de atividade nem leitura do texto do edital");
+  });
+
+  it("a promessa de leitura é sobre os de maior aderência, não sobre todos", () => {
+    // O limite diário por empresa é real (`pipeline/candidatosParaLeitura.ts`).
+    // Prometer "todos os editais lidos" seria a mesma promessa vaga que o
+    // produto passou meses sem cumprir.
+    expect(montar().fecho.join(" ")).toContain("os de maior aderência chegam com o documento lido");
   });
 
   it("leva link de descadastro — é o que separa lista de denúncia de spam", () => {
