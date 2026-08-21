@@ -78,6 +78,64 @@ export function modelosGemini(): CatalogoDeModelos {
   };
 }
 
+/**
+ * As chaves de JSON Schema que o Gemini não digere — removidas da CÓPIA que vai
+ * para ele, nunca do schema que valida a resposta aqui.
+ *
+ * ## Como esta lista foi descoberta, e por que não é um chute
+ *
+ * Em 21/08 a leitura falhou 21 vezes com `INVALID_ARGUMENT` — sem dizer qual
+ * argumento. `scripts/diagnosticar-requisicao-de-ia.ts` bissecou até o fim, e o
+ * resultado foi mais sutil do que "o Gemini não aceita X":
+ *
+ *   OK       additionalProperties: false, isolado
+ *   OK       array com maxItems, isolado
+ *   FALHOU   o schema real (que tem os dois, em todo nível)
+ *   OK       o schema real sem eles
+ *
+ * Isolados, inofensivos; no schema inteiro, fatais. É limite de complexidade
+ * agregada, não incompatibilidade de construto — e por isso testar os
+ * construtos um a um, que foi a primeira tentativa, aprovou todos e não
+ * explicou nada.
+ *
+ * `$schema` entra na lista pela mesma disciplina: a configuração que passou no
+ * teste removia as quatro. Removê-la também não custa nada, e manter só três
+ * seria afirmar que a quarta é inofensiva sem ter medido isso.
+ *
+ * ## O que NÃO se perde removendo
+ *
+ * `maxItems` vem de `.max(LIMITE_DE_EXIGENCIAS)` e `.max(LIMITE_DE_RISCOS)` em
+ * `schemas.ts`, e continua valendo — o `zod` recusa a resposta longa demais no
+ * nosso lado, que é onde a garantia importa. O schema enviado é uma INSTRUÇÃO
+ * ao modelo; o schema que decide o que vira dado é o outro, e ele não muda.
+ *
+ * Mesma coisa com `additionalProperties: false`: campo extra que o modelo
+ * invente é descartado por `z.object` na validação, e nada além do que
+ * `evidencia.ts` confere contra o texto vira `Campo`.
+ */
+const CHAVES_QUE_O_GEMINI_RECUSA = ["$schema", "additionalProperties", "maxItems", "minItems"];
+
+/**
+ * O mesmo schema, no dialeto do fornecedor.
+ *
+ * Mora aqui, e não em `schemas.ts`, pela fronteira que o cabeçalho deste
+ * arquivo declara: `jsonSchemaParaModelo` produz JSON Schema padrão, que é
+ * neutro; conhecer as manias do Gemini é trabalho deste arquivo e de mais
+ * nenhum. Trocar de fornecedor é escrever outro irmão daqui — não é mexer no
+ * schema do domínio.
+ */
+export function noDialetoDoGemini(schema: unknown): unknown {
+  if (Array.isArray(schema)) return schema.map((item) => noDialetoDoGemini(item));
+  if (schema === null || typeof schema !== "object") return schema;
+
+  const saida: Record<string, unknown> = {};
+  for (const [chave, valor] of Object.entries(schema as Record<string, unknown>)) {
+    if (CHAVES_QUE_O_GEMINI_RECUSA.includes(chave)) continue;
+    saida[chave] = noDialetoDoGemini(valor);
+  }
+  return saida;
+}
+
 /** A chave, lida na hora do uso — configurar o ambiente não deve exigir build. */
 export function chaveDoGemini(): string | null {
   const chave = process.env.GEMINI_API_KEY?.trim();
@@ -234,7 +292,7 @@ export function criarProvedorGemini(opcoes: OpcoesDoProvedorGemini = {}): Proved
             temperature: pedido.temperatura ?? 0,
             maxOutputTokens: pedido.maxTokensDeSaida ?? 8_192,
             responseMimeType: "application/json",
-            responseJsonSchema: jsonSchemaParaModelo(pedido.schema),
+            responseJsonSchema: noDialetoDoGemini(jsonSchemaParaModelo(pedido.schema)),
             ...(pedido.instrucaoDeSistema
               ? { systemInstruction: pedido.instrucaoDeSistema }
               : {}),
