@@ -134,8 +134,8 @@ export class RepositorioDeDemonstracao implements RepositorioDoProduto {
   async listarOportunidades(
     empresaId: string,
     filtro: FiltroDeOportunidades = {},
+    agora: Date = new Date(),
   ): Promise<ResumoDaOportunidade[]> {
-    const agora = new Date();
     let lista = this.avaliarTodas(empresaId, agora);
 
     lista = filtro.situacoes?.length
