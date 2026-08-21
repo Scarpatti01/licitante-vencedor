@@ -26,6 +26,7 @@ import { deduplicar } from "../src/lib/fontes/deduplicacao.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
 import { agregarPorMunicipio } from "../src/lib/pncp/agregarPorMunicipio.ts";
+import { atualizarRegistro, normalizarRegistro } from "../src/lib/pncp/registroDePublicacao.ts";
 import { gravarEditais } from "../src/lib/editais/gravar.ts";
 import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
@@ -106,6 +107,7 @@ async function main() {
   // diretório, ou seja, o último agregado versionado (o workflow faz checkout).
   // É contra ele que a guarda de degradação compara.
   const caminhoAgregado = resolve(pastaDados, "agregados.json");
+  const caminhoRegistro = resolve(pastaDados, "municipios-publicados.json");
   const anterior = await lerAgregado(caminhoAgregado);
 
   const coletados: Edital[] = [];
@@ -368,11 +370,30 @@ async function main() {
       `# Revisão da coleta\n\n\`\`\`\n${relatorio}\n\`\`\`\n`,
       "utf8",
     );
+
+    // O registro de publicação só cresce, e só a partir de uma coleta que
+    // substituiu a série (a mesma guarda do agregado): uma rodada degradada
+    // não pode publicar um município para sempre com base em dado ruim. Ver
+    // `src/lib/pncp/registroDePublicacao.ts`.
+    const registroAnterior = normalizarRegistro(await lerRegistro(caminhoRegistro));
+    const registro = atualizarRegistro(registroAnterior, agregados.municipios);
+    await writeFile(caminhoRegistro, JSON.stringify(registro, null, 1) + "\n", "utf8");
+
     console.log(`\ncoleta ${classificacao.classe} — agregado atualizado: ${agregados.municipios.length} municípios`);
+    console.log(`registro de publicação: ${registro.municipios.length} município(s) já tiveram lastro alguma vez`);
     for (const m of classificacao.motivos) console.log(`  · ${m}`);
   }
 
   console.log(`\n${"─".repeat(72)}\n${relatorio}`);
+}
+
+/** Lê o registro de publicação do disco. Ausência não é erro: o primeiro dia não tem anterior. */
+async function lerRegistro(caminho: string): Promise<unknown> {
+  try {
+    return JSON.parse(await readFile(caminho, "utf8"));
+  } catch {
+    return null;
+  }
 }
 
 /** Lê o agregado do disco. Ausência não é erro: a primeira coleta não tem anterior. */

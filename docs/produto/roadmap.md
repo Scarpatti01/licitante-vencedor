@@ -115,6 +115,18 @@ Conversão não é item de checklist de alguém: é condição de build.
    para 576 municípios — e as páginas publicáveis de 2 para **96**, sozinhas,
    porque o portão é uma condição sobre o dado e não uma lista curada.
 
+   **Correção de 21/08, contra dado real do Search Console: página publicada
+   não podia mais desaparecer.** `dados/agregados.json` é retrato do instante
+   — editais fecham, o número de um município cai de um dia para o outro, e
+   com `dynamicParams = false` isso vira 404 permanente para quem já tinha
+   encontrado a página. Foi o que aconteceu com Russas/CE e Feira Nova/PE:
+   lastro de 15 a 20/08, impressão e clique real no Search Console (Feira
+   Nova com 50% de CTR), e em 21/08, com o mesmo dado que sempre teve — só
+   que abaixo do portão naquele dia —, 404. `dados/municipios-publicados.json`
+   é o registro que corrige isso: todo município que já teve lastro um dia
+   fica publicável enquanto tiver pelo menos 1 contratação medida hoje — só
+   cresce, nunca remove. Ver `src/lib/pncp/registroDePublicacao.ts`.
+
 ## Fase 4 — Comunicação
 
 | Item | Estado |

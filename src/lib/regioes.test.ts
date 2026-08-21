@@ -7,10 +7,12 @@ import {
   fraseSobreModalidades,
   MINIMO_DE_EDITAIS,
   MINIMO_DE_ORGAOS,
+  PISO_STICKY_EM_EDITAIS,
   modalidadesOrdenadas,
   pracasPorUf,
   pracasParaBusca,
   municipiosPublicaveis,
+  publicavel,
   temLastro,
   type MunicipioAgregado,
 } from "./regioes";
@@ -67,11 +69,45 @@ describe("municipiosPublicaveis", () => {
    * Guarda contra o portão ser afrouxado sem querer. Se um dia alguém baixar os
    * mínimos ou remover o filtro, isto reprova antes de as páginas rasas irem ao
    * ar — que é o único momento em que a correção ainda é barata.
+   *
+   * Não exige mais `temLastro` sozinho: desde o registro de publicação
+   * (`pncp/registroDePublicacao.ts`), um município pode sair sem lastro HOJE e
+   * ainda ser publicável — ver o teste seguinte. O que continua garantido é
+   * `publicavel`, que é o portão real.
    */
-  it("tudo que sai já passou pelo portão", () => {
+  it("tudo que sai passou por publicavel — portão de entrada ou registro", () => {
     for (const m of municipiosPublicaveis()) {
-      expect(temLastro(m), `${m.municipio}/${m.uf}`).toBe(true);
+      expect(publicavel(m), `${m.municipio}/${m.uf}`).toBe(true);
     }
+  });
+
+  /*
+   * O caso real que motivou o registro: Russas/CE e Feira Nova/PE tiveram
+   * lastro de 15 a 20/08/2026, foram indexados e clicados no Search Console
+   * (Feira Nova com 50% de CTR), e em 21/08 caíram abaixo do portão de entrada
+   * — sem o registro, teriam virado 404 permanente para quem já os tinha
+   * encontrado. Ver o comentário completo em `pncp/registroDePublicacao.ts`.
+   */
+  it("quem sai sem lastro hoje ainda respeita o piso sticky, e o caso real que motivou isto segue no registro", () => {
+    const semLastroHoje = municipiosPublicaveis().filter((m) => !temLastro(m));
+    for (const m of semLastroHoje) {
+      expect(m.editais, `${m.municipio}/${m.uf}`).toBeGreaterThanOrEqual(PISO_STICKY_EM_EDITAIS);
+    }
+
+    expect(publicavel({ uf: "CE", slug: "russas", editais: 1, orgaos: 1 } as MunicipioAgregado)).toBe(true);
+    expect(publicavel({ uf: "PE", slug: "feira-nova", editais: 1, orgaos: 1 } as MunicipioAgregado)).toBe(true);
+  });
+
+  it("no piso sticky, zero editais não basta — 404 continua mais honesto que página vazia", () => {
+    expect(
+      publicavel({ uf: "CE", slug: "russas", editais: 0, orgaos: 0 } as MunicipioAgregado),
+    ).toBe(false);
+  });
+
+  it("município que nunca teve lastro não é publicável só por ter 1 edital hoje", () => {
+    expect(
+      publicavel({ uf: "ZZ", slug: "nunca-existiu", editais: 1, orgaos: 1 } as MunicipioAgregado),
+    ).toBe(false);
   });
 
   it("vem ordenado por volume, de forma estável entre builds", () => {
