@@ -1,0 +1,82 @@
+# Lista os modelos que a nossa chave do Gemini realmente enxerga.
+#
+# Diagnóstico, não operação: não grava nada, não gasta token de geração, e
+# existe para responder UMA pergunta que só a API sabe responder — "qual é o id
+# do modelo hoje?".
+#
+# Nasceu em 21/08, quando a primeira leitura real de oportunidade de cliente
+# falhou nos 21 editais com `gemini-2.5-pro is no longer available to new
+# users`. O erro sugeriu um substituto para o premium e não disse nada sobre o
+# econômico; preencher o econômico por analogia seria chute. Este workflow é o
+# caminho de descobrir em vez de adivinhar — e serve de novo na próxima vez que
+# o fornecedor aposentar um id, que é questão de tempo.
+
+name: Listar modelos de IA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  listar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # O script usa só o `fetch` embutido — nenhum import de pacote, de
+      # propósito, para o diagnóstico continuar funcionando mesmo num dia em
+      # que a instalação de dependências seja o problema. Instala mesmo assim
+      # pela regra de `workflows-instalam-dependencias.test.ts`: todo job que
+      # roda um script instala o que o script pode vir a importar.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Listar
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -o pipefail
+
+          codigo=0
+          node scripts/listar-modelos-de-ia.ts | tee saida-modelos.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Listagem não rodou — falta o segredo"
+              echo
+              echo 'Crie `GEMINI_API_KEY` em **Settings → Secrets and variables → Actions**.'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Listagem inerte::falta GEMINI_API_KEY"
+            exit 0
+          fi
+
+          # O resultado é para ser LIDO, então vai para o resumo da execução e
+          # não só para o log — é a diferença entre alguém encontrar a resposta
+          # e alguém abrir dez passos procurando por ela.
+          {
+            echo "## Modelos visíveis para a nossa chave"
+            echo
+            echo '```'
+            cat saida-modelos.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit "$codigo"
+
+      - name: Publicar a lista
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-modelos
+          path: saida-modelos.txt
+          retention-days: 30
+          if-no-files-found: ignore
