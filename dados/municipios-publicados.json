@@ -1,0 +1,3360 @@
+{
+ "municipios": [
+  {
+   "uf": "AC",
+   "slug": "cruzeiro-do-sul"
+  },
+  {
+   "uf": "AC",
+   "slug": "rio-branco"
+  },
+  {
+   "uf": "AL",
+   "slug": "arapiraca"
+  },
+  {
+   "uf": "AL",
+   "slug": "boca-da-mata"
+  },
+  {
+   "uf": "AL",
+   "slug": "maceio"
+  },
+  {
+   "uf": "AL",
+   "slug": "murici"
+  },
+  {
+   "uf": "AL",
+   "slug": "porto-real-do-colegio"
+  },
+  {
+   "uf": "AL",
+   "slug": "rio-largo"
+  },
+  {
+   "uf": "AL",
+   "slug": "santana-do-ipanema"
+  },
+  {
+   "uf": "AL",
+   "slug": "teotonio-vilela"
+  },
+  {
+   "uf": "AM",
+   "slug": "manaus"
+  },
+  {
+   "uf": "AM",
+   "slug": "parintins"
+  },
+  {
+   "uf": "AM",
+   "slug": "sao-gabriel-da-cachoeira"
+  },
+  {
+   "uf": "AM",
+   "slug": "tabatinga"
+  },
+  {
+   "uf": "AM",
+   "slug": "tefe"
+  },
+  {
+   "uf": "AP",
+   "slug": "macapa"
+  },
+  {
+   "uf": "AP",
+   "slug": "santana"
+  },
+  {
+   "uf": "BA",
+   "slug": "alagoinhas"
+  },
+  {
+   "uf": "BA",
+   "slug": "amelia-rodrigues"
+  },
+  {
+   "uf": "BA",
+   "slug": "barreiras"
+  },
+  {
+   "uf": "BA",
+   "slug": "bom-jesus-da-lapa"
+  },
+  {
+   "uf": "BA",
+   "slug": "brumado"
+  },
+  {
+   "uf": "BA",
+   "slug": "cachoeira"
+  },
+  {
+   "uf": "BA",
+   "slug": "caetite"
+  },
+  {
+   "uf": "BA",
+   "slug": "camacari"
+  },
+  {
+   "uf": "BA",
+   "slug": "cruz-das-almas"
+  },
+  {
+   "uf": "BA",
+   "slug": "eunapolis"
+  },
+  {
+   "uf": "BA",
+   "slug": "feira-de-santana"
+  },
+  {
+   "uf": "BA",
+   "slug": "guanambi"
+  },
+  {
+   "uf": "BA",
+   "slug": "ibirapitanga"
+  },
+  {
+   "uf": "BA",
+   "slug": "ilheus"
+  },
+  {
+   "uf": "BA",
+   "slug": "irece"
+  },
+  {
+   "uf": "BA",
+   "slug": "itaberaba"
+  },
+  {
+   "uf": "BA",
+   "slug": "itabuna"
+  },
+  {
+   "uf": "BA",
+   "slug": "itapetinga"
+  },
+  {
+   "uf": "BA",
+   "slug": "jacobina"
+  },
+  {
+   "uf": "BA",
+   "slug": "jequie"
+  },
+  {
+   "uf": "BA",
+   "slug": "juazeiro"
+  },
+  {
+   "uf": "BA",
+   "slug": "lauro-de-freitas"
+  },
+  {
+   "uf": "BA",
+   "slug": "mata-de-sao-joao"
+  },
+  {
+   "uf": "BA",
+   "slug": "paulo-afonso"
+  },
+  {
+   "uf": "BA",
+   "slug": "pojuca"
+  },
+  {
+   "uf": "BA",
+   "slug": "ribeira-do-pombal"
+  },
+  {
+   "uf": "BA",
+   "slug": "salvador"
+  },
+  {
+   "uf": "BA",
+   "slug": "santa-ines"
+  },
+  {
+   "uf": "BA",
+   "slug": "santo-antonio-de-jesus"
+  },
+  {
+   "uf": "BA",
+   "slug": "sao-felix-do-coribe"
+  },
+  {
+   "uf": "BA",
+   "slug": "senhor-do-bonfim"
+  },
+  {
+   "uf": "BA",
+   "slug": "serrinha"
+  },
+  {
+   "uf": "BA",
+   "slug": "simoes-filho"
+  },
+  {
+   "uf": "BA",
+   "slug": "sobradinho"
+  },
+  {
+   "uf": "BA",
+   "slug": "teixeira-de-freitas"
+  },
+  {
+   "uf": "BA",
+   "slug": "valenca"
+  },
+  {
+   "uf": "BA",
+   "slug": "valente"
+  },
+  {
+   "uf": "BA",
+   "slug": "vitoria-da-conquista"
+  },
+  {
+   "uf": "CE",
+   "slug": "acarau"
+  },
+  {
+   "uf": "CE",
+   "slug": "aiuaba"
+  },
+  {
+   "uf": "CE",
+   "slug": "amontada"
+  },
+  {
+   "uf": "CE",
+   "slug": "aquiraz"
+  },
+  {
+   "uf": "CE",
+   "slug": "aracati"
+  },
+  {
+   "uf": "CE",
+   "slug": "assare"
+  },
+  {
+   "uf": "CE",
+   "slug": "barbalha"
+  },
+  {
+   "uf": "CE",
+   "slug": "beberibe"
+  },
+  {
+   "uf": "CE",
+   "slug": "camocim"
+  },
+  {
+   "uf": "CE",
+   "slug": "campos-sales"
+  },
+  {
+   "uf": "CE",
+   "slug": "caninde"
+  },
+  {
+   "uf": "CE",
+   "slug": "carire"
+  },
+  {
+   "uf": "CE",
+   "slug": "cascavel"
+  },
+  {
+   "uf": "CE",
+   "slug": "caucaia"
+  },
+  {
+   "uf": "CE",
+   "slug": "coreau"
+  },
+  {
+   "uf": "CE",
+   "slug": "crateus"
+  },
+  {
+   "uf": "CE",
+   "slug": "crato"
+  },
+  {
+   "uf": "CE",
+   "slug": "cruz"
+  },
+  {
+   "uf": "CE",
+   "slug": "eusebio"
+  },
+  {
+   "uf": "CE",
+   "slug": "farias-brito"
+  },
+  {
+   "uf": "CE",
+   "slug": "forquilha"
+  },
+  {
+   "uf": "CE",
+   "slug": "fortaleza"
+  },
+  {
+   "uf": "CE",
+   "slug": "graca"
+  },
+  {
+   "uf": "CE",
+   "slug": "horizonte"
+  },
+  {
+   "uf": "CE",
+   "slug": "icapui"
+  },
+  {
+   "uf": "CE",
+   "slug": "ico"
+  },
+  {
+   "uf": "CE",
+   "slug": "iguatu"
+  },
+  {
+   "uf": "CE",
+   "slug": "ipueiras"
+  },
+  {
+   "uf": "CE",
+   "slug": "itaitinga"
+  },
+  {
+   "uf": "CE",
+   "slug": "itapipoca"
+  },
+  {
+   "uf": "CE",
+   "slug": "jaguaribe"
+  },
+  {
+   "uf": "CE",
+   "slug": "jijoca-de-jericoacoara"
+  },
+  {
+   "uf": "CE",
+   "slug": "juazeiro-do-norte"
+  },
+  {
+   "uf": "CE",
+   "slug": "limoeiro-do-norte"
+  },
+  {
+   "uf": "CE",
+   "slug": "maracanau"
+  },
+  {
+   "uf": "CE",
+   "slug": "maranguape"
+  },
+  {
+   "uf": "CE",
+   "slug": "marco"
+  },
+  {
+   "uf": "CE",
+   "slug": "miraima"
+  },
+  {
+   "uf": "CE",
+   "slug": "monsenhor-tabosa"
+  },
+  {
+   "uf": "CE",
+   "slug": "novo-oriente"
+  },
+  {
+   "uf": "CE",
+   "slug": "ocara"
+  },
+  {
+   "uf": "CE",
+   "slug": "pacajus"
+  },
+  {
+   "uf": "CE",
+   "slug": "pacatuba"
+  },
+  {
+   "uf": "CE",
+   "slug": "paracuru"
+  },
+  {
+   "uf": "CE",
+   "slug": "parambu"
+  },
+  {
+   "uf": "CE",
+   "slug": "pindoretama"
+  },
+  {
+   "uf": "CE",
+   "slug": "pires-ferreira"
+  },
+  {
+   "uf": "CE",
+   "slug": "porteiras"
+  },
+  {
+   "uf": "CE",
+   "slug": "quixada"
+  },
+  {
+   "uf": "CE",
+   "slug": "quixelo"
+  },
+  {
+   "uf": "CE",
+   "slug": "quixeramobim"
+  },
+  {
+   "uf": "CE",
+   "slug": "redencao"
+  },
+  {
+   "uf": "CE",
+   "slug": "russas"
+  },
+  {
+   "uf": "CE",
+   "slug": "saboeiro"
+  },
+  {
+   "uf": "CE",
+   "slug": "santa-quiteria"
+  },
+  {
+   "uf": "CE",
+   "slug": "sao-benedito"
+  },
+  {
+   "uf": "CE",
+   "slug": "sobral"
+  },
+  {
+   "uf": "CE",
+   "slug": "taua"
+  },
+  {
+   "uf": "CE",
+   "slug": "tejucuoca"
+  },
+  {
+   "uf": "CE",
+   "slug": "tiangua"
+  },
+  {
+   "uf": "CE",
+   "slug": "trairi"
+  },
+  {
+   "uf": "CE",
+   "slug": "uruburetama"
+  },
+  {
+   "uf": "CE",
+   "slug": "varzea-alegre"
+  },
+  {
+   "uf": "CE",
+   "slug": "vicosa-do-ceara"
+  },
+  {
+   "uf": "DF",
+   "slug": "brasilia"
+  },
+  {
+   "uf": "ES",
+   "slug": "anchieta"
+  },
+  {
+   "uf": "ES",
+   "slug": "aracruz"
+  },
+  {
+   "uf": "ES",
+   "slug": "boa-esperanca"
+  },
+  {
+   "uf": "ES",
+   "slug": "cachoeiro-de-itapemirim"
+  },
+  {
+   "uf": "ES",
+   "slug": "cariacica"
+  },
+  {
+   "uf": "ES",
+   "slug": "castelo"
+  },
+  {
+   "uf": "ES",
+   "slug": "colatina"
+  },
+  {
+   "uf": "ES",
+   "slug": "domingos-martins"
+  },
+  {
+   "uf": "ES",
+   "slug": "guacui"
+  },
+  {
+   "uf": "ES",
+   "slug": "guarapari"
+  },
+  {
+   "uf": "ES",
+   "slug": "ibatiba"
+  },
+  {
+   "uf": "ES",
+   "slug": "iuna"
+  },
+  {
+   "uf": "ES",
+   "slug": "jaguare"
+  },
+  {
+   "uf": "ES",
+   "slug": "jeronimo-monteiro"
+  },
+  {
+   "uf": "ES",
+   "slug": "linhares"
+  },
+  {
+   "uf": "ES",
+   "slug": "nova-venecia"
+  },
+  {
+   "uf": "ES",
+   "slug": "piuma"
+  },
+  {
+   "uf": "ES",
+   "slug": "santa-maria-de-jetiba"
+  },
+  {
+   "uf": "ES",
+   "slug": "santa-teresa"
+  },
+  {
+   "uf": "ES",
+   "slug": "sao-gabriel-da-palha"
+  },
+  {
+   "uf": "ES",
+   "slug": "sao-mateus"
+  },
+  {
+   "uf": "ES",
+   "slug": "serra"
+  },
+  {
+   "uf": "ES",
+   "slug": "venda-nova-do-imigrante"
+  },
+  {
+   "uf": "ES",
+   "slug": "vila-velha"
+  },
+  {
+   "uf": "ES",
+   "slug": "vitoria"
+  },
+  {
+   "uf": "GO",
+   "slug": "acreuna"
+  },
+  {
+   "uf": "GO",
+   "slug": "aguas-lindas-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "alexania"
+  },
+  {
+   "uf": "GO",
+   "slug": "anapolis"
+  },
+  {
+   "uf": "GO",
+   "slug": "anicuns"
+  },
+  {
+   "uf": "GO",
+   "slug": "aparecida-de-goiania"
+  },
+  {
+   "uf": "GO",
+   "slug": "arenopolis"
+  },
+  {
+   "uf": "GO",
+   "slug": "bom-jardim-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "bom-jesus-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "buriti-alegre"
+  },
+  {
+   "uf": "GO",
+   "slug": "cacu"
+  },
+  {
+   "uf": "GO",
+   "slug": "catalao"
+  },
+  {
+   "uf": "GO",
+   "slug": "ceres"
+  },
+  {
+   "uf": "GO",
+   "slug": "cidade-ocidental"
+  },
+  {
+   "uf": "GO",
+   "slug": "cristalina"
+  },
+  {
+   "uf": "GO",
+   "slug": "davinopolis"
+  },
+  {
+   "uf": "GO",
+   "slug": "firminopolis"
+  },
+  {
+   "uf": "GO",
+   "slug": "flores-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "formosa"
+  },
+  {
+   "uf": "GO",
+   "slug": "goiandira"
+  },
+  {
+   "uf": "GO",
+   "slug": "goianesia"
+  },
+  {
+   "uf": "GO",
+   "slug": "goiania"
+  },
+  {
+   "uf": "GO",
+   "slug": "goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "inhumas"
+  },
+  {
+   "uf": "GO",
+   "slug": "itaguaru"
+  },
+  {
+   "uf": "GO",
+   "slug": "itapuranga"
+  },
+  {
+   "uf": "GO",
+   "slug": "jatai"
+  },
+  {
+   "uf": "GO",
+   "slug": "joviania"
+  },
+  {
+   "uf": "GO",
+   "slug": "minacu"
+  },
+  {
+   "uf": "GO",
+   "slug": "montividiu"
+  },
+  {
+   "uf": "GO",
+   "slug": "morrinhos"
+  },
+  {
+   "uf": "GO",
+   "slug": "nova-veneza"
+  },
+  {
+   "uf": "GO",
+   "slug": "padre-bernardo"
+  },
+  {
+   "uf": "GO",
+   "slug": "palmeiras-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "petrolina-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "piracanjuba"
+  },
+  {
+   "uf": "GO",
+   "slug": "porangatu"
+  },
+  {
+   "uf": "GO",
+   "slug": "rio-verde"
+  },
+  {
+   "uf": "GO",
+   "slug": "santa-helena-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "turvania"
+  },
+  {
+   "uf": "GO",
+   "slug": "uruacu"
+  },
+  {
+   "uf": "GO",
+   "slug": "valparaiso-de-goias"
+  },
+  {
+   "uf": "MA",
+   "slug": "acailandia"
+  },
+  {
+   "uf": "MA",
+   "slug": "barreirinhas"
+  },
+  {
+   "uf": "MA",
+   "slug": "caxias"
+  },
+  {
+   "uf": "MA",
+   "slug": "imperatriz"
+  },
+  {
+   "uf": "MA",
+   "slug": "pinheiro"
+  },
+  {
+   "uf": "MA",
+   "slug": "sao-luis"
+  },
+  {
+   "uf": "MA",
+   "slug": "sao-vicente-ferrer"
+  },
+  {
+   "uf": "MG",
+   "slug": "abaete"
+  },
+  {
+   "uf": "MG",
+   "slug": "acaiaca"
+  },
+  {
+   "uf": "MG",
+   "slug": "alfenas"
+  },
+  {
+   "uf": "MG",
+   "slug": "aracuai"
+  },
+  {
+   "uf": "MG",
+   "slug": "araguari"
+  },
+  {
+   "uf": "MG",
+   "slug": "araxa"
+  },
+  {
+   "uf": "MG",
+   "slug": "bambui"
+  },
+  {
+   "uf": "MG",
+   "slug": "barbacena"
+  },
+  {
+   "uf": "MG",
+   "slug": "belo-horizonte"
+  },
+  {
+   "uf": "MG",
+   "slug": "betim"
+  },
+  {
+   "uf": "MG",
+   "slug": "boa-esperanca"
+  },
+  {
+   "uf": "MG",
+   "slug": "bocaiuva"
+  },
+  {
+   "uf": "MG",
+   "slug": "bom-despacho"
+  },
+  {
+   "uf": "MG",
+   "slug": "brasilia-de-minas"
+  },
+  {
+   "uf": "MG",
+   "slug": "campestre"
+  },
+  {
+   "uf": "MG",
+   "slug": "campo-belo"
+  },
+  {
+   "uf": "MG",
+   "slug": "carangola"
+  },
+  {
+   "uf": "MG",
+   "slug": "caratinga"
+  },
+  {
+   "uf": "MG",
+   "slug": "carmo-de-minas"
+  },
+  {
+   "uf": "MG",
+   "slug": "carmo-do-cajuru"
+  },
+  {
+   "uf": "MG",
+   "slug": "carmopolis-de-minas"
+  },
+  {
+   "uf": "MG",
+   "slug": "caxambu"
+  },
+  {
+   "uf": "MG",
+   "slug": "chacara"
+  },
+  {
+   "uf": "MG",
+   "slug": "coimbra"
+  },
+  {
+   "uf": "MG",
+   "slug": "conceicao-do-mato-dentro"
+  },
+  {
+   "uf": "MG",
+   "slug": "congonhas"
+  },
+  {
+   "uf": "MG",
+   "slug": "conquista"
+  },
+  {
+   "uf": "MG",
+   "slug": "contagem"
+  },
+  {
+   "uf": "MG",
+   "slug": "coronel-fabriciano"
+  },
+  {
+   "uf": "MG",
+   "slug": "diamantina"
+  },
+  {
+   "uf": "MG",
+   "slug": "divinopolis"
+  },
+  {
+   "uf": "MG",
+   "slug": "dona-euzebia"
+  },
+  {
+   "uf": "MG",
+   "slug": "dores-de-guanhaes"
+  },
+  {
+   "uf": "MG",
+   "slug": "dores-do-turvo"
+  },
+  {
+   "uf": "MG",
+   "slug": "eloi-mendes"
+  },
+  {
+   "uf": "MG",
+   "slug": "espera-feliz"
+  },
+  {
+   "uf": "MG",
+   "slug": "formiga"
+  },
+  {
+   "uf": "MG",
+   "slug": "frutal"
+  },
+  {
+   "uf": "MG",
+   "slug": "governador-valadares"
+  },
+  {
+   "uf": "MG",
+   "slug": "guanhaes"
+  },
+  {
+   "uf": "MG",
+   "slug": "guape"
+  },
+  {
+   "uf": "MG",
+   "slug": "ibia"
+  },
+  {
+   "uf": "MG",
+   "slug": "ibirite"
+  },
+  {
+   "uf": "MG",
+   "slug": "iguatama"
+  },
+  {
+   "uf": "MG",
+   "slug": "ipatinga"
+  },
+  {
+   "uf": "MG",
+   "slug": "itabira"
+  },
+  {
+   "uf": "MG",
+   "slug": "itabirito"
+  },
+  {
+   "uf": "MG",
+   "slug": "itajuba"
+  },
+  {
+   "uf": "MG",
+   "slug": "itamarandiba"
+  },
+  {
+   "uf": "MG",
+   "slug": "itauna"
+  },
+  {
+   "uf": "MG",
+   "slug": "ituiutaba"
+  },
+  {
+   "uf": "MG",
+   "slug": "januaria"
+  },
+  {
+   "uf": "MG",
+   "slug": "joao-monlevade"
+  },
+  {
+   "uf": "MG",
+   "slug": "juiz-de-fora"
+  },
+  {
+   "uf": "MG",
+   "slug": "lagoa-da-prata"
+  },
+  {
+   "uf": "MG",
+   "slug": "lagoa-formosa"
+  },
+  {
+   "uf": "MG",
+   "slug": "lagoa-santa"
+  },
+  {
+   "uf": "MG",
+   "slug": "lavras"
+  },
+  {
+   "uf": "MG",
+   "slug": "leopoldina"
+  },
+  {
+   "uf": "MG",
+   "slug": "machado"
+  },
+  {
+   "uf": "MG",
+   "slug": "manhuacu"
+  },
+  {
+   "uf": "MG",
+   "slug": "mariana"
+  },
+  {
+   "uf": "MG",
+   "slug": "martinho-campos"
+  },
+  {
+   "uf": "MG",
+   "slug": "matozinhos"
+  },
+  {
+   "uf": "MG",
+   "slug": "monte-carmelo"
+  },
+  {
+   "uf": "MG",
+   "slug": "monte-santo-de-minas"
+  },
+  {
+   "uf": "MG",
+   "slug": "montes-claros"
+  },
+  {
+   "uf": "MG",
+   "slug": "muriae"
+  },
+  {
+   "uf": "MG",
+   "slug": "nanuque"
+  },
+  {
+   "uf": "MG",
+   "slug": "olaria"
+  },
+  {
+   "uf": "MG",
+   "slug": "oliveira"
+  },
+  {
+   "uf": "MG",
+   "slug": "ouro-fino"
+  },
+  {
+   "uf": "MG",
+   "slug": "para-de-minas"
+  },
+  {
+   "uf": "MG",
+   "slug": "paraopeba"
+  },
+  {
+   "uf": "MG",
+   "slug": "passos"
+  },
+  {
+   "uf": "MG",
+   "slug": "patos-de-minas"
+  },
+  {
+   "uf": "MG",
+   "slug": "patrocinio"
+  },
+  {
+   "uf": "MG",
+   "slug": "pedro-leopoldo"
+  },
+  {
+   "uf": "MG",
+   "slug": "piranguinho"
+  },
+  {
+   "uf": "MG",
+   "slug": "pirapora"
+  },
+  {
+   "uf": "MG",
+   "slug": "pirauba"
+  },
+  {
+   "uf": "MG",
+   "slug": "pocos-de-caldas"
+  },
+  {
+   "uf": "MG",
+   "slug": "ponte-nova"
+  },
+  {
+   "uf": "MG",
+   "slug": "pouso-alegre"
+  },
+  {
+   "uf": "MG",
+   "slug": "presidente-bernardes"
+  },
+  {
+   "uf": "MG",
+   "slug": "raul-soares"
+  },
+  {
+   "uf": "MG",
+   "slug": "ressaquinha"
+  },
+  {
+   "uf": "MG",
+   "slug": "ribeirao-das-neves"
+  },
+  {
+   "uf": "MG",
+   "slug": "sacramento"
+  },
+  {
+   "uf": "MG",
+   "slug": "salinas"
+  },
+  {
+   "uf": "MG",
+   "slug": "santa-maria-do-suacui"
+  },
+  {
+   "uf": "MG",
+   "slug": "santana-do-garambeu"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-goncalo-do-rio-abaixo"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-joao-del-rei"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-joaquim-de-bicas"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-lourenco"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-sebastiao-do-paraiso"
+  },
+  {
+   "uf": "MG",
+   "slug": "sarzedo"
+  },
+  {
+   "uf": "MG",
+   "slug": "serro"
+  },
+  {
+   "uf": "MG",
+   "slug": "sete-lagoas"
+  },
+  {
+   "uf": "MG",
+   "slug": "teixeiras"
+  },
+  {
+   "uf": "MG",
+   "slug": "teofilo-otoni"
+  },
+  {
+   "uf": "MG",
+   "slug": "tres-coracoes"
+  },
+  {
+   "uf": "MG",
+   "slug": "tres-marias"
+  },
+  {
+   "uf": "MG",
+   "slug": "tres-pontas"
+  },
+  {
+   "uf": "MG",
+   "slug": "uba"
+  },
+  {
+   "uf": "MG",
+   "slug": "ubaporanga"
+  },
+  {
+   "uf": "MG",
+   "slug": "uberaba"
+  },
+  {
+   "uf": "MG",
+   "slug": "uberlandia"
+  },
+  {
+   "uf": "MG",
+   "slug": "unai"
+  },
+  {
+   "uf": "MG",
+   "slug": "varginha"
+  },
+  {
+   "uf": "MG",
+   "slug": "vicosa"
+  },
+  {
+   "uf": "MS",
+   "slug": "bataypora"
+  },
+  {
+   "uf": "MS",
+   "slug": "bela-vista"
+  },
+  {
+   "uf": "MS",
+   "slug": "brasilandia"
+  },
+  {
+   "uf": "MS",
+   "slug": "campo-grande"
+  },
+  {
+   "uf": "MS",
+   "slug": "caracol"
+  },
+  {
+   "uf": "MS",
+   "slug": "cassilandia"
+  },
+  {
+   "uf": "MS",
+   "slug": "corumba"
+  },
+  {
+   "uf": "MS",
+   "slug": "coxim"
+  },
+  {
+   "uf": "MS",
+   "slug": "dourados"
+  },
+  {
+   "uf": "MS",
+   "slug": "eldorado"
+  },
+  {
+   "uf": "MS",
+   "slug": "ladario"
+  },
+  {
+   "uf": "MS",
+   "slug": "maracaju"
+  },
+  {
+   "uf": "MS",
+   "slug": "navirai"
+  },
+  {
+   "uf": "MS",
+   "slug": "nova-andradina"
+  },
+  {
+   "uf": "MS",
+   "slug": "paraiso-das-aguas"
+  },
+  {
+   "uf": "MS",
+   "slug": "paranaiba"
+  },
+  {
+   "uf": "MS",
+   "slug": "ponta-pora"
+  },
+  {
+   "uf": "MS",
+   "slug": "porto-murtinho"
+  },
+  {
+   "uf": "MS",
+   "slug": "sao-gabriel-do-oeste"
+  },
+  {
+   "uf": "MS",
+   "slug": "tres-lagoas"
+  },
+  {
+   "uf": "MT",
+   "slug": "apiacas"
+  },
+  {
+   "uf": "MT",
+   "slug": "caceres"
+  },
+  {
+   "uf": "MT",
+   "slug": "campo-verde"
+  },
+  {
+   "uf": "MT",
+   "slug": "cuiaba"
+  },
+  {
+   "uf": "MT",
+   "slug": "primavera-do-leste"
+  },
+  {
+   "uf": "MT",
+   "slug": "rondonopolis"
+  },
+  {
+   "uf": "MT",
+   "slug": "sao-jose-dos-quatro-marcos"
+  },
+  {
+   "uf": "MT",
+   "slug": "sinop"
+  },
+  {
+   "uf": "MT",
+   "slug": "sorriso"
+  },
+  {
+   "uf": "MT",
+   "slug": "tangara-da-serra"
+  },
+  {
+   "uf": "MT",
+   "slug": "tapurah"
+  },
+  {
+   "uf": "MT",
+   "slug": "vila-rica"
+  },
+  {
+   "uf": "PA",
+   "slug": "altamira"
+  },
+  {
+   "uf": "PA",
+   "slug": "ananindeua"
+  },
+  {
+   "uf": "PA",
+   "slug": "belem"
+  },
+  {
+   "uf": "PA",
+   "slug": "belterra"
+  },
+  {
+   "uf": "PA",
+   "slug": "capanema"
+  },
+  {
+   "uf": "PA",
+   "slug": "castanhal"
+  },
+  {
+   "uf": "PA",
+   "slug": "itaituba"
+  },
+  {
+   "uf": "PA",
+   "slug": "mae-do-rio"
+  },
+  {
+   "uf": "PA",
+   "slug": "maraba"
+  },
+  {
+   "uf": "PA",
+   "slug": "paragominas"
+  },
+  {
+   "uf": "PA",
+   "slug": "salinopolis"
+  },
+  {
+   "uf": "PA",
+   "slug": "santarem"
+  },
+  {
+   "uf": "PA",
+   "slug": "sao-miguel-do-guama"
+  },
+  {
+   "uf": "PA",
+   "slug": "senador-jose-porfirio"
+  },
+  {
+   "uf": "PA",
+   "slug": "viseu"
+  },
+  {
+   "uf": "PB",
+   "slug": "areia"
+  },
+  {
+   "uf": "PB",
+   "slug": "cabedelo"
+  },
+  {
+   "uf": "PB",
+   "slug": "cajazeiras"
+  },
+  {
+   "uf": "PB",
+   "slug": "campina-grande"
+  },
+  {
+   "uf": "PB",
+   "slug": "joao-pessoa"
+  },
+  {
+   "uf": "PB",
+   "slug": "mamanguape"
+  },
+  {
+   "uf": "PB",
+   "slug": "pombal"
+  },
+  {
+   "uf": "PE",
+   "slug": "afogados-da-ingazeira"
+  },
+  {
+   "uf": "PE",
+   "slug": "amaraji"
+  },
+  {
+   "uf": "PE",
+   "slug": "araripina"
+  },
+  {
+   "uf": "PE",
+   "slug": "belo-jardim"
+  },
+  {
+   "uf": "PE",
+   "slug": "bom-jardim"
+  },
+  {
+   "uf": "PE",
+   "slug": "bonito"
+  },
+  {
+   "uf": "PE",
+   "slug": "carnaiba"
+  },
+  {
+   "uf": "PE",
+   "slug": "carpina"
+  },
+  {
+   "uf": "PE",
+   "slug": "caruaru"
+  },
+  {
+   "uf": "PE",
+   "slug": "casinhas"
+  },
+  {
+   "uf": "PE",
+   "slug": "cha-de-alegria"
+  },
+  {
+   "uf": "PE",
+   "slug": "cortes"
+  },
+  {
+   "uf": "PE",
+   "slug": "exu"
+  },
+  {
+   "uf": "PE",
+   "slug": "feira-nova"
+  },
+  {
+   "uf": "PE",
+   "slug": "garanhuns"
+  },
+  {
+   "uf": "PE",
+   "slug": "gloria-do-goita"
+  },
+  {
+   "uf": "PE",
+   "slug": "gravata"
+  },
+  {
+   "uf": "PE",
+   "slug": "ipojuca"
+  },
+  {
+   "uf": "PE",
+   "slug": "itambe"
+  },
+  {
+   "uf": "PE",
+   "slug": "limoeiro"
+  },
+  {
+   "uf": "PE",
+   "slug": "macaparana"
+  },
+  {
+   "uf": "PE",
+   "slug": "machados"
+  },
+  {
+   "uf": "PE",
+   "slug": "olinda"
+  },
+  {
+   "uf": "PE",
+   "slug": "orobo"
+  },
+  {
+   "uf": "PE",
+   "slug": "paudalho"
+  },
+  {
+   "uf": "PE",
+   "slug": "paulista"
+  },
+  {
+   "uf": "PE",
+   "slug": "pesqueira"
+  },
+  {
+   "uf": "PE",
+   "slug": "petrolina"
+  },
+  {
+   "uf": "PE",
+   "slug": "recife"
+  },
+  {
+   "uf": "PE",
+   "slug": "ribeirao"
+  },
+  {
+   "uf": "PE",
+   "slug": "sao-bento-do-una"
+  },
+  {
+   "uf": "PE",
+   "slug": "sao-jose-do-egito"
+  },
+  {
+   "uf": "PE",
+   "slug": "sao-vicente-ferrer"
+  },
+  {
+   "uf": "PE",
+   "slug": "serrita"
+  },
+  {
+   "uf": "PE",
+   "slug": "sirinhaem"
+  },
+  {
+   "uf": "PE",
+   "slug": "surubim"
+  },
+  {
+   "uf": "PE",
+   "slug": "tabira"
+  },
+  {
+   "uf": "PE",
+   "slug": "taquaritinga-do-norte"
+  },
+  {
+   "uf": "PE",
+   "slug": "terra-nova"
+  },
+  {
+   "uf": "PE",
+   "slug": "timbauba"
+  },
+  {
+   "uf": "PE",
+   "slug": "tracunhaem"
+  },
+  {
+   "uf": "PE",
+   "slug": "vitoria-de-santo-antao"
+  },
+  {
+   "uf": "PI",
+   "slug": "altos"
+  },
+  {
+   "uf": "PI",
+   "slug": "picos"
+  },
+  {
+   "uf": "PI",
+   "slug": "teresina"
+  },
+  {
+   "uf": "PR",
+   "slug": "alvorada-do-sul"
+  },
+  {
+   "uf": "PR",
+   "slug": "apucarana"
+  },
+  {
+   "uf": "PR",
+   "slug": "arapongas"
+  },
+  {
+   "uf": "PR",
+   "slug": "araucaria"
+  },
+  {
+   "uf": "PR",
+   "slug": "assis-chateaubriand"
+  },
+  {
+   "uf": "PR",
+   "slug": "bandeirantes"
+  },
+  {
+   "uf": "PR",
+   "slug": "cambe"
+  },
+  {
+   "uf": "PR",
+   "slug": "campina-grande-do-sul"
+  },
+  {
+   "uf": "PR",
+   "slug": "campo-mourao"
+  },
+  {
+   "uf": "PR",
+   "slug": "cascavel"
+  },
+  {
+   "uf": "PR",
+   "slug": "catanduvas"
+  },
+  {
+   "uf": "PR",
+   "slug": "cianorte"
+  },
+  {
+   "uf": "PR",
+   "slug": "clevelandia"
+  },
+  {
+   "uf": "PR",
+   "slug": "colombo"
+  },
+  {
+   "uf": "PR",
+   "slug": "corbelia"
+  },
+  {
+   "uf": "PR",
+   "slug": "cornelio-procopio"
+  },
+  {
+   "uf": "PR",
+   "slug": "curitiba"
+  },
+  {
+   "uf": "PR",
+   "slug": "fazenda-rio-grande"
+  },
+  {
+   "uf": "PR",
+   "slug": "floresta"
+  },
+  {
+   "uf": "PR",
+   "slug": "foz-do-iguacu"
+  },
+  {
+   "uf": "PR",
+   "slug": "francisco-beltrao"
+  },
+  {
+   "uf": "PR",
+   "slug": "grandes-rios"
+  },
+  {
+   "uf": "PR",
+   "slug": "guaira"
+  },
+  {
+   "uf": "PR",
+   "slug": "guarapuava"
+  },
+  {
+   "uf": "PR",
+   "slug": "ibipora"
+  },
+  {
+   "uf": "PR",
+   "slug": "irati"
+  },
+  {
+   "uf": "PR",
+   "slug": "ivaipora"
+  },
+  {
+   "uf": "PR",
+   "slug": "jacarezinho"
+  },
+  {
+   "uf": "PR",
+   "slug": "joaquim-tavora"
+  },
+  {
+   "uf": "PR",
+   "slug": "jussara"
+  },
+  {
+   "uf": "PR",
+   "slug": "lapa"
+  },
+  {
+   "uf": "PR",
+   "slug": "laranjeiras-do-sul"
+  },
+  {
+   "uf": "PR",
+   "slug": "loanda"
+  },
+  {
+   "uf": "PR",
+   "slug": "londrina"
+  },
+  {
+   "uf": "PR",
+   "slug": "mandaguacu"
+  },
+  {
+   "uf": "PR",
+   "slug": "mandaguari"
+  },
+  {
+   "uf": "PR",
+   "slug": "marechal-candido-rondon"
+  },
+  {
+   "uf": "PR",
+   "slug": "marialva"
+  },
+  {
+   "uf": "PR",
+   "slug": "maringa"
+  },
+  {
+   "uf": "PR",
+   "slug": "matinhos"
+  },
+  {
+   "uf": "PR",
+   "slug": "medianeira"
+  },
+  {
+   "uf": "PR",
+   "slug": "nova-alianca-do-ivai"
+  },
+  {
+   "uf": "PR",
+   "slug": "nova-aurora"
+  },
+  {
+   "uf": "PR",
+   "slug": "nova-laranjeiras"
+  },
+  {
+   "uf": "PR",
+   "slug": "palmeira"
+  },
+  {
+   "uf": "PR",
+   "slug": "paranagua"
+  },
+  {
+   "uf": "PR",
+   "slug": "paranavai"
+  },
+  {
+   "uf": "PR",
+   "slug": "pato-branco"
+  },
+  {
+   "uf": "PR",
+   "slug": "pien"
+  },
+  {
+   "uf": "PR",
+   "slug": "pitangueiras"
+  },
+  {
+   "uf": "PR",
+   "slug": "ponta-grossa"
+  },
+  {
+   "uf": "PR",
+   "slug": "prado-ferreira"
+  },
+  {
+   "uf": "PR",
+   "slug": "quedas-do-iguacu"
+  },
+  {
+   "uf": "PR",
+   "slug": "querencia-do-norte"
+  },
+  {
+   "uf": "PR",
+   "slug": "reserva"
+  },
+  {
+   "uf": "PR",
+   "slug": "rio-negro"
+  },
+  {
+   "uf": "PR",
+   "slug": "sao-jeronimo-da-serra"
+  },
+  {
+   "uf": "PR",
+   "slug": "sao-joao-do-ivai"
+  },
+  {
+   "uf": "PR",
+   "slug": "sao-jose-dos-pinhais"
+  },
+  {
+   "uf": "PR",
+   "slug": "sao-tome"
+  },
+  {
+   "uf": "PR",
+   "slug": "sarandi"
+  },
+  {
+   "uf": "PR",
+   "slug": "sertanopolis"
+  },
+  {
+   "uf": "PR",
+   "slug": "telemaco-borba"
+  },
+  {
+   "uf": "PR",
+   "slug": "terra-roxa"
+  },
+  {
+   "uf": "PR",
+   "slug": "tibagi"
+  },
+  {
+   "uf": "PR",
+   "slug": "tijucas-do-sul"
+  },
+  {
+   "uf": "PR",
+   "slug": "toledo"
+  },
+  {
+   "uf": "PR",
+   "slug": "ubirata"
+  },
+  {
+   "uf": "PR",
+   "slug": "umuarama"
+  },
+  {
+   "uf": "PR",
+   "slug": "vera-cruz-do-oeste"
+  },
+  {
+   "uf": "RJ",
+   "slug": "angra-dos-reis"
+  },
+  {
+   "uf": "RJ",
+   "slug": "araruama"
+  },
+  {
+   "uf": "RJ",
+   "slug": "arraial-do-cabo"
+  },
+  {
+   "uf": "RJ",
+   "slug": "barra-mansa"
+  },
+  {
+   "uf": "RJ",
+   "slug": "belford-roxo"
+  },
+  {
+   "uf": "RJ",
+   "slug": "cachoeiras-de-macacu"
+  },
+  {
+   "uf": "RJ",
+   "slug": "campos-dos-goytacazes"
+  },
+  {
+   "uf": "RJ",
+   "slug": "duque-de-caxias"
+  },
+  {
+   "uf": "RJ",
+   "slug": "itaguai"
+  },
+  {
+   "uf": "RJ",
+   "slug": "itaperuna"
+  },
+  {
+   "uf": "RJ",
+   "slug": "itatiaia"
+  },
+  {
+   "uf": "RJ",
+   "slug": "macae"
+  },
+  {
+   "uf": "RJ",
+   "slug": "marica"
+  },
+  {
+   "uf": "RJ",
+   "slug": "miguel-pereira"
+  },
+  {
+   "uf": "RJ",
+   "slug": "niteroi"
+  },
+  {
+   "uf": "RJ",
+   "slug": "nova-friburgo"
+  },
+  {
+   "uf": "RJ",
+   "slug": "nova-iguacu"
+  },
+  {
+   "uf": "RJ",
+   "slug": "paracambi"
+  },
+  {
+   "uf": "RJ",
+   "slug": "paraty"
+  },
+  {
+   "uf": "RJ",
+   "slug": "paty-do-alferes"
+  },
+  {
+   "uf": "RJ",
+   "slug": "petropolis"
+  },
+  {
+   "uf": "RJ",
+   "slug": "quissama"
+  },
+  {
+   "uf": "RJ",
+   "slug": "resende"
+  },
+  {
+   "uf": "RJ",
+   "slug": "rio-bonito"
+  },
+  {
+   "uf": "RJ",
+   "slug": "rio-das-ostras"
+  },
+  {
+   "uf": "RJ",
+   "slug": "rio-de-janeiro"
+  },
+  {
+   "uf": "RJ",
+   "slug": "sao-francisco-de-itabapoana"
+  },
+  {
+   "uf": "RJ",
+   "slug": "sao-goncalo"
+  },
+  {
+   "uf": "RJ",
+   "slug": "sao-pedro-da-aldeia"
+  },
+  {
+   "uf": "RJ",
+   "slug": "sao-sebastiao-do-alto"
+  },
+  {
+   "uf": "RJ",
+   "slug": "seropedica"
+  },
+  {
+   "uf": "RJ",
+   "slug": "sumidouro"
+  },
+  {
+   "uf": "RJ",
+   "slug": "tres-rios"
+  },
+  {
+   "uf": "RJ",
+   "slug": "varre-sai"
+  },
+  {
+   "uf": "RJ",
+   "slug": "vassouras"
+  },
+  {
+   "uf": "RJ",
+   "slug": "volta-redonda"
+  },
+  {
+   "uf": "RN",
+   "slug": "assu"
+  },
+  {
+   "uf": "RN",
+   "slug": "caico"
+  },
+  {
+   "uf": "RN",
+   "slug": "ceara-mirim"
+  },
+  {
+   "uf": "RN",
+   "slug": "extremoz"
+  },
+  {
+   "uf": "RN",
+   "slug": "goianinha"
+  },
+  {
+   "uf": "RN",
+   "slug": "jandaira"
+  },
+  {
+   "uf": "RN",
+   "slug": "macau"
+  },
+  {
+   "uf": "RN",
+   "slug": "mossoro"
+  },
+  {
+   "uf": "RN",
+   "slug": "natal"
+  },
+  {
+   "uf": "RN",
+   "slug": "parnamirim"
+  },
+  {
+   "uf": "RN",
+   "slug": "pau-dos-ferros"
+  },
+  {
+   "uf": "RN",
+   "slug": "portalegre"
+  },
+  {
+   "uf": "RN",
+   "slug": "sao-goncalo-do-amarante"
+  },
+  {
+   "uf": "RN",
+   "slug": "sao-rafael"
+  },
+  {
+   "uf": "RO",
+   "slug": "ariquemes"
+  },
+  {
+   "uf": "RO",
+   "slug": "buritis"
+  },
+  {
+   "uf": "RO",
+   "slug": "cacoal"
+  },
+  {
+   "uf": "RO",
+   "slug": "ji-parana"
+  },
+  {
+   "uf": "RO",
+   "slug": "machadinho-d-oeste"
+  },
+  {
+   "uf": "RO",
+   "slug": "ministro-andreazza"
+  },
+  {
+   "uf": "RO",
+   "slug": "pimenta-bueno"
+  },
+  {
+   "uf": "RO",
+   "slug": "porto-velho"
+  },
+  {
+   "uf": "RO",
+   "slug": "primavera-de-rondonia"
+  },
+  {
+   "uf": "RO",
+   "slug": "santa-luzia-d-oeste"
+  },
+  {
+   "uf": "RO",
+   "slug": "sao-francisco-do-guapore"
+  },
+  {
+   "uf": "RO",
+   "slug": "urupa"
+  },
+  {
+   "uf": "RO",
+   "slug": "vilhena"
+  },
+  {
+   "uf": "RR",
+   "slug": "boa-vista"
+  },
+  {
+   "uf": "RS",
+   "slug": "alegrete"
+  },
+  {
+   "uf": "RS",
+   "slug": "bage"
+  },
+  {
+   "uf": "RS",
+   "slug": "bento-goncalves"
+  },
+  {
+   "uf": "RS",
+   "slug": "camaqua"
+  },
+  {
+   "uf": "RS",
+   "slug": "canoas"
+  },
+  {
+   "uf": "RS",
+   "slug": "capao-da-canoa"
+  },
+  {
+   "uf": "RS",
+   "slug": "carazinho"
+  },
+  {
+   "uf": "RS",
+   "slug": "caxias-do-sul"
+  },
+  {
+   "uf": "RS",
+   "slug": "cruz-alta"
+  },
+  {
+   "uf": "RS",
+   "slug": "dom-pedrito"
+  },
+  {
+   "uf": "RS",
+   "slug": "erechim"
+  },
+  {
+   "uf": "RS",
+   "slug": "estancia-velha"
+  },
+  {
+   "uf": "RS",
+   "slug": "esteio"
+  },
+  {
+   "uf": "RS",
+   "slug": "farroupilha"
+  },
+  {
+   "uf": "RS",
+   "slug": "garibaldi"
+  },
+  {
+   "uf": "RS",
+   "slug": "gramado"
+  },
+  {
+   "uf": "RS",
+   "slug": "gravatai"
+  },
+  {
+   "uf": "RS",
+   "slug": "guaiba"
+  },
+  {
+   "uf": "RS",
+   "slug": "ibiruba"
+  },
+  {
+   "uf": "RS",
+   "slug": "ijui"
+  },
+  {
+   "uf": "RS",
+   "slug": "itaqui"
+  },
+  {
+   "uf": "RS",
+   "slug": "lajeado"
+  },
+  {
+   "uf": "RS",
+   "slug": "mato-leitao"
+  },
+  {
+   "uf": "RS",
+   "slug": "montenegro"
+  },
+  {
+   "uf": "RS",
+   "slug": "nova-hartz"
+  },
+  {
+   "uf": "RS",
+   "slug": "nova-santa-rita"
+  },
+  {
+   "uf": "RS",
+   "slug": "novo-hamburgo"
+  },
+  {
+   "uf": "RS",
+   "slug": "osorio"
+  },
+  {
+   "uf": "RS",
+   "slug": "passo-fundo"
+  },
+  {
+   "uf": "RS",
+   "slug": "pelotas"
+  },
+  {
+   "uf": "RS",
+   "slug": "porto-alegre"
+  },
+  {
+   "uf": "RS",
+   "slug": "quarai"
+  },
+  {
+   "uf": "RS",
+   "slug": "rio-grande"
+  },
+  {
+   "uf": "RS",
+   "slug": "rosario-do-sul"
+  },
+  {
+   "uf": "RS",
+   "slug": "sananduva"
+  },
+  {
+   "uf": "RS",
+   "slug": "sant-ana-do-livramento"
+  },
+  {
+   "uf": "RS",
+   "slug": "santa-cruz-do-sul"
+  },
+  {
+   "uf": "RS",
+   "slug": "santa-maria"
+  },
+  {
+   "uf": "RS",
+   "slug": "santa-rosa"
+  },
+  {
+   "uf": "RS",
+   "slug": "santiago"
+  },
+  {
+   "uf": "RS",
+   "slug": "santo-angelo"
+  },
+  {
+   "uf": "RS",
+   "slug": "santo-cristo"
+  },
+  {
+   "uf": "RS",
+   "slug": "sao-borja"
+  },
+  {
+   "uf": "RS",
+   "slug": "sao-gabriel"
+  },
+  {
+   "uf": "RS",
+   "slug": "sao-leopoldo"
+  },
+  {
+   "uf": "RS",
+   "slug": "sao-luiz-gonzaga"
+  },
+  {
+   "uf": "RS",
+   "slug": "sapucaia-do-sul"
+  },
+  {
+   "uf": "RS",
+   "slug": "taquara"
+  },
+  {
+   "uf": "RS",
+   "slug": "tramandai"
+  },
+  {
+   "uf": "RS",
+   "slug": "uruguaiana"
+  },
+  {
+   "uf": "RS",
+   "slug": "vacaria"
+  },
+  {
+   "uf": "RS",
+   "slug": "venancio-aires"
+  },
+  {
+   "uf": "RS",
+   "slug": "viamao"
+  },
+  {
+   "uf": "RS",
+   "slug": "xangri-la"
+  },
+  {
+   "uf": "SC",
+   "slug": "araquari"
+  },
+  {
+   "uf": "SC",
+   "slug": "ararangua"
+  },
+  {
+   "uf": "SC",
+   "slug": "arroio-trinta"
+  },
+  {
+   "uf": "SC",
+   "slug": "ascurra"
+  },
+  {
+   "uf": "SC",
+   "slug": "balneario-arroio-do-silva"
+  },
+  {
+   "uf": "SC",
+   "slug": "balneario-camboriu"
+  },
+  {
+   "uf": "SC",
+   "slug": "balneario-picarras"
+  },
+  {
+   "uf": "SC",
+   "slug": "balneario-rincao"
+  },
+  {
+   "uf": "SC",
+   "slug": "bandeirante"
+  },
+  {
+   "uf": "SC",
+   "slug": "barra-velha"
+  },
+  {
+   "uf": "SC",
+   "slug": "bela-vista-do-toldo"
+  },
+  {
+   "uf": "SC",
+   "slug": "benedito-novo"
+  },
+  {
+   "uf": "SC",
+   "slug": "blumenau"
+  },
+  {
+   "uf": "SC",
+   "slug": "bombinhas"
+  },
+  {
+   "uf": "SC",
+   "slug": "brusque"
+  },
+  {
+   "uf": "SC",
+   "slug": "cacador"
+  },
+  {
+   "uf": "SC",
+   "slug": "caibi"
+  },
+  {
+   "uf": "SC",
+   "slug": "camboriu"
+  },
+  {
+   "uf": "SC",
+   "slug": "campos-novos"
+  },
+  {
+   "uf": "SC",
+   "slug": "canoinhas"
+  },
+  {
+   "uf": "SC",
+   "slug": "capao-alto"
+  },
+  {
+   "uf": "SC",
+   "slug": "capinzal"
+  },
+  {
+   "uf": "SC",
+   "slug": "capivari-de-baixo"
+  },
+  {
+   "uf": "SC",
+   "slug": "cerro-negro"
+  },
+  {
+   "uf": "SC",
+   "slug": "chapeco"
+  },
+  {
+   "uf": "SC",
+   "slug": "concordia"
+  },
+  {
+   "uf": "SC",
+   "slug": "cordilheira-alta"
+  },
+  {
+   "uf": "SC",
+   "slug": "criciuma"
+  },
+  {
+   "uf": "SC",
+   "slug": "florianopolis"
+  },
+  {
+   "uf": "SC",
+   "slug": "forquilhinha"
+  },
+  {
+   "uf": "SC",
+   "slug": "fraiburgo"
+  },
+  {
+   "uf": "SC",
+   "slug": "gravatal"
+  },
+  {
+   "uf": "SC",
+   "slug": "icara"
+  },
+  {
+   "uf": "SC",
+   "slug": "imbituba"
+  },
+  {
+   "uf": "SC",
+   "slug": "indaial"
+  },
+  {
+   "uf": "SC",
+   "slug": "ipuacu"
+  },
+  {
+   "uf": "SC",
+   "slug": "itajai"
+  },
+  {
+   "uf": "SC",
+   "slug": "jaguaruna"
+  },
+  {
+   "uf": "SC",
+   "slug": "jaragua-do-sul"
+  },
+  {
+   "uf": "SC",
+   "slug": "joacaba"
+  },
+  {
+   "uf": "SC",
+   "slug": "joinville"
+  },
+  {
+   "uf": "SC",
+   "slug": "lages"
+  },
+  {
+   "uf": "SC",
+   "slug": "maravilha"
+  },
+  {
+   "uf": "SC",
+   "slug": "modelo"
+  },
+  {
+   "uf": "SC",
+   "slug": "mondai"
+  },
+  {
+   "uf": "SC",
+   "slug": "navegantes"
+  },
+  {
+   "uf": "SC",
+   "slug": "nova-itaberaba"
+  },
+  {
+   "uf": "SC",
+   "slug": "orleans"
+  },
+  {
+   "uf": "SC",
+   "slug": "palhoca"
+  },
+  {
+   "uf": "SC",
+   "slug": "penha"
+  },
+  {
+   "uf": "SC",
+   "slug": "pinhalzinho"
+  },
+  {
+   "uf": "SC",
+   "slug": "porto-belo"
+  },
+  {
+   "uf": "SC",
+   "slug": "porto-uniao"
+  },
+  {
+   "uf": "SC",
+   "slug": "presidente-getulio"
+  },
+  {
+   "uf": "SC",
+   "slug": "rio-do-sul"
+  },
+  {
+   "uf": "SC",
+   "slug": "rio-negrinho"
+  },
+  {
+   "uf": "SC",
+   "slug": "riqueza"
+  },
+  {
+   "uf": "SC",
+   "slug": "saltinho"
+  },
+  {
+   "uf": "SC",
+   "slug": "santa-helena"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-bento-do-sul"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-carlos"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-francisco-do-sul"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-joao-batista"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-jose"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-jose-do-cedro"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-ludgero"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-miguel-do-oeste"
+  },
+  {
+   "uf": "SC",
+   "slug": "saudades"
+  },
+  {
+   "uf": "SC",
+   "slug": "serra-alta"
+  },
+  {
+   "uf": "SC",
+   "slug": "sul-brasil"
+  },
+  {
+   "uf": "SC",
+   "slug": "tijucas"
+  },
+  {
+   "uf": "SC",
+   "slug": "timbo"
+  },
+  {
+   "uf": "SC",
+   "slug": "tubarao"
+  },
+  {
+   "uf": "SC",
+   "slug": "urussanga"
+  },
+  {
+   "uf": "SC",
+   "slug": "videira"
+  },
+  {
+   "uf": "SE",
+   "slug": "aquidaba"
+  },
+  {
+   "uf": "SE",
+   "slug": "aracaju"
+  },
+  {
+   "uf": "SE",
+   "slug": "areia-branca"
+  },
+  {
+   "uf": "SE",
+   "slug": "barra-dos-coqueiros"
+  },
+  {
+   "uf": "SE",
+   "slug": "carira"
+  },
+  {
+   "uf": "SE",
+   "slug": "itabaiana"
+  },
+  {
+   "uf": "SE",
+   "slug": "lagarto"
+  },
+  {
+   "uf": "SE",
+   "slug": "macambira"
+  },
+  {
+   "uf": "SE",
+   "slug": "riachuelo"
+  },
+  {
+   "uf": "SE",
+   "slug": "sao-cristovao"
+  },
+  {
+   "uf": "SE",
+   "slug": "simao-dias"
+  },
+  {
+   "uf": "SP",
+   "slug": "adamantina"
+  },
+  {
+   "uf": "SP",
+   "slug": "americana"
+  },
+  {
+   "uf": "SP",
+   "slug": "amparo"
+  },
+  {
+   "uf": "SP",
+   "slug": "andradina"
+  },
+  {
+   "uf": "SP",
+   "slug": "aparecida"
+  },
+  {
+   "uf": "SP",
+   "slug": "aracatuba"
+  },
+  {
+   "uf": "SP",
+   "slug": "araraquara"
+  },
+  {
+   "uf": "SP",
+   "slug": "assis"
+  },
+  {
+   "uf": "SP",
+   "slug": "atibaia"
+  },
+  {
+   "uf": "SP",
+   "slug": "avare"
+  },
+  {
+   "uf": "SP",
+   "slug": "barra-bonita"
+  },
+  {
+   "uf": "SP",
+   "slug": "barretos"
+  },
+  {
+   "uf": "SP",
+   "slug": "barueri"
+  },
+  {
+   "uf": "SP",
+   "slug": "bauru"
+  },
+  {
+   "uf": "SP",
+   "slug": "bebedouro"
+  },
+  {
+   "uf": "SP",
+   "slug": "bernardino-de-campos"
+  },
+  {
+   "uf": "SP",
+   "slug": "bertioga"
+  },
+  {
+   "uf": "SP",
+   "slug": "birigui"
+  },
+  {
+   "uf": "SP",
+   "slug": "bom-jesus-dos-perdoes"
+  },
+  {
+   "uf": "SP",
+   "slug": "botucatu"
+  },
+  {
+   "uf": "SP",
+   "slug": "braganca-paulista"
+  },
+  {
+   "uf": "SP",
+   "slug": "brotas"
+  },
+  {
+   "uf": "SP",
+   "slug": "campinas"
+  },
+  {
+   "uf": "SP",
+   "slug": "campos-do-jordao"
+  },
+  {
+   "uf": "SP",
+   "slug": "candido-mota"
+  },
+  {
+   "uf": "SP",
+   "slug": "capela-do-alto"
+  },
+  {
+   "uf": "SP",
+   "slug": "capivari"
+  },
+  {
+   "uf": "SP",
+   "slug": "caraguatatuba"
+  },
+  {
+   "uf": "SP",
+   "slug": "carapicuiba"
+  },
+  {
+   "uf": "SP",
+   "slug": "casa-branca"
+  },
+  {
+   "uf": "SP",
+   "slug": "catanduva"
+  },
+  {
+   "uf": "SP",
+   "slug": "cerqueira-cesar"
+  },
+  {
+   "uf": "SP",
+   "slug": "conchal"
+  },
+  {
+   "uf": "SP",
+   "slug": "cotia"
+  },
+  {
+   "uf": "SP",
+   "slug": "cravinhos"
+  },
+  {
+   "uf": "SP",
+   "slug": "cruzeiro"
+  },
+  {
+   "uf": "SP",
+   "slug": "cubatao"
+  },
+  {
+   "uf": "SP",
+   "slug": "divinolandia"
+  },
+  {
+   "uf": "SP",
+   "slug": "dois-corregos"
+  },
+  {
+   "uf": "SP",
+   "slug": "dracena"
+  },
+  {
+   "uf": "SP",
+   "slug": "fernandopolis"
+  },
+  {
+   "uf": "SP",
+   "slug": "ferraz-de-vasconcelos"
+  },
+  {
+   "uf": "SP",
+   "slug": "franca"
+  },
+  {
+   "uf": "SP",
+   "slug": "francisco-morato"
+  },
+  {
+   "uf": "SP",
+   "slug": "franco-da-rocha"
+  },
+  {
+   "uf": "SP",
+   "slug": "garca"
+  },
+  {
+   "uf": "SP",
+   "slug": "guaratingueta"
+  },
+  {
+   "uf": "SP",
+   "slug": "guariba"
+  },
+  {
+   "uf": "SP",
+   "slug": "guaruja"
+  },
+  {
+   "uf": "SP",
+   "slug": "guarulhos"
+  },
+  {
+   "uf": "SP",
+   "slug": "hortolandia"
+  },
+  {
+   "uf": "SP",
+   "slug": "ibiuna"
+  },
+  {
+   "uf": "SP",
+   "slug": "ilha-solteira"
+  },
+  {
+   "uf": "SP",
+   "slug": "ilhabela"
+  },
+  {
+   "uf": "SP",
+   "slug": "indaiatuba"
+  },
+  {
+   "uf": "SP",
+   "slug": "itai"
+  },
+  {
+   "uf": "SP",
+   "slug": "itapecerica-da-serra"
+  },
+  {
+   "uf": "SP",
+   "slug": "itapetininga"
+  },
+  {
+   "uf": "SP",
+   "slug": "itapira"
+  },
+  {
+   "uf": "SP",
+   "slug": "itaquaquecetuba"
+  },
+  {
+   "uf": "SP",
+   "slug": "itirapina"
+  },
+  {
+   "uf": "SP",
+   "slug": "itu"
+  },
+  {
+   "uf": "SP",
+   "slug": "itupeva"
+  },
+  {
+   "uf": "SP",
+   "slug": "jaboticabal"
+  },
+  {
+   "uf": "SP",
+   "slug": "jacarei"
+  },
+  {
+   "uf": "SP",
+   "slug": "jaguariuna"
+  },
+  {
+   "uf": "SP",
+   "slug": "jales"
+  },
+  {
+   "uf": "SP",
+   "slug": "jardinopolis"
+  },
+  {
+   "uf": "SP",
+   "slug": "jau"
+  },
+  {
+   "uf": "SP",
+   "slug": "jundiai"
+  },
+  {
+   "uf": "SP",
+   "slug": "junqueiropolis"
+  },
+  {
+   "uf": "SP",
+   "slug": "leme"
+  },
+  {
+   "uf": "SP",
+   "slug": "limeira"
+  },
+  {
+   "uf": "SP",
+   "slug": "lins"
+  },
+  {
+   "uf": "SP",
+   "slug": "lorena"
+  },
+  {
+   "uf": "SP",
+   "slug": "lucelia"
+  },
+  {
+   "uf": "SP",
+   "slug": "mairipora"
+  },
+  {
+   "uf": "SP",
+   "slug": "marilia"
+  },
+  {
+   "uf": "SP",
+   "slug": "martinopolis"
+  },
+  {
+   "uf": "SP",
+   "slug": "maua"
+  },
+  {
+   "uf": "SP",
+   "slug": "mirassol"
+  },
+  {
+   "uf": "SP",
+   "slug": "mogi-das-cruzes"
+  },
+  {
+   "uf": "SP",
+   "slug": "mogi-guacu"
+  },
+  {
+   "uf": "SP",
+   "slug": "mogi-mirim"
+  },
+  {
+   "uf": "SP",
+   "slug": "mongagua"
+  },
+  {
+   "uf": "SP",
+   "slug": "monte-alto"
+  },
+  {
+   "uf": "SP",
+   "slug": "monte-mor"
+  },
+  {
+   "uf": "SP",
+   "slug": "olimpia"
+  },
+  {
+   "uf": "SP",
+   "slug": "osasco"
+  },
+  {
+   "uf": "SP",
+   "slug": "ourinhos"
+  },
+  {
+   "uf": "SP",
+   "slug": "paraguacu-paulista"
+  },
+  {
+   "uf": "SP",
+   "slug": "pariquera-acu"
+  },
+  {
+   "uf": "SP",
+   "slug": "paulinia"
+  },
+  {
+   "uf": "SP",
+   "slug": "paulo-de-faria"
+  },
+  {
+   "uf": "SP",
+   "slug": "pedreira"
+  },
+  {
+   "uf": "SP",
+   "slug": "penapolis"
+  },
+  {
+   "uf": "SP",
+   "slug": "peruibe"
+  },
+  {
+   "uf": "SP",
+   "slug": "pindamonhangaba"
+  },
+  {
+   "uf": "SP",
+   "slug": "piquete"
+  },
+  {
+   "uf": "SP",
+   "slug": "piracicaba"
+  },
+  {
+   "uf": "SP",
+   "slug": "piraju"
+  },
+  {
+   "uf": "SP",
+   "slug": "pirajui"
+  },
+  {
+   "uf": "SP",
+   "slug": "pirapozinho"
+  },
+  {
+   "uf": "SP",
+   "slug": "pirassununga"
+  },
+  {
+   "uf": "SP",
+   "slug": "poa"
+  },
+  {
+   "uf": "SP",
+   "slug": "pontal"
+  },
+  {
+   "uf": "SP",
+   "slug": "potim"
+  },
+  {
+   "uf": "SP",
+   "slug": "praia-grande"
+  },
+  {
+   "uf": "SP",
+   "slug": "presidente-epitacio"
+  },
+  {
+   "uf": "SP",
+   "slug": "presidente-prudente"
+  },
+  {
+   "uf": "SP",
+   "slug": "presidente-venceslau"
+  },
+  {
+   "uf": "SP",
+   "slug": "promissao"
+  },
+  {
+   "uf": "SP",
+   "slug": "registro"
+  },
+  {
+   "uf": "SP",
+   "slug": "ribeirao-pires"
+  },
+  {
+   "uf": "SP",
+   "slug": "ribeirao-preto"
+  },
+  {
+   "uf": "SP",
+   "slug": "rio-claro"
+  },
+  {
+   "uf": "SP",
+   "slug": "salto"
+  },
+  {
+   "uf": "SP",
+   "slug": "santa-barbara-d-oeste"
+  },
+  {
+   "uf": "SP",
+   "slug": "santa-fe-do-sul"
+  },
+  {
+   "uf": "SP",
+   "slug": "santa-rita-do-passa-quatro"
+  },
+  {
+   "uf": "SP",
+   "slug": "santo-andre"
+  },
+  {
+   "uf": "SP",
+   "slug": "santos"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-bernardo-do-campo"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-carlos"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-joao-da-boa-vista"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-jose-do-rio-preto"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-jose-dos-campos"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-manuel"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-miguel-arcanjo"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-paulo"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-roque"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-sebastiao"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-vicente"
+  },
+  {
+   "uf": "SP",
+   "slug": "serra-negra"
+  },
+  {
+   "uf": "SP",
+   "slug": "sertaozinho"
+  },
+  {
+   "uf": "SP",
+   "slug": "socorro"
+  },
+  {
+   "uf": "SP",
+   "slug": "sorocaba"
+  },
+  {
+   "uf": "SP",
+   "slug": "sumare"
+  },
+  {
+   "uf": "SP",
+   "slug": "suzano"
+  },
+  {
+   "uf": "SP",
+   "slug": "taboao-da-serra"
+  },
+  {
+   "uf": "SP",
+   "slug": "taquaritinga"
+  },
+  {
+   "uf": "SP",
+   "slug": "taruma"
+  },
+  {
+   "uf": "SP",
+   "slug": "taubate"
+  },
+  {
+   "uf": "SP",
+   "slug": "tiete"
+  },
+  {
+   "uf": "SP",
+   "slug": "tremembe"
+  },
+  {
+   "uf": "SP",
+   "slug": "tupa"
+  },
+  {
+   "uf": "SP",
+   "slug": "ubatuba"
+  },
+  {
+   "uf": "SP",
+   "slug": "valinhos"
+  },
+  {
+   "uf": "SP",
+   "slug": "votuporanga"
+  },
+  {
+   "uf": "TO",
+   "slug": "araguaina"
+  },
+  {
+   "uf": "TO",
+   "slug": "bandeirantes-do-tocantins"
+  },
+  {
+   "uf": "TO",
+   "slug": "colinas-do-tocantins"
+  },
+  {
+   "uf": "TO",
+   "slug": "guarai"
+  },
+  {
+   "uf": "TO",
+   "slug": "gurupi"
+  },
+  {
+   "uf": "TO",
+   "slug": "itapora-do-tocantins"
+  },
+  {
+   "uf": "TO",
+   "slug": "palmas"
+  },
+  {
+   "uf": "TO",
+   "slug": "palmeirante"
+  },
+  {
+   "uf": "TO",
+   "slug": "paraiso-do-tocantins"
+  },
+  {
+   "uf": "TO",
+   "slug": "pedro-afonso"
+  },
+  {
+   "uf": "TO",
+   "slug": "porto-nacional"
+  }
+ ]
+}

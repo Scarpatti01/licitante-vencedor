@@ -12,10 +12,10 @@
  * Conteúdo raso e repetido não é neutro: ele dilui a autoridade que os nove
  * guias construíram, e o custo cai sobre as páginas que convertem.
  *
- * ## O portão
+ * ## O portão de entrada
  *
- * Uma página existe quando há dado que a sustente. Dois critérios, e os dois
- * precisam passar:
+ * Uma página nasce quando há dado que a sustente. Dois critérios, os dois em
+ * `pncp/lastro.ts`, e os dois precisam passar:
  *
  * `MINIMO_DE_EDITAIS` — volume. Um edital não é um retrato do município; é uma
  *   coincidência da janela coletada.
@@ -23,9 +23,29 @@
  *   órgão, não o município. É o critério que separa "aqui há um mercado" de
  *   "aqui houve uma compra".
  *
- * O efeito é que a funcionalidade se auto-regula: com a cobertura de hoje ela
- * publica pouca coisa, e conforme a coleta melhora as páginas aparecem sozinhas,
- * sem ninguém decidir de novo.
+ * ## Por que uma página, uma vez nascida, não volta a morrer sozinha
+ *
+ * `dados/agregados.json` é um retrato do INSTANTE — editais fecham e saem da
+ * janela coletada, então o número de um município cai de um dia para o outro
+ * sem que nada de errado tenha acontecido. Com `dynamicParams = false`
+ * (`app/licitacoes/[uf]/[municipio]/page.tsx`), só os municípios devolvidos
+ * por `municipiosPublicaveis()` no build de HOJE têm rota; todo o resto é 404
+ * permanente. Sem memória entre builds, isso corrigiu um problema óbvio
+ * (página rasa nunca nasce) e criou um sutil (página que passou 6 dias no ar,
+ * foi indexada e clicada, pode desaparecer no 7º porque a coleta daquele dia
+ * especificamente viu menos).
+ *
+ * Foi o que aconteceu com Russas/CE e Feira Nova/PE: lastro de 15 a 20/08,
+ * impressão e clique real no Search Console — Feira Nova com 50% de CTR — e em
+ * 21/08, com a mesma legitimidade que tinham no dia anterior, 404 permanente
+ * para quem clicasse no resultado que o Google ainda não tinha atualizado.
+ *
+ * `pncp/registroDePublicacao.ts` é a correção: todo município que já teve
+ * lastro um dia entra num registro versionado que só cresce. `publicavel()`
+ * abaixo publica quem tem lastro HOJE **ou** quem está no registro e ainda tem
+ * pelo menos `PISO_STICKY_EM_EDITAIS` — o piso existe porque ficar no registro
+ * não deve bastar para uma página com zero contratação no momento: aí 404
+ * continua mais honesto que uma página vazia com título em cima.
  *
  * ## O que estas páginas NÃO são
  *
@@ -33,34 +53,32 @@
  * coleta, e edital tem prazo: publicar "34 editais abertos em Recife" a partir
  * de um arquivo de dois dias atrás seria afirmar como presente o que já pode ter
  * encerrado. A página descreve o MERCADO — quanto se compra, por quais
- * modalidades, quantos órgãos — e diz a data da medição em toda afirmação.
+ * modalidades, quantos órgãos — e diz a data da medição em toda afirmação. Isso
+ * vale igual para uma página sustentada pelo registro: o número de hoje pode
+ * ser pequeno, e a página diz exatamente esse número, nunca o do dia em que ela
+ * nasceu.
  */
 
 import agregados from "../../dados/agregados.json" with { type: "json" };
+import registroBruto from "../../dados/municipios-publicados.json" with { type: "json" };
 import { normalizarParaBusca } from "./busca-de-pracas";
+import { temLastro, MINIMO_DE_EDITAIS, MINIMO_DE_ORGAOS } from "./pncp/lastro.ts";
+import { estaNoRegistro, normalizarRegistro } from "./pncp/registroDePublicacao.ts";
 import type { MunicipioAgregado } from "./pncp/agregarPorMunicipio.ts";
 
+export { temLastro, MINIMO_DE_EDITAIS, MINIMO_DE_ORGAOS };
 export type { MunicipioAgregado };
 
 /**
- * Volume mínimo para um município virar página.
+ * Piso abaixo do qual mesmo uma página já registrada sai do ar.
  *
- * Cinco é o menor número em que a página consegue dizer algo que o visitante
- * não conseguiria olhando um edital: distribuição por modalidade, faixa de
- * valor, quantos órgãos compram. Abaixo disso o texto viraria preenchimento em
- * volta de um número.
+ * "Já teve lastro um dia" não é o mesmo que "sempre tem o que mostrar hoje".
+ * Um município no registro com 0 editais no retrato de hoje não tem contagem,
+ * faixa de valor nem comprador para descrever — 404 é mais honesto do que uma
+ * página com título e nada dentro. 1 é o piso porque é o mínimo que ainda
+ * produz uma frase verdadeira ("1 contratação medida"), não um vazio.
  */
-export const MINIMO_DE_EDITAIS = 5;
-
-/**
- * Órgãos distintos mínimos.
- *
- * Existe porque volume sozinho engana: um município com seis editais de uma
- * prefeitura só descreve aquela prefeitura. Dois órgãos diferentes já mostram
- * que há mais de uma porta de entrada, que é a informação que interessa a quem
- * decide onde vender.
- */
-export const MINIMO_DE_ORGAOS = 2;
+export const PISO_STICKY_EM_EDITAIS = 1;
 
 /** Quando o agregado foi medido. Toda afirmação de página cita isto. */
 export const MEDIDO_EM: string = agregados.coletadoEm;
@@ -129,15 +147,27 @@ function normalizar(bruto: unknown): MunicipioAgregado[] {
 }
 
 const TODOS: readonly MunicipioAgregado[] = normalizar(agregados.municipios);
+const REGISTRO = normalizarRegistro(registroBruto);
 
 /**
- * O município tem lastro para uma página própria?
+ * O município tem página hoje — por lastro novo ou por já ter tido um dia.
  *
- * Separado da filtragem para o teste poder exercitar as bordas sem depender do
- * conteúdo do agregado versionado, que muda a cada coleta.
+ * As duas metades, e por que as duas existem:
+ *
+ * `temLastro(m)` — o portão de entrada, sobre o retrato de HOJE. É como todo
+ *   município nasce.
+ *
+ * `estaNoRegistro(...) && m.editais >= PISO_STICKY_EM_EDITAIS` — o que
+ *   mantém no ar quem já nasceu e teve um dia ruim de coleta. Sem isto, um
+ *   município oscila para dentro e fora de existir junto com o número de
+ *   editais em aberto naquele dia específico — e cada oscilação para fora é
+ *   um 404 permanente (`dynamicParams = false`) para quem já tinha
+ *   encontrado a página. Ver o comentário no topo do arquivo — Russas/CE e
+ *   Feira Nova/PE são o caso real que motivou isto.
  */
-export function temLastro(m: Pick<MunicipioAgregado, "editais" | "orgaos">): boolean {
-  return m.editais >= MINIMO_DE_EDITAIS && m.orgaos >= MINIMO_DE_ORGAOS;
+export function publicavel(m: MunicipioAgregado): boolean {
+  if (temLastro(m)) return true;
+  return estaNoRegistro(REGISTRO, m) && m.editais >= PISO_STICKY_EM_EDITAIS;
 }
 
 /**
@@ -147,7 +177,7 @@ export function temLastro(m: Pick<MunicipioAgregado, "editais" | "orgaos">): boo
  * builds e fazer parecer que algo mudou quando nada mudou.
  */
 export function municipiosPublicaveis(): MunicipioAgregado[] {
-  return TODOS.filter(temLastro).sort(
+  return TODOS.filter(publicavel).sort(
     (a, b) => b.editais - a.editais || a.municipio.localeCompare(b.municipio, "pt-BR"),
   );
 }
@@ -261,8 +291,9 @@ export function fraseSobreModalidades(m: MunicipioAgregado): string {
  *
  * `limite = 5`: o suficiente para a página dizer algo específico sem virar
  * lista de todo órgão que comprou uma vez. Município com menos compradores
- * que o limite devolve todos — o portão em `temLastro` já garante pelo menos
- * `MINIMO_DE_ORGAOS`.
+ * que o limite devolve todos — o que inclui o caso de só 1, quando a página
+ * é sustentada pelo registro (`publicavel`) e não mais pelo portão de
+ * entrada, que sozinho garantiria `MINIMO_DE_ORGAOS`.
  *
  * Vazio para todo agregado gerado antes de `compradores` existir no arquivo —
  * a página trata isso como "sem esta seção", não como erro.
@@ -290,11 +321,13 @@ const LIMIAR_DE_CONCENTRACAO_DE_COMPRADORES = 0.5;
  * — e não descrevendo sempre a mesma coisa com números diferentes por dentro.
  *
  * Três casos, porque são três situações distintas: um comprador só (o portão
- * de `temLastro` deveria impedir isso hoje, mas a frase não depende dele para
- * estar certa); dois compradores que já respondem por mais da metade do
- * medido, o fato mais acionável que existe para quem decide onde focar; e o
- * resto, em que o mercado está distribuído o bastante para o número sozinho
- * já contar a história, sem precisar de um rótulo de "concentrado".
+ * de entrada, `temLastro`, exige pelo menos 2 — mas uma página sustentada
+ * pelo registro pode legitimamente ter só 1 hoje, e a frase precisa continuar
+ * certa nesse caso, não só no de entrada); dois compradores que já respondem
+ * por mais da metade do medido, o fato mais acionável que existe para quem
+ * decide onde focar; e o resto, em que o mercado está distribuído o bastante
+ * para o número sozinho já contar a história, sem precisar de um rótulo de
+ * "concentrado".
  */
 export function fraseSobreCompradores(m: MunicipioAgregado): string {
   const top = principaisCompradores(m);

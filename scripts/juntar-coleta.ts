@@ -39,6 +39,7 @@ import { resumirCobertura, type ColetaDeUf } from "../src/lib/fontes/cobertura.t
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
 import { agregarPorMunicipio } from "../src/lib/pncp/agregarPorMunicipio.ts";
+import { atualizarRegistro, normalizarRegistro } from "../src/lib/pncp/registroDePublicacao.ts";
 import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao.ts";
 import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
 import { fontePncp } from "../src/lib/fontes/pncp.ts";
@@ -68,11 +69,21 @@ async function lerAgregado(caminho: string) {
   }
 }
 
+/** Lê o registro de publicação. Ausência não é erro: o primeiro dia não tem anterior. */
+async function lerRegistro(caminho: string): Promise<unknown> {
+  try {
+    return JSON.parse(await readFile(caminho, "utf8"));
+  } catch {
+    return null;
+  }
+}
+
 async function main() {
   const pastaDeParciais = resolve(process.cwd(), arg("parciais") ?? "dados/parciais/shards");
   const caminhoAgregado = resolve(process.cwd(), arg("agregado") ?? "dados/agregados.json");
   const pastaDados = dirname(caminhoAgregado);
   const pastaParciais = resolve(pastaDados, "parciais");
+  const caminhoRegistro = resolve(pastaDados, "municipios-publicados.json");
 
   let arquivos: string[];
   try {
@@ -197,7 +208,15 @@ async function main() {
       `# Revisão da coleta\n\n\`\`\`\n${relatorio}\n\`\`\`\n`,
       "utf8",
     );
+
+    // Mesma guarda do agregado: o registro só cresce, e só a partir de uma
+    // coleta que substituiu a série. Ver `src/lib/pncp/registroDePublicacao.ts`.
+    const registroAnterior = normalizarRegistro(await lerRegistro(caminhoRegistro));
+    const registro = atualizarRegistro(registroAnterior, agregados.municipios);
+    await writeFile(caminhoRegistro, JSON.stringify(registro, null, 1) + "\n", "utf8");
+
     console.log(`\ncoleta ${classificacao.classe} — agregado atualizado: ${agregados.municipios.length} municípios`);
+    console.log(`registro de publicação: ${registro.municipios.length} município(s) já tiveram lastro alguma vez`);
     for (const m of classificacao.motivos) console.log(`  · ${m}`);
   }
 
