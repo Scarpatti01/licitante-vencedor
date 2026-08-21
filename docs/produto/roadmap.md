@@ -149,6 +149,30 @@ Conversão não é item de checklist de alguém: é condição de build.
 
 ## O próximo passo, e a armadilha dele
 
+**Aberto, em 21/08 — a leitura dos posts.** O blog nunca teve leitura de
+verdade: as levas de 15 e 16/08 saíram com 0 de 25 posts lidos, e desde 16/08
+não sai leva nenhuma, embora a coleta rode todo dia.
+
+A armadilha aqui é a mesma que este documento já descreve em outros pontos, na
+sua forma mais cara: **não existe sinal vermelho.** O passo é
+`continue-on-error` dentro da coleta (correto — post não pode custar o commit
+do agregado), e o script, sem chave de IA utilizável, publica os posts sem
+leitura e declara a limitação na página (também correto — é honesto). Somadas,
+as duas decisões certas produzem um produto que entrega menos do que promete
+sem nunca acusar. Cinco dias assim, e o que denunciou não foi alarme: foi
+alguém conferir outra coisa.
+
+As duas causas conhecidas — `gemini-2.5-pro` aposentado (#58) e o dialeto de
+schema recusado (#63) — foram corrigidas em 21/08, e com elas a leitura de
+oportunidades passou a funcionar (18 análises reais). É razoável esperar que
+consertem os posts também, pelo mesmo caminho de código. **Razoável não é
+conferido**, e a diferença entre as duas coisas é o assunto desta seção.
+
+Para exercer sem disparar uma coleta nacional inteira, `publicar-posts.yml`
+ganhou disparo manual em 21/08 — ele não existia, e essa ausência é parte do
+motivo de o defeito ter durado.
+
+
 ~~A segunda metade da triagem~~ **Feita, em 18/08.** O processo que lê editais e
 perfis do banco, roda `avaliarOportunidade` e grava pelo mapeamento de
 `src/lib/triagem/mapeamento.ts` existe em `scripts/triar-editais.ts`

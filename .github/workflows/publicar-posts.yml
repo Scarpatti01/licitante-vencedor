@@ -1,0 +1,123 @@
+# Dispara a publicação da leva de posts do dia (`scripts/publicar-posts.ts`) à
+# mão.
+#
+# ⚠️ SEM AGENDAMENTO, DE PROPÓSITO — mesma disciplina de `triar-editais.yml` e
+# `ler-recomendados.yml`. O script JÁ roda automaticamente como passo das duas
+# coletas (`coletar-pncp.yml` e `coletar-pncp-paralelo.yml`). Um `schedule:`
+# aqui seria leva DUPLICADA, não leva mais frequente. Não acrescente.
+#
+# ## Por que este disparo passou a existir em 21/08
+#
+# Era o único dos três passos de pós-coleta sem botão próprio. A triagem tinha
+# `triar-editais.yml`, a leitura de oportunidades tinha `ler-recomendados.yml`,
+# e a publicação de posts só rodava dentro da coleta — então "rodar os posts
+# agora" significava disparar uma coleta nacional inteira (27 UFs) para exercer
+# um passo que leva minutos. Caro e desproporcional, e por isso ninguém fazia.
+#
+# ## O defeito que isso torna investigável
+#
+# Em 21/08, ao conferir a leitura das oportunidades, apareceu o vizinho: as
+# levas de posts pararam em 16/08 e NENHUM post jamais teve leitura de verdade.
+# O passo dentro da coleta é `continue-on-error: true` — o que está certo, um
+# post não pode custar o commit do agregado —, mas o efeito colateral é que ele
+# falha em silêncio e a coleta continua verde. Cinco dias assim.
+#
+# Pior: sem `GEMINI_API_KEY` utilizável o script NÃO falha. Ele publica os
+# posts sem leitura e a página declara isso — degradação honesta, e justamente
+# por ser honesta ela não grita. É o modo de falha mais caro que existe aqui:
+# o produto continua saindo, só que menos do que promete.
+
+name: Publicar posts do dia
+
+on:
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Não gravar nada — só mostrar quais editais virariam post"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  # Duas execuções simultâneas escreveriam a mesma leva do dia, e a segunda
+  # pagaria de novo pela leitura dos mesmos editais. NÃO cobre a coleta, que
+  # roda o mesmo script sob o grupo `coletar-pncp` — juntar os dois faria uma
+  # publicação manual bloquear a coleta inteira, caro demais para o que evita.
+  group: publicar-posts
+  cancel-in-progress: false
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    # Folgado como `ler-recomendados.yml` e pelo mesmo motivo: isto baixa e
+    # extrai documento de verdade, um de cada vez para não martelar o PNCP.
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # Sem isto o script morre no primeiro `import` de pacote — e foi
+      # exatamente esse o defeito que apagou a leitura dos 25 posts em 16/08.
+      # `pdfjs-dist` e `@google/genai` são dependências de produção.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Publicar
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SIMULAR: ${{ inputs.simular && '--simular' || '' }}
+        run: |
+          set -o pipefail
+
+          # `--conditions=react-server` faz `server-only` resolver para o módulo
+          # vazio; sem isso ele LANÇA na importação. Ver `scripts-resolvem.test.ts`.
+          codigo=0
+          node --conditions=react-server scripts/publicar-posts.ts $SIMULAR \
+            | tee saida-posts.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Publicação não rodou — faltam segredos"
+              echo
+              echo "O workflow rodou e parou de propósito. Nada foi publicado."
+              echo
+              echo "Para ligar, crie em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Publicação inerte::faltam segredos"
+            exit 0
+          fi
+
+          # A pergunta que este workflow existe para responder é "os posts
+          # saíram COM leitura?", e ela não se responde pelo código de saída: o
+          # script publica sem leitura e termina verde. Então o resumo carrega a
+          # saída inteira, onde a contagem de leitura aparece.
+          {
+            echo "## Leva de posts"
+            echo
+            echo '```'
+            cat saida-posts.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit "$codigo"
+
+      - name: Publicar o log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-posts
+          path: saida-posts.txt
+          retention-days: 30
+          if-no-files-found: ignore
