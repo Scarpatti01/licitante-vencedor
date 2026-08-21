@@ -1,0 +1,81 @@
+# Descobre QUAL parâmetro da nossa requisição o modelo está rejeitando.
+#
+# Companheiro de `listar-modelos-de-ia.yml`, e os dois respondem perguntas
+# diferentes:
+#
+#   listar        — este id existe e responde para a nossa chave?
+#   diagnosticar  — este id aceita a requisição que a produção realmente manda?
+#
+# A segunda pergunta nasceu porque a primeira não bastava: em 21/08 a listagem
+# disse "chamada: OK" para os dois ids novos, e minutos depois a leitura real
+# falhou 21 vezes com HTTP 400 `Request contains an invalid argument`. O ping
+# de texto puro passava; o pedido com schema de saída estruturada, não.
+#
+# Não grava nada e gasta frações de centavo — são poucas chamadas curtas.
+
+name: Diagnosticar requisição de IA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnosticar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # Aqui é obrigatório, não precaução: o script usa `@google/genai` de
+      # propósito — testar pelo SDK que a produção usa, e não por REST, é o que
+      # torna o resultado transferível. Um teste por REST poderia passar e a
+      # produção falhar na serialização do SDK.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Diagnosticar
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          set -o pipefail
+
+          codigo=0
+          node --conditions=react-server scripts/diagnosticar-requisicao-de-ia.ts \
+            | tee saida-diagnostico.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Diagnóstico não rodou — falta o segredo"
+              echo
+              echo 'Crie `GEMINI_API_KEY` em **Settings → Secrets and variables → Actions**.'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Diagnóstico inerte::falta GEMINI_API_KEY"
+            exit 0
+          fi
+
+          {
+            echo "## Qual parâmetro o modelo recusa"
+            echo
+            echo '```'
+            cat saida-diagnostico.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit "$codigo"
+
+      - name: Publicar o diagnóstico
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-diagnostico
+          path: saida-diagnostico.txt
+          retention-days: 30
+          if-no-files-found: ignore

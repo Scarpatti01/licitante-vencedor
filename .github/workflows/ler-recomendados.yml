@@ -1,0 +1,110 @@
+# Dispara a leitura dos editais mais recomendados (`scripts/ler-recomendados.ts`)
+# à mão.
+#
+# ⚠️ SEM AGENDAMENTO, DE PROPÓSITO — mesma disciplina de `triar-editais.yml` e
+# `verificar-custo-de-ia.yml`. O script JÁ roda automaticamente como passo das
+# duas coletas (`coletar-pncp.yml` e `coletar-pncp-paralelo.yml`), logo depois
+# da triagem; este workflow existe para outra coisa: rodar fora do horário do
+# cron quando for preciso ver o resultado agora — na estreia, principalmente,
+# que é a primeira vez que a leitura real toca oportunidade de cliente.
+#
+# Um `schedule:` aqui seria leitura DUPLICADA, não leitura mais frequente. Não
+# acrescente.
+
+name: Ler editais recomendados
+
+on:
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Não ler nem gravar — só imprimir quantos editais entrariam"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  # Serializa DUAS execuções manuais. Duas leituras simultâneas do mesmo edital
+  # não corrompem o banco — o upsert de `analises_de_edital` absorve —, mas
+  # pagariam duas vezes pela mesma leitura de IA se as duas consultassem o
+  # cache antes de qualquer uma gravar.
+  #
+  # NÃO cobre a coleta, que roda o mesmo script sob o grupo `coletar-pncp`.
+  # Grupos de concorrência do GitHub só serializam entre si quem compartilha o
+  # nome, e juntar os dois aqui faria uma leitura manual bloquear a coleta
+  # inteira — caro demais para o que evita. A janela de sobreposição é
+  # pequena (a coleta roda 6h10/8h10 UTC) e o pior caso é pagar uma vez a mais
+  # por alguns editais, não dado errado. Se isso virar problema real, o lugar
+  # de resolver é uma trava no banco, não aqui.
+  group: ler-recomendados
+  cancel-in-progress: false
+
+jobs:
+  ler:
+    runs-on: ubuntu-latest
+    # Mais folgado que os 15 de `triar-editais.yml`: a triagem é aritmética em
+    # memória, esta baixa e extrai documento de verdade — até 25 por empresa,
+    # um de cada vez para não martelar o PNCP.
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # Sem isto o script morre no primeiro `import` de pacote — e pior, morre
+      # UMA VEZ POR EDITAL, num passo que termina verde. Ver
+      # `src/lib/workflows-instalam-dependencias.test.ts` e o defeito de 16/08.
+      #
+      # Sem `--omit=dev`, diferente de `triar-editais.yml`: a leitura precisa
+      # de `pdfjs-dist` e `@google/genai`, que são dependências de produção —
+      # mas a flag fica aqui explicitada para quem comparar os dois arquivos
+      # não achar que foi esquecimento.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Ler
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SIMULAR: ${{ inputs.simular && '--simular' || '' }}
+        run: |
+          set -o pipefail
+
+          # `|| codigo=$?` em vez de deixar `set -e` matar: o código de saída é
+          # informação aqui, não só sucesso ou fracasso — ver `SEM_CONFIGURACAO`
+          # no script.
+          codigo=0
+          node --conditions=react-server scripts/ler-recomendados.ts $SIMULAR \
+            | tee saida-leitura.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Leitura não rodou — faltam segredos"
+              echo
+              echo "O workflow rodou e parou de propósito. Nada foi lido e nada foi gravado."
+              echo
+              echo "Para ligar, crie em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Leitura inerte::faltam segredos — ver o resumo desta execução"
+            exit 0
+          fi
+
+          exit "$codigo"
+
+      - name: Publicar o log da leitura
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-leitura
+          path: saida-leitura.txt
+          retention-days: 30
+          if-no-files-found: ignore
