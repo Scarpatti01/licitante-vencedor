@@ -46,6 +46,20 @@ export type Checklist = {
    * pareceria "não falta nada".
    */
   derivadoDoDocumento: boolean;
+  /**
+   * `true` quando o texto do edital foi de fato lido — mesmo que nenhuma
+   * exigência tenha sobrevivido à checagem de evidência.
+   *
+   * Existe separado de `derivadoDoDocumento` porque "nunca lido" e "lido, mas
+   * nada sustentado" são estados diferentes. Antes desta distinção, os dois
+   * caíam no mesmo `false` e a interface dizia "o documento não foi baixado
+   * nem lido" para um edital que tinha sido lido de ponta a ponta — só não
+   * tinha exigência nenhuma que se sustentasse na checagem de evidência. É a
+   * mesma invenção de certeza que este arquivo existe para evitar, ao
+   * contrário: apagar que algo foi verificado é tão falso quanto inventar que
+   * não foi.
+   */
+  analiseLeuTexto: boolean;
   totais: {
     obrigatorios: number;
     disponiveis: number;
@@ -141,13 +155,21 @@ export function montarChecklist(
   const porTipo = new Map<TipoDeDocumento, DocumentoDaEmpresa>();
   for (const doc of perfil.documentos) {
     // Um tipo pode ter mais de um documento cadastrado (duas certidões
-    // estaduais, por exemplo). Fica o de validade mais longa, que é o que a
-    // empresa apresentaria.
+    // estaduais, por exemplo). Fica o que a empresa apresentaria: primeiro
+    // critério é ter arquivo anexado — um cadastro sem arquivo não vale mais
+    // só por ter uma data de validade maior, ou o checklist preferirira um
+    // registro vazio a um documento pronto. Entre dois com o mesmo status de
+    // arquivo, fica o de validade mais longa.
     const atual = porTipo.get(doc.tipo);
-    if (!atual || (doc.validoAte ?? "") > (atual.validoAte ?? "")) porTipo.set(doc.tipo, doc);
+    const substitui =
+      !atual ||
+      (doc.arquivoAnexado && !atual.arquivoAnexado) ||
+      (doc.arquivoAnexado === atual.arquivoAnexado && (doc.validoAte ?? "") > (atual.validoAte ?? ""));
+    if (substitui) porTipo.set(doc.tipo, doc);
   }
 
-  const derivadoDoDocumento = analise.profundidade !== "lista" && analise.exigencias.length > 0;
+  const analiseLeuTexto = analise.profundidade !== "lista";
+  const derivadoDoDocumento = analiseLeuTexto && analise.exigencias.length > 0;
   const itens: ItemDoChecklist[] = [];
 
   if (derivadoDoDocumento) {
@@ -190,6 +212,7 @@ export function montarChecklist(
   return {
     itens,
     derivadoDoDocumento,
+    analiseLeuTexto,
     totais: {
       obrigatorios: obrigatorios.length,
       disponiveis: obrigatorios.filter((i) => i.status === "disponivel").length,

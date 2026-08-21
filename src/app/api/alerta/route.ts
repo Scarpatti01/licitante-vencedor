@@ -50,7 +50,7 @@ const texto = (v: unknown, max: number): string | null =>
 const LIMITE = { maximo: 5, janelaSegundos: 60 };
 
 export async function POST(request: Request) {
-  const chamador = identificarChamador(request);
+  const chamador = identificarChamador(request.headers);
   const limite = dentroDoLimite(`alerta:${chamador}`, LIMITE);
   if (!limite.permitido) {
     return Response.json(

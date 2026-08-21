@@ -51,9 +51,10 @@ export function Checklist({ checklist }: { checklist: TipoChecklist }) {
       {!checklist.derivadoDoDocumento ? (
         <Aviso tom="indeterminado" titulo="Este checklist ainda não foi extraído deste edital">
           <p>
-            O documento do edital não foi lido, então a lista abaixo é a habilitação que a Lei
-            14.133/2021 torna usual — não a exigência confirmada deste certame. Trate-a como ponto
-            de partida e confirme no texto oficial.
+            {checklist.analiseLeuTexto
+              ? "O documento do edital foi lido, mas nenhuma exigência de habilitação foi confirmada nele — a lista abaixo é a habilitação que a Lei 14.133/2021 torna usual, não a exigência confirmada deste certame."
+              : "O documento do edital não foi lido, então a lista abaixo é a habilitação que a Lei 14.133/2021 torna usual — não a exigência confirmada deste certame."}{" "}
+            Trate-a como ponto de partida e confirme no texto oficial.
           </p>
         </Aviso>
       ) : null}

@@ -43,16 +43,12 @@ describe("dentroDoLimite", () => {
 
 describe("identificarChamador", () => {
   it("usa o primeiro endereço do x-forwarded-for", () => {
-    const req = new Request("https://exemplo.test", {
-      headers: { "x-forwarded-for": "203.0.113.7, 10.0.0.1" },
-    });
-    expect(identificarChamador(req)).toBe("203.0.113.7");
+    const cabecalhos = new Headers({ "x-forwarded-for": "203.0.113.7, 10.0.0.1" });
+    expect(identificarChamador(cabecalhos)).toBe("203.0.113.7");
   });
 
   it("cai para x-real-ip e depois para um valor fixo", () => {
-    expect(
-      identificarChamador(new Request("https://exemplo.test", { headers: { "x-real-ip": "198.51.100.9" } })),
-    ).toBe("198.51.100.9");
-    expect(identificarChamador(new Request("https://exemplo.test"))).toBe("desconhecido");
+    expect(identificarChamador(new Headers({ "x-real-ip": "198.51.100.9" }))).toBe("198.51.100.9");
+    expect(identificarChamador(new Headers())).toBe("desconhecido");
   });
 });

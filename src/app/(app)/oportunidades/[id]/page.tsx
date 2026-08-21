@@ -60,10 +60,12 @@ export default async function EditalPagina({ params }: Props) {
   const { score, checklist, recomendacao } = avaliacao;
   const recomendado = RECOMENDACAO[recomendacao.nivel];
 
-  // `derivadoDoDocumento` é o sinal, disponível na avaliação, de que o texto do
-  // edital foi mesmo lido. Toda a honestidade das seções seguintes pendura-se
-  // nele: sem leitura, "não encontramos exigência" vira "não procuramos".
-  const editalLido = checklist.derivadoDoDocumento;
+  // `analiseLeuTexto` é o sinal, disponível na avaliação, de que o texto do
+  // edital foi mesmo lido — diferente de `derivadoDoDocumento`, que também exige
+  // que alguma exigência tenha sobrevivido à checagem de evidência. Usar o
+  // segundo aqui diria "não foi lido" para um edital que foi lido de ponta a
+  // ponta e simplesmente não tinha exigência nenhuma que se sustentasse.
+  const editalLido = checklist.analiseLeuTexto;
 
   return (
     <div className="mx-auto w-full max-w-4xl px-4 py-8 sm:px-6 sm:py-10">

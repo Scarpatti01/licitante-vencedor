@@ -74,7 +74,9 @@ export function montarBloco(item: ItemSelecionado, agora: Date, urlBase = SITE.u
         ? pendencias
         : checklist.derivadoDoDocumento
           ? []
-          : ["o texto do edital ainda não foi lido — as exigências não foram conferidas"],
+          : checklist.analiseLeuTexto
+            ? ["o edital foi lido, mas nenhuma exigência de habilitação foi confirmada no texto"]
+            : ["o texto do edital ainda não foi lido — as exigências não foram conferidas"],
     proximaAcao: recomendacao.proximaAcao.titulo,
     link: `${urlBase}/oportunidades/${item.oportunidade.id}/`,
   };
