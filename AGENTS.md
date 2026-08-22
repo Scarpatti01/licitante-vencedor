@@ -113,15 +113,22 @@ Como conferir, na ordem:
 ls dados/posts/            # existe leva com a data de hoje?
 ```
 
-```sql
--- a leitura de post é a que NÃO tem oportunidade associada
-select date(criado_em), modelo, sucesso, count(*)
-from execucoes_de_ia group by 1,2,3 order by 1 desc;
-```
+Se existe, conte quantos daqueles posts têm leitura de verdade — campo
+`analise` preenchido no JSON da leva. Esse é o número que importa.
+
+**NÃO confie em `execucoes_de_ia` para responder isso.** Conferido em 21/08: os
+25 posts falharam e a tabela ficou VAZIA. O script empilha as gravações em
+segundo plano (`gravacoesPendentes`) e o guarda de recusa em bloco interrompe
+antes de esperá-las — ou seja, no dia em que tudo falha, o livro de execuções
+perde justamente a evidência de que falhou. Consertar isso é trabalho legítimo,
+e não foi feito.
+
+A fonte confiável é o log: a saída do passo "Publicar a leva de posts do dia"
+na execução da coleta, ou o resumo de `publicar-posts.yml`, que carrega a saída
+inteira de propósito. É lá que aparece `[n/25] ... com leitura` linha a linha.
 
 Se não houver leva de hoje, ou se houver mas sem leitura, dispare
-`publicar-posts.yml` à mão (com **simular** desmarcado) e leia o resumo da
-execução — ele carrega a saída inteira de propósito.
+`publicar-posts.yml` à mão (com **simular** desmarcado).
 
 **O que torna isso traiçoeiro, e por que não basta olhar se o job ficou verde:**
 o passo dentro da coleta é `continue-on-error: true`, e o script publica os
@@ -129,9 +136,18 @@ posts SEM leitura quando a chave do Gemini não serve, declarando isso na
 página. Ou seja: falha e sucesso degradado são ambos verdes. A única prova é
 contar quantos posts saíram com leitura.
 
-Estado em 21/08, para comparar: levas pararam em 16/08, e as de 15 e 16/08 têm
-**0 de 25** posts com leitura. As causas conhecidas — modelo aposentado (#58) e
-dialeto de schema recusado (#63) — foram corrigidas no mesmo dia, e a leitura
-de oportunidades voltou a funcionar com elas. **Que isso conserte os posts é
-expectativa, não fato conferido.** Se a primeira leva depois da correção sair
-com leitura, apague esta seção.
+Estado em 21/08, e o que o log já provou: a coleta das 08h54 rodou os posts, e
+os **25 falharam com o mesmo erro** — `models/gemini-2.5-pro is no longer
+available` (HTTP 404). É exatamente o modelo aposentado que a #58 corrigiu, e
+os dois scripts pegam o id no mesmo `modelosGemini()`, então a correção alcança
+os posts sem ninguém tocar em `publicar-posts.ts`. A causa está identificada,
+não suposta.
+
+O que continua em aberto são as paredes seguintes, que os posts nunca
+alcançaram por terem morrido no 404: o dialeto de schema (#63, mesmo caminho,
+não exercido para posts) e o limite de tokens de saída, que derrubou 2 de 21 na
+execução boa das oportunidades e que **nenhuma das duas correções resolve**.
+Espere um ou dois posts sem leitura — isso não impede a leva, porque o guarda
+só recusa quando NENHUM é lido.
+
+Apague esta seção quando uma leva sair com a maioria dos posts lidos.
