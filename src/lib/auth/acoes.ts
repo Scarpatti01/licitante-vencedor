@@ -2,8 +2,9 @@
 
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { isAuthWeakPasswordError } from "@supabase/supabase-js";
 import { clienteDoServidor } from "./cliente";
-import { MINIMO_DA_SENHA, type EstadoDaEntrada } from "./estado";
+import { MINIMO_DA_SENHA, mensagemDeSenhaRecusada, type EstadoDaEntrada } from "./estado";
 import { destinoSeguro } from "./rotas";
 import { dentroDoLimite, identificarChamador } from "../limite-de-taxa";
 
@@ -100,6 +101,33 @@ export async function criarConta(
   const { data, error } = await supabase.auth.signUp({ email, password: senha });
 
   if (error) {
+    /*
+     * Senha recusada por fraca precisa ser dita, e as demais falhas não.
+     *
+     * Antes, TODO erro daqui virava "tente mais tarde" — e enquanto a única
+     * recusa possível era falha de infraestrutura, isso estava certo: quem lê
+     * não pode fazer nada além de esperar.
+     *
+     * Ligar a proteção contra senha vazada muda o mundo em que essa frase vale.
+     * A recusa passa a ser sobre algo que SÓ a pessoa pode resolver, e mandá-la
+     * esperar a faz tentar a mesma senha de novo, para sempre, sem nunca
+     * descobrir por quê. A proteção existe para evitar conta invadida; sem esta
+     * mensagem ela evitaria a conta inteira.
+     *
+     * `reasons` vem do próprio Supabase e distingue os três casos. `pwned` é o
+     * que importa aqui, e a mensagem dele diz a única coisa que a pessoa
+     * precisa saber: o problema não é a nossa regra, é que aquela senha já está
+     * em poder de terceiros.
+     *
+     * Isto NÃO enfraquece a defesa contra enumeração de contas descrita abaixo:
+     * e-mail já cadastrado não chega neste ramo — o Supabase devolve sucesso
+     * sem erro, de propósito. O que se distingue aqui é a senha, que quem envia
+     * já conhece.
+     */
+    if (isAuthWeakPasswordError(error)) {
+      return { erro: mensagemDeSenhaRecusada(error.reasons), aviso: null };
+    }
+
     return { erro: "Não conseguimos criar a conta agora. Tente mais tarde.", aviso: null };
   }
 
