@@ -247,7 +247,45 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           set -o pipefail
-          node --conditions=react-server scripts/publicar-posts.ts | tee saida-posts.txt
+
+          # `continue-on-error` protege o commit do agregado — um post não pode
+          # custar a coleta do dia. O que ele NÃO pode fazer é esconder que a
+          # publicação falhou, e foi exatamente isso que aconteceu entre 16 e
+          # 21/08: o script recusou a leva cinco dias seguidos (corretamente,
+          # porque nenhum edital foi lido) e o passo apareceu VERDE nos cinco.
+          # Ninguém viu, porque não havia o que ver.
+          #
+          # Por isso o código de saída é capturado em vez de ignorado: o passo
+          # continua não derrubando o job, mas a falha vira anotação vermelha e
+          # entra no resumo da execução, que é onde alguém olha.
+          codigo=0
+          node --conditions=react-server scripts/publicar-posts.ts \
+            | tee saida-posts.txt || codigo=$?
+
+          if [ "$codigo" != "0" ]; then
+            {
+              echo "## ⚠️ A leva de posts NÃO foi publicada"
+              echo
+              echo "O script saiu com código \`$codigo\`. A coleta seguiu (de propósito), mas o site não ganhou páginas novas hoje."
+              echo
+              echo '```'
+              tail -25 saida-posts.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error title=Leva de posts não publicada::o script saiu com $codigo — ver o resumo desta execução"
+            exit 0
+          fi
+
+          # Sucesso do processo não é sucesso do produto: o script publica com
+          # leitura PARCIAL sem falhar, que é o resultado esperado num dia
+          # normal. Só que "24 de 25" e "1 de 25" saem os dois verdes, e a
+          # diferença entre eles é o produto inteiro. Então a proporção vai para
+          # o resumo, sempre.
+          proporcao=$(grep -o 'com leitura: [0-9]* de [0-9]*' saida-posts.txt | tail -1)
+          if [ -n "$proporcao" ]; then
+            echo "## Leva publicada — $proporcao" >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Leva de posts::$proporcao"
+          fi
 
       # A cadência da triagem: logo depois de os editais do dia estarem no
       # Postgres, e não numa hora fixa própria. `scripts/triar-editais.ts` lê
@@ -271,7 +309,24 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           set -o pipefail
-          node scripts/triar-editais.ts | tee saida-triagem.txt
+          # `continue-on-error` acima protege o commit do agregado, e deve
+          # continuar. O que não pode é a falha sumir junto: ver
+          # `falha-silenciosa.test.ts` e os cinco dias de posts quebrados.
+          codigo=0
+          node scripts/triar-editais.ts | tee saida-triagem.txt || codigo=$?
+
+          if [ "$codigo" != "0" ]; then
+            {
+              echo "## ⚠️ Triagem falhou"
+              echo
+              echo "Código \`$codigo\`. A coleta seguiu de propósito, mas a triagem não rodou — nenhum score novo foi gravado hoje, e o alerta do dia sai com o que já existia."
+              echo
+              echo '```'
+              tail -25 saida-triagem.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error title=Triagem falhou::código $codigo — ver o resumo desta execução"
+          fi
 
       # Logo depois da triagem, pela mesma razão de cadência: precisa que
       # `oportunidades` já tenha o score "de ficha" do dia para saber quem é
@@ -289,7 +344,24 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           set -o pipefail
-          node --conditions=react-server scripts/ler-recomendados.ts | tee saida-leitura.txt
+          # `continue-on-error` acima protege o commit do agregado, e deve
+          # continuar. O que não pode é a falha sumir junto: ver
+          # `falha-silenciosa.test.ts` e os cinco dias de posts quebrados.
+          codigo=0
+          node --conditions=react-server scripts/ler-recomendados.ts | tee saida-leitura.txt || codigo=$?
+
+          if [ "$codigo" != "0" ]; then
+            {
+              echo "## ⚠️ Leitura dos recomendados falhou"
+              echo
+              echo "Código \`$codigo\`. A coleta seguiu de propósito, mas a leitura não rodou — as oportunidades do dia ficam sem análise, que é o produto."
+              echo
+              echo '```'
+              tail -25 saida-leitura.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error title=Leitura dos recomendados falhou::código $codigo — ver o resumo desta execução"
+          fi
 
       # `${{ }}` NUNCA entra no corpo de um `run:` aqui: a expressão é
       # substituída no texto do script ANTES de o shell rodar, então um valor
