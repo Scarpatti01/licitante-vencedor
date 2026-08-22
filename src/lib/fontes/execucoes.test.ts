@@ -8,6 +8,8 @@ const CLASSIFICACAO: Classificacao = {
   atual: { editais: 120, municipios: 8, ufs: ["PE", "CE"] },
   anterior: { editais: 3200, municipios: 60, ufs: ["PE", "CE", "AL", "PB", "RN", "SE"] },
   preservarAnterior: false,
+  // As quatro que estão no anterior e não no atual — coerente com os dois resumos acima.
+  ufsAusentes: ["AL", "PB", "RN", "SE"],
 };
 
 afterEach(() => {

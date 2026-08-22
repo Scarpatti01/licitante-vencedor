@@ -31,6 +31,30 @@ import type { Cobertura } from "./cobertura.ts";
 
 export type ClasseDeColeta = "completa" | "parcial-aceitavel" | "degradada";
 
+/**
+ * Até quanto da cobertura pode sumir de uma vez sem a coleta ser recusada.
+ *
+ * Um quarto. O número separa dois mundos que a regra antiga confundia:
+ *
+ *   uma ou duas UFs fora    — o PNCP oscilando, que é rotina e não nos cabe
+ *                             consertar. O dia passa, e quem depende daquelas
+ *                             praças é avisado.
+ *   um terço do país fora   — não existe instabilidade de fonte com esse
+ *                             formato. É credencial vencida, deploy quebrado,
+ *                             rede nossa. Aí recusar é o certo, e preservar o
+ *                             agregado anterior é o que impede o dia ruim de
+ *                             apagar o dia bom.
+ *
+ * Com 27 UFs, o teto cai em 6 — folgado para a oscilação observada (1 por
+ * coleta) e apertado o bastante para não deixar passar um colapso.
+ *
+ * A guarda de VOLUME continua valendo em paralelo e é a rede principal: sete
+ * UFs somem e o volume despenca junto, então na prática as duas se cobrem.
+ * Existem duas porque medem coisas diferentes — uma conta praças, a outra conta
+ * editais —, e um dia esquisito pode disparar só uma.
+ */
+export const FRACAO_MAXIMA_DE_UFS_AUSENTES = 0.25;
+
 /** O mínimo que dá para medir de um agregado, seja o novo ou o do disco. */
 export type ResumoDeAgregado = {
   editais: number;
@@ -48,6 +72,14 @@ export type Classificacao = {
   anterior: ResumoDeAgregado | null;
   /** `true` quando o agregado anterior deve ser PRESERVADO em vez de substituído. */
   preservarAnterior: boolean;
+  /**
+   * UFs que existiam no agregado anterior e não vieram nesta coleta.
+   *
+   * Sai daqui e vai até o e-mail do cliente. É a diferença entre "hoje não há
+   * edital na sua praça" e "hoje não conseguimos olhar a sua praça" — duas
+   * frases que o silêncio torna idênticas, e só uma delas é verdade.
+   */
+  ufsAusentes: string[];
 };
 
 /** A forma mínima de um agregado; basta para medir, sem acoplar ao formato inteiro. */
@@ -114,7 +146,8 @@ export function classificarColeta(entrada: {
         : "não há agregado anterior — primeira coleta",
     );
     if (!cobertura.completa) motivos.push(descreverCobertura(cobertura));
-    return { classe, motivos, atual, anterior, preservarAnterior: false };
+    // Sem agregado anterior não há do que sentir falta.
+    return { classe, motivos, atual, anterior, preservarAnterior: false, ufsAusentes: [] };
   }
 
   const sumiram = anterior.ufs.filter((uf) => !atual.ufs.includes(uf));
@@ -131,8 +164,43 @@ export function classificarColeta(entrada: {
     );
   }
 
-  if (motivos.length > 0) {
-    return { classe: "degradada", motivos, atual, anterior, preservarAnterior: true };
+  /*
+   * UF que sumiu deixou de RECUSAR a coleta, em 22/08.
+   *
+   * A regra antiga — qualquer UF ausente derruba o dia inteiro — foi escrita
+   * quando a coleta cobria seis estados, e ali era prudente. A expansão para 27
+   * UFs mudou a aritmética sem que ninguém reparasse: com mais sorteios, a
+   * chance de ALGUM dar errado cresce, e o PNCP falha por UF o tempo todo. Nas
+   * duas coletas de 22/08 caiu uma UF diferente em cada — RR numa, MA na outra
+   * — e as duas foram recusadas. Resultado: o produto passou o dia sem dado
+   * novo por causa de 1 UF em 27.
+   *
+   * O custo de recusar deixou de ser "perdemos um dia ruim" e virou "perdemos
+   * quase todo dia". Então o dia passa, e a ausência é DECLARADA a quem ela
+   * afeta — que é a mesma escolha que esta base já faz em toda parte: cobertura
+   * parcial anunciada é utilizável; cobertura parcial silenciosa, não.
+   *
+   * O que NÃO mudou: as duas guardas que pegam falha sistêmica continuam de pé,
+   * e é por isso que afrouxar aqui não é abrir a porteira.
+   */
+  const fracaoAusente = sumiram.length / anterior.ufs.length;
+  const sumiuGenteDemais = fracaoAusente > FRACAO_MAXIMA_DE_UFS_AUSENTES;
+
+  if (sumiuGenteDemais) {
+    motivos.push(
+      `${(fracaoAusente * 100).toFixed(0)}% das UFs do agregado anterior sumiram de uma vez, acima do teto de ${(FRACAO_MAXIMA_DE_UFS_AUSENTES * 100).toFixed(0)}% — isso não é instabilidade da fonte, é falha nossa`,
+    );
+  }
+
+  if (razao < limiar || sumiuGenteDemais) {
+    return {
+      classe: "degradada",
+      motivos,
+      atual,
+      anterior,
+      preservarAnterior: true,
+      ufsAusentes: sumiram,
+    };
   }
 
   if (cobertura.completa) {
@@ -142,6 +210,7 @@ export function classificarColeta(entrada: {
       atual,
       anterior,
       preservarAnterior: false,
+      ufsAusentes: [],
     };
   }
 
@@ -149,11 +218,14 @@ export function classificarColeta(entrada: {
     classe: "parcial-aceitavel",
     motivos: [
       descreverCobertura(cobertura),
-      `volume em ${(razao * 100).toFixed(1)}% do anterior e nenhuma UF perdida — o agregado continua utilizável`,
+      sumiram.length > 0
+        ? `volume em ${(razao * 100).toFixed(1)}% do anterior, com ${sumiram.length} UF(s) fora (${sumiram.join(", ")}) — o agregado passa, e quem depende dessas praças é avisado`
+        : `volume em ${(razao * 100).toFixed(1)}% do anterior e nenhuma UF perdida — o agregado continua utilizável`,
     ],
     atual,
     anterior,
     preservarAnterior: false,
+    ufsAusentes: sumiram,
   };
 }
 
