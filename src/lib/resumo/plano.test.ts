@@ -217,3 +217,61 @@ describe("as preferências mandam", () => {
     expect(plano.editaisIds).toEqual(["alto", "baixo"]);
   });
 });
+
+describe("objeto longo não vira paredão", () => {
+  it("corta o objeto e mantém a aderência visível", () => {
+    /*
+     * O defeito que só a execução real mostrou. Este objeto é de verdade, saiu
+     * da simulação de 22/08 contra o banco de produção.
+     */
+    const gigante =
+      "Registro de Preços para eventual contratação de empresa especializada na " +
+      "prestação de serviços de controle sanitário integrado, compreendendo " +
+      "desinsetização, desratização e descupinização, para controle de vetores e " +
+      "pragas urbanas, a serem executados sob demanda, nas instalações do Depósito " +
+      "de Fardamento da Marinha no Rio de Janeiro.";
+
+    const plano = planejarResumoDiario(
+      dados({ oportunidades: [oportunidade({ objeto: gigante, score: 86 })] }),
+      AGORA,
+    );
+
+    if (plano.tipo !== "enviar") throw new Error("esperava envio");
+    const rotulo = plano.conteudo.listas[0].itens[0].rotulo;
+
+    expect(gigante.length).toBeGreaterThan(300);
+    expect(rotulo.length).toBeLessThan(150);
+    expect(rotulo).toContain("…");
+    // A aderência ordena a lista; se sumir no corte, o leitor perde o critério.
+    expect(rotulo).toMatch(/aderência 86$/);
+  });
+
+  it("não corta no meio da palavra", () => {
+    const plano = planejarResumoDiario(
+      dados({
+        oportunidades: [
+          oportunidade({ objeto: "Aquisição de material hospitalar diverso ".repeat(6) }),
+        ],
+      }),
+      AGORA,
+    );
+
+    if (plano.tipo !== "enviar") throw new Error("esperava envio");
+    const rotulo = plano.conteudo.listas[0].itens[0].rotulo;
+
+    /*
+     * A asserção certa não é "há espaço antes da reticência" — `cortar` faz
+     * `trimEnd()` antes de acrescentá-la, e faz bem. O que importa é que o
+     * pedaço mantido termine numa palavra INTEIRA do original.
+     *
+     * A primeira versão deste teste checava o espaço e falhava contra um corte
+     * perfeitamente correto. Media a forma, não a propriedade.
+     */
+    const mantido = rotulo.slice(0, rotulo.indexOf("…"));
+    const original = "Aquisição de material hospitalar diverso ".repeat(6);
+
+    expect(original.startsWith(mantido)).toBe(true);
+    // O caractere logo após o corte é espaço: prova de que a palavra terminou.
+    expect(original[mantido.length]).toBe(" ");
+  });
+});
