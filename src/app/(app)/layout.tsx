@@ -2,10 +2,11 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { empresaAtual, ehDemonstracao, repositorio } from "@/lib/dados";
-import { usuarioAtual, vinculoDoUsuario } from "@/lib/auth/sessao";
+import { empresasDoUsuario, usuarioAtual, vinculoDoUsuario } from "@/lib/auth/sessao";
 import { SITE } from "@/lib/site";
 import { AvisoDeDemonstracao } from "@/components/app/AvisoDeDemonstracao";
 import { NavegacaoDoApp } from "@/components/app/NavegacaoDoApp";
+import { SeletorDeEmpresa } from "@/components/app/SeletorDeEmpresa";
 import { Etiqueta } from "@/components/app/ui";
 import { diagnosticarPerfil, resumoDoPerfil } from "@/components/perfil/diagnostico";
 import { formatarCnpj, NOME_DO_PORTE } from "@/components/perfil/validacao";
@@ -66,6 +67,7 @@ export default async function LayoutDoProduto({
 
   const repo = await repositorio();
   const empresaId = await empresaAtual();
+  const empresas = await empresasDoUsuario();
   const perfil = await repo.perfil(empresaId);
   const diagnostico = diagnosticarPerfil(perfil);
   const demonstracao = ehDemonstracao(repo, empresaId);
@@ -99,6 +101,12 @@ export default async function LayoutDoProduto({
               cnpj={perfil?.cnpj ?? null}
               porte={perfil ? NOME_DO_PORTE[perfil.porte] : null}
             />
+            {/*
+              Ao LADO da identidade, e não num menu escondido: quem gerencia
+              várias empresas precisa ver de qual está tratando no mesmo lugar
+              em que troca. O componente se apaga sozinho quando há uma só.
+            */}
+            <SeletorDeEmpresa empresas={empresas} ativa={empresaId} />
           </div>
 
           <Link
