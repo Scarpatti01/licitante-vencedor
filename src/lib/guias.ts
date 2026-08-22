@@ -107,6 +107,12 @@ export const PAGINAS_INSTITUCIONAIS: readonly { href: string; prioridade: number
  */
 export const PAGINAS_PRODUTO: readonly { href: string; prioridade: number }[] = [
   { href: "/alerta-de-licitacao/", prioridade: 0.9 },
+  /*
+   * Preços com a mesma prioridade do alerta: desde 22/08 é para cá que o botão
+   * principal da home aponta, e página que recebe o CTA principal e fica com
+   * prioridade de rodapé passa ao rastreador um sinal que contradiz o site.
+   */
+  { href: "/precos/", prioridade: 0.9 },
   { href: "/como-funciona/", prioridade: 0.7 },
 ];
 

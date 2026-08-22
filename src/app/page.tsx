@@ -145,12 +145,30 @@ export default function Home() {
               foi lido ou se ainda está só no que o órgão publicou.
             </p>
 
+            {/*
+              O botão principal leva a PREÇOS, e não ao alerta gratuito.
+              
+              Era a incoerência mais cara da página: o texto acima vende a
+              leitura diária comparada ao perfil da empresa — que é o produto
+              pago — e o botão entregava o alerta por cidade, que não lê nada.
+              Quem clicava atrás do que acabou de ler recebia outra coisa, e a
+              única forma de descobrir o preço era não existir.
+
+              O gratuito não sumiu: virou o botão do meio, para quem ainda não
+              quer pagar. E a página de preços leva a ele de novo, no fim.
+            */}
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
-                href="/alerta-de-licitacao/"
+                href="/precos/"
                 className="rounded-md bg-sky-400 px-5 py-2.5 text-sm font-semibold text-[#030814] transition-colors hover:bg-sky-300"
               >
-                Receber os editais do meu ramo
+                Ver planos e preços
+              </Link>
+              <Link
+                href="/alerta-de-licitacao/"
+                className="rounded-md border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-slate-400"
+              >
+                Começar pelo alerta gratuito
               </Link>
               <Link
                 href="/como-funciona/"
