@@ -1,5 +1,6 @@
 import type { ConteudoDeEmail, ItemDeLista } from "../email/mensagens.ts";
 import { SITE } from "../site.ts";
+import { cortar, OBJETO_NO_ROTULO } from "../email/cortar.ts";
 
 /**
  * Quem recebe o resumo diário do cliente, e o que vai nele.
@@ -124,8 +125,22 @@ function comoItem(o: OportunidadeDoResumo, agora: Date): ItemDeLista {
     o.leuTexto ? "documento lido" : "documento ainda não lido",
   ];
 
+  /*
+   * O objeto vai CORTADO, e a aderência vem depois do corte.
+   *
+   * Descoberto rodando contra dados reais, não em teste: os objetos do PNCP
+   * chegam com centenas de caracteres — um deles, na simulação de 22/08, tinha
+   * mais de 300 —, e oito assim transformam a lista num paredão que ninguém lê
+   * no celular às 7h. O teste não pegaria sozinho: quem escreve exemplo escreve
+   * exemplo legível.
+   *
+   * A aderência fica DEPOIS do corte de propósito: é o número que ordena a
+   * lista, e sumiria dentro das reticências se entrasse antes.
+   */
+  const objeto = cortar(o.objeto, OBJETO_NO_ROTULO);
+
   return {
-    rotulo: o.score === null ? o.objeto : `${o.objeto} · aderência ${o.score}`,
+    rotulo: o.score === null ? objeto : `${objeto} · aderência ${o.score}`,
     texto: partes.join(" · "),
     url: o.link,
   };

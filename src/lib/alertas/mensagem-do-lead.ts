@@ -3,6 +3,7 @@ import { LIMITES, urlDeDescadastro } from "../email/mensagens.ts";
 import { emReais, prazoEmTexto } from "./formato.ts";
 import type { ItemDoAlertaDeLead, SelecaoParaLead } from "./lead.ts";
 import { SITE } from "../site.ts";
+import { cortar } from "../email/cortar.ts";
 
 /**
  * O texto do alerta diário do lead.
@@ -76,24 +77,6 @@ function bloco(item: ItemDoAlertaDeLead): BlocoDeLista {
       { rotulo: "Edital", texto: "abrir a publicação oficial", url: edital.link },
     ],
   };
-}
-
-/**
- * Corta preservando palavra, com reticência.
- *
- * Cortar no meio da palavra faz um objeto de licitação virar outra coisa
- * ("aquisição de material hospit…"), e o leitor perde justamente o substantivo
- * que diria se aquilo é do ramo dele.
- */
-function cortar(texto: string, maximo: number): string {
-  const limpo = texto.trim().replace(/\s+/g, " ");
-  if (limpo.length <= maximo) return limpo;
-
-  const pedaco = limpo.slice(0, maximo);
-  const ultimoEspaco = pedaco.lastIndexOf(" ");
-  // Sem espaço nenhum na janela é palavra única gigante (URL colada no objeto,
-  // por exemplo): aí corta seco mesmo, porque não há palavra a preservar.
-  return `${(ultimoEspaco > maximo * 0.6 ? pedaco.slice(0, ultimoEspaco) : pedaco).trimEnd()}…`;
 }
 
 /**
