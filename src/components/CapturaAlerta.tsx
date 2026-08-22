@@ -139,13 +139,27 @@ export function CapturaAlerta({
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block">
             <span className="text-sm font-medium">Seu e-mail</span>
+            {/*
+              `text-[var(--foreground)]` é PREVENÇÃO, não conserto: medido no
+              navegador, estes campos estão corretos hoje nas duas páginas em
+              que aparecem — texto escuro sobre branco.
+
+              Vale mesmo assim, e a regra virou teste em
+              `acessibilidade.test.ts`: campo que pinta o próprio fundo declara
+              a própria cor. Quem não faz isso herda a cor do ancestral, e
+              basta o componente ser colocado numa seção escura para o texto
+              digitado ficar claro sobre claro — foi exatamente assim que a
+              busca do cabeçalho quebrou, com 1,39:1 de contraste e ninguém
+              percebendo, porque o placeholder tinha cor própria e parecia
+              normal até alguém digitar.
+            */}
             <input
               name="email"
               type="email"
               required
               autoComplete="email"
               placeholder="voce@suaempresa.com.br"
-              className="mt-1 w-full rounded-md border bg-[var(--background)] px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-md border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
             />
           </label>
           <label className="block">
@@ -154,7 +168,7 @@ export function CapturaAlerta({
               name="cidade"
               type="text"
               placeholder="Recife, Caruaru…"
-              className="mt-1 w-full rounded-md border bg-[var(--background)] px-3 py-2 text-sm"
+              className="mt-1 w-full rounded-md border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
             />
           </label>
         </div>

@@ -159,7 +159,7 @@ export function LinhaDeDocumento({
             name="descricao:outro"
             defaultValue={documento?.descricao ?? ""}
             placeholder="Qual documento? Ex.: licença ambiental de operação"
-            className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-2 focus:outline-offset-1 focus:outline-[var(--accent)]"
+            className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-2 focus:outline-offset-1 focus:outline-[var(--accent)] text-[var(--foreground)]"
           />
         </div>
       ) : null}

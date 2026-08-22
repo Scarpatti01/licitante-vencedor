@@ -30,7 +30,7 @@ export function FormularioDeEmpresa() {
           inputMode="numeric"
           autoComplete="off"
           placeholder="00.000.000/0000-00"
-          className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm"
+          className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
         />
         <p className="text-xs text-[var(--muted)]">
           Pode digitar com ou sem pontuação.
@@ -46,7 +46,7 @@ export function FormularioDeEmpresa() {
           name="razaoSocial"
           required
           autoComplete="organization"
-          className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm"
+          className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
         />
       </div>
 
@@ -58,7 +58,7 @@ export function FormularioDeEmpresa() {
           id="nomeFantasia"
           name="nomeFantasia"
           autoComplete="off"
-          className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm"
+          className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
         />
       </div>
 

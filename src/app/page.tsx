@@ -64,7 +64,18 @@ export default function Home() {
         />
 
         <div className="relative mx-auto flex max-w-5xl items-center justify-between px-6 py-5">
-          <span aria-label={SITE.name}>
+          {/*
+            `role="img"` não é enfeite: sem ele o `aria-label` é IGNORADO.
+            Leitor de tela só honra rótulo em elemento com papel semântico, e
+            `span` não tem nenhum — o Lighthouse acusa como
+            `aria-prohibited-attr`.
+            
+            Aqui o logo não é link porque esta É a home, então não há `<a>` para
+            carregar o rótulo. E ele precisa de rótulo: o SVG é `aria-hidden` e
+            o nome escrito some no celular (`hidden sm:inline`), de modo que sem
+            isto quem usa leitor de tela não recebe nada no lugar do logo.
+          */}
+          <span role="img" aria-label={SITE.name}>
             <Logo />
           </span>
           <nav className="flex items-center gap-4 text-sm text-slate-300 sm:gap-6">
