@@ -6,6 +6,7 @@ import { isAuthWeakPasswordError } from "@supabase/supabase-js";
 import { clienteDoServidor } from "./cliente";
 import { MINIMO_DA_SENHA, mensagemDeSenhaRecusada, type EstadoDaEntrada } from "./estado";
 import { destinoSeguro } from "./rotas";
+import { senhaFoiVazada } from "./senha-vazada";
 import { dentroDoLimite, identificarChamador } from "../limite-de-taxa";
 
 /**
@@ -96,6 +97,22 @@ export async function criarConta(
   if (!email.includes("@")) return { erro: "Confira o e-mail.", aviso: null };
   if (senha.length < MINIMO_DA_SENHA) {
     return { erro: `A senha precisa de pelo menos ${MINIMO_DA_SENHA} caracteres.`, aviso: null };
+  }
+
+  /*
+   * A checagem de vazamento vem ANTES do `signUp`, e não depois.
+   *
+   * Depois seria pedir ao Supabase que crie a conta para então recusá-la, e num
+   * projeto com confirmação de e-mail ligada isso já teria disparado o e-mail.
+   * A pessoa receberia "confirme seu cadastro" e uma tela dizendo que a senha
+   * não serve — duas mensagens que se contradizem, sobre uma conta que existe
+   * pela metade.
+   *
+   * Ver `senha-vazada.ts` para o protocolo (a senha não sai daqui) e para o
+   * porquê de a falha ser aberta.
+   */
+  if (await senhaFoiVazada(senha)) {
+    return { erro: mensagemDeSenhaRecusada(["pwned"]), aviso: null };
   }
 
   const { data, error } = await supabase.auth.signUp({ email, password: senha });
