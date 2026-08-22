@@ -1,0 +1,250 @@
+import type { Metadata } from "next";
+import Link from "next/link";
+import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
+import { PLANOS, O_QUE_INCLUI, O_QUE_NAO_FAZ, emReais, porEmpresa } from "@/lib/precos";
+import { Faq, P, RespostaDireta, Secao } from "@/components/Prose";
+import { CabecalhoSite, Trilha } from "@/components/Navegacao";
+import { RodapeSite } from "@/components/RodapeSite";
+import { CapturaAlerta } from "@/components/CapturaAlerta";
+
+const TITULO = "Preços: quanto custa receber os editais já lidos";
+/*
+ * A descrição DERIVA dos planos, e não os repete.
+ *
+ * Este é o texto que aparece no resultado da busca. Fixá-lo na mão significa
+ * que, no dia em que o preço mudar, o Google continuaria anunciando o antigo
+ * até alguém lembrar deste arquivo — e o visitante chegaria achando que o site
+ * subiu o preço no meio do caminho.
+ */
+const MAIS_BARATO = PLANOS.reduce((a, b) =>
+  a.mensalidadeEmCentavos <= b.mensalidadeEmCentavos ? a : b,
+);
+
+const DESCRICAO =
+  `Dois planos, e o que muda entre eles é quantas empresas cabem na conta. ` +
+  `A partir de ${emReais(MAIS_BARATO.mensalidadeEmCentavos)} por mês, com a leitura diária ` +
+  `dos editais de maior aderência ao perfil.`;
+const ATUALIZADO = "2026-08-22";
+
+export const metadata: Metadata = {
+  title: "Preços",
+  description: DESCRICAO,
+  alternates: { canonical: "/precos/" },
+  openGraph: {
+    images: IMAGENS_DE_COMPARTILHAMENTO,
+    title: TITULO,
+    description: DESCRICAO,
+    url: `${SITE.url}/precos/`,
+    type: "website",
+  },
+};
+
+/**
+ * `schema.org/Offer`, um por plano.
+ *
+ * É daqui que buscadores clássicos e motores de IA tiram "quanto custa". Os
+ * valores vêm de `PLANOS`, a mesma fonte que a página exibe — preço divergente
+ * entre o texto e o dado estruturado faz o buscador anunciar um número que a
+ * página não pratica, e o visitante chega achando que foi enganado.
+ *
+ * `availability: PreOrder` porque é a verdade hoje: o preço está definido e a
+ * forma de pagar ainda não existe. Marcar `InStock` seria afirmar que dá para
+ * comprar agora.
+ */
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: `${SITE.name} — assinatura`,
+  description: DESCRICAO,
+  brand: { "@type": "Brand", name: SITE.name },
+  offers: PLANOS.map((plano) => ({
+    "@type": "Offer",
+    name: plano.nome,
+    price: (plano.mensalidadeEmCentavos / 100).toFixed(2),
+    priceCurrency: "BRL",
+    availability: "https://schema.org/PreOrder",
+    url: `${SITE.url}/precos/`,
+  })),
+};
+
+export default function Precos() {
+  return (
+    <div className="min-h-screen">
+      <CabecalhoSite />
+
+      <main className="mx-auto max-w-3xl px-6 py-12">
+        <Trilha atual="Preços" />
+
+        <h1 className="mt-6 text-3xl font-semibold tracking-tight sm:text-4xl">
+          Quanto custa receber os editais já lidos
+        </h1>
+
+        <div className="mt-4 space-y-4">
+          <P>
+            Dois planos, e o que muda entre eles é uma coisa só:{" "}
+            <strong>quantas empresas cabem na conta</strong>. O produto entregue
+            é o mesmo nos dois.
+          </P>
+        </div>
+
+        {/*
+          Os planos ANTES de qualquer outra coisa. Quem abre esta página veio
+          por um número; fazer a pessoa rolar por três parágrafos até achá-lo é
+          o que transforma interesse em desistência.
+        */}
+        <div className="mt-10 grid gap-5 sm:grid-cols-2">
+          {PLANOS.map((plano) => (
+            <div
+              key={plano.codigo}
+              className="rounded-xl border p-6"
+            >
+              <p className="text-sm font-semibold">{plano.nome}</p>
+              <p className="mt-1 text-sm text-[var(--muted)]">{plano.paraQuem}</p>
+
+              <p className="mt-5 text-3xl font-semibold tracking-tight">
+                {emReais(plano.mensalidadeEmCentavos)}
+                <span className="text-base font-normal text-[var(--muted)]"> /mês</span>
+              </p>
+
+              <p className="mt-1 text-sm text-[var(--muted)]">
+                {plano.empresas === 1
+                  ? "1 empresa"
+                  : `até ${plano.empresas} empresas`}
+                {plano.empresas > 1 ? ` · ${porEmpresa(plano)}` : ""}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-12 space-y-12">
+          {/*
+            A ressalva vem LOGO depois do preço, e não no rodapé.
+            
+            Este site declara limitação em toda superfície, e a página que pede
+            dinheiro não seria a exceção. Deixar o visitante descobrir no
+            checkout que não há checkout é o caminho mais curto para ele nunca
+            mais voltar.
+          */}
+          <Secao id="ainda-nao-abriu" titulo="Ainda não dá para assinar — e é de propósito">
+            <RespostaDireta>
+              O preço está definido, a forma de pagamento ainda não. Preferimos
+              publicar o valor e dizer isso a deixar você descobrir no fim do
+              cadastro.
+            </RespostaDireta>
+            <P>
+              Deixe o seu e-mail abaixo dizendo qual plano interessa. Quando a
+              cobrança abrir, você é avisado primeiro — e o preço que você vê
+              hoje é o que vai valer para quem entrou nesta lista.
+            </P>
+            <div className="mt-2">
+              {/*
+                `origem` é o que qualifica este cadastro: quem se inscreve AQUI
+                já viu o preço e continuou. O painel de leads agrupa por origem,
+                então essa distinção aparece sem trabalho nenhum.
+
+                Não pedimos qual plano. O formulário tem e-mail e cidade, e
+                enfiar a escolha do plano no campo de cidade seria gambiarra que
+                suja o dado que o alerta usa para filtrar praça.
+              */}
+              <CapturaAlerta
+                origem="/precos/"
+                chamada={{
+                  titulo: "Avise-me quando a assinatura abrir",
+                  texto:
+                    "Você entra na frente e mantém o preço desta página. Enquanto isso, recebe o alerta gratuito da sua cidade.",
+                }}
+                textoDoBotao="Quero ser avisado"
+              />
+            </div>
+          </Secao>
+
+          <Secao id="incluso" titulo="O que os dois planos entregam">
+            <ul className="mt-2 space-y-2">
+              {O_QUE_INCLUI.map((item) => (
+                <li key={item} className="flex gap-2 text-sm leading-relaxed">
+                  <span aria-hidden className="text-[var(--accent)]">
+                    •
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </Secao>
+
+          <Secao id="nao-faz" titulo="O que nenhum plano faz">
+            <P>
+              Esta seção fica na mesma altura da de cima porque descobrir
+              limitação depois de pagar é o que gera pedido de reembolso — e
+              porque é o que separa uma ferramenta de trabalho de uma promessa.
+            </P>
+            <ul className="mt-2 space-y-2">
+              {O_QUE_NAO_FAZ.map((item) => (
+                <li key={item} className="flex gap-2 text-sm leading-relaxed text-[var(--muted)]">
+                  <span aria-hidden>—</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </Secao>
+
+          <Secao id="gratuito" titulo="Se ainda é cedo para assinar">
+            <P>
+              O alerta gratuito continua existindo e não vira plano pago sem
+              você pedir. Ele manda os editais abertos da sua cidade, todo dia
+              útil — sem leitura do documento e sem filtro pelo perfil da
+              empresa, que é o que os planos acrescentam.
+            </P>
+            <P>
+              <Link className="underline underline-offset-4" href="/alerta-de-licitacao/">
+                Conhecer o alerta gratuito
+              </Link>
+            </P>
+          </Secao>
+
+          <Secao id="faq" titulo="Perguntas frequentes">
+            <Faq
+              itens={[
+                {
+                  pergunta: "Por que o preço muda por número de empresas, e não por uso?",
+                  resposta:
+                    "Porque o trabalho é o mesmo para cada empresa acompanhada: coletar, triar pelo perfil e ler os editais de maior aderência. Cobrar por uso puniria justamente quem disputa mais — que é quem tira mais valor disto.",
+                },
+                {
+                  pergunta: "Sou contador e cuido de vários clientes. Preciso de uma conta por cliente?",
+                  resposta:
+                    `Não. O plano ${PLANOS[1].nome} cobre até ${PLANOS[1].empresas} empresas na ` +
+                    `mesma conta, e o painel troca entre elas. Sai ${porEmpresa(PLANOS[1])}, ` +
+                    `contra ${emReais(PLANOS[0].mensalidadeEmCentavos)} de uma conta avulsa.`,
+                },
+                {
+                  pergunta: "O que acontece se eu passar de cinco empresas?",
+                  resposta:
+                    "Fale com a gente antes de contratar. Acima de cinco o preço deixa de ser de tabela e depende do volume, e prometer um número aqui que não conseguimos sustentar seria pior que não ter número.",
+                },
+                {
+                  pergunta: "Tem fidelidade ou multa?",
+                  resposta:
+                    "Não. A assinatura é mensal e você cancela quando quiser. Prender cliente por contrato é o que se faz quando o produto não segura sozinho.",
+                },
+                {
+                  pergunta: "Vocês leem TODOS os editais que chegam?",
+                  resposta:
+                    "Não, e isso está no produto de propósito: lemos os de maior aderência ao seu perfil, com volume diário limitado. Nos demais, o que você vê é o que o órgão publicou — e a tela diz explicitamente qual é qual.",
+                },
+              ]}
+            />
+          </Secao>
+        </div>
+
+        <p className="mt-12 text-sm leading-relaxed text-[var(--muted)]">
+          Preços em reais, por mês. Atualizado em{" "}
+          {new Date(`${ATUALIZADO}T12:00:00Z`).toLocaleDateString("pt-BR", { timeZone: "UTC" })}.
+        </p>
+      </main>
+
+      <RodapeSite />
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+    </div>
+  );
+}

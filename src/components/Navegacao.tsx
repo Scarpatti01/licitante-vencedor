@@ -38,6 +38,7 @@ import { Logo } from "@/components/Logo";
  */
 const MENU = [
   { href: "/como-funciona/", texto: "Como funciona" },
+  { href: "/precos/", texto: "Preços" },
   { href: "/alerta-de-licitacao/", texto: "Alertas" },
   { href: "/blog/", texto: "Guias" },
 ];
