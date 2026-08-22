@@ -1,6 +1,7 @@
 import "server-only";
 
 import { cache } from "react";
+import { cookies } from "next/headers";
 import { clienteDoServidor } from "./cliente";
 
 /**
@@ -70,29 +71,90 @@ export type VinculoDoUsuario = {
  * na policy, a proteção aparente continuaria no código enquanto a real teria
  * sumido. Melhor depender de uma coisa só, visível.
  */
-export const vinculoDoUsuario = cache(async (): Promise<VinculoDoUsuario | null> => {
+/** Uma empresa a que o usuário pertence, como o seletor precisa dela. */
+export type EmpresaDoUsuario = {
+  empresaId: string;
+  nome: string;
+  papel: VinculoDoUsuario["papel"];
+};
+
+/**
+ * O cookie que guarda qual empresa está aberta.
+ *
+ * É PREFERÊNCIA, não credencial. O valor dele nunca é usado direto: passa por
+ * `empresasDoUsuario()`, que lê sob RLS e só devolve vínculos reais. Cookie
+ * adulterado para o UUID de outra empresa não abre nada — cai fora da lista e
+ * o código volta ao padrão.
+ *
+ * Vale insistir no porquê: RLS já barraria a leitura dos dados, mas devolver um
+ * `empresaId` alheio faria a interface prometer uma empresa e mostrar telas
+ * vazias. Validar aqui é o que mantém as duas pontas concordando.
+ */
+export const COOKIE_DA_EMPRESA = "lv_empresa";
+
+/**
+ * Todas as empresas do usuário, da mais antiga para a mais nova.
+ *
+ * A ordem é a de criação, e é determinística de propósito: sem ordem, duas
+ * requisições iguais poderiam devolver empresas em sequência diferente, e o
+ * seletor pularia de posição entre um carregamento e outro.
+ */
+export const empresasDoUsuario = cache(async (): Promise<EmpresaDoUsuario[]> => {
   const usuario = await usuarioAtual();
-  if (!usuario) return null;
+  if (!usuario) return [];
 
   const supabase = await clienteDoServidor();
-  if (!supabase) return null;
+  if (!supabase) return [];
 
   const { data, error } = await supabase
     .from("membros_da_empresa")
-    .select("empresa_id, papel")
+    .select("empresa_id, papel, empresas(razao_social, nome_fantasia)")
     .is("removido_em", null)
-    // Uma pessoa em duas empresas é possível pelo modelo. Enquanto não existe
-    // seletor de empresa na interface, vale a mais antiga — a que ela criou.
-    // Determinístico é o que importa: sem ordem, duas requisições iguais
-    // poderiam devolver empresas diferentes e a tela piscaria entre elas.
-    .order("criado_em", { ascending: true })
-    .limit(1)
-    .maybeSingle();
+    .order("criado_em", { ascending: true });
 
-  if (error || !data) return null;
+  if (error || !data) return [];
 
-  return {
-    empresaId: data.empresa_id as string,
-    papel: data.papel as VinculoDoUsuario["papel"],
-  };
+  return data.flatMap((bruta) => {
+    const l = bruta as unknown as Record<string, unknown>;
+    const empresaId = typeof l.empresa_id === "string" ? l.empresa_id : null;
+    if (!empresaId) return [];
+
+    const e = (Array.isArray(l.empresas) ? l.empresas[0] : l.empresas) as
+      | Record<string, unknown>
+      | undefined;
+
+    const nome =
+      (typeof e?.nome_fantasia === "string" && e.nome_fantasia.trim()) ||
+      (typeof e?.razao_social === "string" && e.razao_social.trim()) ||
+      "Empresa sem nome";
+
+    return [{ empresaId, nome, papel: l.papel as VinculoDoUsuario["papel"] }];
+  });
+});
+
+/**
+ * A empresa aberta agora.
+ *
+ * ## O defeito que isto corrige
+ *
+ * Até 22/08 esta função pegava SEMPRE a primeira empresa e não havia como
+ * trocar. O modelo de dados sempre permitiu uma pessoa em várias empresas — e
+ * contadores e consultorias, que são o melhor canal de venda para licitações,
+ * gerenciam várias. Para eles o produto mostrava uma e escondia as outras, sem
+ * dizer que existiam.
+ *
+ * Agora a escolha vem do cookie, VALIDADA contra os vínculos reais. Sem escolha
+ * válida, vale a mais antiga — o comportamento de antes, que continua correto
+ * para quem tem uma empresa só.
+ */
+export const vinculoDoUsuario = cache(async (): Promise<VinculoDoUsuario | null> => {
+  const empresas = await empresasDoUsuario();
+  if (empresas.length === 0) return null;
+
+  const escolhida = (await cookies()).get(COOKIE_DA_EMPRESA)?.value;
+  // `find` sobre a lista que veio do banco: é isto que torna o cookie inócuo
+  // quando aponta para algo que não é do usuário.
+  const alvo = empresas.find((e) => e.empresaId === escolhida) ?? empresas[0];
+
+  return { empresaId: alvo.empresaId, papel: alvo.papel };
 });
