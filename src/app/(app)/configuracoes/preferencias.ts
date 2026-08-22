@@ -1,5 +1,5 @@
 import "server-only";
-import { cookies } from "next/headers";
+import { clienteDoServidor } from "@/lib/auth/cliente";
 import { PREFERENCIAS_PADRAO } from "@/lib/alertas/selecao";
 
 /**
@@ -15,14 +15,24 @@ import { PREFERENCIAS_PADRAO } from "@/lib/alertas/selecao";
  * que já está mandando mensagem. Prometer entrega que não acontece é a falha
  * mais cara que um produto de alerta pode ter.
  *
- * O armazenamento é um cookie assinado pelo próprio navegador do usuário porque
- * a porta de dados ainda não tem lugar para preferência (ver
- * `RepositorioDoProduto`). Quando tiver, este arquivo é o único ponto a trocar:
- * nenhuma tela conhece o cookie.
+ * ## O armazenamento saiu do cookie em 22/08
+ *
+ * A versão anterior guardava tudo num cookie e dizia, aqui mesmo, que trocaria
+ * quando houvesse lugar no banco. A troca deixou de ser melhoria e virou
+ * requisito no dia em que passou a existir envio de verdade: cookie mora no
+ * navegador de quem configurou, e quem envia é `scripts/enviar-resumo-diario.ts`
+ * — um job de madrugada, sem navegador nenhum.
+ *
+ * Enquanto ninguém enviava nada, o cookie era inofensivo. Deixaria de ser do
+ * pior jeito possível: a tela aceitando cliques, o cliente desligando o e-mail,
+ * e o e-mail continuando a chegar.
+ *
+ * `preferencias_de_envio` é lida pelo cliente autenticado, sob RLS — a mesma
+ * política das demais tabelas por empresa. O remetente lê pela chave de serviço.
  */
 
-const COOKIE = "lv_preferencias_de_alerta";
-const UM_ANO = 60 * 60 * 24 * 365;
+/** Onde a leitura e a escrita acontecem. Nenhuma tela conhece esta tabela. */
+const TABELA = "preferencias_de_envio";
 
 export type PreferenciasDeEnvio = {
   /** `HH:MM`, no fuso de Brasília — que é o fuso das sessões públicas. */
@@ -76,36 +86,49 @@ function textoOuNulo(valor: unknown): string | null {
  * preferência corrompida não deve derrubar a página de configurações.
  */
 export async function lerPreferencias(empresaId: string): Promise<PreferenciasDeEnvio> {
-  const bruto = (await cookies()).get(COOKIE)?.value;
-  if (!bruto) return PADRAO;
+  const supabase = await clienteDoServidor();
+  if (!supabase) return PADRAO;
 
-  let dados: unknown;
-  try {
-    dados = JSON.parse(bruto);
-  } catch {
-    return PADRAO;
-  }
+  const { data, error } = await supabase
+    .from(TABELA)
+    .select(
+      "horario,apenas_dias_uteis,canal_email,email,canal_whatsapp,whatsapp," +
+        "score_minimo,maximo_por_envio,avisar_prazo_de_salvas,enviar_quando_vazio",
+    )
+    .eq("empresa_id", empresaId)
+    .maybeSingle();
 
-  if (typeof dados !== "object" || dados === null) return PADRAO;
-  const p = dados as Record<string, unknown>;
+  // Empresa que nunca configurou nada não tem linha, e isso não é erro: os
+  // padrões daqui são os mesmos do banco, de propósito.
+  if (error || !data) return PADRAO;
 
-  // Preferência guardada para outra empresa não vale para esta.
-  if (p.empresaId !== empresaId) return PADRAO;
+  // Via `unknown`: sem tipos gerados, o cliente infere um union que inclui o
+  // erro por coluna do PostgREST, e o compilador recusa a conversão direta.
+  const p = data as unknown as Record<string, unknown>;
 
+  /*
+   * Cada campo continua passando pelos mesmos validadores do tempo do cookie.
+   *
+   * Parece redundante — o banco já tem `check` em quase tudo —, e não é: os
+   * `check` protegem contra escrita inválida, e isto protege contra LEITURA de
+   * algo que mudou de forma (coluna nova com outro tipo, migração pela metade,
+   * valor gravado por fora). Preferência corrompida não deve derrubar a página
+   * de configurações.
+   */
   return {
     horario:
       typeof p.horario === "string" && /^([01]\d|2[0-3]):[0-5]\d$/.test(p.horario)
         ? p.horario
         : PADRAO.horario,
-    apenasDiasUteis: booleano(p.apenasDiasUteis, PADRAO.apenasDiasUteis),
-    canalEmail: booleano(p.canalEmail, PADRAO.canalEmail),
+    apenasDiasUteis: booleano(p.apenas_dias_uteis, PADRAO.apenasDiasUteis),
+    canalEmail: booleano(p.canal_email, PADRAO.canalEmail),
     email: textoOuNulo(p.email),
-    canalWhatsapp: booleano(p.canalWhatsapp, PADRAO.canalWhatsapp),
+    canalWhatsapp: booleano(p.canal_whatsapp, PADRAO.canalWhatsapp),
     whatsapp: textoOuNulo(p.whatsapp),
-    scoreMinimo: inteiroEntre(p.scoreMinimo, 0, 100, PADRAO.scoreMinimo),
-    maximoPorEnvio: inteiroEntre(p.maximoPorEnvio, 1, 20, PADRAO.maximoPorEnvio),
-    avisarPrazoDeSalvas: booleano(p.avisarPrazoDeSalvas, PADRAO.avisarPrazoDeSalvas),
-    enviarQuandoVazio: booleano(p.enviarQuandoVazio, PADRAO.enviarQuandoVazio),
+    scoreMinimo: inteiroEntre(p.score_minimo, 0, 100, PADRAO.scoreMinimo),
+    maximoPorEnvio: inteiroEntre(p.maximo_por_envio, 1, 20, PADRAO.maximoPorEnvio),
+    avisarPrazoDeSalvas: booleano(p.avisar_prazo_de_salvas, PADRAO.avisarPrazoDeSalvas),
+    enviarQuandoVazio: booleano(p.enviar_quando_vazio, PADRAO.enviarQuandoVazio),
   };
 }
 
@@ -113,11 +136,36 @@ export async function gravarPreferencias(
   empresaId: string,
   preferencias: PreferenciasDeEnvio,
 ): Promise<void> {
-  (await cookies()).set(COOKIE, JSON.stringify({ empresaId, ...preferencias }), {
-    httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-    maxAge: UM_ANO,
-  });
+  const supabase = await clienteDoServidor();
+  if (!supabase) return;
+
+  /*
+   * `upsert` pela chave primária: a empresa pode nunca ter configurado nada.
+   *
+   * As colunas de texto são `not null` com padrão vazio, então `null` do
+   * formulário vira string vazia aqui — e não o contrário, que faria o banco
+   * recusar a gravação e a tela dizer que salvou.
+   */
+  const { error } = await supabase.from(TABELA).upsert(
+    {
+      empresa_id: empresaId,
+      horario: preferencias.horario,
+      apenas_dias_uteis: preferencias.apenasDiasUteis,
+      canal_email: preferencias.canalEmail,
+      email: preferencias.email ?? "",
+      canal_whatsapp: preferencias.canalWhatsapp,
+      whatsapp: preferencias.whatsapp ?? "",
+      score_minimo: preferencias.scoreMinimo,
+      maximo_por_envio: preferencias.maximoPorEnvio,
+      avisar_prazo_de_salvas: preferencias.avisarPrazoDeSalvas,
+      enviar_quando_vazio: preferencias.enviarQuandoVazio,
+    },
+    { onConflict: "empresa_id" },
+  );
+
+  // Silêncio aqui seria a pior forma de falhar: a pessoa desliga o e-mail, a
+  // tela confirma, e o e-mail continua chegando. Quem chama trata.
+  if (error) {
+    throw new Error(`preferências não foram gravadas: ${error.message}`);
+  }
 }

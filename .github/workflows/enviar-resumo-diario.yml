@@ -1,0 +1,176 @@
+# O resumo diário para as empresas cadastradas — o produto pago.
+#
+# Irmão de `enviar-alertas.yml`, e separado dele de propósito. São públicos
+# diferentes, com consentimentos diferentes: o lead deu duplo opt-in num
+# formulário público e sai por link com token; a empresa contratou e desliga o
+# canal na tela dela. Um workflow só misturaria as duas regras, e é aí que este
+# tipo de sistema erra feio.
+#
+# ## Por que 10:00 UTC
+#
+# 07:00 em Brasília, que é o padrão de `preferencias_de_envio.horario` e o
+# horário anunciado nas páginas públicas. A coleta roda 06:10 e 08:10 UTC, e a
+# triagem e a leitura são passos dela — então às 10:00 as oportunidades do dia
+# já estão gravadas.
+#
+# ## O que acontece quando falta segredo
+#
+# O job termina VERDE, com um resumo dizendo o que falta. Mesma regra de
+# `enviar-alertas.yml`: este workflow roda todo dia útil, e falhar sempre pelo
+# mesmo motivo conhecido ensina a ignorar o X vermelho.
+
+name: Enviar resumo diário
+
+on:
+  schedule:
+    # 10:00 UTC = 07:00 em Brasília, de segunda a sexta.
+    - cron: "0 10 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Não enviar nada — só imprimir o que sairia"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  # Para baixar o artefato da coleta e saber quais praças ficaram de fora.
+  actions: read
+
+concurrency:
+  # Duas execuções em paralelo mandariam o mesmo edital duas vezes: a checagem
+  # de duplicidade lê o estado ANTES do envio. A unicidade de
+  # `envios_do_resumo` pega na gravação, mas o e-mail já teria saído.
+  group: enviar-resumo-diario
+  cancel-in-progress: false
+
+jobs:
+  enviar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # Sem isto o script morre no primeiro `import` de pacote. Ver
+      # `workflows-instalam-dependencias.test.ts` e o defeito de 17/08.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      # As praças ausentes saem daqui. `continue-on-error` porque o resumo NÃO
+      # depende disso: sem o arquivo, o e-mail sai sem a observação sobre praça
+      # faltante — que é uma linha a menos, não um envio a menos.
+      - name: Baixar a classificação da última coleta
+        id: classificacao
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+
+          candidatas=$(
+            {
+              gh run list --workflow=coletar-pncp-paralelo.yml --status=success \
+                --limit=10 --json databaseId,createdAt --jq '.[] | [.createdAt, .databaseId] | @tsv'
+              gh run list --workflow=coletar-pncp.yml --status=success \
+                --limit=10 --json databaseId,createdAt --jq '.[] | [.createdAt, .databaseId] | @tsv'
+            } | sort -r | cut -f2
+          )
+
+          for candidata in $candidatas; do
+            if gh api "repos/$GITHUB_REPOSITORY/actions/runs/$candidata/artifacts" \
+                 --jq '.artifacts[].name' 2>/dev/null | grep -qx snapshot-pncp; then
+              gh run download "$candidata" --name snapshot-pncp --dir . || true
+              break
+            fi
+          done
+
+          arquivo=dados/parciais/classificacao.json
+          codigo=0
+          if [ -f "$arquivo" ]; then
+            # `ufsAusentes` é o campo que `classificarColeta` grava desde 22/08.
+            # Classificação antiga não tem o campo, e isso não é motivo para não
+            # enviar o resumo — mas é motivo para avisar.
+            ufs=$(node -p "((require('./$arquivo').ufsAusentes)||[]).join(',')") || codigo=$?
+            echo "ufs=$ufs" >> "$GITHUB_OUTPUT"
+            echo "praças fora da coleta: ${ufs:-nenhuma}"
+          else
+            codigo=1
+            echo "ufs=" >> "$GITHUB_OUTPUT"
+          fi
+
+          # `continue-on-error` acima é correto: sem classificação o resumo sai
+          # igual, só sem a observação de praça faltante. O que não pode é isso
+          # sumir — se a classificação parar de chegar, o cliente deixa de ser
+          # avisado sobre a praça dele e ninguém fica sabendo. Ver
+          # `falha-silenciosa.test.ts`.
+          if [ "$codigo" != "0" ]; then
+            echo "::warning title=Resumo sem a observação de praça::não consegui ler ufsAusentes da última coleta — o e-mail sai sem avisar sobre praça faltante"
+            {
+              echo "## Resumo sai sem a observação de praça"
+              echo
+              echo "Não consegui ler \`ufsAusentes\` da última coleta. O envio continua; o que falta é a linha que avisa o cliente sobre a praça dele."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Enviar
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          EMAIL_REMETENTE: ${{ secrets.EMAIL_REMETENTE }}
+          # No agendamento é sempre envio de verdade; `simular` só existe para
+          # quem dispara à mão. `inputs` vem vazio no schedule.
+          SIMULAR: ${{ github.event_name == 'workflow_dispatch' && inputs.simular && '--simular' || '' }}
+          UFS_AUSENTES: ${{ steps.classificacao.outputs.ufs }}
+        run: |
+          set -o pipefail
+
+          # `--conditions=react-server` faz `server-only` resolver para o módulo
+          # vazio; sem isso ele LANÇA na importação. Ver `scripts-resolvem.test.ts`.
+          ausentes=""
+          if [ -n "$UFS_AUSENTES" ]; then ausentes="--ufs-ausentes $UFS_AUSENTES"; fi
+
+          codigo=0
+          node --conditions=react-server scripts/enviar-resumo-diario.ts $SIMULAR $ausentes \
+            | tee saida-resumo.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Resumo não enviado — faltam segredos"
+              echo
+              echo "O workflow rodou e parou de propósito. Nada foi enviado e nada finge ter saído."
+              echo
+              echo "Para ligar, crie em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+              echo '- `RESEND_API_KEY`'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Resumo inerte::faltam segredos — ver o resumo desta execução"
+            exit 0
+          fi
+
+          {
+            echo "## Resumo diário"
+            echo
+            echo '```'
+            tail -25 saida-resumo.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit "$codigo"
+
+      - name: Publicar o log do envio
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-resumo
+          path: saida-resumo.txt
+          retention-days: 30
+          if-no-files-found: ignore
