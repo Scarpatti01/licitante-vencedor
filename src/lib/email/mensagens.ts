@@ -75,6 +75,19 @@ export type ConteudoDeEmail = {
     descadastro: string;
     /** Os limites do produto, repetidos em toda mensagem. */
     limites: string;
+    /**
+     * Por que esta pessoa está recebendo. Omitido, usa a frase do alerta.
+     *
+     * Existe porque a frase padrão — "porque cadastrou X no alerta" — é
+     * verdadeira para o LEAD e falsa para o cliente: ele não se cadastrou num
+     * alerta, ele tem conta e contratou o serviço. Dizer a ele que se cadastrou
+     * num alerta é errar sobre a relação que as duas partes têm, no único
+     * parágrafo do e-mail que existe para explicar exatamente isso.
+     *
+     * Só apareceu ao renderizar a mensagem inteira e lê-la. Nenhum teste
+     * olhava o rodapé, porque ninguém suspeitava dele.
+     */
+    porque?: string;
   };
 };
 
@@ -251,7 +264,7 @@ export function emTextoSimples(conteudo: ConteudoDeEmail): string {
   partes.push("———");
   partes.push(conteudo.rodape.limites);
   partes.push(
-    `Você recebe este e-mail porque cadastrou ${conteudo.rodape.cadastradoComo} no alerta do ${SITE.name}. Para não receber mais: ${conteudo.rodape.descadastro}`,
+    `${conteudo.rodape.porque ?? `Você recebe este e-mail porque cadastrou ${conteudo.rodape.cadastradoComo} no alerta do ${SITE.name}.`} Para não receber mais: ${conteudo.rodape.descadastro}`,
   );
 
   return partes.join("\n\n");
@@ -312,7 +325,7 @@ ${linhas}
 <p style="margin:0 0 18px;font-size:20px;line-height:1.3;font-weight:600;color:#101418">${escapar(conteudo.titulo)}</p>
 ${paragrafos}${antes}${listas}${fecho}${depois}
 <p style="margin:24px 0 0;font-size:12px;line-height:1.6;color:#5b6472">${escapar(conteudo.rodape.limites)}</p>
-<p style="margin:10px 0 0;font-size:12px;line-height:1.6;color:#5b6472">Você recebe este e-mail porque cadastrou ${escapar(conteudo.rodape.cadastradoComo)} no alerta do ${escapar(SITE.name)}. <a href="${escapar(conteudo.rodape.descadastro)}" style="color:#5b6472">Não quero mais receber</a>.</p>
+<p style="margin:10px 0 0;font-size:12px;line-height:1.6;color:#5b6472">${escapar(conteudo.rodape.porque ?? `Você recebe este e-mail porque cadastrou ${conteudo.rodape.cadastradoComo} no alerta do ${SITE.name}.`)} <a href="${escapar(conteudo.rodape.descadastro)}" style="color:#5b6472">Não quero mais receber</a>.</p>
 </div>`;
 }
 
