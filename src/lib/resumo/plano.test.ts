@@ -151,7 +151,8 @@ describe("o e-mail é resumo, não a entrega", () => {
     );
 
     if (plano.tipo !== "enviar") throw new Error("esperava envio");
-    expect(plano.conteudo.listas[0].itens[0].texto).toMatch(/ainda não lido/i);
+    const leitura = plano.conteudo.listas[0].itens.find((i) => i.rotulo === "Leitura");
+    expect(leitura?.texto).toMatch(/ainda não lemos/i);
   });
 
   it("tem descadastro que aponta para um controle que existe", () => {
@@ -237,13 +238,14 @@ describe("objeto longo não vira paredão", () => {
     );
 
     if (plano.tipo !== "enviar") throw new Error("esperava envio");
-    const rotulo = plano.conteudo.listas[0].itens[0].rotulo;
+    const bloco = plano.conteudo.listas[0];
 
     expect(gigante.length).toBeGreaterThan(300);
-    expect(rotulo.length).toBeLessThan(150);
-    expect(rotulo).toContain("…");
-    // A aderência ordena a lista; se sumir no corte, o leitor perde o critério.
-    expect(rotulo).toMatch(/aderência 86$/);
+    // O objeto é o TÍTULO do bloco, e é ele que precisa caber.
+    expect(bloco.titulo.length).toBeLessThan(130);
+    expect(bloco.titulo).toContain("…");
+    // A aderência é item próprio, com rótulo curto — não some dentro do corte.
+    expect(bloco.itens.find((i) => i.rotulo === "Aderência")?.texto).toBe("86 de 100");
   });
 
   it("não corta no meio da palavra", () => {
@@ -257,7 +259,7 @@ describe("objeto longo não vira paredão", () => {
     );
 
     if (plano.tipo !== "enviar") throw new Error("esperava envio");
-    const rotulo = plano.conteudo.listas[0].itens[0].rotulo;
+    const rotulo = plano.conteudo.listas[0].titulo;
 
     /*
      * A asserção certa não é "há espaço antes da reticência" — `cortar` faz
@@ -273,5 +275,44 @@ describe("objeto longo não vira paredão", () => {
     expect(original.startsWith(mantido)).toBe(true);
     // O caractere logo após o corte é espaço: prova de que a palavra terminou.
     expect(original[mantido.length]).toBe(" ");
+  });
+});
+
+describe("a estrutura é a que o template sabe renderizar", () => {
+  it("usa um bloco por edital, e não um item por edital", () => {
+    /*
+     * O defeito que a renderização mostrou: cada item vira linha de tabela de
+     * duas colunas, e a do rótulo tem `white-space:nowrap`. Um rótulo de 120
+     * caracteres empurra a tabela para fora da tela do celular, e o valor se
+     * espreme numa coluna de três palavras por linha.
+     */
+    const plano = planejarResumoDiario(
+      dados({
+        oportunidades: [
+          oportunidade({ editalId: "a", score: 90 }),
+          oportunidade({ editalId: "b", score: 80 }),
+        ],
+      }),
+      AGORA,
+    );
+
+    if (plano.tipo !== "enviar") throw new Error("esperava envio");
+    expect(plano.conteudo.listas).toHaveLength(2);
+  });
+
+  it("mantém todo rótulo curto o bastante para não quebrar a tabela", () => {
+    const plano = planejarResumoDiario(dados(), AGORA);
+
+    if (plano.tipo !== "enviar") throw new Error("esperava envio");
+
+    for (const lista of plano.conteudo.listas) {
+      for (const item of lista.itens) {
+        expect(
+          item.rotulo.length,
+          `o rótulo "${item.rotulo}" é longo demais: ele é renderizado com ` +
+            "`white-space:nowrap` e empurraria a tabela para fora da tela.",
+        ).toBeLessThanOrEqual(12);
+      }
+    }
   });
 });

@@ -1,4 +1,4 @@
-import type { ConteudoDeEmail, ItemDeLista } from "../email/mensagens.ts";
+import type { BlocoDeLista, ConteudoDeEmail } from "../email/mensagens.ts";
 import { SITE } from "../site.ts";
 import { cortar, OBJETO_NO_ROTULO } from "../email/cortar.ts";
 
@@ -100,49 +100,47 @@ function prazoEmTexto(encerramento: string | null, agora: Date): string {
   return dias === 1 ? "encerra amanhã" : `encerra em ${dias} dias`;
 }
 
-function comoItem(o: OportunidadeDoResumo, agora: Date): ItemDeLista {
-  /*
-   * O e-mail é RESUMO, não a entrega.
-   *
-   * Decisão do dono, em 22/08. A primeira versão trazia o resumo executivo da
-   * leitura dentro do e-mail, e estava errada por dois motivos que só aparecem
-   * quando se pensa no destinatário:
-   *
-   *   um e-mail com oito análises inteiras não se lê no celular às 7h;
-   *   e se ele traz tudo, o painel vira arquivo morto — que é justamente onde
-   *   moram o checklist, a próxima ação e o documento em si.
-   *
-   * Então aqui vai o que basta para DECIDIR SE ABRE: o que é, de quem, onde,
-   * quanto, quando fecha, e o quanto adere. A leitura fica a um clique.
-   */
-  const partes = [
-    o.orgao,
-    `${o.municipio}/${o.uf}`,
-    o.valorEstimado === null ? "valor não informado" : real(o.valorEstimado),
-    prazoEmTexto(o.encerramentoProposta, agora),
-    // A etiqueta é curta de propósito, e nunca vira um resumo de mentira: ou o
-    // documento foi lido, ou a linha diz que não foi.
-    o.leuTexto ? "documento lido" : "documento ainda não lido",
-  ];
-
-  /*
-   * O objeto vai CORTADO, e a aderência vem depois do corte.
-   *
-   * Descoberto rodando contra dados reais, não em teste: os objetos do PNCP
-   * chegam com centenas de caracteres — um deles, na simulação de 22/08, tinha
-   * mais de 300 —, e oito assim transformam a lista num paredão que ninguém lê
-   * no celular às 7h. O teste não pegaria sozinho: quem escreve exemplo escreve
-   * exemplo legível.
-   *
-   * A aderência fica DEPOIS do corte de propósito: é o número que ordena a
-   * lista, e sumiria dentro das reticências se entrasse antes.
-   */
-  const objeto = cortar(o.objeto, OBJETO_NO_ROTULO);
-
+/**
+ * Um edital, como um BLOCO — e não como uma linha.
+ *
+ * ## O defeito que só a renderização mostrou
+ *
+ * A primeira versão punha o edital inteiro num item só: o objeto no `rotulo` e
+ * todos os dados no `texto`. Passou nos testes, saiu bem no texto simples, e o
+ * HTML ficou ilegível.
+ *
+ * O motivo está no template: cada item vira uma linha de tabela de DUAS
+ * colunas, e a do rótulo tem `white-space:nowrap`. Ele foi desenhado para
+ * "Órgão: Prefeitura de Recife" — rótulo curto, valor à direita. Um rótulo de
+ * 120 caracteres que não pode quebrar empurra a tabela para fora da tela, e o
+ * valor se espreme numa coluna de três palavras por linha.
+ *
+ * A estrutura certa já existia e o alerta gratuito já a usava: um bloco por
+ * edital, o objeto como título do bloco, e dentro dele pares curtos. Este
+ * arquivo passou a fazer igual — com dois campos a mais, que são o que o
+ * produto pago acrescenta.
+ */
+function blocoDoEdital(o: OportunidadeDoResumo, agora: Date): BlocoDeLista {
   return {
-    rotulo: o.score === null ? objeto : `${objeto} · aderência ${o.score}`,
-    texto: partes.join(" · "),
-    url: o.link,
+    // O objeto é o título porque é por ele que a pessoa decide se lê o resto.
+    // Cortado em 120: o PNCP publica objeto com parágrafo inteiro.
+    titulo: cortar(o.objeto, OBJETO_NO_ROTULO),
+    itens: [
+      // Primeiro, porque é o que ordena a lista e o que este produto acrescenta.
+      { rotulo: "Aderência", texto: o.score === null ? "não foi possível calcular" : `${o.score} de 100` },
+      { rotulo: "Órgão", texto: o.orgao },
+      { rotulo: "Local", texto: `${o.municipio}/${o.uf}` },
+      { rotulo: "Valor", texto: o.valorEstimado === null ? "não informado" : real(o.valorEstimado) },
+      { rotulo: "Prazo", texto: prazoEmTexto(o.encerramentoProposta, agora) },
+      /*
+       * Nunca vira resumo de mentira: ou o documento foi lido, ou a linha diz
+       * que não foi. É a promessa que este produto passou meses sem cumprir, e
+       * a que não pode voltar a ser afirmada sem base.
+       */
+      { rotulo: "Leitura", texto: o.leuTexto ? "documento lido" : "ainda não lemos o documento" },
+      // Por último e único com `url`: é a ação do bloco.
+      { rotulo: "Edital", texto: "abrir a publicação oficial", url: o.link },
+    ],
   };
 }
 
@@ -235,7 +233,8 @@ export function planejarResumoDiario(dados: DadosDoResumo, agora: Date = new Dat
       },
       // Depois das listas: o botão é complemento do que já veio, não o conteúdo.
       acaoDepoisDasListas: true,
-      listas: [{ titulo: "Por ordem de aderência", itens: escolhidas.map((o) => comoItem(o, agora)) }],
+      // Um bloco por edital, na ordem de aderência.
+      listas: escolhidas.map((o) => blocoDoEdital(o, agora)),
       fecho,
       rodape: {
         cadastradoComo: dados.email,
@@ -252,6 +251,10 @@ export function planejarResumoDiario(dados: DadosDoResumo, agora: Date = new Dat
          */
         descadastro: `${SITE.url}/configuracoes/`,
         limites: LIMITES_DO_RESUMO,
+        // O cliente NÃO se cadastrou num alerta: ele tem conta e contratou.
+        // A frase padrão do rodapé é a do lead, e erraria sobre a relação
+        // justamente no parágrafo que existe para explicá-la.
+        porque: `Você recebe este e-mail porque a ${dados.empresa} tem conta no ${SITE.name} e o resumo diário está ligado para ${dados.email}.`,
       },
     },
     editaisIds: escolhidas.map((o) => o.editalId),
