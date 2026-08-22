@@ -135,7 +135,22 @@ export function BuscaDePracas({ pracas, className = "" }: Props) {
         }}
         onFocus={() => setAberto(true)}
         onKeyDown={aoTeclar}
-        className="w-full rounded-md border bg-[var(--surface)] px-3 py-1.5 text-sm outline-none placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+        /*
+          `text-[var(--foreground)]` é o conserto de um defeito que a nota de
+          acessibilidade quase esconde.
+
+          O campo não declarava cor de texto e herdava a do cabeçalho da home,
+          que é escuro e escreve em claro — só que o próprio campo pinta o fundo
+          com `--surface`, que é claro. Resultado medido no navegador: texto em
+          `#cad5e2` sobre `#f5f7fa`, contraste de 1,38:1 contra os 4,5:1 que a
+          WCAG pede.
+
+          O que torna isso pior que um número ruim: o PLACEHOLDER tinha cor
+          própria e aparecia normal. O campo parecia certo até alguém digitar, e
+          aí o que foi digitado sumia. Ninguém reporta um defeito assim — a
+          pessoa acha que o site não funciona e vai embora.
+        */
+        className="w-full rounded-md border bg-[var(--surface)] px-3 py-1.5 text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
       />
 
       {mostrarPainel ? (

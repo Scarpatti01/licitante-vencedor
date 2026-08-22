@@ -79,7 +79,7 @@ export function ListaDeAtestados({
                       ? `atestado-objeto-${indice}-erro`
                       : undefined
                   }
-                  className="mt-2 w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-2 focus:outline-offset-1 focus:outline-[var(--accent)]"
+                  className="mt-2 w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-2 focus:outline-offset-1 focus:outline-[var(--accent)] text-[var(--foreground)]"
                 />
                 {erros[`atestadoObjeto:${indice}`] ? (
                   <p
@@ -157,7 +157,7 @@ function CampoSimples({
         inputMode={inputMode}
         aria-invalid={erro ? true : undefined}
         aria-describedby={erro ? `${id}-erro` : undefined}
-        className="mt-2 w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-2 focus:outline-offset-1 focus:outline-[var(--accent)]"
+        className="mt-2 w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm focus:border-[var(--accent)] focus:outline-2 focus:outline-offset-1 focus:outline-[var(--accent)] text-[var(--foreground)]"
       />
       {erro ? (
         <p id={`${id}-erro`} className="mt-1.5 text-xs font-medium text-rose-700 dark:text-rose-300">
