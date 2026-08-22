@@ -48,18 +48,45 @@ export const CONTATO = {
   controlador: "Leandro Scarpatti",
 } as const;
 
+/**
+ * Quem assina o conteúdo do site.
+ *
+ * Fonte única: dez páginas leem daqui — o `sobre`, os seis guias, o blog e o
+ * `schema.org` do layout. Mudar o título em um lugar e esquecer os outros
+ * produziria um autor com duas biografias, e é justamente a consistência entre
+ * elas que os buscadores usam para reconhecer a mesma pessoa.
+ */
 export const AUTHOR = {
   name: "Leandro Scarpatti",
   slug: "leandro-scarpatti",
-  jobTitle: "Fundador e analista de licitações",
+  /*
+   * A especialidade em IA entra no título porque é o que explica o produto.
+   *
+   * Não é adorno de currículo: o diferencial do Licitante Vencedor é ler o
+   * edital com IA e comparar com o perfil da empresa. Um autor descrito só como
+   * analista de licitações não explica de onde vem a leitura — e quem assina o
+   * conteúdo precisa dar conta do que o produto faz.
+   */
+  jobTitle: "Fundador, especialista em Inteligência Artificial e analista de licitações",
   photo: "/authors/leandro-scarpatti.jpg",
-  bio: "Acompanha diariamente as publicações do Portal Nacional de Contratações Públicas e transforma edital bruto em decisão de negócio para empresas fornecedoras.",
+  bio: "Especialista em Inteligência Artificial aplicada a contratações públicas. Acompanha diariamente as publicações do Portal Nacional de Contratações Públicas e transforma edital bruto em decisão de negócio para empresas fornecedoras.",
   // TODO: preencher com LinkedIn e demais perfis antes da Etapa 4 (camada de entidade).
   sameAs: [] as string[],
 } as const;
 
+/**
+ * O que ele domina, para `schema.org`.
+ *
+ * Alimenta `knowsAbout` no layout, que é como buscadores clássicos e motores de
+ * IA entendem sobre o que esta pessoa tem autoridade. Os temas de IA entram
+ * porque o produto os exerce todo dia — não como palavra-chave, mas como
+ * descrição do que de fato é feito aqui.
+ */
 export const KNOWS_ABOUT = [
   "Licitações públicas",
+  "Inteligência Artificial",
+  "Inteligência Artificial aplicada a licitações",
+  "Análise automatizada de editais",
   "Lei 14.133/2021",
   "Pregão eletrônico",
   "Portal Nacional de Contratações Públicas",
