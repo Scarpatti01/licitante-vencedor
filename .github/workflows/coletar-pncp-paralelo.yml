@@ -177,6 +177,28 @@ jobs:
           set -o pipefail
           node scripts/juntar-coleta.ts --parciais shards | tee saida-juncao.txt
 
+      # O artefato que `enviar-alertas.yml` baixa todo dia útil. Publicado LOGO
+      # depois da junção, e antes dos passos de post/triagem/leitura, porque
+      # nenhum deles é pré-requisito do e-mail — e todos são `continue-on-error`,
+      # ou seja, podem quebrar sem derrubar o job. Publicar no fim faria o alerta
+      # depender de coisas com as quais ele não tem nada a ver.
+      #
+      # Faltava. A coleta paralela assumiu o cron em 21/08 e nunca publicou este
+      # artefato; o alerta seguiu consumindo o da sequencial, que parou de rodar
+      # no mesmo dia. Sobreviveu até sexta pelo limite de 36 horas do script e
+      # pararia na segunda. Ver `snapshot-do-alerta.test.ts`.
+      - name: Publicar snapshot e parciais como artefato
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: snapshot-pncp
+          path: |
+            dados/editais.json
+            dados/parciais/
+            saida-juncao.txt
+          retention-days: 30
+          if-no-files-found: ignore
+
       - name: Ler a classificação
         id: classe
         run: |

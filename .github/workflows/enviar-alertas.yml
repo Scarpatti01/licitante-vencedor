@@ -116,23 +116,40 @@ jobs:
         run: |
           set -euo pipefail
 
+          # Procura nas DUAS coletas, da mais recente para a mais antiga.
+          #
+          # Olhava só `coletar-pncp.yml`, e isso quebrou sem fazer barulho: em
+          # 21/08 a coleta diária passou a ser a paralela, a sequencial perdeu o
+          # cron, e o alerta ficou preso ao artefato de um workflow que não roda
+          # mais. Sobreviveu dois dias pelo limite de 36 horas do script e
+          # pararia na segunda-feira — sem nada ter "quebrado" naquele dia.
+          #
+          # Perguntar às duas, em vez de trocar uma pela outra, é o que mantém
+          # isto funcionando nos dois sentidos: o cabeçalho de `coletar-pncp.yml`
+          # diz que voltar para a sequencial é mover os `cron` de volta, e essa
+          # volta não pode exigir que alguém lembre de editar este arquivo
+          # também.
           id=""
-          for candidata in $(gh run list \
-                              --workflow=coletar-pncp.yml \
-                              --status=success \
-                              --limit=10 \
-                              --json databaseId \
-                              --jq '.[].databaseId'); do
+          candidatas=$(
+            {
+              gh run list --workflow=coletar-pncp-paralelo.yml --status=success \
+                --limit=10 --json databaseId,createdAt --jq '.[] | [.createdAt, .databaseId] | @tsv'
+              gh run list --workflow=coletar-pncp.yml --status=success \
+                --limit=10 --json databaseId,createdAt --jq '.[] | [.createdAt, .databaseId] | @tsv'
+            } | sort -r | cut -f2
+          )
+
+          for candidata in $candidatas; do
             if gh api "repos/$GITHUB_REPOSITORY/actions/runs/$candidata/artifacts" \
                  --jq '.artifacts[].name' 2>/dev/null | grep -qx snapshot-pncp; then
               id="$candidata"
               break
             fi
-            echo "execução $candidata terminou verde sem snapshot — provavelmente a segunda tentativa do dia"
+            echo "execução $candidata terminou verde sem snapshot — provavelmente a segunda tentativa do dia, que decide não coletar"
           done
 
           if [ -z "$id" ]; then
-            echo "::error title=Sem coleta::nenhuma das 10 execuções bem-sucedidas mais recentes de coletar-pncp.yml produziu o artefato snapshot-pncp"
+            echo "::error title=Sem coleta::nenhuma execução recente de coletar-pncp-paralelo.yml nem de coletar-pncp.yml produziu o artefato snapshot-pncp"
             exit 1
           fi
 
