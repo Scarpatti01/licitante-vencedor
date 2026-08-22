@@ -172,6 +172,38 @@ async function main() {
     "utf8",
   );
 
+  /*
+   * O snapshot que o ALERTA DIÁRIO lê. Sem ele, o e-mail não sai.
+   *
+   * ## Por que faltava, e por que isso não apareceu antes
+   *
+   * `enviar-alertas.ts` não recoleta — ele baixa o snapshot que a coleta já
+   * produziu, para não dobrar a carga sobre o PNCP e, pior, para não afirmar no
+   * e-mail coisas que o site não mostra. Quem produzia esse arquivo era a
+   * coleta SEQUENCIAL, e ela deixou de rodar diariamente em 21/08, quando a
+   * paralela assumiu. A paralela nunca o escreveu.
+   *
+   * O defeito ficou invisível por dois dias porque o alerta aceita snapshot com
+   * até 36 horas: na sexta ele ainda encontrou o de quinta e mandou o e-mail
+   * normalmente. Na segunda o arquivo teria quase cem horas e o envio pararia —
+   * sem que nada tivesse "quebrado" naquele dia.
+   *
+   * Forma idêntica à de `ingerir-pncp.ts` porque quem lê é o mesmo código, e
+   * ele confere as duas chaves: `editais` para ter o que enviar, `coletadoEm`
+   * para recusar dado velho. Escrever aqui algo "parecido" seria trocar uma
+   * falha barulhenta por uma silenciosa.
+   */
+  await writeFile(
+    resolve(pastaDados, "editais.json"),
+    // `editais`, e NÃO `marcados`: `marcarValoresSuspeitos` devolve a CONTAGEM
+    // de marcados e altera os editais no próprio array. Escrever `marcados`
+    // aqui gravaria um número onde o leitor espera a lista — e o `JSON.stringify`
+    // aceita numa boa, então nem o compilador reclamaria. O alerta morreria com
+    // "sem a lista `editais`", num arquivo que parece perfeitamente normal.
+    JSON.stringify({ coletadoEm, fonte: fontePncp.nome, cobertura, editais }, null, 1),
+    "utf8",
+  );
+
   // Mesmo registro que a coleta sequencial grava, pela mesma razão — ver o
   // comentário em `ingerir-pncp.ts`. Não derruba a junção por falta ou falha
   // de credencial: o agregado e a revisão já estão gravados a esta altura.
