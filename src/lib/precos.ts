@@ -11,7 +11,7 @@
  * ## O eixo é o número de empresas, e isso foi decisão do dono
  *
  * Não é limite de uso disfarçado de plano: o produto entrega a mesma coisa nos
- * dois — leitura diária dos editais de maior aderência, painel e resumo por
+ * dois — leitura dos editais de maior aderência, painel e resumo por
  * e-mail. O que muda é quantas empresas cabem na conta.
  *
  * Nasceu de uma constatação: contadores e consultorias gerenciam vários
@@ -58,9 +58,9 @@ export const PLANOS: readonly Plano[] = [
 export const O_QUE_INCLUI = [
   "Coleta diária do PNCP nas 27 unidades da federação",
   "Triagem por perfil: cidade, atividade, porte e faixa de valor",
-  "Leitura do documento nos editais de maior aderência, todo dia",
+  "Leitura do documento nos editais que passam no seu perfil — sem número mínimo por dia",
   "Exigências de habilitação, garantia, visita técnica e riscos extraídos do edital",
-  "Resumo diário por e-mail, nos dias úteis",
+  "Resumo por e-mail nos dias úteis — e silêncio em dia sem edital novo",
   "Painel com o histórico e o que falta na sua habilitação",
 ] as const;
 
