@@ -35,7 +35,7 @@ const FAQ = [
   {
     pergunta: "A Lei 8.666 ainda vale em 2026?",
     resposta:
-      "Não para licitações novas. A 8.666/93, a Lei do Pregão (10.520/2002) e o RDC (12.462/2011) foram revogadas em 30 de dezembro de 2023. Contratos assinados sob a lei antiga continuam regidos por ela até o fim da vigência, então na prática as duas convivem — uma para contratos em execução, outra para tudo que é licitado hoje.",
+      "Não para licitações novas. A 8.666/93, a Lei do Pregão (10.520/2002) e o RDC (12.462/2011) foram revogadas em 30 de dezembro de 2023. Contratos assinados sob a lei antiga continuam regidos por ela até o fim da vigência, então na prática as duas convivem, uma para contratos em execução, outra para tudo que é licitado hoje.",
   },
   {
     pergunta: "Quais modalidades a Lei 14.133 extinguiu?",
@@ -45,7 +45,7 @@ const FAQ = [
   {
     pergunta: "Qual é o limite de valor para dispensa de licitação?",
     resposta:
-      "O artigo 75 fixou R$ 100 mil para obras e serviços de engenharia e R$ 50 mil para as demais compras e serviços. Esses valores são corrigidos anualmente por decreto, então sempre confirme o decreto vigente antes de usar o número — trabalhar com valor desatualizado é um erro caro.",
+      "O artigo 75 fixou R$ 100 mil para obras e serviços de engenharia e R$ 50 mil para as demais compras e serviços. Esses valores são corrigidos anualmente por decreto, então sempre confirme o decreto vigente antes de usar o número. Trabalhar com valor desatualizado é um erro caro.",
   },
   {
     pergunta: "O pregoeiro deixou de existir?",
@@ -188,7 +188,7 @@ export default function Lei14133() {
               A mudança de ordem das fases é a que mais muda o comportamento
               comercial. Na lógica antiga, toda empresa precisava chegar com a
               documentação impecável só para entrar na disputa. Agora a papelada do
-              licitante mais bem classificado é que será examinada — o que reduz o
+              licitante mais bem classificado é que será examinada, o que reduz o
               custo de participar, mas aumenta o custo de errar, porque quando a sua
               vez chega, você já está em primeiro e tem tudo a perder.
             </P>
@@ -207,7 +207,7 @@ export default function Lei14133() {
             />
             <P>
               Convite e tomada de preços foram extintos. Se você ainda ouve esses
-              nomes em conversa de mercado, é resquício — ou contrato antigo em
+              nomes em conversa de mercado, é resquício, ou contrato antigo em
               execução.
             </P>
           </Secao>
@@ -262,7 +262,7 @@ export default function Lei14133() {
             <P>
               Para o fornecedor pequeno, a dispensa eletrônica é a porta de entrada
               mais subestimada do mercado público. Volume alto, concorrência baixa,
-              ciclo curto — e quase ninguém monitora.
+              ciclo curto, e quase ninguém monitora.
             </P>
           </Secao>
 
@@ -274,7 +274,7 @@ export default function Lei14133() {
             </P>
             <P>
               O registro de preços merece atenção comercial. Ganhar uma ata não
-              garante faturamento — garante o direito de fornecer se e quando o órgão
+              garante faturamento, mas garante o direito de fornecer se e quando o órgão
               precisar. Empresa que projeta receita com base em ata assinada costuma
               se frustrar. Por outro lado, uma ata vigente é ativo de longo prazo, e
               adesões de outros órgãos podem multiplicar o volume original.
@@ -316,7 +316,7 @@ export default function Lei14133() {
               chamada={{
                 titulo: "Das cinco linhas acima, o monitoramento é a que ninguém faz à mão por muito tempo",
                 texto:
-                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e o link para o registro oficial. Habilitação, proposta, prazos e contrato continuam com você; esta é a linha que dá para tirar da rotina.",
+                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende, com objeto, órgão, valor, prazo e o link para o registro oficial. Habilitação, proposta, prazos e contrato continuam com você; esta é a linha que dá para tirar da rotina.",
               }}
               textoDoBotao="Quero receber os editais do meu ramo"
             />
@@ -331,7 +331,7 @@ export default function Lei14133() {
             <P>
               Para quem vende, isso é a melhor notícia da nova lei. Antes, acompanhar
               o mercado significava vigiar dezenas de portais com cadastros e
-              interfaces diferentes. Agora existe uma fonte única — e, sendo pública e
+              interfaces diferentes. Agora existe uma fonte única, e, sendo pública e
               estruturada, ela pode ser monitorada de forma automática, o que antes só
               grandes empresas conseguiam.
             </P>
@@ -362,7 +362,7 @@ export default function Lei14133() {
             <ul className="space-y-2 text-[var(--muted)]">
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm" target="_blank" rel="noopener">
-                  Lei nº 14.133/2021 — Planalto
+                  Lei nº 14.133/2021 (Planalto)
                 </a>
               </li>
               <li>
@@ -413,7 +413,7 @@ export default function Lei14133() {
 
         <p className="mt-8 text-sm leading-relaxed text-[var(--muted)]">
           Este guia tem finalidade informativa e operacional. Não constitui parecer
-          jurídico — a decisão de participar de um certame e a interpretação de
+          jurídico: a decisão de participar de um certame e a interpretação de
           cláusulas específicas de edital cabem à empresa licitante e ao seu
           assessor jurídico. Leia o{" "}
           <a className="underline underline-offset-4" href="/aviso-legal/">

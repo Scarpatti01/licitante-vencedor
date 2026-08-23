@@ -14,6 +14,17 @@ export const SITE = {
 } as const;
 
 /**
+ * O título que vai para a aba do navegador, para o resultado de busca e para o
+ * cartão de compartilhamento.
+ *
+ * Existe como constante porque estava montado à mão em cinco lugares, com um
+ * travessão em cada um. Quando a regra de voz proibiu o travessão em texto de
+ * cliente, os cinco precisaram mudar juntos, e cinco lugares é onde um fica
+ * para trás. Dois-pontos é o separador que gente usa em título.
+ */
+export const TITULO_DO_SITE = `${SITE.name}: ${SITE.tagline}`;
+
+/**
  * O canal de contato, e por que ele é uma constante e não texto solto.
  *
  * ## Ele estava faltando, e a interface já prometia que existia
@@ -123,6 +134,6 @@ export const IMAGENS_DE_COMPARTILHAMENTO = [
     url: `${SITE.url}/opengraph-image/`,
     width: 1200,
     height: 630,
-    alt: `${SITE.name} — ${SITE.tagline}`,
+    alt: TITULO_DO_SITE,
   },
 ];

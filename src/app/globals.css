@@ -26,6 +26,8 @@
    * Sobre fundo escuro use `--brass` do bloco dark, que é o claro.
    */
   --brass: #8c6d28;
+  /* Fundo do cartão de assinatura. 6,8:1 com o latão escuro por cima. */
+  --brass-soft: #fbf5e4;
 }
 
 @theme inline {
@@ -37,6 +39,7 @@
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-brass: var(--brass);
+  --color-brass-soft: var(--brass-soft);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -51,8 +54,9 @@
     /* Link em fundo escuro precisa clarear: o marinho do modo claro some. */
     --accent: #8fb2e8;
     --accent-soft: #142743;
-    /* O latão claro do cartão — 9,9:1 sobre o marinho, e é onde ele brilha. */
+    /* O latão claro do cartão. 9,9:1 sobre o marinho, e é onde ele brilha. */
     --brass: #d9b65f;
+    --brass-soft: #2b2410;
   }
 }
 

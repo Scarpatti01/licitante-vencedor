@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
 const SECOES = [
   { id: "quatro", titulo: "As quatro habilitações" },
-  { id: "quando", titulo: "Quando os documentos são pedidos — e de quem" },
+  { id: "quando", titulo: "Quando os documentos são pedidos, e de quem" },
   { id: "corrigir", titulo: "Entregou com erro: o que ainda dá para corrigir" },
   { id: "tecnica", titulo: "Qualificação técnica: os 4% e o teto de 50%" },
   { id: "economica", titulo: "Qualificação econômico-financeira: o que é vedado exigir" },
@@ -40,7 +40,7 @@ const FAQ = [
   {
     pergunta: "Preciso entregar todos os documentos junto com a proposta?",
     resposta:
-      "Em regra, não. O art. 63, II, da Lei 14.133 determina que os documentos de habilitação sejam exigidos apenas do licitante vencedor — a exceção é quando o edital inverte as fases e coloca a habilitação antes do julgamento. E a regularidade fiscal, pelo inciso III, só é cobrada depois do julgamento e só do mais bem classificado.",
+      "Em regra, não. O art. 63, II, da Lei 14.133 determina que os documentos de habilitação sejam exigidos apenas do licitante vencedor. A exceção é quando o edital inverte as fases e coloca a habilitação antes do julgamento. E a regularidade fiscal, pelo inciso III, só é cobrada depois do julgamento e só do mais bem classificado.",
   },
   {
     pergunta: "Esqueci um documento. Dá para enviar depois?",
@@ -50,7 +50,7 @@ const FAQ = [
   {
     pergunta: "O edital pede atestado do volume total do contrato. Isso vale?",
     resposta:
-      "Não. O art. 67, § 2º, admite exigir quantidades mínimas de até 50% das parcelas de maior relevância — e essas parcelas, pelo § 1º, são só as que valem 4% ou mais do total estimado. Exigir 100% do volume, ou exigir sobre parcela que não é relevante, extrapola a lei e é impugnável.",
+      "Não. O art. 67, § 2º, admite exigir quantidades mínimas de até 50% das parcelas de maior relevância, e essas parcelas, pelo § 1º, são só as que valem 4% ou mais do total estimado. Exigir 100% do volume, ou exigir sobre parcela que não é relevante, extrapola a lei e é impugnável.",
   },
   {
     pergunta: "Pode exigir atestado de serviço prestado só em determinada região?",
@@ -60,7 +60,7 @@ const FAQ = [
   {
     pergunta: "Podem exigir faturamento mínimo da minha empresa?",
     resposta:
-      "Não. O art. 69, § 2º, veda exigência de valores mínimos de faturamento anterior e de índices de rentabilidade ou lucratividade. O que a Administração pode exigir, pelo § 4º, é capital mínimo ou patrimônio líquido de até 10% do valor estimado — um ou outro, e limitado a esse teto.",
+      "Não. O art. 69, § 2º, veda exigência de valores mínimos de faturamento anterior e de índices de rentabilidade ou lucratividade. O que a Administração pode exigir, pelo § 4º, é capital mínimo ou patrimônio líquido de até 10% do valor estimado, um ou outro, e limitado a esse teto.",
   },
   {
     pergunta: "Minha empresa tem menos de dois anos. Fico fora?",
@@ -129,15 +129,14 @@ export default function Habilitacao() {
         <div className="mt-8 space-y-6">
           <P>
             Perde-se mais contrato na habilitação do que no preço. E a maior
-            parte dessas derrotas não é por falta de capacidade — é por certidão
+            parte dessas derrotas não é por falta de capacidade. É por certidão
             vencida, atestado no formato errado ou por uma exigência do edital
             que sequer poderia estar ali.
           </P>
           <P>
             Este guia trata das duas frentes na mesma ordem em que elas
             aparecem: o que você precisa ter em dia, e o que o edital não pode
-            pedir. A segunda é a que quase ninguém usa, e é onde estão os números
-            — 4%, 50%, 10% — que decidem impugnação.
+            pedir. A segunda é a que quase ninguém usa, e é onde estão os números que decidem impugnação: 4%, 50% e 10%.
           </P>
 
           <RespostaDireta>
@@ -147,7 +146,7 @@ export default function Habilitacao() {
             depois do julgamento. Atestado só pode ser cobrado sobre parcelas que
             valham 4% ou mais do total, em quantidade de até 50% delas, sem
             restrição de tempo ou região. E capital mínimo ou patrimônio líquido
-            fica limitado a 10% do valor estimado — faturamento mínimo é vedado.
+            fica limitado a 10% do valor estimado, faturamento mínimo é vedado.
           </RespostaDireta>
 
           <Indice itens={SECOES} />
@@ -179,7 +178,7 @@ export default function Habilitacao() {
             />
           </Secao>
 
-          <Secao id="quando" titulo="Quando os documentos são pedidos — e de quem">
+          <Secao id="quando" titulo="Quando os documentos são pedidos, e de quem">
             <P>
               Esta é a mudança que mais alivia o dia a dia de quem disputa muito,
               e ainda pega gente de surpresa.
@@ -195,14 +194,14 @@ export default function Habilitacao() {
             <P>
               Na prática: você não monta dossiê para cada certame que disputa.
               Apresenta proposta, e o esforço documental só vem se você vencer. O
-              inciso III é ainda mais forte — a regularidade fiscal fica para
+              inciso III é ainda mais forte. A regularidade fiscal fica para
               depois do julgamento <em>em qualquer caso</em>, inclusive quando as
               fases estão invertidas.
             </P>
             <P>
               Isso muda a estratégia de quem é pequeno: dá para disputar mais
               certames com a mesma estrutura administrativa. O que não muda é a
-              necessidade de manter as certidões válidas — porque o prazo entre
+              necessidade de manter as certidões válidas, porque o prazo entre
               vencer e comprovar é curto, e ninguém consegue tirar certidão
               municipal em duas horas.
             </P>
@@ -227,7 +226,7 @@ export default function Habilitacao() {
                 titulo:
                   "O prazo para renovar certidão começa quando o edital sai, não quando você vence",
                 texto:
-                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e o link para o registro oficial. Ver o edital na publicação é o que dá tempo de pedir a certidão municipal antes de ela ser cobrada.",
+                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende, com objeto, órgão, valor, prazo e o link para o registro oficial. Ver o edital na publicação é o que dá tempo de pedir a certidão municipal antes de ela ser cobrada.",
               }}
               textoDoBotao="Quero receber os editais do meu ramo"
             />
@@ -253,15 +252,15 @@ export default function Habilitacao() {
             <Tabela
               cabecalho={["Situação", "Dá para resolver?", "Fundamento"]}
               linhas={[
-                ["Certidão venceu depois da entrega das propostas", "Sim — cabe atualização", "Art. 64, II"],
-                ["Documento entregue, mas faltou detalhar uma informação que já existia", "Sim — cabe complementação em diligência", "Art. 64, I"],
-                ["Documento simplesmente não foi entregue", "Não — é apresentação de documento novo", "Art. 64, caput"],
-                ["Erro material que não muda a substância (soma, digitação)", "Sim — a comissão pode sanar", "Art. 64, § 1º"],
+                ["Certidão venceu depois da entrega das propostas", "Sim. Cabe atualização", "Art. 64, II"],
+                ["Documento entregue, mas faltou detalhar uma informação que já existia", "Sim. Cabe complementação em diligência", "Art. 64, I"],
+                ["Documento simplesmente não foi entregue", "Não. É apresentação de documento novo", "Art. 64, caput"],
+                ["Erro material que não muda a substância (soma, digitação)", "Sim, a comissão pode sanar", "Art. 64, § 1º"],
               ]}
             />
             <P>
               A linha divisória é essa: complementar o que existe, sim; suprir o
-              que faltou, não. Vale como regra de conferência antes de enviar —
+              que faltou, não. Vale como regra de conferência antes de enviar:
               o que não foi anexado não tem conserto depois.
             </P>
           </Secao>
@@ -309,7 +308,7 @@ export default function Habilitacao() {
               <a className="underline underline-offset-4" href="/jurisprudencia/">
                 jurisprudência
               </a>
-              , não de texto legal — e desconfie de quem afirmar categoricamente
+              , não de texto legal, e desconfie de quem afirmar categoricamente
               nos dois sentidos.
             </P>
           </Secao>
@@ -317,7 +316,7 @@ export default function Habilitacao() {
           <Secao id="economica" titulo="Qualificação econômico-financeira: o que é vedado exigir">
             <P>
               O art. 69 é curto e cheio de vedações. Ele fecha a lista do que
-              pode ser pedido — o que não está ali, não cabe.
+              pode ser pedido, o que não está ali, não cabe.
             </P>
             <Citacao fonte="Lei 14.133/2021, art. 69, caput, I e II">
               A habilitação econômico-financeira visa a demonstrar a aptidão
@@ -338,7 +337,7 @@ export default function Habilitacao() {
               cabecalho={["Dispositivo", "O que estabelece"]}
               linhas={[
                 ["§ 2º", "Vedada exigência de faturamento mínimo anterior e de índices de rentabilidade ou lucratividade"],
-                ["§ 4º", "Capital mínimo ou patrimônio líquido de até 10% do valor estimado — nas compras para entrega futura e na execução de obras e serviços"],
+                ["§ 4º", "Capital mínimo ou patrimônio líquido de até 10% do valor estimado, nas compras para entrega futura e na execução de obras e serviços"],
                 ["§ 5º", "Vedados índices e valores não usualmente adotados para avaliar a situação econômico-financeira"],
                 ["§ 6º", "Empresa constituída há menos de 2 anos apresenta apenas o último exercício"],
               ]}
@@ -346,7 +345,7 @@ export default function Habilitacao() {
             <P>
               O § 2º é o mais desrespeitado. Exigir faturamento mínimo é a forma
               clássica de excluir empresa pequena mantendo a aparência de
-              critério técnico — e a lei simplesmente proíbe. O § 6º é o que
+              critério técnico, e a lei simplesmente proíbe. O § 6º é o que
               permite empresa nova disputar, e some de muitos editais.
             </P>
             <P>
@@ -359,7 +358,7 @@ export default function Habilitacao() {
 
           <Secao id="amostra" titulo="Amostra e prova de conceito">
             <P>
-              Quatro dos endereços que este site mantinha tratavam de amostra —
+              Quatro dos endereços que este site mantinha tratavam de amostra,
               sinal de quanto o tema gerava disputa. A lei atual delimita quando
               ela cabe, e o detalhe decisivo é <em>de quem</em> se exige.
             </P>
@@ -374,7 +373,7 @@ export default function Habilitacao() {
               Ou seja: amostra do <em>provisoriamente vencedor</em>, não de todos
               os participantes. Exigir amostra de todo mundo transfere custo de
               produção e logística para quem talvez nem chegue a ser classificado
-              — e é exatamente o tipo de exigência que restringe a competição sem
+, e é exatamente o tipo de exigência que restringe a competição sem
               trazer benefício à Administração.
             </P>
             <Citacao fonte="Lei 14.133/2021, art. 41, II">
@@ -388,7 +387,7 @@ export default function Habilitacao() {
             <P>
               Duas condições cumulativas outra vez: previsão no edital{" "}
               <em>e</em> justificativa da necessidade. Edital que pede amostra sem
-              justificar a necessidade no processo não atende à segunda — e essa
+              justificar a necessidade no processo não atende à segunda, e essa
               é a impugnação mais simples de redigir, porque você não discute
               mérito técnico, só aponta a ausência do documento.
             </P>
@@ -415,7 +414,7 @@ export default function Habilitacao() {
             <P>
               Para você, a diferença é de esforço: com a ordem normal, só o
               vencedor monta a documentação; com a habilitação antecipada, todos
-              montam. Por isso a inversão precisa ser justificada — ela aumenta o
+              montam. Por isso a inversão precisa ser justificada. Ela aumenta o
               custo de participar.
             </P>
           </Secao>
@@ -426,7 +425,7 @@ export default function Habilitacao() {
               linhas={[
                 ["Certidões federal, FGTS, trabalhista, estadual e municipal", "Alerta de vencimento no calendário. A municipal é a que mais atrasa"],
                 ["Contrato social com a última alteração consolidada", "Alteração recente não averbada trava a habilitação jurídica"],
-                ["Objeto social e CNAE compatíveis com o item", "Correção leva semanas na Junta Comercial — tempo que não existe com edital publicado"],
+                ["Objeto social e CNAE compatíveis com o item", "Correção leva semanas na Junta Comercial, tempo que não existe com edital publicado"],
                 ["Balanço patrimonial registrado", "Conferir os índices do edital na sua própria planilha antes de enviar"],
                 ["Atestados com quantitativos discriminados", "Atestado genérico, sem quantidade, não comprova o que o edital pede"],
                 ["Leitura do edital procurando os limites", "4% e 50% nos atestados, 10% no capital, vedação de faturamento mínimo"],
@@ -434,7 +433,7 @@ export default function Habilitacao() {
             />
             <P>
               A última linha é a que vira dinheiro. Antes de decidir que você não
-              atende ao edital, confira se a exigência que te elimina é legal —
+              atende ao edital, confira se a exigência que te elimina é legal.
               em boa parte dos casos não é, e o prazo de impugnação ainda está
               aberto. Como redigir esse pedido está em{" "}
               <a className="underline underline-offset-4" href="/sumulas-tcu/">
@@ -464,7 +463,7 @@ export default function Habilitacao() {
             <ul className="space-y-2 text-[var(--muted)]">
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm" target="_blank" rel="noopener">
-                  Lei nº 14.133/2021 — Planalto
+                  Lei nº 14.133/2021 (Planalto)
                 </a>
               </li>
               <li>
@@ -515,7 +514,7 @@ export default function Habilitacao() {
 
         <p className="mt-8 text-sm leading-relaxed text-[var(--muted)]">
           Este conteúdo tem finalidade informativa e operacional. Não constitui
-          parecer jurídico — a análise de um edital concreto, a redação de
+          parecer jurídico, a análise de um edital concreto, a redação de
           impugnação e recurso e a defesa em processo sancionatório cabem à
           empresa e ao seu assessor jurídico. Leia o{" "}
           <a className="underline underline-offset-4" href="/aviso-legal/">

@@ -44,7 +44,7 @@ const FAQ = [
   {
     pergunta: "Súmula do TCU tem força de lei?",
     resposta:
-      "Não. Súmula não é norma: é a consolidação do entendimento reiterado do próprio tribunal, que vincula a atuação do TCU e orienta o gestor federal sujeito à sua jurisdição. Para o fornecedor, o valor é argumentativo e prático — invocar uma súmula em impugnação é mostrar ao órgão que, se mantiver a exigência, ele já sabe qual será a leitura do tribunal que vai julgar as contas dele.",
+      "Não. Súmula não é norma: é a consolidação do entendimento reiterado do próprio tribunal, que vincula a atuação do TCU e orienta o gestor federal sujeito à sua jurisdição. Para o fornecedor, o valor é argumentativo e prático. Invocar uma súmula em impugnação é mostrar ao órgão que, se mantiver a exigência, ele já sabe qual será a leitura do tribunal que vai julgar as contas dele.",
   },
   {
     pergunta: "O edital exige coisa que a súmula proíbe. O que eu faço?",
@@ -54,12 +54,12 @@ const FAQ = [
   {
     pergunta: "As súmulas citam a Lei 8.666, que foi revogada. Elas caducaram?",
     resposta:
-      "A citação de um artigo revogado não apaga o entendimento por trás dela. Boa parte das súmulas expressa princípio que a Lei 14.133 manteve — competitividade, proporcionalidade das exigências, vedação a exigência desnecessária. O que muda é o cuidado: cite a súmula pelo raciocínio que ela consolida e ancore o pedido também no dispositivo correspondente da lei atual.",
+      "A citação de um artigo revogado não apaga o entendimento por trás dela. Boa parte das súmulas expressa princípio que a Lei 14.133 manteve, competitividade, proporcionalidade das exigências, vedação a exigência desnecessária. O que muda é o cuidado: cite a súmula pelo raciocínio que ela consolida e ancore o pedido também no dispositivo correspondente da lei atual.",
   },
   {
     pergunta: "Súmula do TCU vale para licitação de estado e de município?",
     resposta:
-      "A jurisdição do TCU alcança recursos federais. Estado e município têm o seu próprio tribunal de contas, com súmulas próprias. Na prática, o entendimento do TCU é citado em todo o país como referência persuasiva, e boa parte dos tribunais estaduais adota a mesma linha — mas o argumento fica mais forte quando você encontra a súmula do tribunal que efetivamente fiscaliza aquele órgão.",
+      "A jurisdição do TCU alcança recursos federais. Estado e município têm o seu próprio tribunal de contas, com súmulas próprias. Na prática, o entendimento do TCU é citado em todo o país como referência persuasiva, e boa parte dos tribunais estaduais adota a mesma linha, mas o argumento fica mais forte quando você encontra a súmula do tribunal que efetivamente fiscaliza aquele órgão.",
   },
   {
     pergunta: "Onde confiro se uma súmula continua vigente?",
@@ -69,7 +69,7 @@ const FAQ = [
   {
     pergunta: "Posso exigir que o pregoeiro aplique a súmula na hora da sessão?",
     resposta:
-      "Você pode registrar a manifestação em campo próprio e, se for o caso, declarar intenção de recurso motivada. O pregoeiro não é obrigado a acatar de imediato, mas a manifestação registrada é o que preserva o seu direito de recorrer depois — sem ela, a via recursal se fecha.",
+      "Você pode registrar a manifestação em campo próprio e, se for o caso, declarar intenção de recurso motivada. O pregoeiro não é obrigado a acatar de imediato, mas a manifestação registrada é o que preserva o seu direito de recorrer depois, sem ela, a via recursal se fecha.",
   },
 ];
 
@@ -87,7 +87,7 @@ const RESUMO: string[][] = [
   ["270", "Especificação", "Indicação de marca só por padronização estritamente necessária e justificada antes"],
   ["272", "Habilitação", "Vedada exigência que obrigue o licitante a gastar antes de ter o contrato"],
   ["274", "Habilitação", "Vedada exigência de inscrição prévia no SICAF como condição de habilitação"],
-  ["275", "Qualificação econômica", "Capital mínimo, patrimônio líquido ou garantia — nunca os três somados"],
+  ["275", "Qualificação econômica", "Capital mínimo, patrimônio líquido ou garantia, nunca os três somados"],
   ["281", "Cooperativas", "Vedada a participação quando o serviço exige subordinação, pessoalidade e habitualidade"],
   ["282", "Responsabilização", "Ação de ressarcimento ao erário é imprescritível"],
   ["283", "Habilitação", "Exige-se prova de regularidade fiscal, não certidão de quitação"],
@@ -155,7 +155,7 @@ export default function SumulasTcu() {
           <P>
             Quase toda impugnação de edital que dá certo tem a mesma estrutura:
             um trecho do edital, um enunciado do TCU que diz o contrário, e três
-            linhas ligando os dois. Não é retórica jurídica — é mostrar ao órgão
+            linhas ligando os dois. Não é retórica jurídica. É mostrar ao órgão
             que a exigência dele já foi analisada, e como.
           </P>
           <P>
@@ -183,7 +183,7 @@ export default function SumulasTcu() {
             <P>
               O TCU julga as contas de quem usa dinheiro federal. Quando o
               tribunal decide a mesma questão repetidas vezes no mesmo sentido,
-              esse entendimento pode ser consolidado num enunciado curto — a
+              esse entendimento pode ser consolidado num enunciado curto, a
               súmula. Ela não cria obrigação nova: resume a leitura que o
               tribunal já vinha dando à norma que existe.
             </P>
@@ -206,7 +206,7 @@ export default function SumulasTcu() {
           <Secao id="como-usar" titulo="Como usar uma súmula em impugnação e em recurso">
             <P>
               O erro mais comum é citar o número e parar por aí. “Fere a Súmula
-              247 do TCU” não é argumento — é slogan. O que convence tem três
+              247 do TCU” não é argumento. É slogan. O que convence tem três
               partes, e cabe em um parágrafo.
             </P>
             <Tabela
@@ -222,7 +222,7 @@ export default function SumulasTcu() {
               própria no edital, e exigência não impugnada a tempo tende a ser
               tratada como preclusa. Se o certame já está em disputa, o caminho
               passa a ser a manifestação registrada e a intenção de recurso
-              motivada — sem ela, a via recursal simplesmente se fecha.
+              motivada, sem ela, a via recursal simplesmente se fecha.
             </P>
           </Secao>
 
@@ -245,7 +245,7 @@ export default function SumulasTcu() {
             <P>
               O trecho decisivo é o final, e quase ninguém usa: a habilitação
               tem de acompanhar a divisão. Não adianta o edital dividir em itens
-              e continuar exigindo atestado do volume total — isso recria a
+              e continuar exigindo atestado do volume total. Isso recria a
               barreira que a divisão deveria derrubar. Quando encontrar essa
               combinação, impugne os dois pontos juntos.
             </P>
@@ -263,7 +263,7 @@ export default function SumulasTcu() {
               Repare nas duas condições cumulativas: padronização estritamente
               necessária <em>e</em> justificativa prévia. Edital que traz a marca
               sem a justificativa no processo não atende à segunda, e esse é o
-              ponto de ataque mais simples de sustentar — você não precisa
+              ponto de ataque mais simples de sustentar. Você não precisa
               discutir engenharia, só apontar a ausência do documento.
             </P>
           </Secao>
@@ -283,7 +283,7 @@ export default function SumulasTcu() {
               Esta é a súmula mais subutilizada da lista. Ela ataca a exigência
               de você já ter a estrutura antes de ganhar: sede na cidade, frota
               própria, equipe contratada, certificação cara. O critério é
-              temporal — se o custo só faz sentido depois de assinado o contrato,
+              temporal, se o custo só faz sentido depois de assinado o contrato,
               não pode ser condição para disputar.
             </P>
             <Citacao fonte="Súmula TCU nº 263">
@@ -296,7 +296,7 @@ export default function SumulasTcu() {
               complexidade do objeto a ser executado.
             </Citacao>
             <P>
-              Note que ela autoriza o quantitativo mínimo — não adianta impugnar
+              Note que ela autoriza o quantitativo mínimo. Não adianta impugnar
               a existência da exigência. O que se impugna é o excesso: parcela
               que não é de maior relevância, ou quantitativo desproporcional ao
               objeto. Argumento vencedor aqui é aritmético, não retórico.
@@ -318,7 +318,7 @@ export default function SumulasTcu() {
             </Citacao>
             <P>
               Cadastro é facilidade, não requisito. O SICAF substitui a entrega
-              de documentos para quem o mantém atualizado — ele não pode ser a
+              de documentos para quem o mantém atualizado. Ele não pode ser a
               porta de entrada obrigatória. Vale o mesmo raciocínio para cadastro
               próprio de estado e de município.
             </P>
@@ -365,7 +365,7 @@ export default function SumulasTcu() {
               chamada={{
                 titulo: "Súmula só rende enquanto o edital ainda está aberto",
                 texto:
-                  "Você veio consultar súmula, e a lista continua logo abaixo — siga em frente se for só isso. Fica o registro de que nenhuma delas se aplica a um edital que passou despercebido. Se ajudar, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+                  "Você veio consultar súmula, e a lista continua logo abaixo. Siga em frente se for só isso. Fica o registro de que nenhuma delas se aplica a um edital que passou despercebido. Se ajudar, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
               }}
               textoDoBotao="Quero receber os editais do meu ramo"
             />
@@ -384,7 +384,7 @@ export default function SumulasTcu() {
             </Citacao>
             <P>
               Duas palavras carregam tudo: presunção relativa. O índice não
-              desclassifica sozinho — ele inverte o ônus e obriga o órgão a te
+              desclassifica sozinho. Ele inverte o ônus e obriga o órgão a te
               dar chance de provar que o preço fecha. Desclassificação automática
               por planilha abaixo do parâmetro é ilegal, e é o erro mais comum
               de pregoeiro apressado.
@@ -418,7 +418,7 @@ export default function SumulasTcu() {
             </Citacao>
             <P>
               O que decide não é a palavra “engenharia” no objeto, é se o serviço
-              é comum — isto é, se dá para descrever por especificação usual de
+              é comum, isto é, se dá para descrever por especificação usual de
               mercado. Manutenção predial rotineira costuma ser; obra com projeto
               singular, não.
             </P>
@@ -433,7 +433,7 @@ export default function SumulasTcu() {
             </Citacao>
             <P>
               A segunda metade protege quem já ganhou. Revisão de projeto que
-              transforma o objeto em outra coisa é ilegal — e é assim que
+              transforma o objeto em outra coisa é ilegal, e é assim que
               contrato vira execução diferente da que foi orçada, com o
               contratado absorvendo a diferença.
             </P>
@@ -448,7 +448,7 @@ export default function SumulasTcu() {
             <P>
               Aqui a súmula cria dever para o órgão, não restrição para você.
               Serve como argumento quando o edital apresenta peças técnicas sem
-              responsável identificado — o que costuma explicar orçamento-base
+              responsável identificado, o que costuma explicar orçamento-base
               irreal.
             </P>
           </Secao>
@@ -469,7 +469,7 @@ export default function SumulasTcu() {
             </Citacao>
             <P>
               Notória especialização sozinha não basta. O serviço precisa ser
-              singular — e singular não quer dizer complexo ou caro, quer dizer
+              singular, e singular não quer dizer complexo ou caro, quer dizer
               que não dá para comparar por critério objetivo. Serviço técnico que
               vários prestadores executam de forma equivalente é licitável, por
               mais especializado que seja.
@@ -514,7 +514,7 @@ export default function SumulasTcu() {
               Ela estabelece uma ordem de preferência, não uma proibição:
               resultado primeiro, posto ou hora só como exceção justificada. Para
               quem vende TI, a leitura prática é que edital por posto sem
-              justificativa no processo tem vício — e que proposta desenhada
+              justificativa no processo tem vício, e que proposta desenhada
               para nível de serviço tende a ser a que o controle prefere ver.
             </P>
             <P>
@@ -533,14 +533,14 @@ export default function SumulasTcu() {
             <P>
               Esta não trata de disputa de edital, e é justamente por isso que
               merece atenção de quem executa contrato. Ela diz que a cobrança de
-              dano ao erário não tem prazo para prescrever — o que significa que
+              dano ao erário não tem prazo para prescrever, o que significa que
               pendência de execução contratual mal resolvida não some com o
               tempo.
             </P>
             <P>
               A consequência operacional é simples e vale dinheiro: guarde a
-              documentação de execução — medições, atestos, comunicações
-              formais, aditivos — muito além do prazo em que a nota fiscal
+              documentação de execução, medições, atestos, comunicações
+              formais, aditivos, muito além do prazo em que a nota fiscal
               importa para o fisco. Quando a cobrança aparece, o que separa a
               empresa que se defende da que paga é ter o registro do que foi
               entregue e aprovado.
@@ -559,7 +559,7 @@ export default function SumulasTcu() {
               vedação a restrição desnecessária e contraditório antes de
               desclassificar são princípios que a Lei 14.133 manteve. O
               entendimento sobre habilitação proporcional ou sobre presunção
-              relativa de inexequibilidade não nasceu do artigo revogado — o
+              relativa de inexequibilidade não nasceu do artigo revogado. O
               artigo era só onde ele estava ancorado.
             </P>
             <P>
@@ -619,22 +619,22 @@ export default function SumulasTcu() {
             <ul className="space-y-2 text-[var(--muted)]">
               <li>
                 <a className="underline underline-offset-4" href="https://pesquisa.apps.tcu.gov.br/pesquisa/sumula" target="_blank" rel="noopener">
-                  Pesquisa de súmulas — Tribunal de Contas da União
+                  Pesquisa de súmulas (Tribunal de Contas da União)
                 </a>
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm" target="_blank" rel="noopener">
-                  Lei nº 14.133/2021 — Planalto
+                  Lei nº 14.133/2021 (Planalto)
                 </a>
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/leis/l8666cons.htm" target="_blank" rel="noopener">
-                  Lei nº 8.666/1993 — Planalto
+                  Lei nº 8.666/1993 (Planalto)
                 </a>
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm" target="_blank" rel="noopener">
-                  Lei nº 10.520/2002 — Planalto
+                  Lei nº 10.520/2002 (Planalto)
                 </a>
               </li>
             </ul>
@@ -675,7 +675,7 @@ export default function SumulasTcu() {
 
         <p className="mt-8 text-sm leading-relaxed text-[var(--muted)]">
           Este conteúdo tem finalidade informativa e operacional. Não constitui
-          parecer jurídico — a análise de um edital concreto, a redação de
+          parecer jurídico, a análise de um edital concreto, a redação de
           impugnação e recurso e a defesa em processo sancionatório cabem à
           empresa e ao seu assessor jurídico. Leia o{" "}
           <a className="underline underline-offset-4" href="/aviso-legal/">

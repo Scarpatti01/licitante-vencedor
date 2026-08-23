@@ -6,7 +6,7 @@ import { GUIAS } from "@/lib/guias";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { Corpo, ancora } from "@/components/blog/Corpo";
-import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { CardAssinatura } from "@/components/CardAssinatura";
 
 /**
  * A página de um artigo.
@@ -187,21 +187,21 @@ export default async function PaginaDoArtigo({
         </section>
 
         {/*
-          A captura do fim é a segunda chance, não a principal: a que converte
-          está no meio do texto, onde o leitor acabou de reconhecer o problema.
-          Esta existe para quem leu tudo — público pequeno e de intenção alta.
+          O fim do post é do produto PAGO, e não de uma segunda captura
+          gratuita.
+          
+          Antes havia duas capturas do alerta grátis no mesmo post, uma no meio
+          e outra aqui. Isso desperdiçava o único lugar da página onde o leitor
+          já leu tudo e continua interessado: quem chega ao fim de um texto de
+          mil palavras sobre licitação tem a intenção mais alta da página, e
+          oferecer a ele de novo a mesma coisa gratuita é pedir menos do que ele
+          está disposto a dar.
+          
+          Agora a escalada é natural. A captura gratuita fica no meio, onde a
+          dor aparece; o cartão pago fica no fim, para quem quer mais. Um de
+          cada, e cada um dizendo a verdade do seu lado.
         */}
-        <section className="mt-16">
-          <CapturaAlerta
-            origem={`blog/${artigo.slug}#fim`}
-            chamada={{
-              titulo: "Receba os editais do seu ramo, já filtrados",
-              texto:
-                "Todo dia útil, o que foi publicado no PNCP e combina com o que a sua empresa vende — com prazo, valor e link para o registro oficial.",
-            }}
-            textoDoBotao="Quero receber os editais do meu ramo"
-          />
-        </section>
+        <CardAssinatura />
 
         <section className="mt-16 border-t pt-8">
           <h2 className="text-lg font-semibold tracking-tight">Continue</h2>
