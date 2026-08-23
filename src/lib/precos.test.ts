@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { PLANOS, O_QUE_INCLUI, O_QUE_NAO_FAZ, emReais, porEmpresa } from "./precos";
+import { PLANOS, O_QUE_INCLUI, O_QUE_NAO_FAZ, emReais, porEmpresa, divergenciasDePreco, type PlanoNoBanco } from "./precos";
 
 const PAGINA = readFileSync(
   join(import.meta.dirname, "..", "app", "precos", "page.tsx"),
@@ -108,5 +108,81 @@ describe("o caminho até os preços existe", () => {
     // Página que recebe o CTA principal e não entra no sitemap é página que o
     // buscador não acha.
     expect(GUIAS).toMatch(/href: "\/precos\/"/);
+  });
+});
+
+describe("o preço publicado e o preço cobrável não podem divergir", () => {
+  /**
+   * A tabela `planos` como ela está semeada em produção hoje. Repetir os
+   * números aqui é proposital: se alguém mudar `PLANOS` sem mudar o banco,
+   * este caso quebra e diz qual dos dois ficou para trás.
+   */
+  const COMO_ESTA_NO_BANCO: PlanoNoBanco[] = [
+    { codigo: "empresa", ativo: true, mensalidade_em_centavos: 80_000, limite_de_empresas: 1 },
+    { codigo: "consultoria", ativo: true, mensalidade_em_centavos: 150_000, limite_de_empresas: 5 },
+  ];
+
+  it("não acusa nada quando o banco reflete a página", () => {
+    expect(divergenciasDePreco(COMO_ESTA_NO_BANCO)).toEqual([]);
+  });
+
+  it("acusa preço diferente, com os dois números na mensagem", () => {
+    const banco = COMO_ESTA_NO_BANCO.map((l) =>
+      l.codigo === "empresa" ? { ...l, mensalidade_em_centavos: 90_000 } : l,
+    );
+    const [erro, ...resto] = divergenciasDePreco(banco);
+    expect(resto).toEqual([]);
+    // Os dois valores precisam aparecer: "diverge" sem os números obriga quem
+    // recebe o alerta a ir procurar qual dos lados mudou.
+    expect(erro).toContain("80000");
+    expect(erro).toContain("90000");
+  });
+
+  it("acusa limite de empresas diferente — que é a dimensão em que o preço muda", () => {
+    const banco = COMO_ESTA_NO_BANCO.map((l) =>
+      l.codigo === "consultoria" ? { ...l, limite_de_empresas: 3 } : l,
+    );
+    expect(divergenciasDePreco(banco)).toHaveLength(1);
+    expect(divergenciasDePreco(banco)[0]).toMatch(/consultoria/);
+  });
+
+  it('trata "sem limite" no banco como divergência de um plano que promete cinco', () => {
+    // NULL é sem limite. Um plano de R$ 1.500 anunciado como "até 5 empresas"
+    // e gravado como ilimitado não quebra tela nenhuma — só entrega de graça o
+    // que deveria ser o degrau seguinte de preço.
+    const banco = COMO_ESTA_NO_BANCO.map((l) =>
+      l.codigo === "consultoria" ? { ...l, limite_de_empresas: null } : l,
+    );
+    expect(divergenciasDePreco(banco)[0]).toContain("sem limite");
+  });
+
+  it("acusa plano anunciado que não existe no banco", () => {
+    const banco = COMO_ESTA_NO_BANCO.filter((l) => l.codigo !== "consultoria");
+    expect(divergenciasDePreco(banco)[0]).toMatch(/consultoria.*não existe/);
+  });
+
+  it("acusa plano anunciado que está inativo no banco", () => {
+    const banco = COMO_ESTA_NO_BANCO.map((l) =>
+      l.codigo === "empresa" ? { ...l, ativo: false } : l,
+    );
+    expect(divergenciasDePreco(banco)[0]).toMatch(/inativo/);
+  });
+
+  it("acusa plano cobrável que a página não anuncia", () => {
+    // O lado que se esquece de conferir. Ninguém reclama, porque nenhuma tela
+    // quebra — existe só uma cobrança possível sem preço público correspondente.
+    const banco = [
+      ...COMO_ESTA_NO_BANCO,
+      { codigo: "antigo", ativo: true, mensalidade_em_centavos: 50_000, limite_de_empresas: 1 },
+    ];
+    expect(divergenciasDePreco(banco)[0]).toMatch(/"antigo".*não aparece/);
+  });
+
+  it("ignora plano inativo que a página não anuncia — é histórico, não divergência", () => {
+    const banco = [
+      ...COMO_ESTA_NO_BANCO,
+      { codigo: "antigo", ativo: false, mensalidade_em_centavos: 50_000, limite_de_empresas: 1 },
+    ];
+    expect(divergenciasDePreco(banco)).toEqual([]);
   });
 });

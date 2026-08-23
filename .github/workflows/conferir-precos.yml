@@ -1,0 +1,83 @@
+# Confere se o preço publicado em /precos/ e o preço cobrável na tabela
+# `planos` são o mesmo número.
+#
+# ## Por que DOIS gatilhos
+#
+# O valor tem dois domicílios de propósito — `src/lib/precos.ts` serve a página
+# estática, a tabela serve a cobrança —, então há duas formas de divergir e
+# cada uma precisa do seu gatilho:
+#
+#   - `push` nos arquivos de preço pega a divergência criada por código, no
+#     minuto em que ela entra em `main`.
+#   - o `cron` semanal pega a outra ponta, que nenhum push enxerga: alguém
+#     editando a linha do plano direto no painel do Supabase.
+#
+# Só o push deixaria o banco livre para andar sozinho; só o cron deixaria uma
+# semana de site anunciando preço que a cobrança não pratica.
+
+name: Conferir preços
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/lib/precos.ts"
+      - "scripts/conferir-precos.ts"
+      - ".github/workflows/conferir-precos.yml"
+  schedule:
+    # Segunda, 09:00 UTC (06:00 em Brasília) — antes do expediente comercial,
+    # para o problema já estar na caixa de entrada quando alguém for vender.
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  conferir:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Conferir
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -o pipefail
+
+          codigo=0
+          node scripts/conferir-precos.ts | tee saida-precos.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Conferência não rodou — faltam segredos"
+              echo
+              echo "Configure em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+
+          exit "$codigo"
+
+      - name: Publicar o log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-precos
+          path: saida-precos.txt
+          retention-days: 90
+          if-no-files-found: ignore

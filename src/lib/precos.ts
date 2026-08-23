@@ -92,3 +92,69 @@ export function emReais(centavos: number): string {
 export function porEmpresa(plano: Plano): string {
   return `${emReais(Math.round(plano.mensalidadeEmCentavos / plano.empresas))} por empresa`;
 }
+
+/**
+ * Uma linha da tabela `planos`, como o PostgREST devolve.
+ *
+ * Este arquivo é a fonte do preço PUBLICADO; a tabela é a fonte do preço
+ * COBRADO. Os dois existem de propósito — a página é estática e não abre banco,
+ * a cobrança precisa de linha editável sem deploy — e por isso precisam de
+ * alguém conferindo que dizem o mesmo.
+ */
+export type PlanoNoBanco = {
+  codigo: string;
+  ativo: boolean;
+  mensalidade_em_centavos: number;
+  limite_de_empresas: number | null;
+};
+
+/**
+ * O que diverge entre o preço anunciado e o preço cobrável. Lista vazia é
+ * "conferem".
+ *
+ * É função pura e mora aqui, e não no script, porque o script precisa de rede e
+ * de credencial de serviço — o que o deixaria fora do alcance do `vitest`. A
+ * comparação é justamente a parte que não pode estar errada, então ela é o
+ * pedaço que fica testável.
+ */
+export function divergenciasDePreco(noBanco: readonly PlanoNoBanco[]): string[] {
+  const divergencias: string[] = [];
+  const porCodigo = new Map(noBanco.map((l) => [l.codigo, l]));
+
+  for (const plano of PLANOS) {
+    const linha = porCodigo.get(plano.codigo);
+    if (!linha) {
+      divergencias.push(
+        `"${plano.codigo}" está publicado em /precos/ e não existe na tabela planos — ninguém consegue assinar o que a página oferece.`,
+      );
+      continue;
+    }
+    if (!linha.ativo) {
+      divergencias.push(`"${plano.codigo}" está publicado em /precos/ mas está inativo no banco.`);
+    }
+    if (linha.mensalidade_em_centavos !== plano.mensalidadeEmCentavos) {
+      divergencias.push(
+        `"${plano.codigo}": a página anuncia ${plano.mensalidadeEmCentavos} centavos e o banco cobra ${linha.mensalidade_em_centavos}.`,
+      );
+    }
+    if (linha.limite_de_empresas !== plano.empresas) {
+      divergencias.push(
+        `"${plano.codigo}": a página promete ${plano.empresas} empresa(s) e o banco permite ${linha.limite_de_empresas ?? "sem limite"}.`,
+      );
+    }
+  }
+
+  // O outro lado, e o mais fácil de esquecer: plano cobrável que a página não
+  // anuncia. Ele não quebra tela nenhuma — só permite existir uma cobrança que
+  // o cliente não tem onde conferir.
+  const publicados = new Set(PLANOS.map((p) => p.codigo));
+  for (const linha of noBanco) {
+    if (linha.ativo && !publicados.has(linha.codigo)) {
+      divergencias.push(
+        `"${linha.codigo}" está ativo no banco e não aparece em /precos/ — dá para cobrar por ele sem o cliente ter onde conferir o preço.`,
+      );
+    }
+  }
+
+  return divergencias;
+}

@@ -9,7 +9,9 @@ import { prazoDeGracaVencido } from "./retencao.ts";
  *
  *   1. **Carência após cancelamento.** Documento de habilitação (arquivo em
  *      `documentos_da_empresa` e `atestados`) some sozinho, `DIAS_DE_GRACA_
- *      APOS_CANCELAMENTO` dias depois de `assinaturas.encerrada_em`. O
+ *      APOS_CANCELAMENTO` dias depois de a empresa perder cobertura — o que a
+ *      view `cobertura_da_empresa` responde, porque a assinatura pertence a
+ *      quem paga e uma pessoa pode sustentar várias empresas. O
  *      histórico de triagem continua — ele não é "documento do cliente", é o
  *      registro de uma decisão do produto, e é o que sustenta o suporte
  *      ("por que eu não recebi esse edital?") mesmo depois do cancelamento.
@@ -67,7 +69,7 @@ function env(nome: string): string | null {
 }
 
 type LinhaDeDocumento = { id: string; caminho_no_storage: string | null };
-type LinhaDeAssinatura = { empresa_id: string; encerrada_em: string | null; criado_em: string };
+type LinhaDeCobertura = { empresa_id: string; sem_cobertura_desde: string | null };
 
 /**
  * Abre o cliente, ou devolve `null` sem credencial — mesma escolha de
@@ -169,35 +171,37 @@ export function abrirClienteLgpd(): ClienteLgpd | null {
     },
 
     async empresasComPrazoDeGracaVencido(agora, diasDeGraca) {
+      // Lê `cobertura_da_empresa`, e não `assinaturas`.
+      //
+      // A assinatura pertence a QUEM PAGA, não a uma empresa: um contador pode
+      // sustentar cinco. Então "quando esta empresa deixou de ser paga?" não é
+      // mais uma coluna — é o encontro de duas pontas, a pessoa deixar de ser
+      // dona dela ou a assinatura dessa pessoa terminar, o que vier primeiro.
+      // A view resolve isso e já devolve uma linha por empresa, o que dispensa
+      // a desduplicação por assinatura mais recente que existia aqui.
+      //
+      // `sem_cobertura_desde` nulo é empresa que NUNCA teve assinatura — o
+      // cliente gratuito. Ela não entra na purga porque nenhuma relação paga
+      // terminou, e apagar documento dela seria apagar o que não venceu.
       const consulta = new URLSearchParams({
-        select: "empresa_id,encerrada_em,criado_em",
-        encerrada_em: "not.is.null",
-        order: "empresa_id.asc,criado_em.desc",
+        select: "empresa_id,sem_cobertura_desde",
+        sem_cobertura_desde: "not.is.null",
       });
-      const resposta = await fetch(`${url}/rest/v1/assinaturas?${consulta}`, {
+      const resposta = await fetch(`${url}/rest/v1/cobertura_da_empresa?${consulta}`, {
         headers: cabecalhos,
       });
       if (!resposta.ok) {
-        throw new Error(`assinaturas: supabase recusou ${resposta.status} ${await resposta.text()}`);
+        throw new Error(
+          `cobertura_da_empresa: supabase recusou ${resposta.status} ${await resposta.text()}`,
+        );
       }
-      const linhas = (await resposta.json()) as LinhaDeAssinatura[];
-
-      // Uma empresa pode ter várias assinaturas no histórico (renovação,
-      // troca de plano); o que decide é só a mais recente — por isso a
-      // ordenação acima e o `continue` abaixo na segunda linha da mesma
-      // empresa em diante.
-      const maisRecentePorEmpresa = new Map<string, LinhaDeAssinatura>();
-      for (const linha of linhas) {
-        if (!maisRecentePorEmpresa.has(linha.empresa_id)) {
-          maisRecentePorEmpresa.set(linha.empresa_id, linha);
-        }
-      }
+      const linhas = (await resposta.json()) as LinhaDeCobertura[];
 
       const vencidas: string[] = [];
-      for (const [empresaId, linha] of maisRecentePorEmpresa) {
-        if (!linha.encerrada_em) continue;
-        if (prazoDeGracaVencido(new Date(linha.encerrada_em), agora, diasDeGraca)) {
-          vencidas.push(empresaId);
+      for (const linha of linhas) {
+        if (!linha.sem_cobertura_desde) continue;
+        if (prazoDeGracaVencido(new Date(linha.sem_cobertura_desde), agora, diasDeGraca)) {
+          vencidas.push(linha.empresa_id);
         }
       }
       return vencidas;

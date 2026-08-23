@@ -10,12 +10,25 @@ import "server-only";
  * cliente sobre quanto ele paga.
  *
  * Por isso esta função devolve `null` com motivo, em vez de devolver números
- * plausíveis. Não existe tabela de planos nas migrações atuais nem método de
- * assinatura em `RepositorioDoProduto`; enquanto for assim, a resposta honesta é
- * "não há plano ativo registrado", e é isso que a tela mostra.
+ * plausíveis. A tabela `planos` existe e está semeada com Empresa e
+ * Consultoria, mas NENHUMA assinatura foi emitida ainda — não há processadora
+ * ligada. Enquanto for assim, a resposta honesta é "não há plano ativo
+ * registrado", e é isso que a tela mostra.
  *
- * Quando a fonte existir, ela entra aqui — a tela já sabe renderizar todos os
- * campos opcionais como ausentes, então nenhum componente precisa mudar.
+ * ## Para quem for ligar a leitura de verdade
+ *
+ * A assinatura NÃO pende mais da empresa: ela pertence ao TITULAR, porque o
+ * preço é por conta e limita quantas empresas cabem nela (R$ 800 para uma,
+ * R$ 1.500 para até cinco). A consulta certa parte de `assinaturas.titular_id`,
+ * e "esta empresa está paga?" é a view `cobertura_da_empresa`.
+ *
+ * O parâmetro `empresaId` continua aqui de propósito — a tela é da empresa
+ * aberta e a resposta muda com ela —, mas ele é o ponto de partida da pergunta,
+ * não a chave da linha. Filtrar `assinaturas` por empresa é o modelo antigo, e
+ * ele não existe mais no banco.
+ *
+ * A tela já sabe renderizar todos os campos opcionais como ausentes, então
+ * nenhum componente precisa mudar quando a fonte entrar.
  */
 
 export type StatusDaAssinatura =
