@@ -1,9 +1,14 @@
 /**
- * A varredura de carência: apaga documento e atestado de toda empresa cuja
- * assinatura mais recente encerrou há mais que `DIAS_DE_GRACA_APOS_
- * CANCELAMENTO` dias. Nunca toca no histórico de triagem — ver o
- * comentário em `src/lib/lgpd/retencao.ts` sobre por que as duas trilhas
- * têm prazo diferente.
+ * A varredura de carência: apaga documento e atestado de toda empresa que
+ * perdeu cobertura há mais que `DIAS_DE_GRACA_APOS_CANCELAMENTO` dias. Nunca
+ * toca no histórico de triagem — ver o comentário em `src/lib/lgpd/retencao.ts`
+ * sobre por que as duas trilhas têm prazo diferente.
+ *
+ * "Perdeu cobertura" e não "cancelou a assinatura": a assinatura pertence a
+ * quem paga, e uma pessoa pode sustentar várias empresas. A empresa sai da
+ * cobertura quando a assinatura do titular encerra OU quando ela deixa de ser
+ * dele — o que vier primeiro. Quem responde isso é a view
+ * `cobertura_da_empresa`.
  *
  *   node scripts/lgpd-purgar-documentos-cancelados.ts --simular
  *   node scripts/lgpd-purgar-documentos-cancelados.ts

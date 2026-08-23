@@ -140,32 +140,37 @@ describe("abrirClienteLgpd", () => {
     await expect(cliente.apagarHistoricoDeTriagem("empresa-1")).rejects.toThrow(/403.*permission denied/);
   });
 
-  it("empresasComPrazoDeGracaVencido fica só com a assinatura mais recente de cada empresa", async () => {
+  it("empresasComPrazoDeGracaVencido lê a cobertura, e só purga quem passou do prazo", async () => {
     configurarAmbiente();
-    // Ordenado como o PostgREST devolveria: empresa_id asc, criado_em desc —
-    // a empresa-1 tem duas assinaturas no histórico, e só a mais nova conta.
-    vi.stubGlobal(
-      "fetch",
-      vi.fn(async () =>
-        new Response(
-          JSON.stringify([
-            { empresa_id: "empresa-1", encerrada_em: null, criado_em: "2026-08-01T00:00:00Z" },
-            { empresa_id: "empresa-1", encerrada_em: "2026-01-01T00:00:00Z", criado_em: "2025-12-01T00:00:00Z" },
-            { empresa_id: "empresa-2", encerrada_em: "2026-01-01T00:00:00Z", criado_em: "2026-01-01T00:00:00Z" },
-          ]),
-          { status: 200 },
-        ),
+    // A desduplicação por assinatura mais recente saiu daqui: a assinatura
+    // agora é do titular, não da empresa, e `cobertura_da_empresa` já devolve
+    // uma linha por empresa com a data em que ela deixou de ser paga.
+    const chamada = vi.fn<(endereco: string) => Promise<Response>>(async () =>
+      new Response(
+        JSON.stringify([
+          // Ainda coberta: nulo significa que a relação paga não terminou.
+          { empresa_id: "empresa-1", sem_cobertura_desde: null },
+          // Perdeu cobertura em janeiro, muito além dos 30 dias de carência.
+          { empresa_id: "empresa-2", sem_cobertura_desde: "2026-01-01T00:00:00Z" },
+          // Perdeu ontem: dentro da carência, e apagar agora seria cedo demais.
+          { empresa_id: "empresa-3", sem_cobertura_desde: "2026-08-19T00:00:00Z" },
+        ]),
+        { status: 200 },
       ),
     );
+    vi.stubGlobal("fetch", chamada);
 
     const cliente = abrirClienteLgpd()!;
     const vencidas = await cliente.empresasComPrazoDeGracaVencido(new Date("2026-08-20T00:00:00Z"));
 
-    // empresa-1: a assinatura mais recente não tem `encerrada_em` (renovou) —
-    // não deveria ser purgada mesmo tendo uma assinatura antiga já encerrada.
-    expect(vencidas).not.toContain("empresa-1");
-    // empresa-2: encerrou em janeiro, mais de 30 dias antes de agora.
-    expect(vencidas).toContain("empresa-2");
+    expect(vencidas).toEqual(["empresa-2"]);
+
+    // Consultar a tabela errada devolveria vazio ou erro conforme o dia, e o
+    // sintoma seria documento sobrevivendo ao prazo — falha silenciosa e do
+    // lado que a LGPD pune. Por isso o endereço da consulta é asserção.
+    const [endereco] = chamada.mock.calls[0];
+    expect(endereco).toContain("/rest/v1/cobertura_da_empresa");
+    expect(endereco).not.toContain("/rest/v1/assinaturas");
   });
 });
 
