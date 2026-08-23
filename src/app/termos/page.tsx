@@ -32,8 +32,8 @@ import { RodapeSite } from "@/components/RodapeSite";
 
 const TITULO = "Termos de uso";
 const DESCRICAO =
-  "As regras do serviço em português claro: o que entregamos, o que não prometemos, como é a cobrança e o cancelamento, e o que prevalece quando o resumo diverge do edital.";
-const ATUALIZADO = "2026-08-15";
+  "As regras do serviço em português claro: o que entregamos, o que não prometemos, como é a cobrança, o cancelamento e o reembolso, e o que prevalece quando o resumo diverge do edital.";
+const ATUALIZADO = "2026-08-23";
 
 export const metadata: Metadata = {
   title: TITULO,
@@ -84,7 +84,7 @@ export default function Termos() {
         </h1>
 
         <p className="mt-5 text-sm text-[var(--muted)]">
-          Atualizado em 15 de agosto de 2026
+          Atualizado em 23 de agosto de 2026
         </p>
 
         <div className="mt-8 space-y-6">
@@ -208,6 +208,54 @@ export default function Termos() {
               Contratação a distância dá direito a arrependimento em até 7 dias,
               na forma do art. 49 do Código de Defesa do Consumidor, quando
               aplicável ao contratante.
+            </P>
+          </Secao>
+
+          <Secao id="reembolso" titulo="Reembolso">
+            <P>
+              <strong>Nos primeiros 7 dias, devolvemos tudo.</strong> É o direito
+              de arrependimento acima, e para exercê-lo não é preciso justificar
+              nada — basta pedir. Devolvemos o valor integral do que foi cobrado,
+              sem desconto por dias de uso.
+            </P>
+            <P>
+              <strong>Depois disso, o cancelamento não gera devolução
+              proporcional.</strong> A assinatura é mensal e sem fidelidade, e o
+              serviço continua até o fim do ciclo já pago — você não perde o que
+              contratou, mas também não recebe de volta a parte não usada do mês
+              corrente. Cancelar no dia 3 ou no dia 28 dá no mesmo: o acesso vai
+              até o fim daquele ciclo e não há cobrança seguinte.
+            </P>
+            <P>
+              <strong>Erro de cobrança nosso é devolvido sempre</strong>, sem
+              prazo e sem discussão: cobrança duplicada, valor diferente do plano
+              contratado, ou cobrança emitida depois de um cancelamento já
+              pedido. Não dependemos de você provar o erro — se acharmos primeiro,
+              devolvemos e avisamos.
+            </P>
+            <P>
+              O que <strong>não</strong> gera reembolso é a instabilidade da
+              fonte. O PNCP sai do ar e publica com atraso, e isso está declarado
+              nestes termos antes da contratação, não descoberto depois: dia sem
+              publicação não é serviço não prestado. Também não devolvemos por
+              resultado — não vencer um certame não é falha do serviço, porque
+              vitória nunca foi o que foi contratado.
+            </P>
+            <P>
+              Para pedir, escreva para{" "}
+              <a href={`mailto:${CONTATO.email}`}>{CONTATO.email}</a> a partir do
+              e-mail da conta. Respondemos em até 5 dias úteis, e a devolução sai
+              pelo mesmo caminho do pagamento sempre que possível — quando a
+              cobrança foi por boleto ou Pix, vamos precisar de uma conta
+              bancária, porque não existe cartão a estornar.
+            </P>
+            <P>
+              Se você discordar de uma cobrança,{" "}
+              <strong>fale com a gente antes de abrir disputa no banco</strong>.
+              Não é formalidade: resolvemos direto em dias, enquanto uma disputa
+              bancária leva semanas, e nesse meio-tempo a conta costuma ficar
+              suspensa — o que atrapalha justamente quem tem edital com prazo
+              correndo.
             </P>
           </Secao>
 
