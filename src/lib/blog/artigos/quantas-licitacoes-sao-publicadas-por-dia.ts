@@ -32,7 +32,7 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
   descricao:
     "Em uma semana de agosto de 2026 foram 13.397 editais no PNCP. Onde ficam, quanto valem e quanto tempo a sua empresa tem para responder.",
   resumo:
-    "Entre 17 e 22 de agosto de 2026 foram publicados 13.397 editais no Portal Nacional de Contratações Públicas, vindos de 27 unidades da federação. Um dia útil comum tem cerca de 2.700 publicações; o sábado tem 37. A mediana de valor é R$ 129.603 e a mediana de prazo até o encerramento é de 14 dias — mas quase um terço dos editais dá menos de oito. Este texto abre esses números por estado, por modalidade e por faixa de valor, e explica por que o total quase nunca é o que interessa.",
+    "Entre 17 e 22 de agosto de 2026 foram publicados 13.397 editais no Portal Nacional de Contratações Públicas, vindos de 27 unidades da federação. Um dia útil comum tem cerca de 2.700 publicações; o sábado tem 37. A mediana de valor é R$ 129.603 e a mediana de prazo até o encerramento é de 14 dias, mas quase um terço dos editais dá menos de oito. Este texto abre esses números por estado, por modalidade e por faixa de valor, e explica por que o total quase nunca é o que interessa.",
   intencao: "informacional",
   termoPrincipal: "quantas licitações são publicadas por dia no Brasil",
   guiaRelacionado: "/vender-para-o-governo/",
@@ -46,12 +46,12 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
     },
     {
       tipo: "subtitulo",
-      texto: "O que foi medido — e o que estes números não dizem",
+      texto: "O que foi medido, e o que estes números não dizem",
     },
     {
       tipo: "paragrafo",
       texto:
-        "A janela é de 17 a 22 de agosto de 2026, uma semana fechada de segunda a sábado, e o recorte é a data de publicação do edital. São 13.397 editais, de 6.982 órgãos diferentes. A fonte é o PNCP, que é o repositório oficial das contratações públicas brasileiras — não é amostra nossa nem estimativa de mercado.",
+        "A janela é de 17 a 22 de agosto de 2026, uma semana fechada de segunda a sábado, e o recorte é a data de publicação do edital. São 13.397 editais, de 6.982 órgãos diferentes. A fonte é o PNCP, que é o repositório oficial das contratações públicas brasileiras. Não é amostra nossa nem estimativa de mercado.",
     },
     {
       tipo: "destaque",
@@ -91,12 +91,12 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "Entre a publicação e o encerramento das propostas, a mediana da semana foi de 14 dias. Mas a média engana: 3.945 editais — 29,4% do total — encerraram em menos de oito dias contados da publicação. Quem confere portal uma vez por semana perde estruturalmente essa fatia, e não perde por falta de capacidade técnica: perde por não ter ficado sabendo a tempo de montar a proposta.",
+        "Entre a publicação e o encerramento das propostas, a mediana da semana foi de 14 dias. Mas a média engana: 3.945 editais (29,4% do total) encerraram em menos de oito dias contados da publicação. Quem confere portal uma vez por semana perde estruturalmente essa fatia, e não perde por falta de capacidade técnica: perde por não ter ficado sabendo a tempo de montar a proposta.",
     },
     {
       tipo: "captura",
       chamada:
-        "Se quase um terço dos editais dá menos de oito dias, a diferença entre disputar e não disputar costuma ser a data em que você ficou sabendo. O Licitante Vencedor varre o PNCP todo dia útil nas 27 unidades da federação e manda por e-mail os editais que combinam com o perfil da sua empresa — de graça, pela cidade que você escolher.",
+        "Se quase um terço dos editais dá menos de oito dias, a diferença entre disputar e não disputar costuma ser a data em que você ficou sabendo. O Licitante Vencedor varre o PNCP todo dia útil nas 27 unidades da federação e manda por e-mail os editais que combinam com o perfil da sua empresa, de graça, pela cidade que você escolher.",
     },
     {
       tipo: "subtitulo",
@@ -123,7 +123,7 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "O ranking esconde uma diferença que muda a estratégia comercial: quantos municípios distintos estão por trás desses editais. Minas Gerais publica menos que São Paulo, mas espalhado por 491 municípios contra 373 — é o estado mais pulverizado do país. O Rio de Janeiro é o extremo oposto: 760 editais saindo de apenas 64 municípios. Uma empresa que atua no interior de Minas disputa em um mercado com muito mais compradores distintos, e cada um com o seu jeito de publicar.",
+        "O ranking esconde uma diferença que muda a estratégia comercial: quantos municípios distintos estão por trás desses editais. Minas Gerais publica menos que São Paulo, mas espalhado por 491 municípios contra 373. É o estado mais pulverizado do país. O Rio de Janeiro é o extremo oposto: 760 editais saindo de apenas 64 municípios. Uma empresa que atua no interior de Minas disputa em um mercado com muito mais compradores distintos, e cada um com o seu jeito de publicar.",
     },
     {
       tipo: "subtitulo",
@@ -132,7 +132,7 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "Pregão eletrônico responde por 57,4% das publicações e concorrência eletrônica por mais 9,0%. Somadas, as modalidades presenciais — pregão e concorrência — não chegam a 1,6%. Na prática, disputar licitação hoje é uma atividade de escritório, e a empresa que ainda organiza a operação em torno de deslocamento está resolvendo um problema que praticamente deixou de existir. Onde cada disputa acontece é outra história, e ela está nos [portais de licitação](/portais-de-licitacao/).",
+        "Pregão eletrônico responde por 57,4% das publicações e concorrência eletrônica por mais 9,0%. Somadas, as modalidades presenciais, pregão e concorrência, não chegam a 1,6%. Na prática, disputar licitação hoje é uma atividade de escritório, e a empresa que ainda organiza a operação em torno de deslocamento está resolvendo um problema que praticamente deixou de existir. Onde cada disputa acontece é outra história, e ela está nos [portais de licitação](/portais-de-licitacao/).",
     },
     {
       tipo: "subtitulo",
@@ -153,12 +153,12 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "A mediana de valor estimado da semana é R$ 129.603. Metade dos editais com valor publicado está abaixo disso. O primeiro quartil fica em R$ 18.267 e o terceiro em R$ 678.761 — ou seja, o miolo do mercado é composto de contratos pequenos e médios, e não das obras de milhões que aparecem no noticiário.",
+        "A mediana de valor estimado da semana é R$ 129.603. Metade dos editais com valor publicado está abaixo disso. O primeiro quartil fica em R$ 18.267 e o terceiro em R$ 678.761. Ou seja, o miolo do mercado é composto de contratos pequenos e médios, e não das obras de milhões que aparecem no noticiário.",
     },
     {
       tipo: "paragrafo",
       texto:
-        "A diferença entre as modalidades explica boa parte disso. A dispensa, que é 30,2% de tudo que foi publicado, tem mediana de R$ 9.528 e 99% dos casos abaixo de R$ 200 mil. O pregão tem mediana de R$ 314.555. A concorrência, de R$ 806.941. São três mercados diferentes convivendo no mesmo portal, e uma empresa que ignora a dispensa está ignorando quase um terço das oportunidades — pequenas, mas com concorrência menor e processo mais curto. As modalidades e seus limites estão na [Lei 14.133](/lei-14133/).",
+        "A diferença entre as modalidades explica boa parte disso. A dispensa, que é 30,2% de tudo que foi publicado, tem mediana de R$ 9.528 e 99% dos casos abaixo de R$ 200 mil. O pregão tem mediana de R$ 314.555. A concorrência, de R$ 806.941. São três mercados diferentes convivendo no mesmo portal, e uma empresa que ignora a dispensa está ignorando quase um terço das oportunidades, que são pequenas, mas têm concorrência menor e processo mais curto. As modalidades e seus limites estão na [Lei 14.133](/lei-14133/).",
     },
     {
       tipo: "destaque",
@@ -177,12 +177,12 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "Só que 13.397 não é o mercado de ninguém. Em um teste que fizemos com o perfil de uma empresa real de controle de pragas urbanas, sobre 1.169 editais publicados em um único dia, 22 tinham objeto compatível com o que ela vende. Menos de 2%. Todo o resto estava no estado dela, com prazo bom, na modalidade que ela disputa — e não era o negócio dela.",
+        "Só que 13.397 não é o mercado de ninguém. Em um teste que fizemos com o perfil de uma empresa real de controle de pragas urbanas, sobre 1.169 editais publicados em um único dia, 22 tinham objeto compatível com o que ela vende. Menos de 2%. Todo o resto estava no estado dela, com prazo bom, na modalidade que ela disputa, e não era o negócio dela.",
     },
     {
       tipo: "paragrafo",
       texto:
-        "Essa é a forma correta de ler os números deste artigo. O volume nacional serve para dizer que o mercado existe e que ele é diário. O número que decide a sua rotina é outro: quantos, dentro desse volume, são efetivamente do seu ramo, no seu raio de atuação e na sua faixa de valor. Para a maioria das empresas especializadas, esse número cabe numa mão — e é justamente por caber numa mão que dá para tratar cada um deles com seriedade, em vez de garimpar portal.",
+        "Essa é a forma correta de ler os números deste artigo. O volume nacional serve para dizer que o mercado existe e que ele é diário. O número que decide a sua rotina é outro: quantos, dentro desse volume, são efetivamente do seu ramo, no seu raio de atuação e na sua faixa de valor. Para a maioria das empresas especializadas, esse número cabe numa mão, e é justamente por caber numa mão que dá para tratar cada um deles com seriedade, em vez de garimpar portal.",
     },
     {
       tipo: "subtitulo",
@@ -191,7 +191,7 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
     {
       tipo: "passos",
       itens: [
-        "Escreva o que a sua empresa vende em palavras que apareceriam no objeto de um edital — não em CNAE, e não em jargão interno. É esse vocabulário que separa os seus 2% do resto.",
+        "Escreva o que a sua empresa vende em palavras que apareceriam no objeto de um edital. Não em CNAE, e não em jargão interno. É esse vocabulário que separa os seus 2% do resto.",
         "Defina o raio real de atuação, incluindo o custo de deslocamento. Estado inteiro raramente é verdade para PME de serviço.",
         "Não descarte a dispensa por causa do valor: são 30% das publicações, com processo mais curto e concorrência menor.",
         "Trate o prazo como filtro de viabilidade, não como detalhe. Quase um terço dos editais exige decisão em menos de oito dias.",
@@ -239,7 +239,7 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
         "Origem de todos os editais medidos. É o repositório oficial das contratações públicas brasileiras, previsto na Lei 14.133/2021.",
     },
     {
-      titulo: "Lei 14.133/2021 — Nova Lei de Licitações e Contratos",
+      titulo: "Lei 14.133/2021, a Nova Lei de Licitações e Contratos",
       url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
       sustenta:
         "Institui o PNCP como sítio oficial de divulgação centralizada das contratações públicas e define as modalidades citadas neste texto, incluindo a dispensa.",
