@@ -14,7 +14,7 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
   descricao:
     "Sete critérios objetivos para decidir se um edital merece a sua semana: objeto, região, valor, prazo, documentação e as exigências extras que mudam a conta.",
   resumo:
-    "A pergunta útil não é se licitação vale a pena, e sim se este edital vale a sua semana. Objeto, região, porte, prazo até a sessão, documentação em dia e exigências extras como garantia, vistoria e amostra decidem isso antes de você abrir a planilha — e cada um deles é verificável em minutos.",
+    "A pergunta útil não é se licitação vale a pena, e sim se este edital vale a sua semana. Objeto, região, porte, prazo até a sessão, documentação em dia e exigências extras como garantia, vistoria e amostra decidem isso antes de você abrir a planilha, e cada um deles é verificável em minutos.",
   intencao: "comercial",
   termoPrincipal: "vale a pena participar de licitação",
   guiaRelacionado: "/vender-para-o-governo/",
@@ -29,17 +29,17 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "Vale a pena responder isso com critério porque montar proposta custa caro em algo que PME tem pouco: atenção. Ler o edital e os anexos, conferir a habilitação, levantar preço com fornecedor, montar planilha, se cadastrar no portal em que a sessão corre, participar da disputa. Numa empresa pequena isso significa o sócio parado de vender por dois ou três dias — às vezes uma semana inteira quando o objeto é complexo.",
+        "Vale a pena responder isso com critério porque montar proposta custa caro em algo que PME tem pouco: atenção. Ler o edital e os anexos, conferir a habilitação, levantar preço com fornecedor, montar planilha, se cadastrar no portal em que a sessão corre, participar da disputa. Numa empresa pequena isso significa o sócio parado de vender por dois ou três dias, às vezes uma semana inteira quando o objeto é complexo.",
     },
     {
       tipo: "paragrafo",
       texto:
-        "O que dói não é perder a disputa. É gastar essa semana e descobrir, na véspera, que o edital exigia atestado que você não tem, garantia de proposta que você não vai recolher a tempo, ou entrega em município a quatrocentos quilômetros que inviabiliza o frete. Esse desperdício é evitável, e evitá-lo é um trabalho de dez minutos por edital — desde que se saiba o que olhar e em que ordem.",
+        "O que dói não é perder a disputa. É gastar essa semana e descobrir, na véspera, que o edital exigia atestado que você não tem, garantia de proposta que você não vai recolher a tempo, ou entrega em município a quatrocentos quilômetros que inviabiliza o frete. Esse desperdício é evitável, e evitá-lo é um trabalho de dez minutos por edital, desde que se saiba o que olhar e em que ordem.",
     },
     {
       tipo: "captura",
       chamada:
-        "Essa triagem é exatamente o que o Licitante Vencedor faz todo dia: lê os editais publicados, compara com o perfil da sua empresa — CNAE, região, faixa de valor, documentação declarada — e devolve um resumo com o que o edital exige, o que falta no seu cadastro e qual é o prazo. Não é decisão automática: é a informação organizada para você decidir em minutos em vez de dias. O edital sempre prevalece.",
+        "Essa triagem começa por saber o que existe. O alerta gratuito manda, todo dia útil, os editais abertos da cidade que você indicar, com objeto, órgão, valor estimado, prazo e o link para o registro oficial. A partir daí a conta de vale a pena é sua, e o edital sempre prevalece.",
     },
     {
       tipo: "subtitulo",
@@ -60,7 +60,7 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
         ["4", "Prazo até a sessão", "Dá tempo de preparar tudo, inclusive cadastro no portal?", "Um minuto"],
         ["5", "Habilitação", "Eu atendo às exigências, e a documentação está válida hoje?", "Dez minutos"],
         ["6", "Exigências extras", "Garantia, vistoria e amostra: quanto isso custa antes de eu ganhar algo?", "Dez minutos"],
-        ["7", "Preço", "O orçamento estimado cabe no meu custo com margem?", "Horas — por isso é o último"],
+        ["7", "Preço", "O orçamento estimado cabe no meu custo com margem?", "Horas, por isso é o último"],
       ],
     },
     {
@@ -70,7 +70,7 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "O objeto precisa bater com o que a empresa efetivamente entrega e com o que está no contrato social. Objeto social e CNAE incompatíveis com o item disputado levam à inabilitação, e a correção na Junta Comercial leva semanas — tempo que não existe com edital publicado. Leia o termo de referência, não a ementa: é ele que descreve marca, especificação, prazo de entrega e local, e é ele que você está prometendo cumprir.",
+        "O objeto precisa bater com o que a empresa efetivamente entrega e com o que está no contrato social. Objeto social e CNAE incompatíveis com o item disputado levam à inabilitação, e a correção na Junta Comercial leva semanas, tempo que não existe com edital publicado. Leia o termo de referência, não a ementa: é ele que descreve marca, especificação, prazo de entrega e local, e é ele que você está prometendo cumprir.",
     },
     {
       tipo: "paragrafo",
@@ -84,7 +84,7 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "Contrato grande demais é tão ruim quanto contrato pequeno demais. Ganhar sem poder entregar gera multa e risco de impedimento de licitar — resultado pior do que não ter participado. E há a conta que quebra empresa boa: o poder público paga depois do atesto da entrega, não da emissão da nota. Some o prazo de execução ao prazo de pagamento e pergunte se o seu capital de giro aguenta.",
+        "Contrato grande demais é tão ruim quanto contrato pequeno demais. Ganhar sem poder entregar gera multa e risco de impedimento de licitar, resultado pior do que não ter participado. E há a conta que quebra empresa boa: o poder público paga depois do atesto da entrega, não da emissão da nota. Some o prazo de execução ao prazo de pagamento e pergunte se o seu capital de giro aguenta.",
     },
     {
       tipo: "paragrafo",
@@ -117,12 +117,12 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "São pisos, e o edital pode conceder mais. Mas o número que importa é quantos desses dias ainda restam quando você encontra o edital — e dentro deles cabe também o cadastro no portal em que a sessão vai correr, que costuma levar dias úteis e não horas. Descobrir na véspera que o credenciamento não fica pronto a tempo é a forma mais banal de perder um certame para o qual você estava pronto. Onde cada edital é publicado e onde a disputa acontece está em [portais de licitação](/portais-de-licitacao/).",
+        "São pisos, e o edital pode conceder mais. Mas o número que importa é quantos desses dias ainda restam quando você encontra o edital, e dentro deles cabe também o cadastro no portal em que a sessão vai correr, que costuma levar dias úteis e não horas. Descobrir na véspera que o credenciamento não fica pronto a tempo é a forma mais banal de perder um certame para o qual você estava pronto. Onde cada edital é publicado e onde a disputa acontece está em [portais de licitação](/portais-de-licitacao/).",
     },
     {
       tipo: "paragrafo",
       texto:
-        "Um cuidado no sentido contrário: pelo § 1º do art. 55, modificações no edital implicam nova divulgação na mesma forma da inicial e o cumprimento dos mesmos prazos, exceto quando a alteração não comprometer a formulação das propostas. Edital alterado às vezes reabre o relógio — mas confirme antes de contar com isso.",
+        "Um cuidado no sentido contrário: pelo § 1º do art. 55, modificações no edital implicam nova divulgação na mesma forma da inicial e o cumprimento dos mesmos prazos, exceto quando a alteração não comprometer a formulação das propostas. Edital alterado às vezes reabre o relógio, mas confirme antes de contar com isso.",
     },
     {
       tipo: "subtitulo",
@@ -145,7 +145,7 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "Três exigências aparecem no meio do edital e custam dinheiro antes de qualquer contrato existir. Elas não tornam o certame ruim — só precisam entrar na decisão com o valor certo.",
+        "Três exigências aparecem no meio do edital e custam dinheiro antes de qualquer contrato existir. Elas não tornam o certame ruim. Só precisam entrar na decisão com o valor certo.",
     },
     {
       tipo: "tabela",
@@ -163,20 +163,20 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
         ],
         [
           "Vistoria do local",
-          "Cabe quando a avaliação prévia for imprescindível, sob pena de inabilitação — mas o edital sempre deve admitir a substituição por declaração do responsável técnico (art. 63, §§ 2º e 3º)",
+          "Cabe quando a avaliação prévia for imprescindível, sob pena de inabilitação, mas o edital sempre deve admitir a substituição por declaração do responsável técnico (art. 63, §§ 2º e 3º)",
           "Deslocamento e diária, ou nada, se você optar pela declaração formal",
         ],
         [
           "Amostra",
           "Exigida do licitante provisoriamente vencedor, na fase de julgamento, ou depois do julgamento como condição para firmar contrato (art. 42, § 2º)",
-          "Produção e logística da amostra — mas só depois de você estar na frente, não de todos os participantes",
+          "Produção e logística da amostra, mas só depois de você estar na frente, não de todos os participantes",
         ],
       ],
     },
     {
       tipo: "paragrafo",
       texto:
-        "Um detalhe do art. 58 que merece atenção antes de recolher a garantia de proposta: o § 3º determina a execução do valor integral da garantia em caso de recusa em assinar o contrato ou de não apresentação dos documentos para a contratação. Ou seja, desistir depois de vencer não é apenas constrangedor — tem preço.",
+        "Um detalhe do art. 58 que merece atenção antes de recolher a garantia de proposta: o § 3º determina a execução do valor integral da garantia em caso de recusa em assinar o contrato ou de não apresentação dos documentos para a contratação. Ou seja, desistir depois de vencer não é apenas constrangedor. Tem preço.",
     },
     {
       tipo: "subtitulo",
@@ -190,12 +190,12 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "Nem sempre você verá o valor de referência. O art. 24 permite que o orçamento estimado tenha caráter sigiloso, desde que justificado, sem prejuízo da divulgação dos quantitativos e das demais informações necessárias para elaborar a proposta — e o sigilo não vale para os órgãos de controle. Há uma exceção expressa no parágrafo único: quando o critério for maior desconto, o preço estimado ou máximo aceitável consta do edital. Com orçamento sigiloso, o preço se forma pelo seu custo e pela sua margem, não por ancoragem no número do órgão.",
+        "Nem sempre você verá o valor de referência. O art. 24 permite que o orçamento estimado tenha caráter sigiloso, desde que justificado, sem prejuízo da divulgação dos quantitativos e das demais informações necessárias para elaborar a proposta, e o sigilo não vale para os órgãos de controle. Há uma exceção expressa no parágrafo único: quando o critério for maior desconto, o preço estimado ou máximo aceitável consta do edital. Com orçamento sigiloso, o preço se forma pelo seu custo e pela sua margem, não por ancoragem no número do órgão.",
     },
     {
       tipo: "paragrafo",
       texto:
-        "E há um piso invisível: pelo art. 59, são desclassificadas as propostas com preços inexequíveis ou que permaneçam acima do orçamento estimado, e também aquelas cuja exequibilidade não seja demonstrada quando a Administração exigir. Lance agressivo demais não custa só margem — custa desclassificação e a obrigação de sustentar tecnicamente um preço que não se sustenta.",
+        "E há um piso invisível: pelo art. 59, são desclassificadas as propostas com preços inexequíveis ou que permaneçam acima do orçamento estimado, e também aquelas cuja exequibilidade não seja demonstrada quando a Administração exigir. Lance agressivo demais não custa só margem. Custa desclassificação e a obrigação de sustentar tecnicamente um preço que não se sustenta.",
     },
     {
       tipo: "subtitulo",
@@ -204,17 +204,17 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "Nem todo “não” é definitivo, e é útil separar os dois casos. Se você foi barrado por exigência que a lei não autoriza, o caminho é a impugnação — pelo art. 164, qualquer pessoa é parte legítima para impugnar o edital ou pedir esclarecimento, protocolando até três dias úteis antes da data de abertura, e a resposta é divulgada em até três dias úteis, limitada ao último dia útil anterior à abertura. Se você foi barrado por algo que é seu — CNAE errado, atestado inexistente, caixa curto —, o edital não era para agora, e a resposta certa é preparar a empresa para o próximo.",
+        "Nem todo “não” é definitivo, e é útil separar os dois casos. Se você foi barrado por exigência que a lei não autoriza, o caminho é a impugnação, pelo art. 164, qualquer pessoa é parte legítima para impugnar o edital ou pedir esclarecimento, protocolando até três dias úteis antes da data de abertura, e a resposta é divulgada em até três dias úteis, limitada ao último dia útil anterior à abertura. Se você foi barrado por algo que é seu (CNAE errado, atestado inexistente, caixa curto), o edital não era para agora, e a resposta certa é preparar a empresa para o próximo.",
     },
     {
       tipo: "destaque",
       texto:
-        "Um bom critério de triagem não existe para você participar mais. Existe para você participar do que faz sentido e parar de gastar semana no que nunca daria — que é uma economia maior do que qualquer contrato marginal.",
+        "Um bom critério de triagem não existe para você participar mais. Existe para você participar do que faz sentido e parar de gastar semana no que nunca daria, que é uma economia maior do que qualquer contrato marginal.",
     },
     {
       tipo: "paragrafo",
       texto:
-        "Por fim, um lembrete que custa contratos todo mês: se você disputou e discordou do resultado, a intenção de recorrer precisa ser manifestada imediatamente, sob pena de preclusão, e só então corre o prazo de três dias úteis para as razões (art. 165, I e § 1º). Quem sai da sessão inconformado e procura orientação no dia seguinte chega com o direito já perdido. Manifeste sempre que houver dúvida razoável — manifestar não obriga a recorrer depois.",
+        "Por fim, um lembrete que custa contratos todo mês: se você disputou e discordou do resultado, a intenção de recorrer precisa ser manifestada imediatamente, sob pena de preclusão, e só então corre o prazo de três dias úteis para as razões (art. 165, I e § 1º). Quem sai da sessão inconformado e procura orientação no dia seguinte chega com o direito já perdido. Manifeste sempre que houver dúvida razoável. Manifestar não obriga a recorrer depois.",
     },
   ],
   faq: [
@@ -231,7 +231,7 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       pergunta: "Qual o valor mínimo de licitação que compensa disputar?",
       resposta:
-        "Não existe número universal — compensa o contrato cuja margem cobre o custo de participar e de executar, incluindo deslocamento, garantia quando exigida e o capital parado até o pagamento. O cálculo honesto começa somando essas linhas e comparando com a margem estimada. Contrato pequeno pode compensar mesmo com margem baixa quando gera o atestado de capacidade técnica que destrava certames maiores.",
+        "Não existe número universal. Compensa o contrato cuja margem cobre o custo de participar e de executar, incluindo deslocamento, garantia quando exigida e o capital parado até o pagamento. O cálculo honesto começa somando essas linhas e comparando com a margem estimada. Contrato pequeno pode compensar mesmo com margem baixa quando gera o atestado de capacidade técnica que destrava certames maiores.",
     },
     {
       pergunta: "O edital exige garantia. Isso inviabiliza a minha participação?",
@@ -246,36 +246,36 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       pergunta: "Descobri o edital com poucos dias de prazo. Vale tentar?",
       resposta:
-        "Vale se, além de preparar a proposta, der tempo de concluir o cadastro no portal em que a sessão acontece e de emitir qualquer certidão vencida — essas duas etapas dependem de terceiros e não aceleram. Se o prazo mínimo do art. 55 já correu quase todo, o risco não é perder a disputa, é gastar o esforço e não conseguir sequer enviar a proposta.",
+        "Vale se, além de preparar a proposta, der tempo de concluir o cadastro no portal em que a sessão acontece e de emitir qualquer certidão vencida. Essas duas etapas dependem de terceiros e não aceleram. Se o prazo mínimo do art. 55 já correu quase todo, o risco não é perder a disputa, é gastar o esforço e não conseguir sequer enviar a proposta.",
     },
   ],
   fontes: [
     {
-      titulo: "Lei nº 14.133/2021, art. 55 — Planalto",
+      titulo: "Lei nº 14.133/2021, art. 55 (Planalto)",
       url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
       sustenta:
         "Prazos mínimos, em dias úteis, para apresentação de propostas e lances, contados da divulgação do edital, e regra de nova divulgação quando o edital é modificado (§ 1º).",
     },
     {
-      titulo: "Lei nº 14.133/2021, arts. 58, 96 e 98 — Planalto",
+      titulo: "Lei nº 14.133/2021, arts. 58, 96 e 98 (Planalto)",
       url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
       sustenta:
         "Garantia de proposta limitada a 1% do valor estimado, com devolução em até 10 dias úteis e execução integral em caso de recusa em contratar; garantia de execução de até 5% do valor inicial do contrato, majorável para até 10% quando justificada, e as modalidades à escolha do contratado.",
     },
     {
-      titulo: "Lei nº 14.133/2021, arts. 42, § 2º, e 63, §§ 2º e 3º — Planalto",
+      titulo: "Lei nº 14.133/2021, arts. 42, § 2º, e 63, §§ 2º e 3º (Planalto)",
       url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
       sustenta:
         "Amostra exigível do licitante provisoriamente vencedor ou como condição para firmar contrato; vistoria do local com direito assegurado de substituição por declaração do responsável técnico.",
     },
     {
-      titulo: "Lei nº 14.133/2021, arts. 24, 59, 64, 67 e 69 — Planalto",
+      titulo: "Lei nº 14.133/2021, arts. 24, 59, 64, 67 e 69 (Planalto)",
       url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
       sustenta:
         "Possibilidade de orçamento estimado sigiloso e sua exceção no maior desconto; desclassificação por preço inexequível ou acima do orçamento; limites de correção documental; limites de 4%, 50% e 10% e vedação de faturamento mínimo na habilitação.",
     },
     {
-      titulo: "Lei nº 14.133/2021, arts. 164 e 165 — Planalto",
+      titulo: "Lei nº 14.133/2021, arts. 164 e 165 (Planalto)",
       url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
       sustenta:
         "Legitimidade e prazo de até três dias úteis antes da abertura para impugnar o edital ou pedir esclarecimento; manifestação imediata da intenção de recorrer sob pena de preclusão e prazo de três dias úteis para as razões.",

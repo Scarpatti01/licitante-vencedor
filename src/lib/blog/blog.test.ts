@@ -116,9 +116,33 @@ describe("captura no conteúdo", () => {
     }
   });
 
-  it("o índice do blog e a página de artigo também capturam", () => {
+  it("o índice do blog captura, e o artigo oferece os DOIS caminhos", () => {
     expect(readFileSync("src/app/blog/page.tsx", "utf8")).toContain("CapturaAlerta");
-    expect(readFileSync("src/app/blog/[slug]/page.tsx", "utf8")).toContain("CapturaAlerta");
+
+    // No artigo a captura gratuita não é montada pela página: ela é um bloco do
+    // corpo, posicionado pelo autor onde a dor aparece, e `validarArtigo` já
+    // exige que exista. O que a PÁGINA precisa garantir é o outro caminho, que
+    // é o convite ao plano pago no fim.
+    //
+    // Antes havia duas capturas gratuitas no mesmo artigo, uma no meio e outra
+    // no fim. Isso desperdiçava o único lugar da página onde o leitor já leu
+    // tudo e continua interessado, oferecendo a ele de novo a mesma coisa de
+    // graça. Agora a escalada é grátis no meio, pago no fim.
+    const artigo = readFileSync("src/app/blog/[slug]/page.tsx", "utf8");
+    expect(artigo, "a página do artigo está sem o convite ao plano pago").toContain(
+      "CardAssinatura",
+    );
+  });
+
+  it("todo artigo publicado tem uma captura gratuita no corpo", () => {
+    // O par do caso acima: a página garante o pago, o artigo garante o grátis.
+    // Sem os dois testes, remover um dos lados passa despercebido.
+    for (const artigo of ARTIGOS_PUBLICADOS) {
+      expect(
+        artigo.corpo.some((bloco) => bloco.tipo === "captura"),
+        `${artigo.slug} está sem captura gratuita no corpo`,
+      ).toBe(true);
+    }
   });
 });
 

@@ -35,7 +35,7 @@ const FAQ = [
   {
     pergunta: "Decisão do TCU vale como lei?",
     resposta:
-      "Não. O TCU não legisla — ele fiscaliza e interpreta. Mas a administração pública tende a seguir o entendimento consolidado para não ser questionada depois, e é por isso que uma decisão bem citada muda o comportamento do órgão na prática, mesmo sem força de lei.",
+      "Não. O TCU não legisla. Ele fiscaliza e interpreta. Mas a administração pública tende a seguir o entendimento consolidado para não ser questionada depois, e é por isso que uma decisão bem citada muda o comportamento do órgão na prática, mesmo sem força de lei.",
   },
   {
     pergunta: "Qual a diferença entre súmula e acórdão do TCU?",
@@ -50,12 +50,12 @@ const FAQ = [
   {
     pergunta: "Toda exigência de atestado é ilegal?",
     resposta:
-      "Não. Exigir comprovação de experiência anterior é legítimo. O que a jurisprudência combate é a exigência desproporcional — quantitativo mínimo acima do razoável, vedação a somar atestados sem justificativa, ou requisito que só um fornecedor do mercado consegue cumprir.",
+      "Não. Exigir comprovação de experiência anterior é legítimo. O que a jurisprudência combate é a exigência desproporcional: quantitativo mínimo acima do razoável, vedação a somar atestados sem justificativa, ou requisito que só um fornecedor do mercado consegue cumprir.",
   },
   {
     pergunta: "O TCU julga licitação de prefeitura?",
     resposta:
-      "Como regra, não. O TCU fiscaliza recursos federais. Licitação municipal com dinheiro próprio é do tribunal de contas do estado, ou do tribunal do município onde existir. Mas se houver repasse federal — convênio, emenda, transferência voluntária — o TCU passa a ter competência.",
+      "Como regra, não. O TCU fiscaliza recursos federais. Licitação municipal com dinheiro próprio é do tribunal de contas do estado, ou do tribunal do município onde existir. Mas se houver repasse federal (convênio, emenda, transferência voluntária), o TCU passa a ter competência.",
   },
   {
     pergunta: "Onde encontro as decisões sem pagar por serviço de pesquisa?",
@@ -132,7 +132,7 @@ export default function Jurisprudencia() {
             Jurisprudência em licitações é o conjunto de decisões dos tribunais de
             contas e do Judiciário sobre como a lei deve ser aplicada nos certames.
             Ela não substitui a lei, mas define o que é exigência legítima e o que é
-            restrição indevida à competição — e é o argumento que sustenta uma
+            restrição indevida à competição, e é o argumento que sustenta uma
             impugnação de edital ou um recurso administrativo.
           </RespostaDireta>
 
@@ -176,7 +176,7 @@ export default function Jurisprudencia() {
               A confusão mais comum é achar que o TCU julga tudo. Não julga. Se a
               prefeitura da sua cidade licita com recurso próprio, quem fiscaliza é o
               tribunal de contas do estado. O TCU só entra quando há dinheiro federal
-              envolvido — convênio, emenda parlamentar, transferência voluntária.
+              envolvido: convênio, emenda parlamentar, transferência voluntária.
             </P>
             <P>
               Isso não significa que a decisão do TCU seja inútil fora do âmbito
@@ -220,7 +220,7 @@ export default function Jurisprudencia() {
               Uma impugnação bem feita tem quatro partes: aponta a cláusula exata,
               explica por que ela restringe a competição, cita o entendimento
               consolidado sobre aquele ponto e propõe a redação alternativa. Essa
-              última parte é a que a maioria esquece — e é a que facilita a vida do
+              última parte é a que a maioria esquece, e é a que facilita a vida do
               agente de contratação, que muitas vezes só precisa de um texto pronto
               para justificar a mudança.
             </P>
@@ -249,7 +249,7 @@ export default function Jurisprudencia() {
               chamada={{
                 titulo: "O argumento só serve enquanto o prazo está aberto",
                 texto:
-                  "Este guia é sobre argumento, e ele continua logo abaixo — pule esta caixa sem culpa. Fica só a observação prática: os prazos da tabela acima correm a partir da publicação. Se ajudar, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+                  "Este guia é sobre argumento, e ele continua logo abaixo. Pule esta caixa sem culpa. Fica só a observação prática: os prazos da tabela acima correm a partir da publicação. Se ajudar, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
               }}
               textoDoBotao="Quero receber os editais do meu ramo"
             />
@@ -284,7 +284,7 @@ export default function Jurisprudencia() {
             <P>
               Todo esse conteúdo é público. O portal do TCU tem busca aberta de
               acórdãos e súmulas, e cada tribunal de contas estadual mantém a sua. Não
-              existe conteúdo pago aqui — o que se vende no mercado é curadoria e
+              existe conteúdo pago aqui, o que se vende no mercado é curadoria e
               alerta, não acesso.
             </P>
             <P>
@@ -299,8 +299,8 @@ export default function Jurisprudencia() {
           <Secao id="14133" titulo="O que muda com a Lei 14.133">
             <P>
               As decisões formadas sob a Lei 8.666 não viraram pó. Boa parte dos
-              princípios que sustentam esses entendimentos — competitividade,
-              isonomia, julgamento objetivo, proporcionalidade das exigências — foi
+              princípios que sustentam esses entendimentos, competitividade,
+              isonomia, julgamento objetivo, proporcionalidade das exigências. Foi
               mantida e reforçada na nova lei.
             </P>
             <P>
@@ -344,7 +344,7 @@ export default function Jurisprudencia() {
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm" target="_blank" rel="noopener">
-                  Lei nº 14.133/2021 — Planalto
+                  Lei nº 14.133/2021 (Planalto)
                 </a>
               </li>
               <li>
@@ -390,7 +390,7 @@ export default function Jurisprudencia() {
 
         <p className="mt-8 text-sm leading-relaxed text-[var(--muted)]">
           Este conteúdo tem finalidade informativa e operacional. Não constitui
-          parecer jurídico — a análise de um edital concreto e a redação de
+          parecer jurídico, a análise de um edital concreto e a redação de
           impugnação ou recurso cabem à empresa licitante e ao seu assessor
           jurídico. Leia o{" "}
           <a className="underline underline-offset-4" href="/aviso-legal/">

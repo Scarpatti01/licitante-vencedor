@@ -54,7 +54,7 @@ const FAQ = [
   {
     pergunta: "Qual o valor mínimo para o governo ser obrigado a licitar?",
     resposta:
-      "Abaixo dos limites de dispensa por valor do artigo 75 da Lei 14.133 — atualizados anualmente por decreto — o órgão pode contratar por dispensa. Isso não significa contratar quem quiser: a dispensa eletrônica também é um procedimento com aviso público e disputa de preço, e é o melhor lugar para uma empresa nova ganhar o primeiro contrato, porque a concorrência é menor e a documentação exigida é mais enxuta.",
+      "Abaixo dos limites de dispensa por valor do artigo 75 da Lei 14.133, atualizados anualmente por decreto. O órgão pode contratar por dispensa. Isso não significa contratar quem quiser: a dispensa eletrônica também é um procedimento com aviso público e disputa de preço, e é o melhor lugar para uma empresa nova ganhar o primeiro contrato, porque a concorrência é menor e a documentação exigida é mais enxuta.",
   },
   {
     pergunta: "O que é o empate ficto de 5%?",
@@ -64,12 +64,12 @@ const FAQ = [
   {
     pergunta: "Posso participar mesmo com uma certidão vencida?",
     resposta:
-      "Como ME ou EPP, sim, para as certidões de regularidade fiscal e trabalhista. A documentação é apresentada mesmo com restrição, e o prazo para regularizar corre a partir do momento em que a empresa é declarada vencedora — cinco dias úteis, prorrogáveis por igual período a critério do órgão. Não regularizar dentro do prazo faz decair o direito à contratação e pode gerar sanção. Para as demais qualificações, não há esse socorro.",
+      "Como ME ou EPP, sim, para as certidões de regularidade fiscal e trabalhista. A documentação é apresentada mesmo com restrição, e o prazo para regularizar corre a partir do momento em que a empresa é declarada vencedora, cinco dias úteis, prorrogáveis por igual período a critério do órgão. Não regularizar dentro do prazo faz decair o direito à contratação e pode gerar sanção. Para as demais qualificações, não há esse socorro.",
   },
   {
     pergunta: "Quanto tempo leva para receber depois de entregar?",
     resposta:
-      "O prazo de pagamento é de até trinta dias contados da liquidação da despesa, isto é, do atesto de que a entrega ocorreu como devido — e não da emissão da nota fiscal. Some a isso o tempo entre a entrega e o atesto, que depende do fiscal. Para quem está começando, o cálculo prudente é considerar de 45 a 60 dias de capital de giro no primeiro contrato.",
+      "O prazo de pagamento é de até trinta dias contados da liquidação da despesa, isto é, do atesto de que a entrega ocorreu como devido, e não da emissão da nota fiscal. Some a isso o tempo entre a entrega e o atesto, que depende do fiscal. Para quem está começando, o cálculo prudente é considerar de 45 a 60 dias de capital de giro no primeiro contrato.",
   },
   {
     pergunta: "Preciso de advogado ou consultoria para começar?",
@@ -139,7 +139,7 @@ export default function VenderParaOGoverno() {
           <P>
             Quase todo mundo que me procura chega com a mesma pergunta mal
             formulada: “como faço para me cadastrar e começar a vender para o
-            governo?”. O cadastro é a parte fácil — leva uma tarde. O que separa
+            governo?”. O cadastro é a parte fácil. Leva uma tarde. O que separa
             quem fatura de quem só se cadastrou é o que vem depois: escolher o
             que disputar, saber formar preço e não perder o certame por um
             detalhe processual.
@@ -157,7 +157,7 @@ export default function VenderParaOGoverno() {
             Compras.gov.br), regularidade fiscal, trabalhista e previdenciária em
             dia, e então disputar os certames publicados no Portal Nacional de
             Contratações Públicas. Microempresas, empresas de pequeno porte e MEI
-            têm tratamento diferenciado garantido pela Lei Complementar 123/2006 —
+            têm tratamento diferenciado garantido pela Lei Complementar 123/2006:
             exclusividade em itens de até R$ 80 mil, cota reservada de até 25% em
             bens divisíveis, empate ficto e prazo extra para regularizar
             certidões.
@@ -171,14 +171,14 @@ export default function VenderParaOGoverno() {
             <P>
               Não existe categoria de “empresa credenciada para o governo”.
               Qualquer pessoa jurídica regular pode disputar, e o porte não
-              impede — ele muda quais benefícios você tem e quais certames fazem
+              impede. Ele muda quais benefícios você tem e quais certames fazem
               sentido para o seu tamanho.
             </P>
             <P>
               A primeira verificação é a mais barata e a mais ignorada: o objeto
               social e os CNAEs da empresa precisam abranger o que ela pretende
               fornecer. Não é formalidade. É causa recorrente de inabilitação, e
-              a correção leva semanas na Junta Comercial — tempo que você não tem
+              a correção leva semanas na Junta Comercial, tempo que você não tem
               com o edital publicado.
             </P>
             <Tabela
@@ -236,7 +236,7 @@ export default function VenderParaOGoverno() {
             <P>
               Desde a Lei 14.133, a divulgação obrigatória dos avisos de
               contratação é feita no Portal Nacional de Contratações Públicas, o
-              PNCP. Ele é o ponto único de publicidade — é lá que a existência do
+              PNCP. Ele é o ponto único de publicidade. É lá que a existência do
               certame se torna oficial, mesmo quando a disputa acontece em outro
               sistema.
             </P>
@@ -250,7 +250,7 @@ export default function VenderParaOGoverno() {
               O problema prático não é falta de informação, é excesso. São
               milhares de avisos por dia, com descrições irregulares, e a empresa
               pequena não tem quem leia tudo. Foi exatamente esse gargalo que me
-              levou a construir o sistema de triagem que sustenta este site — ler
+              levou a construir o sistema de triagem que sustenta este site. Ler
               o que é publicado todo dia e devolver só o que aquela empresa
               específica poderia ganhar.
             </P>
@@ -270,9 +270,9 @@ export default function VenderParaOGoverno() {
             <CapturaAlerta
               origem="guia/vender-para-o-governo#meio"
               chamada={{
-                titulo: "O problema não é achar edital — é achar o seu no meio de milhares",
+                titulo: "O problema não é achar edital. É achar o seu no meio de milhares",
                 texto:
-                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e o link para o registro oficial. As quatro perguntas da próxima seção você aplica a uma lista curta, em vez de a tudo que foi publicado.",
+                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende, com objeto, órgão, valor, prazo e o link para o registro oficial. As quatro perguntas da próxima seção você aplica a uma lista curta, em vez de a tudo que foi publicado.",
               }}
               textoDoBotao="Quero receber os editais do meu ramo"
             />
@@ -286,7 +286,7 @@ export default function VenderParaOGoverno() {
               cadastrada sem propor nada.
             </P>
             <P>
-              O filtro que funciona tem quatro perguntas, nesta ordem — e a
+              O filtro que funciona tem quatro perguntas, nesta ordem, e a
               primeira resposta negativa encerra a análise:
             </P>
             <Tabela
@@ -302,7 +302,7 @@ export default function VenderParaOGoverno() {
               Para o primeiro contrato, a recomendação que eu daria a qualquer
               empresa é começar pequeno e local: dispensas eletrônicas e itens de
               baixo valor no seu município. A concorrência é menor, a exigência
-              documental é mais leve — e o contrato executado vira o atestado de
+              documental é mais leve, e o contrato executado vira o atestado de
               capacidade técnica que destrava os certames maiores.
             </P>
           </Secao>
@@ -311,7 +311,7 @@ export default function VenderParaOGoverno() {
             <P>
               A Lei 14.133 manda aplicar os artigos 42 a 49 da Lei Complementar
               123/2006 às licitações. Na prática, isso significa quatro
-              vantagens concretas — e conhecer os limites de cada uma vale mais
+              vantagens concretas, e conhecer os limites de cada uma vale mais
               do que conhecer a existência delas.
             </P>
             <Tabela
@@ -327,7 +327,7 @@ export default function VenderParaOGoverno() {
               A cota reservada e a exclusividade geram uma discussão frequente:
               o órgão é obrigado ou pode escolher? A regra é de aplicação
               obrigatória, e a exceção precisa ser justificada nas hipóteses que
-              a própria lei lista — ausência de três fornecedores competitivos,
+              a própria lei lista, ausência de três fornecedores competitivos,
               falta de vantagem para a administração, prejuízo ao conjunto do
               objeto. Ausência de justificativa é fundamento de impugnação.
             </P>
@@ -336,13 +336,13 @@ export default function VenderParaOGoverno() {
               depois: os benefícios ficam limitados às ME e EPP que, no
               ano-calendário, ainda não somaram contratos com a administração
               acima do teto de enquadramento de EPP. O órgão exige declaração
-              nesse sentido — e declarar errado é falsidade, não descuido.
+              nesse sentido, e declarar errado é falsidade, não descuido.
             </P>
           </Secao>
 
           <Secao id="preco" titulo="Formação de preço e o risco de inexequibilidade">
             <P>
-              Preço é onde a maioria perde dinheiro, e não por ganância — por
+              Preço é onde a maioria perde dinheiro, e não por ganância, por
               omissão. A proposta pública precisa embutir custos que não existem
               na venda privada: garantia contratual quando exigida, prazo de
               pagamento longo, custo de manter certidões, e o custo do próprio
@@ -360,7 +360,7 @@ export default function VenderParaOGoverno() {
               engenharia, a Lei 14.133 presume inexequíveis as propostas cujo
               valor fique abaixo de 75% do valor orçado pela administração. É
               presunção relativa: você pode ser chamado a demonstrar que consegue
-              executar, com planilha e comprovação — e demonstrar é obrigação
+              executar, com planilha e comprovação, e demonstrar é obrigação
               sua, não do órgão.
             </P>
             <P>
@@ -368,7 +368,7 @@ export default function VenderParaOGoverno() {
               apenas margem perdida; é risco de desclassificação e de ter que
               sustentar tecnicamente um preço que não se sustenta. E se o
               concorrente venceu com preço improvável, a diligência é o
-              instrumento certo para questionar — pedido feito no momento da
+              instrumento certo para questionar, pedido feito no momento da
               disputa, não depois da homologação.
             </P>
           </Secao>
@@ -392,7 +392,7 @@ export default function VenderParaOGoverno() {
               Depois dos lances vem a ordem que a Lei 14.133 consolidou: julga-se
               a proposta primeiro e só se examina a habilitação do vencedor
               depois. Isso favorece quem está começando, porque evita a
-              eliminação documental antes mesmo de o preço ser visto — mas exige
+              eliminação documental antes mesmo de o preço ser visto, mas exige
               que a documentação esteja pronta para envio imediato quando o
               pregoeiro convocar.
             </P>
@@ -400,7 +400,7 @@ export default function VenderParaOGoverno() {
               A regra de ouro do dia da disputa é banal e quase ninguém segue:
               defina o preço-limite antes de a sessão abrir e escreva esse número
               em algum lugar. Lance dado no impulso da disputa é a origem da
-              maior parte dos contratos que dão prejuízo — e desistir da proposta
+              maior parte dos contratos que dão prejuízo, e desistir da proposta
               depois de vencer não é saída: é falta passível de sanção.
             </P>
           </Secao>
@@ -415,9 +415,9 @@ export default function VenderParaOGoverno() {
               Antes da sessão, o instrumento é a impugnação do edital: qualquer
               pessoa é parte legítima para impugnar, até três dias úteis antes da
               data de abertura, e a administração precisa responder dentro do
-              prazo legal. Cláusula que restringe indevidamente a competição —
+              prazo legal. Cláusula que restringe indevidamente a competição, seja por
               exigência técnica desproporcional, direcionamento de marca,
-              habilitação incompatível com o objeto — se combate aqui, não
+              habilitação incompatível com o objeto, se combate aqui, não
               depois.
             </P>
             <P>
@@ -431,8 +431,7 @@ export default function VenderParaOGoverno() {
             <P>
               O detalhe que custa contratos: a manifestação é uma janela de
               minutos. Quem sai da sessão inconformado, dorme sobre o assunto e
-              procura advogado no dia seguinte chega com o direito já precluso —
-              e nenhuma razão jurídica, por melhor que seja, reabre o prazo.
+              procura advogado no dia seguinte chega com o direito já precluso, e nenhuma razão jurídica, por melhor que seja, reabre o prazo.
               Manifeste sempre que houver dúvida razoável; a intenção não obriga
               a recorrer depois.
             </P>
@@ -446,7 +445,7 @@ export default function VenderParaOGoverno() {
             <P>
               A primeira é o consórcio. Na Lei 14.133, a participação em
               consórcio é a regra, e a vedação é que precisa ser justificada no
-              processo — ou seja, edital que proíbe consórcio sem motivar tem
+              processo. Ou seja, edital que proíbe consórcio sem motivar tem
               vício. Exige compromisso de constituição, empresa líder indicada e
               responsabilidade solidária entre as consorciadas, e o edital pode
               acrescer de 10% a 30% as exigências econômico-financeiras para
@@ -456,7 +455,7 @@ export default function VenderParaOGoverno() {
               A segunda é a subcontratação, quando admitida e nos limites do
               edital: você contrata parte da execução com terceiro, mas a
               responsabilidade perante a administração continua inteira sua. A
-              terceira, e mais acessível, é a disputa por itens ou lotes — o
+              terceira, e mais acessível, é a disputa por itens ou lotes. O
               parcelamento do objeto é a regra sempre que for tecnicamente viável
               e economicamente vantajoso, justamente para ampliar a competição.
             </P>
@@ -482,7 +481,7 @@ export default function VenderParaOGoverno() {
             <P>
               Repare que ganhar não é a meta do primeiro trimestre. A meta é
               executar um contrato pequeno com qualidade e sair dele com
-              atestado — porque é o atestado, e não o cadastro, que muda o que
+              atestado, porque é o atestado, e não o cadastro, que muda o que
               você pode disputar no ano seguinte.
             </P>
           </Secao>
@@ -527,12 +526,12 @@ export default function VenderParaOGoverno() {
             <ul className="space-y-2 text-[var(--muted)]">
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm" target="_blank" rel="noopener">
-                  Lei nº 14.133/2021 — Planalto
+                  Lei nº 14.133/2021 (Planalto)
                 </a>
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/leis/lcp/lcp123.htm" target="_blank" rel="noopener">
-                  Lei Complementar nº 123/2006 — Planalto
+                  Lei Complementar nº 123/2006 (Planalto)
                 </a>
               </li>
               <li>
@@ -583,7 +582,7 @@ export default function VenderParaOGoverno() {
 
         <p className="mt-8 text-sm leading-relaxed text-[var(--muted)]">
           Este conteúdo tem finalidade informativa e operacional. Não constitui
-          parecer jurídico — a análise de um edital concreto, a redação de
+          parecer jurídico, a análise de um edital concreto, a redação de
           impugnação e recurso e a defesa em processo sancionatório cabem à
           empresa e ao seu assessor jurídico. Leia o{" "}
           <a className="underline underline-offset-4" href="/aviso-legal/">

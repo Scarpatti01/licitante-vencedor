@@ -151,3 +151,39 @@ Espere um ou dois posts sem leitura — isso não impede a leva, porque o guarda
 só recusa quando NENHUM é lido.
 
 Apague esta seção quando uma leva sair com a maioria dos posts lidos.
+
+# A voz do texto que o cliente lê
+
+Decisão do dono, 23/08. Vale para **post, guia, página e e-mail** — tudo que
+um cliente lê. Não vale para comentário de código, que é conversa entre quem
+mantém o repositório.
+
+## Sem travessão
+
+O travessão (`—`) está proibido nesses textos. O motivo é comercial, não
+estético: ele virou marca registrada de texto gerado por IA, e o leitor
+brasileiro já reconhece. Um texto que parece escrito por máquina perde
+autoridade justamente no assunto em que a autoridade é o produto.
+
+Trocar por travessão curto ou por hífen não resolve — o problema é a
+construção, não o caractere. Cada caso pede a pontuação que um humano usaria:
+
+| No lugar de | Use |
+|---|---|
+| Aposto explicativo no meio da frase | vírgulas, ou parênteses |
+| Frase que completa a anterior | dois-pontos |
+| Ideia que muda de direção | ponto final, e uma frase nova |
+| Lista curta dentro do período | vírgulas, ou uma lista de verdade |
+
+Frase longa demais para caber sem travessão é frase que quer virar duas.
+
+`src/lib/voz.test.ts` guarda isto lendo o texto publicado. Ele cobre as áreas
+já limpas e cresce conforme as outras forem passando — guarda que reprova o
+repositório inteiro no primeiro dia vira `skip` na primeira pressa.
+
+## E, em geral: escreva como gente
+
+Sem "além disso", sem "vale ressaltar", sem "em suma", sem parágrafo que
+anuncia o que o próximo parágrafo vai dizer. Frase curta. Voz ativa. O número
+antes da adjetivação: "29,4% encerram em menos de oito dias" convence, "prazos
+extremamente apertados" não.
