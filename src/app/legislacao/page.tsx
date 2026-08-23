@@ -39,7 +39,7 @@ const FAQ = [
   {
     pergunta: "A Lei 8.666 ainda vale em 2026?",
     resposta:
-      "Não para licitação nova. O art. 193 da Lei 14.133 revogou a Lei 8.666 em 30 de dezembro de 2023. Mas contrato assinado sob a 8.666 antes disso continua regido por ela até acabar — por isso a lei revogada ainda aparece em aditivo, reajuste e sanção de contratos que estão em execução.",
+      "Não para licitação nova. O art. 193 da Lei 14.133 revogou a Lei 8.666 em 30 de dezembro de 2023. Mas contrato assinado sob a 8.666 antes disso continua regido por ela até acabar, por isso a lei revogada ainda aparece em aditivo, reajuste e sanção de contratos que estão em execução.",
   },
   {
     pergunta: "E a Lei do Pregão, a 10.520?",
@@ -49,12 +49,12 @@ const FAQ = [
   {
     pergunta: "Meu edital cita a Lei 8.666. O que faço?",
     resposta:
-      "Verifique a data. Se o edital é anterior a 30/12/2023, a citação pode ser legítima, porque durante a transição a Administração podia escolher o regime e tinha de declarar a escolha no edital. Se o edital é posterior e cita a 8.666 como fundamento, há vício e cabe impugnação — a própria Lei 14.133 vedava aplicação combinada dos dois regimes.",
+      "Verifique a data. Se o edital é anterior a 30/12/2023, a citação pode ser legítima, porque durante a transição a Administração podia escolher o regime e tinha de declarar a escolha no edital. Se o edital é posterior e cita a 8.666 como fundamento, há vício e cabe impugnação. A própria Lei 14.133 vedava aplicação combinada dos dois regimes.",
   },
   {
     pergunta: "Vendo para uma estatal. Vale a Lei 14.133?",
     resposta:
-      "Em regra, não. O § 1º do art. 1º da Lei 14.133 exclui empresas públicas, sociedades de economia mista e suas subsidiárias, que seguem a Lei 13.303/2016. Na prática isso muda habilitação, prazos e recursos — conferir qual regime rege o certame é a primeira leitura de qualquer edital de estatal.",
+      "Em regra, não. O § 1º do art. 1º da Lei 14.133 exclui empresas públicas, sociedades de economia mista e suas subsidiárias, que seguem a Lei 13.303/2016. Na prática isso muda habilitação, prazos e recursos. Conferir qual regime rege o certame é a primeira leitura de qualquer edital de estatal.",
   },
   {
     pergunta: "Decreto federal vale para licitação de prefeitura?",
@@ -72,13 +72,13 @@ const ACERVO: string[][] = [
   ["Lei 8.666/1993", "Licitações e contratos (regime anterior)", "Revogada em 30/12/2023 pelo art. 193, II, da Lei 14.133"],
   ["Lei 10.520/2002", "Lei federal do pregão", "Revogada em 30/12/2023 pelo art. 193, II, da Lei 14.133"],
   ["Lei 12.462/2011 (RDC)", "Regime Diferenciado de Contratações", "Arts. 1º a 47-A revogados em 30/12/2023 pelo art. 193, II"],
-  ["Decreto 5.450/2005", "Regulamentava o pregão eletrônico", "Revogado pelo Decreto nº 10.024, de 2019 — anotação no próprio texto"],
+  ["Decreto 5.450/2005", "Regulamentava o pregão eletrônico", "Revogado pelo Decreto nº 10.024, de 2019, anotação no próprio texto"],
   ["Decreto 10.024/2019", "Pregão eletrônico e dispensa eletrônica na esfera federal", "Sem anotação de revogação na consulta de 12/08/2026"],
   ["Decreto 7.746/2012", "Critérios de sustentabilidade nas contratações federais", "Sem anotação de revogação na consulta de 12/08/2026"],
   ["Decreto 9.046/2017", "Contratação plurianual no Executivo federal", "Sem anotação de revogação na consulta de 12/08/2026"],
   ["Lei 13.334/2016", "Cria o Programa de Parcerias de Investimentos (PPI)", "Em vigor, com alterações posteriores anotadas no texto"],
   ["Lei 13.448/2017", "Prorrogação e relicitação de contratos de parceria", "Em vigor, com alterações posteriores anotadas no texto"],
-  ["Lei 6.404/1976", "Sociedades por ações", "Em vigor — não é norma de licitação, aparece em qualificação de licitante S.A."],
+  ["Lei 6.404/1976", "Sociedades por ações", "Em vigor. Não é norma de licitação, aparece em qualificação de licitante S.A."],
 ];
 
 const schema = {
@@ -136,15 +136,14 @@ export default function Legislacao() {
         <div className="mt-8 space-y-6">
           <P>
             A pergunta que chega aqui quase sempre é uma variação de “essa lei
-            ainda vale?”. E a resposta honesta raramente é sim ou não — é uma
+            ainda vale?”. E a resposta honesta raramente é sim ou não. É uma
             data. Norma de licitação não some: ela é revogada num dia
             determinado, e continua produzindo efeito nos contratos que nasceram
             antes dele.
           </P>
           <P>
             Este guia responde o que está em vigor, o que caiu e exatamente
-            quando, por que a lei revogada continua aparecendo no seu contrato, e
-            — o mais útil no longo prazo — como você confere o status de
+            quando, por que a lei revogada continua aparecendo no seu contrato, e, o mais útil no longo prazo, como você confere o status de
             qualquer norma sem depender de mim nem de nenhum site.
           </P>
 
@@ -198,7 +197,7 @@ export default function Legislacao() {
               foi programada, adiada por medida provisória e finalmente fixada
               por lei complementar. O texto em vigor do art. 193 é este:
             </P>
-            <Citacao fonte="Lei 14.133/2021, art. 193, II — redação dada pela Lei Complementar nº 198, de 2023">
+            <Citacao fonte="Lei 14.133/2021, art. 193, II, com redação dada pela Lei Complementar nº 198, de 2023">
               Revogam-se: [...] II - em 30 de dezembro de 2023: a) a Lei nº
               8.666, de 21 de junho de 1993; b) a Lei nº 10.520, de 17 de julho
               de 2002; e c) os arts. 1º a 47-A da Lei nº 12.462, de 4 de agosto
@@ -206,7 +205,7 @@ export default function Legislacao() {
             </Citacao>
             <P>
               Três leituras práticas saem daí. A primeira: o pregão não foi
-              extinto — ele perdeu a lei própria e passou a ser uma das
+              extinto. Ele perdeu a lei própria e passou a ser uma das
               modalidades da 14.133. Quem vê “Lei 10.520” em edital novo está
               vendo fundamento revogado.
             </P>
@@ -218,7 +217,7 @@ export default function Legislacao() {
             <P>
               A terceira é menos conhecida. Os artigos penais da 8.666 caíram
               antes de todo o resto, já na publicação da nova lei, em 1º de abril
-              de 2021 — porque os crimes de licitação foram transferidos para o
+              de 2021, porque os crimes de licitação foram transferidos para o
               Código Penal. É por isso que processo criminal de licitação hoje
               cita artigo do Código Penal, e não da lei de licitações.
             </P>
@@ -245,7 +244,7 @@ export default function Legislacao() {
               Resultado: existem hoje, em execução, milhares de contratos regidos
               por uma lei revogada, e eles vão continuar assim por anos. Se o seu
               contrato nasceu sob a 8.666, é a 8.666 que decide o seu reajuste, o
-              seu aditivo e a sua defesa em processo sancionatório — não a 14.133.
+              seu aditivo e a sua defesa em processo sancionatório. Não a 14.133.
             </P>
             <P>
               A consequência prática é chata e simples: quem executa contrato
@@ -266,14 +265,14 @@ export default function Legislacao() {
                 ["Lei", "Congresso Nacional", "Cria a regra geral e obriga todos os entes", "Nacional, quando é norma geral"],
                 ["Decreto", "Chefe do Executivo", "Regulamenta a lei: detalha procedimento, não cria obrigação nova", "Só o ente que editou"],
                 ["Instrução normativa / portaria", "Órgão central de compras", "Operacionaliza o decreto: formulários, sistemas, modelos", "Só a estrutura do órgão"],
-                ["Edital", "O órgão que compra", "Aplica tudo acima ao caso concreto", "Aquele certame — e é o que te obriga"],
+                ["Edital", "O órgão que compra", "Aplica tudo acima ao caso concreto", "Aquele certame, e é o que te obriga"],
               ]}
             />
             <P>
               Duas conclusões que economizam discussão. Primeira: decreto federal
               não vale automaticamente para prefeitura. Estados e municípios
               editam regulamento próprio, e muitos adotam o federal por remissão
-              expressa — mas quem diz qual se aplica é o edital.
+              expressa, mas quem diz qual se aplica é o edital.
             </P>
             <P>
               Segunda, e mais importante: na hora da disputa, o documento que
@@ -300,7 +299,7 @@ export default function Legislacao() {
               chamada={{
                 titulo: "Saber qual norma vale não coloca o edital na sua frente",
                 texto:
-                  "Esta página é de consulta e o guia segue abaixo — pode pular. Só a observação prática do parágrafo acima: quem rege a disputa é o edital, e ele precisa chegar até você. Se quiser, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+                  "Esta página é de consulta e o guia segue abaixo. Pode pular. Só a observação prática do parágrafo acima: quem rege a disputa é o edital, e ele precisa chegar até você. Se quiser, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
               }}
               textoDoBotao="Quero receber os editais do meu ramo"
             />
@@ -312,7 +311,7 @@ export default function Legislacao() {
               decretos e medidas provisórias de contratação pública. Quase uma
               década depois, boa parte mudou de status. Conferi cada uma no
               Planalto em 12 de agosto de 2026 e registro o que o texto oficial
-              diz — não o que se costuma repetir por aí.
+              diz. Não o que se costuma repetir por aí.
             </P>
             <Tabela cabecalho={["Norma", "Do que trata", "Status verificado"]} linhas={ACERVO} />
             <P>
@@ -339,12 +338,12 @@ export default function Legislacao() {
                 ["1", "Abrir o texto no planalto.gov.br", "É a fonte que anota revogação e alteração dentro do próprio texto"],
                 ["2", "Olhar o topo da página, antes da ementa", "É ali que aparece “Revogado pelo…”, “Vigência encerrada” ou “Vide…”"],
                 ["3", "Ler as anotações entre parênteses ao lado dos artigos", "Um artigo pode ter caído sozinho, com a lei ainda de pé"],
-                ["4", "Conferir a data de vigência, não só a de publicação", "Norma publicada hoje pode só valer daqui a meses — foi o caso da própria 14.133"],
+                ["4", "Conferir a data de vigência, não só a de publicação", "Norma publicada hoje pode só valer daqui a meses. Foi o caso da própria 14.133"],
                 ["5", "Voltar ao edital", "Ele indica o regime escolhido, e é isso que rege o certame"],
               ]}
             />
             <P>
-              O passo 3 é o que mais gente pula. Revogação parcial é comum — foi
+              O passo 3 é o que mais gente pula. Revogação parcial é comum. Foi
               o que aconteceu com a Lei 12.462, que perdeu os artigos do RDC e
               manteve o resto. Quem lê só o cabeçalho conclui errado nos dois
               sentidos.
@@ -355,7 +354,7 @@ export default function Legislacao() {
             <P>
               A Lei 14.133 é norma geral e alcança os três níveis de governo. O
               que estados e municípios editam são regulamentos: decretos que
-              detalham o procedimento dentro da própria estrutura — pesquisa de
+              detalham o procedimento dentro da própria estrutura: pesquisa de
               preço, agente de contratação, sistema eletrônico usado, limites de
               alçada.
             </P>
@@ -400,27 +399,27 @@ export default function Legislacao() {
             <ul className="space-y-2 text-[var(--muted)]">
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm" target="_blank" rel="noopener">
-                  Lei nº 14.133/2021 — Planalto
+                  Lei nº 14.133/2021 (Planalto)
                 </a>
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/leis/l8666cons.htm" target="_blank" rel="noopener">
-                  Lei nº 8.666/1993 — Planalto
+                  Lei nº 8.666/1993 (Planalto)
                 </a>
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm" target="_blank" rel="noopener">
-                  Lei nº 10.520/2002 — Planalto
+                  Lei nº 10.520/2002 (Planalto)
                 </a>
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2016/lei/l13303.htm" target="_blank" rel="noopener">
-                  Lei nº 13.303/2016 (estatais) — Planalto
+                  Lei nº 13.303/2016 (estatais) (Planalto)
                 </a>
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/decreto/d10024.htm" target="_blank" rel="noopener">
-                  Decreto nº 10.024/2019 — Planalto
+                  Decreto nº 10.024/2019 (Planalto)
                 </a>
               </li>
             </ul>
@@ -461,7 +460,7 @@ export default function Legislacao() {
 
         <p className="mt-8 text-sm leading-relaxed text-[var(--muted)]">
           Este conteúdo tem finalidade informativa e operacional. Não constitui
-          parecer jurídico — a análise de um edital concreto, a redação de
+          parecer jurídico, a análise de um edital concreto, a redação de
           impugnação e recurso e a defesa em processo sancionatório cabem à
           empresa e ao seu assessor jurídico. Leia o{" "}
           <a className="underline underline-offset-4" href="/aviso-legal/">

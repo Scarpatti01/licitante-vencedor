@@ -6,6 +6,7 @@ import { P, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { CardAssinatura } from "@/components/CardAssinatura";
 import { todosOsPosts, postPorSlug, caminhoDoPost } from "@/lib/posts/acervo";
 import {
   encerrado,
@@ -319,9 +320,9 @@ export default async function PaginaDoEdital({
               ? "Este já encerrou. Quer receber os próximos enquanto dá tempo?"
               : `Quer saber quando ${post.municipio} publicar algo do seu ramo?`,
             texto:
-              "Publicamos aqui uma amostra do que sai todo dia. O alerta diário compara " +
-              "tudo o que o PNCP publica com o perfil da sua empresa e manda só o que faz " +
-              "sentido — com o prazo em destaque, enquanto ainda dá para participar.",
+              "Publicamos aqui uma amostra do que sai todo dia. O alerta gratuito manda " +
+              "por e-mail os editais abertos da cidade que você indicar, com o prazo em " +
+              "destaque, enquanto ainda dá para participar.",
           }}
         />
 
@@ -349,6 +350,8 @@ export default async function PaginaDoEdital({
           {dataDeBrasilia(post.postadoEm)} · {nomeDaUf(post.uf)} · Código IBGE{" "}
           {post.codigoIbge}. <Link href="/metodologia/">Como medimos</Link>.
         </p>
+
+        <CardAssinatura />
       </article>
 
       <RodapeSite />

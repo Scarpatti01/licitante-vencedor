@@ -54,7 +54,7 @@ export const metadata: Metadata = {
 const schema = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: `${SITE.name} — assinatura`,
+  name: `${SITE.name}, assinatura`,
   description: DESCRICAO,
   brand: { "@type": "Brand", name: SITE.name },
   offers: PLANOS.map((plano) => ({

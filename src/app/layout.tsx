@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
-import { AUTHOR, KNOWS_ABOUT, SITE } from "@/lib/site";
+import { AUTHOR, KNOWS_ABOUT, SITE, TITULO_DO_SITE } from "@/lib/site";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -10,7 +10,7 @@ const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"]
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: `${SITE.name} — ${SITE.tagline}`,
+    default: TITULO_DO_SITE,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
@@ -20,12 +20,12 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     url: SITE.url,
     siteName: SITE.name,
-    title: `${SITE.name} — ${SITE.tagline}`,
+    title: TITULO_DO_SITE,
     description: SITE.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} — ${SITE.tagline}`,
+    title: TITULO_DO_SITE,
     description: SITE.description,
   },
   robots: {

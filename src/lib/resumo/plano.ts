@@ -191,7 +191,7 @@ export function planejarResumoDiario(dados: DadosDoResumo, agora: Date = new Dat
 
   const paragrafos = [
     `${escolhidas.length === 1 ? "1 edital aderente" : `${escolhidas.length} editais aderentes`} ao perfil da ${dados.empresa} hoje${lidas > 0 ? `, ${lidas === escolhidas.length ? "todos com o documento já lido" : `${lidas} deles com o documento já lido`}` : ""}.`,
-    "Isto é o resumo. A análise de cada um — exigências de habilitação, garantia, visita técnica e riscos — está no painel.",
+    "Isto é o resumo. A análise de cada um está no painel, com exigências de habilitação, garantia, visita técnica e riscos.",
   ];
 
   const fecho: string[] = [];
@@ -213,7 +213,7 @@ export function planejarResumoDiario(dados: DadosDoResumo, agora: Date = new Dat
     );
   }
 
-  fecho.push("A decisão de disputar continua sendo sua, e depende de ler o edital inteiro — inclusive os anexos. Quando o nosso resumo divergir do documento, vale o documento.");
+  fecho.push("A decisão de disputar continua sendo sua, e depende de ler o edital inteiro, inclusive os anexos. Quando o nosso resumo divergir do documento, vale o documento.");
 
   return {
     tipo: "enviar",

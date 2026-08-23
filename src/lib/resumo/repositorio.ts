@@ -201,7 +201,7 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
           objeto,
           orgao: texto(e?.orgao_nome) ?? "órgão não informado",
           municipio: texto(e?.municipio) ?? "município não informado",
-          uf: texto(e?.uf)?.toUpperCase() ?? "—",
+          uf: texto(e?.uf)?.toUpperCase() ?? "não informada",
           valorEstimado: numero(e?.valor_estimado),
           encerramentoProposta: texto(e?.encerramento_proposta),
           link,

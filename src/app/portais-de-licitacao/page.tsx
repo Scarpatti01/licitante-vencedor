@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 
 const SECOES = [
   { id: "regra", titulo: "A regra que explica toda a confusão" },
-  { id: "pncp", titulo: "O que o PNCP é — e o que ele não é" },
+  { id: "pncp", titulo: "O que o PNCP é, e o que ele não é" },
   { id: "quantos", titulo: "Quantos portais existem, de verdade" },
   { id: "federal", titulo: "O caso federal: Compras.gov.br e SICAF" },
   { id: "descobrir", titulo: "Como descobrir em qual portal disputar um edital" },
@@ -78,12 +78,12 @@ const FAQ = [
   {
     pergunta: "Portal privado pode cobrar para eu participar?",
     resposta:
-      "Os portais privados operam sob modelos comerciais próprios, e as condições variam entre plataformas — cadastro, taxa por certame, assinatura. Confira as condições no próprio portal indicado pelo edital antes de disputar, porque isso entra no seu custo de participação e afeta a formação do preço.",
+      "Os portais privados operam sob modelos comerciais próprios, e as condições variam entre plataformas, cadastro, taxa por certame, assinatura. Confira as condições no próprio portal indicado pelo edital antes de disputar, porque isso entra no seu custo de participação e afeta a formação do preço.",
   },
   {
     pergunta: "O edital não diz em qual portal é a sessão. E agora?",
     resposta:
-      "Procure o link para o sistema de origem no registro do PNCP — na amostra que medimos, 67% dos editais traziam esse link. Se não houver, o próprio edital indica o endereço da sessão em cláusula específica; e, na falta dos dois, cabe pedido de esclarecimento ao órgão, dentro do prazo do edital.",
+      "Procure o link para o sistema de origem no registro do PNCP, na amostra que medimos, 67% dos editais traziam esse link. Se não houver, o próprio edital indica o endereço da sessão em cláusula específica; e, na falta dos dois, cabe pedido de esclarecimento ao órgão, dentro do prazo do edital.",
   },
 ];
 
@@ -143,7 +143,7 @@ export default function PortaisDeLicitacao() {
           <P>
             A dúvida chega sempre igual: “se agora tudo é publicado no PNCP, por
             que continuo tendo que me cadastrar em um monte de portal?”. A
-            resposta está numa distinção que a lei faz e quase ninguém percebe —
+            resposta está numa distinção que a lei faz e quase ninguém percebe,
             e ela vale dinheiro, porque define quantos sistemas você precisa
             acompanhar para não perder edital do seu ramo.
           </P>
@@ -158,7 +158,7 @@ export default function PortaisDeLicitacao() {
             A publicação é centralizada e obrigatória no PNCP; a realização do
             certame nele é facultativa. Por isso o edital aparece num lugar só, e
             a disputa acontece espalhada. Na nossa medição de 500 editais abertos
-            em PE, CE, SP, MG e RS, 54 sistemas distintos publicaram — nenhum
+            em PE, CE, SP, MG e RS, 54 sistemas distintos publicaram, nenhum
             deles com mais de 14% do total. Não existe “o portal” das licitações.
           </RespostaDireta>
 
@@ -182,7 +182,7 @@ export default function PortaisDeLicitacao() {
               Divulgação: <strong>obrigatória</strong>. Realização:{" "}
               <strong>facultativa</strong>. Toda a confusão sobre portais nasce
               dessa única palavra de diferença. O órgão é obrigado a publicar no
-              PNCP, mas pode conduzir a sessão onde quiser — e a maioria conduz
+              PNCP, mas pode conduzir a sessão onde quiser, e a maioria conduz
               no sistema que já usa.
             </P>
             <P>
@@ -205,7 +205,7 @@ export default function PortaisDeLicitacao() {
             </P>
           </Secao>
 
-          <Secao id="pncp" titulo="O que o PNCP é — e o que ele não é">
+          <Secao id="pncp" titulo="O que o PNCP é, e o que ele não é">
             <Tabela
               cabecalho={["O PNCP é", "O PNCP não é"]}
               linhas={[
@@ -219,7 +219,7 @@ export default function PortaisDeLicitacao() {
               A terceira linha é a que mais frustra quem chega. O PNCP entrega
               tudo o que existe, sem ordenar por relevância para você. Encontrar
               os três editais do seu CNAE no seu raio de atuação, entre milhares
-              publicados por dia, é trabalho que o portal oficial não faz — e não
+              publicados por dia, é trabalho que o portal oficial não faz, e não
               se propõe a fazer.
             </P>
           </Secao>
@@ -239,7 +239,7 @@ export default function PortaisDeLicitacao() {
             <P>
               <strong>54 sistemas distintos</strong> numa amostra de 500 editais.
               O maior deles não chega a 14%. E a cauda é o que assusta: 46
-              sistemas somam mais de um terço de tudo — muitos deles empresas de
+              sistemas somam mais de um terço de tudo, muitos deles empresas de
               software municipal que atendem a um punhado de prefeituras cada.
             </P>
             <P>
@@ -251,7 +251,7 @@ export default function PortaisDeLicitacao() {
               Uma ressalva honesta sobre este número: é uma amostra de cinco
               estados num dia. A ordem dos primeiros colocados muda conforme a
               região e o período, e a lista completa é maior que 54 no país
-              inteiro. O que a medição estabelece com segurança não é o ranking —
+              inteiro. O que a medição estabelece com segurança não é o ranking.
               é a ordem de grandeza da dispersão.
             </P>
           </Secao>
@@ -270,7 +270,7 @@ export default function PortaisDeLicitacao() {
               chamada={{
                 titulo: "São 54 sistemas para vigiar, ou um e-mail por dia útil",
                 texto:
-                  "A publicação é a parte centralizada, e dá para usar isso a favor. Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e o link para o registro oficial. Você continua disputando no portal que o edital indicar; o que sai da rotina é abrir todos eles para descobrir se tem algo seu.",
+                  "A publicação é a parte centralizada, e dá para usar isso a favor. Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende, com objeto, órgão, valor, prazo e o link para o registro oficial. Você continua disputando no portal que o edital indicar; o que sai da rotina é abrir todos eles para descobrir se tem algo seu.",
               }}
               textoDoBotao="Quero receber os editais do meu ramo"
             />
@@ -286,7 +286,7 @@ export default function PortaisDeLicitacao() {
             </P>
             <P>
               Dois pontos práticos. O cadastro é gratuito e não tem intermediário
-              obrigatório — se alguém cobra para “credenciar sua empresa no
+              obrigatório, se alguém cobra para “credenciar sua empresa no
               governo federal”, está cobrando por tarefa que você faz sozinho. E
               o SICAF é aceito por muitos órgãos estaduais e municipais quando o
               edital assim prevê, o que economiza documentação repetida.
@@ -317,12 +317,12 @@ export default function PortaisDeLicitacao() {
                 ["1", "Link para o sistema de origem, no próprio registro do PNCP", "Na amostra medida, 67% dos editais traziam esse link"],
                 ["2", "Cláusula do edital que indica o endereço da sessão", "Costuma estar nas disposições iniciais, junto de data e hora"],
                 ["3", "Site do órgão comprador", "Prefeituras costumam manter página fixa com o portal que usam"],
-                ["4", "Pedido de esclarecimento ao órgão", "Dentro do prazo do edital — e a resposta vale para todos os licitantes"],
+                ["4", "Pedido de esclarecimento ao órgão", "Dentro do prazo do edital, e a resposta vale para todos os licitantes"],
               ]}
             />
             <P>
               O passo 1 resolve dois terços dos casos e é o mais ignorado. Os
-              outros 33% exigem leitura do edital — e é bom lembrar que o prazo
+              outros 33% exigem leitura do edital, e é bom lembrar que o prazo
               de cadastro no portal indicado corre junto com o prazo da proposta.
               Descobrir na véspera que o cadastro leva três dias úteis é a forma
               mais banal de perder um certame que você ganharia.
@@ -339,7 +339,7 @@ export default function PortaisDeLicitacao() {
             <P>
               Acompanhar isso à mão significa abrir vários sites por dia,
               procurar por palavra-chave em cada um, e ainda assim depender de o
-              termo do edital coincidir com o termo que você buscou — objeto
+              termo do edital coincidir com o termo que você buscou. Objeto
               descrito como “aquisição de gêneros alimentícios” não aparece para
               quem procurou por “merenda escolar”.
             </P>
@@ -348,7 +348,7 @@ export default function PortaisDeLicitacao() {
               manual por monitoramento: o edital chega até você, filtrado pelo
               seu CNAE, pela sua região e pela sua faixa de valor, em vez de você
               ir atrás dele em 54 lugares. A decisão de fazer isso à mão ou não é
-              sua — o que este guia entrega é o tamanho real do problema, medido
+              sua, o que este guia entrega é o tamanho real do problema, medido
               e não estimado.
             </P>
           </Secao>
@@ -374,7 +374,7 @@ export default function PortaisDeLicitacao() {
             <ul className="space-y-2 text-[var(--muted)]">
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm" target="_blank" rel="noopener">
-                  Lei nº 14.133/2021 — Planalto
+                  Lei nº 14.133/2021 (Planalto)
                 </a>
               </li>
               <li>
@@ -384,7 +384,7 @@ export default function PortaisDeLicitacao() {
               </li>
               <li>
                 <a className="underline underline-offset-4" href="https://pncp.gov.br/api/consulta/swagger-ui/index.html" target="_blank" rel="noopener">
-                  API pública de consulta do PNCP — documentação
+                  API pública de consulta do PNCP, documentação
                 </a>
               </li>
               <li>
@@ -430,7 +430,7 @@ export default function PortaisDeLicitacao() {
 
         <p className="mt-8 text-sm leading-relaxed text-[var(--muted)]">
           Este conteúdo tem finalidade informativa e operacional. Não constitui
-          parecer jurídico — a análise de um edital concreto, a redação de
+          parecer jurídico, a análise de um edital concreto, a redação de
           impugnação e recurso e a defesa em processo sancionatório cabem à
           empresa e ao seu assessor jurídico. Leia o{" "}
           <a className="underline underline-offset-4" href="/aviso-legal/">
@@ -468,7 +468,7 @@ function PracasMedidas() {
       <P>
         A partir da mesma coleta, o retrato de mercado de alguns municípios:
         quanto se compra, por quais modalidades e quantos órgãos compram. São
-        poucos de propósito — só entram as praças com dado suficiente para
+        poucos de propósito. Só entram as praças com dado suficiente para
         sustentar a leitura.
       </P>
       <P>
