@@ -186,3 +186,39 @@ describe("o preço publicado e o preço cobrável não podem divergir", () => {
     expect(divergenciasDePreco(banco)).toEqual([]);
   });
 });
+
+describe("a página não promete volume que o produto não garante", () => {
+  /**
+   * Duas promessas minhas, escritas no mesmo dia e as duas erradas pelo mesmo
+   * motivo: descrevem a CADÊNCIA do processo como se fosse cadência do
+   * resultado.
+   *
+   * - A leitura roda todo dia, mas só lê o que passa do corte de score. Em dois
+   *   dos três primeiros dias de operação real, nada passou — e "leitura todo
+   *   dia" teria virado reclamação na segunda-feira.
+   * - O resumo sai todo dia útil, mas "dia sem edital novo é dia sem e-mail" é
+   *   regra deliberada do produto. Prometer e-mail diário faz o silêncio
+   *   correto parecer defeito.
+   *
+   * O que o produto garante é o PROCESSO rodando; o volume depende do que os
+   * órgãos publicam e do perfil do cliente. A lista precisa dizer isso.
+   */
+  const inclui = O_QUE_INCLUI.join(" | ");
+
+  it("não promete leitura com periodicidade garantida", () => {
+    expect(inclui).not.toMatch(/leitura[^|]*todo dia/i);
+    expect(inclui).not.toMatch(/leitura diária/i);
+  });
+
+  it("não promete e-mail em todo dia útil", () => {
+    expect(inclui).not.toMatch(/resumo diário/i);
+  });
+
+  it("continua prometendo o que de fato roda todo dia: a coleta", () => {
+    // A guarda não pode virar medo de afirmar. A coleta É diária e nas 27 UFs,
+    // e isso é verdade que vende — some daqui e a lista perde o que tem de mais
+    // concreto.
+    expect(inclui).toMatch(/coleta diária/i);
+    expect(inclui).toMatch(/27 unidades/i);
+  });
+});
