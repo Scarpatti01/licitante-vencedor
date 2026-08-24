@@ -1,0 +1,111 @@
+# Lê os editais recomendados pela Batch API do Gemini (`scripts/ler-em-lote.ts`).
+#
+# ⚠️ SEM AGENDAMENTO, E DE PROPÓSITO — por enquanto por uma razão diferente da
+# de `ler-recomendados.yml`.
+#
+# Lá o motivo é duplicação: aquele script já roda como passo das coletas. Aqui o
+# motivo é que o formato REST do lote nunca foi exercitado contra a API de
+# verdade. Ele foi escrito a partir da documentação e testado contra respostas
+# forjadas, o que prova o nosso lado e não prova o do fornecedor. Enquanto uma
+# execução manual não terminar com editais gravados, agendar isto seria trocar
+# uma leitura que funciona por uma que talvez funcione.
+#
+# QUANDO LIGAR: depois de uma execução manual com `simular: false` que grave
+# análise de verdade, o lugar de agendar é 03:00 UTC (00:00 em Brasília) — antes
+# da coleta das 06:10, para que a leitura avulsa da coleta encontre o cache já
+# quente e só leia o que o lote não conseguiu.
+#
+# Rodar isto NÃO desliga a leitura avulsa. Os dois convivem de propósito: o lote
+# pega a maioria pela metade do preço, e o que ele deixa passar — edital sem
+# evidência suficiente, lote recusado, prazo estourado — continua caindo na
+# leitura avulsa, que sabe escalar de modelo.
+
+name: Ler editais em lote
+
+on:
+  workflow_dispatch:
+    inputs:
+      simular:
+        description: "Montar os pedidos e NÃO mandar nada ao fornecedor"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  # Mesma razão de `ler-recomendados`: duas execuções simultâneas não corrompem
+  # o banco (o upsert de `analises_de_edital` absorve), mas pagariam duas vezes
+  # pela mesma leitura se as duas consultassem o cache antes de qualquer uma
+  # gravar. Grupo próprio: o lote não deve bloquear a leitura avulsa.
+  group: ler-em-lote
+  cancel-in-progress: false
+
+jobs:
+  ler:
+    runs-on: ubuntu-latest
+    # O script espera o lote por até 3 horas (`PRAZO_DE_ESPERA_MS`), mais o
+    # tempo de baixar e extrair os documentos. O teto aqui precisa ser maior que
+    # o prazo de espera, senão o runner mata a execução no meio e o lote fica
+    # rodando e cobrando sem ninguém para aplicar o resultado.
+    timeout-minutes: 240
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      # Ver `src/lib/workflows-instalam-dependencias.test.ts` e o defeito de
+      # 16/08: sem isto o script morre uma vez por edital, num passo verde.
+      - name: Instalar dependências
+        run: npm ci --omit=dev
+
+      - name: Ler em lote
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SIMULAR: ${{ inputs.simular && '--simular' || '' }}
+        run: |
+          set -o pipefail
+
+          codigo=0
+          node --conditions=react-server scripts/ler-em-lote.ts $SIMULAR \
+            | tee saida-lote.txt || codigo=$?
+
+          if [ "$codigo" = "78" ]; then
+            {
+              echo "## Leitura em lote não rodou — faltam segredos"
+              echo
+              echo "O workflow rodou e parou de propósito. Nada foi lido e nada foi gravado."
+              echo
+              echo "Para ligar, crie em **Settings → Secrets and variables → Actions**:"
+              echo
+              echo '- `NEXT_PUBLIC_SUPABASE_URL`'
+              echo '- `SUPABASE_SERVICE_ROLE_KEY`'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Leitura em lote inerte::faltam segredos — ver o resumo desta execução"
+            exit 0
+          fi
+
+          {
+            echo "## Leitura em lote"
+            echo
+            echo '```'
+            tail -n 40 saida-lote.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          exit "$codigo"
+
+      - name: Publicar o log do lote
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: saida-lote
+          path: saida-lote.txt
+          retention-days: 30
+          if-no-files-found: ignore

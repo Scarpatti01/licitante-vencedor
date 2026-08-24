@@ -41,23 +41,24 @@ export type ResultadoDaLeitura = {
  * Falha aqui nunca deve derrubar um lote: um edital cujo documento não abre
  * não pode custar os outros, pelo mesmo princípio que isola UF na coleta.
  */
-export async function lerEAnalisar(
-  edital: Edital,
-  /**
-   * Grava a execução em `execucoes_de_ia`, quando há repositório aberto.
-   *
-   * Fica de fora do `registrar` de `analisarEdital` (que é síncrono, pensado
-   * para log em memória) e vira, para quem chama, um disparo assíncrono que
-   * precisa ser esperado antes do processo sair, para não morrer com uma
-   * escrita ainda em voo.
-   */
-  gravarExecucao?: (execucao: ExecucaoDeIA) => void,
-): Promise<ResultadoDaLeitura> {
+/**
+ * Só a primeira metade da leitura: listar, baixar, extrair.
+ *
+ * Separada porque o lote precisa do texto de dezenas de editais ANTES de mandar
+ * qualquer coisa ao modelo, e reimplementar o download em outro arquivo
+ * significaria dois lugares decidindo teto de tamanho, piso de caracteres por
+ * página e o que é "sem documento" — divergindo no primeiro dia em que um deles
+ * mudasse.
+ */
+export type TextoDoEdital =
+  | { ok: true; texto: string; documentos: number }
+  | { ok: false; motivo: Extract<MotivoDaLeitura, "sem_documento" | "erro"> };
+
+export async function extrairTextoDoEdital(edital: Edital): Promise<TextoDoEdital> {
   try {
     const { listarDocumentos, baixarDocumento } = await import("../documentos/pncp.ts");
     const { processarEdital } = await import("../documentos/processar.ts");
     const { textoParaAnalise } = await import("../documentos/texto.ts");
-    const { analisarEdital } = await import("./analisar-edital.ts");
 
     /*
      * O registro devolve `null` e a triagem devolve `true` porque este
@@ -81,7 +82,7 @@ export async function lerEAnalisar(
 
     if (!resultado.processado) {
       console.log(`  sem documento (${resultado.motivo}) · ${edital.local.municipio}`);
-      return { analise: null, documentos: 0, motivo: "sem_documento" };
+      return { ok: false, motivo: "sem_documento" };
     }
 
     const texto = textoParaAnalise(resultado.documentos);
@@ -91,8 +92,33 @@ export async function lerEAnalisar(
        * edital que não dá para ler, não a leitura que quebrou.
        */
       console.log(`  sem texto extraível · ${edital.local.municipio}`);
-      return { analise: null, documentos: 0, motivo: "sem_documento" };
+      return { ok: false, motivo: "sem_documento" };
     }
+
+    return { ok: true, texto, documentos: resultado.documentos.filter((d) => d.extracao.ok).length };
+  } catch (e) {
+    console.error(`  leitura falhou em ${edital.id}: ${(e as Error).message}`);
+    return { ok: false, motivo: "erro" };
+  }
+}
+
+export async function lerEAnalisar(
+  edital: Edital,
+  /**
+   * Grava a execução em `execucoes_de_ia`, quando há repositório aberto.
+   *
+   * Fica de fora do `registrar` de `analisarEdital` (que é síncrono, pensado
+   * para log em memória) e vira, para quem chama, um disparo assíncrono que
+   * precisa ser esperado antes do processo sair, para não morrer com uma
+   * escrita ainda em voo.
+   */
+  gravarExecucao?: (execucao: ExecucaoDeIA) => void,
+): Promise<ResultadoDaLeitura> {
+  const extraido = await extrairTextoDoEdital(edital);
+  if (!extraido.ok) return { analise: null, documentos: 0, motivo: extraido.motivo };
+
+  try {
+    const { analisarEdital } = await import("./analisar-edital.ts");
 
     /*
      * `registrar` não é telemetria opcional aqui — é a única forma de saber
@@ -104,7 +130,7 @@ export async function lerEAnalisar(
      * Sem passá-lo, o motivo é calculado e jogado fora.
      */
     const analise = await analisarEdital(edital, {
-      textoDoDocumento: texto,
+      textoDoDocumento: extraido.texto,
       registrar: (execucao) => {
         gravarExecucao?.(execucao);
 
@@ -117,9 +143,10 @@ export async function lerEAnalisar(
         );
       },
     });
+
     return {
       analise,
-      documentos: resultado.documentos.filter((d) => d.extracao.ok).length,
+      documentos: extraido.documentos,
       motivo: analise?.analisadoEm ? "lido" : "recusado_pelo_modelo",
     };
   } catch (e) {

@@ -64,6 +64,36 @@ export type PrecoDoModelo = {
  */
 export const PRECOS_POR_MODELO: Record<string, PrecoDoModelo> = {};
 
+/**
+ * A mesma tabela, com o desconto do lote aplicado.
+ *
+ * A Batch API cobra metade do preço da chamada avulsa — é desconto publicado
+ * do fornecedor, não estimativa nossa. Ele fica AQUI, e não espalhado por quem
+ * chama, porque esquecer de aplicá-lo faria o painel cobrar do lote o dobro do
+ * que ele custou, e ninguém desconfia de um custo alto demais.
+ *
+ * Enquanto `PRECOS_POR_MODELO` estiver vazia, isto devolve vazio também, e
+ * `estimarCusto` segue dizendo honestamente que não sabe.
+ *
+ * Ao preencher a tabela, confira o desconto vigente: metade é o que vale hoje.
+ */
+export const DESCONTO_DO_LOTE = 0.5;
+
+export function precosEmLote(
+  precos: Record<string, PrecoDoModelo> = PRECOS_POR_MODELO,
+): Record<string, PrecoDoModelo> {
+  return Object.fromEntries(
+    Object.entries(precos).map(([modelo, preco]) => [
+      modelo,
+      {
+        ...preco,
+        entradaPorMilhao: preco.entradaPorMilhao * DESCONTO_DO_LOTE,
+        saidaPorMilhao: preco.saidaPorMilhao * DESCONTO_DO_LOTE,
+      },
+    ]),
+  );
+}
+
 export type CustoEstimado = {
   /** Dólares. `null` quando não há preço cadastrado — nunca zero. */
   usd: number | null;

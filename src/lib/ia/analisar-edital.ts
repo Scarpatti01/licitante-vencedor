@@ -191,6 +191,111 @@ function profundidadeDe(seg: Segmentacao): AnaliseDoEdital["profundidade"] {
   return seg.omitiu ? "documento_parcial" : "documento_completo";
 }
 
+/**
+ * A metade da análise que acontece ANTES do modelo.
+ *
+ * Existe separada porque a leitura em lote precisa exatamente disto: montar o
+ * pedido de dezenas de editais, mandar todos de uma vez, e só depois converter
+ * cada resposta. A alternativa seria o lote reimplementar segmentação, fonte e
+ * plano — e no dia em que uma das duas cópias mudasse, o mesmo edital passaria
+ * a receber análises diferentes conforme o caminho por onde entrou. Isso é
+ * indefensável num produto cujo valor é a análise ser confiável.
+ *
+ * `fonte` é o campo que amarra as duas metades: é o texto que o modelo recebe E
+ * o texto contra o qual as evidências são conferidas. Quem prepara o pedido tem
+ * de guardá-lo para a hora de converter a resposta.
+ */
+export type PedidoDeAnalise = {
+  /** O que o modelo lê, e contra o que a evidência é conferida. Os dois. */
+  fonte: string;
+  prompt: string;
+  instrucaoDeSistema: string;
+  referenciaDoPrompt: string;
+  plano: PlanoDeExecucao;
+  segmentacao: Segmentacao;
+};
+
+export function prepararAnalise(
+  edital: Edital,
+  opcoes: {
+    textoDoDocumento?: string | null;
+    orcamentoDeCaracteres?: number;
+    catalogo?: CatalogoDeModelos;
+  } = {},
+): PedidoDeAnalise {
+  const prompt = PROMPT_DE_ANALISE_EM_USO;
+  const catalogo = opcoes.catalogo ?? modelosGemini();
+
+  const segmentacao = segmentarEdital(opcoes.textoDoDocumento ?? "", {
+    orcamento: opcoes.orcamentoDeCaracteres ?? ORCAMENTO_PADRAO,
+  });
+
+  // A fonte é o que o modelo vai ler E o texto contra o qual as evidências serão
+  // conferidas. Precisa ser o MESMO objeto: conferir contra o documento inteiro
+  // enquanto se envia um recorte aceitaria como válida a citação de um trecho
+  // que o modelo não recebeu — ou seja, um acerto por adivinhação.
+  const fonte = prompt.montarFonte(edital, segmentacao.texto);
+
+  return {
+    fonte,
+    prompt: prompt.montar({ fonte, houveOmissao: segmentacao.omitiu }),
+    instrucaoDeSistema: prompt.sistema,
+    referenciaDoPrompt: prompt.referencia,
+    segmentacao,
+    plano: planejarExecucao({
+      caracteres: fonte.length,
+      secoesEncontradas: segmentacao.secoesEncontradas.length,
+      elidiu: segmentacao.descartouRelevante,
+      catalogo,
+    }),
+  };
+}
+
+/** A outra metade: da resposta crua do modelo à análise conferida. */
+export type AnaliseMontada = {
+  analise: AnaliseDoEdital;
+  /** Quantos campos se sustentaram na conferência de evidência. */
+  sustentados: number;
+  descartados: number;
+};
+
+/**
+ * Converte a resposta do modelo em análise, conferindo cada campo contra a
+ * fonte que foi realmente enviada.
+ *
+ * Serve tanto à chamada avulsa quanto ao lote, e é essa partilha que garante
+ * que o mesmo edital com a mesma resposta produz a mesma análise nos dois
+ * caminhos.
+ */
+export function montarAnaliseDaResposta(
+  edital: Edital,
+  resposta: RespostaDeAnaliseDeEdital,
+  pedido: PedidoDeAnalise,
+  opcoes: { modelo: string; agora?: () => Date },
+): AnaliseMontada {
+  const convertido = converter(resposta, criarVerificador(pedido.fonte));
+  const agora = opcoes.agora ?? (() => new Date());
+
+  return {
+    sustentados: convertido.sustentados,
+    descartados: convertido.descartados,
+    analise: {
+      editalId: edital.id,
+      analisadoEm: agora().toISOString(),
+      versaoDoPrompt: pedido.referenciaDoPrompt,
+      modelo: opcoes.modelo,
+      resumoExecutivo: convertido.resumoExecutivo,
+      exigencias: convertido.exigencias,
+      criterioDeJulgamento: convertido.criterioDeJulgamento,
+      garantiaExigida: convertido.garantiaExigida,
+      visitaTecnicaExigida: convertido.visitaTecnicaExigida,
+      amostraExigida: convertido.amostraExigida,
+      riscos: convertido.riscos,
+      profundidade: profundidadeDe(pedido.segmentacao),
+    },
+  };
+}
+
 export async function analisarEdital(
   edital: Edital,
   opcoes: OpcoesDeAnalise = {},
@@ -242,33 +347,21 @@ export async function analisarEdital(
     return analiseNaoRealizada(edital.id, motivo);
   }
 
-  const seg = segmentarEdital(opcoes.textoDoDocumento ?? "", {
-    orcamento: opcoes.orcamentoDeCaracteres ?? ORCAMENTO_PADRAO,
-  });
-
-  // A fonte é o que o modelo vai ler E o texto contra o qual as evidências serão
-  // conferidas. Precisa ser o MESMO objeto: conferir contra o documento inteiro
-  // enquanto se envia um recorte aceitaria como válida a citação de um trecho
-  // que o modelo não recebeu — ou seja, um acerto por adivinhação.
-  const fonte = prompt.montarFonte(edital, seg.texto);
-  const verificador = criarVerificador(fonte);
-  const texto = prompt.montar({ fonte, houveOmissao: seg.omitiu });
-
-  const plano = planejarExecucao({
-    caracteres: fonte.length,
-    secoesEncontradas: seg.secoesEncontradas.length,
-    elidiu: seg.descartouRelevante,
+  const pedido = prepararAnalise(edital, {
+    textoDoDocumento: opcoes.textoDoDocumento,
+    orcamentoDeCaracteres: opcoes.orcamentoDeCaracteres,
     catalogo,
   });
+  const plano = pedido.plano;
 
   const executar = async (modelo: string) => {
     const resultado = await gerarComRetentativa(
       provedor,
       {
-        prompt: texto,
+        prompt: pedido.prompt,
         schema: respostaDeAnaliseDeEdital,
         modelo,
-        instrucaoDeSistema: prompt.sistema,
+        instrucaoDeSistema: pedido.instrucaoDeSistema,
         temperatura: 0,
         nomeDoSchema: "respostaDeAnaliseDeEdital",
         sinal: opcoes.sinal,
@@ -278,16 +371,18 @@ export async function analisarEdital(
 
     if (!resultado.ok) {
       registrar(plano, resultado, 0);
-      return { resultado, convertido: null as CamposConvertidos | null };
+      return { resultado, montada: null as AnaliseMontada | null };
     }
 
-    const convertido = converter(resultado.valor, verificador);
-    registrar(plano, resultado, convertido.descartados);
-    return { resultado, convertido };
+    const montada = montarAnaliseDaResposta(edital, resultado.valor, pedido, {
+      modelo: resultado.modelo,
+      agora,
+    });
+    registrar(plano, resultado, montada.descartados);
+    return { resultado, montada };
   };
 
-  let { resultado, convertido } = await executar(plano.modelo);
-  let modeloUsado = resultado.modelo;
+  let { resultado, montada } = await executar(plano.modelo);
 
   /*
    * O escalonamento, e por que ele fica AQUI e não dentro do provedor.
@@ -304,43 +399,28 @@ export async function analisarEdital(
   if (
     plano.escalarPara &&
     plano.validar &&
-    (!convertido ||
+    (!montada ||
       !evidenciasSuficientes({
-        camposSustentados: convertido.sustentados,
-        camposDescartados: convertido.descartados,
+        camposSustentados: montada.sustentados,
+        camposDescartados: montada.descartados,
       }))
   ) {
     const escalado = await executar(plano.escalarPara);
-    if (escalado.convertido) {
-      const melhorou =
-        !convertido || escalado.convertido.sustentados > convertido.sustentados;
+    if (escalado.montada) {
+      const melhorou = !montada || escalado.montada.sustentados > montada.sustentados;
       if (melhorou) {
         resultado = escalado.resultado;
-        convertido = escalado.convertido;
-        modeloUsado = escalado.resultado.modelo;
+        montada = escalado.montada;
       }
     }
   }
 
-  if (!convertido || !resultado.ok) {
+  if (!montada || !resultado.ok) {
     const motivo = resultado.ok
       ? "A leitura automática do edital não produziu resultado utilizável."
       : `A leitura automática do edital falhou: ${resultado.motivo}`;
     return analiseNaoRealizada(edital.id, motivo);
   }
 
-  return {
-    editalId: edital.id,
-    analisadoEm: agora().toISOString(),
-    versaoDoPrompt: prompt.referencia,
-    modelo: modeloUsado,
-    resumoExecutivo: convertido.resumoExecutivo,
-    exigencias: convertido.exigencias,
-    criterioDeJulgamento: convertido.criterioDeJulgamento,
-    garantiaExigida: convertido.garantiaExigida,
-    visitaTecnicaExigida: convertido.visitaTecnicaExigida,
-    amostraExigida: convertido.amostraExigida,
-    riscos: convertido.riscos,
-    profundidade: profundidadeDe(seg),
-  };
+  return montada.analise;
 }
