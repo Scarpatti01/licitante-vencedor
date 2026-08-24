@@ -1,7 +1,7 @@
 import type { ZodType } from "zod";
-import { noDialetoDoGemini } from "./gemini";
-import { jsonSchemaParaModelo } from "./schemas";
-import { SEM_USO, type ModoDeFalha, type UsoDeTokens } from "./provedor";
+import { noDialetoDoGemini } from "./gemini.ts";
+import { jsonSchemaParaModelo } from "./schemas.ts";
+import { SEM_USO, type ModoDeFalha, type UsoDeTokens } from "./provedor.ts";
 
 /**
  * Leitura de edital em LOTE, pela Batch API do Gemini.

@@ -28,9 +28,8 @@
  */
 
 import type { AnaliseDoEdital } from "../src/lib/dominio/tipos.ts";
-import { triar } from "../src/lib/pipeline/triagem.ts";
-import { decisaoParaLinha, oportunidadeParaLinha } from "../src/lib/triagem/mapeamento.ts";
 import { abrirRepositorio } from "../src/lib/triagem/repositorio.ts";
+import { regravarComAnalise } from "../src/lib/triagem/regravar.ts";
 import { abrirRepositorioDeAnalises } from "../src/lib/ia/analises.ts";
 import { abrirRepositorioDeIA } from "../src/lib/ia/repositorio.ts";
 import { lerEAnalisar } from "../src/lib/ia/lerEdital.ts";
@@ -193,49 +192,19 @@ async function main() {
     return;
   }
 
-  // Regrava só os pares empresa×edital afetados, com a análise real.
-  const linhasDeOportunidade: ReturnType<typeof oportunidadeParaLinha>[] = [];
-  const porDecidir: { empresaId: string; editalUuid: string; decisao: ReturnType<typeof triar>["decisoes"][number] }[] = [];
-
-  for (const candidato of candidatos.values()) {
-    const analise = analisesLidas.get(candidato.uuid);
-    if (!analise) continue; // não foi lido nem estava em cache — segue com o score "de ficha" já gravado
-
-    for (const perfil of candidato.empresas) {
-      const { decisoes } = triar([{ edital: candidato.edital, analise }], perfil, agora);
-      const decisao = decisoes[0];
-
-      if (decisao.entregue) {
-        linhasDeOportunidade.push(
-          oportunidadeParaLinha({
-            empresaId: perfil.empresaId,
-            editalId: candidato.uuid,
-            edital: candidato.edital,
-            avaliacao: decisao.avaliacao,
-            avaliadoEm: decisao.decididoEm,
-          }),
-        );
-      }
-
-      porDecidir.push({ empresaId: perfil.empresaId, editalUuid: candidato.uuid, decisao });
-    }
-  }
-
-  const mapaDeOportunidades = await repositorio.gravarOportunidades(linhasDeOportunidade);
-
-  const linhasDeDecisao = porDecidir.map(({ empresaId, editalUuid, decisao }) =>
-    decisaoParaLinha({
-      empresaId,
-      editalId: editalUuid,
-      decisao,
-      oportunidadeId: mapaDeOportunidades.get(`${empresaId}:${editalUuid}`) ?? null,
-    }),
-  );
-  const decisoesGravadas = await repositorio.gravarDecisoes(linhasDeDecisao);
+  // Regrava só os pares empresa×edital afetados, com a análise real. A
+  // regravação em si mora em `triagem/regravar.ts`, compartilhada com a
+  // leitura em lote — ver o comentário de lá.
+  const regravado = await regravarComAnalise({
+    repositorio,
+    candidatos,
+    analises: analisesLidas,
+    agora,
+  });
 
   console.log(
-    `banco: ${mapaDeOportunidades.size} oportunidade(s) regravada(s) com leitura real · ` +
-      `${decisoesGravadas} decisão(ões) atualizada(s)`,
+    `banco: ${regravado.oportunidades} oportunidade(s) regravada(s) com leitura real · ` +
+      `${regravado.decisoes} decisão(ões) atualizada(s)`,
   );
 }
 
