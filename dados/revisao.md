@@ -1,9 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29042 editais coletados em 2026-08-24T07:16:39.105Z.
+Revisão dos dados — 28088 editais coletados em 2026-08-24T09:00:24.161Z.
 
-Encontrados 0 erro(s), 5 suspeita(s) e 139 aviso(s).
+Encontrados 0 erro(s), 5 suspeita(s) e 138 aviso(s).
 
 [AVISO] O edital 17138140000123-1-000173/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "ROÇADEIRA"
@@ -129,10 +129,6 @@ Encontrados 0 erro(s), 5 suspeita(s) e 139 aviso(s).
   Evidência: objeto declarado: "MOP"
   Edital: https://pncp.gov.br/app/editais/05816630000152/2026/6282
 
-[AVISO] O edital 12053489000149-1-000172/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Toner e cabo"
-  Edital: https://pncp.gov.br/app/editais/12053489000149/2026/172
-
 [AVISO] O edital 05816630000152-1-006303/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "LIVRO ATA"
   Edital: https://pncp.gov.br/app/editais/05816630000152/2026/6303
@@ -240,7 +236,7 @@ Encontrados 0 erro(s), 5 suspeita(s) e 139 aviso(s).
   Edital: https://pncp.gov.br/app/editais/14485841000140/2026/2094
 
 [SUSPEITA] No edital 92883834000100-1-000055/2026, do órgão DEPARTAMENTO AUTONOMO DE ESTRADAS DE RODAGEM, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 34.849.592.430,00, contra máximo de R$ 33.760.146,94 entre os demais Dispensa deste conjunto
+  Evidência: valor declarado R$ 34.849.592.430,00, contra máximo de R$ 10.972.698,00 entre os demais Dispensa deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Dispensa (dividido por 10.000 daria R$ 3.484.959,24; dividido por 100.000 daria R$ 348.495,92). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/92883834000100/2026/55
 
