@@ -95,9 +95,11 @@ export default function Privacidade() {
           <RespostaDireta>
             Coletamos o mínimo para entregar o que você pediu: o e-mail para
             mandar os editais, e o perfil da empresa para saber quais editais
-            mandar. <strong>Não usamos rastreador, pixel de anúncio nem
-            ferramenta de analytics</strong> — nenhum. Não vendemos, alugamos nem
-            cedemos seus dados a ninguém. Você pode pedir acesso, correção ou
+            mandar. <strong>Não usamos pixel de anúncio, remarketing nem
+            cookie de terceiro.</strong> Medimos audiência com duas ferramentas
+            sem cookie, que contam visitas e não identificam pessoas, e as duas
+            estão nomeadas abaixo. Não vendemos, alugamos nem cedemos seus dados
+            a ninguém. Você pode pedir acesso, correção ou
             eliminação a qualquer momento, escrevendo para {CONTATO.email}.
           </RespostaDireta>
         </div>
@@ -178,21 +180,32 @@ export default function Privacidade() {
             </P>
           </Secao>
 
-          <Secao id="rastreamento" titulo="Rastreamento: não há">
+          <Secao id="rastreamento" titulo="Medição de audiência, e o que não fazemos">
             <P>
-              Esta seção costuma ser a mais longa de uma política de privacidade,
-              e aqui ela é curta porque a resposta é curta:{" "}
               <strong>
-                o site não tem Google Analytics, Tag Manager, pixel do Facebook,
-                Hotjar, PostHog, Mixpanel nem qualquer outro rastreador
-              </strong>
-              . Nenhum. Não é uma escolha de configuração que possa ser revertida
-              sem querer — o código simplesmente não os contém.
+                O site não tem Google Analytics, Tag Manager, pixel do Facebook,
+                Hotjar, PostHog nem Mixpanel.
+              </strong>{" "}
+              Não é escolha de configuração que possa ser revertida sem querer: o
+              código simplesmente não os contém, e um teste automatizado reprova
+              a publicação se algum deles entrar.
             </P>
             <P>
-              Também não há publicidade, rede de anúncios, remarketing nem
-              cookie de terceiro. Você não é o produto aqui: quem paga pelo
-              serviço é quem o assina.
+              O que existe são duas ferramentas de medição de audiência, e
+              preferimos nomeá-las a esconder atrás de uma frase genérica:{" "}
+              <strong>Vercel Analytics</strong> e{" "}
+              <strong>Ahrefs Web Analytics</strong>. Nenhuma das duas usa cookie,
+              nenhuma acompanha você entre sites, e nenhuma recebe o seu e-mail
+              ou o perfil da sua empresa. Elas contam quantas pessoas abriram
+              cada página, de que país e por qual link chegaram. É o suficiente
+              para sabermos qual conteúdo é útil, e é menos do que o seu provedor
+              de internet já sabe.
+            </P>
+            <P>
+              Não há publicidade, rede de anúncios, remarketing nem cookie de
+              terceiro. Você não é o produto aqui: quem paga pelo serviço é quem
+              o assina, e é por isso que medir audiência nos serve para escrever
+              melhor, não para revender atenção.
             </P>
 
             <Tabela

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { AUTHOR, KNOWS_ABOUT, SITE, TITULO_DO_SITE } from "@/lib/site";
@@ -110,6 +111,26 @@ export default function RootLayout({
          * adicional no plano já em uso, sem cookie e sem banner de consentimento.
          */}
         <Analytics />
+
+        {/*
+          Medição de audiência do Ahrefs.
+
+          A chave é pública por natureza: ela vai no HTML servido a todo
+          visitante, e é assim que o produto funciona. Não é segredo e não
+          precisa de variável de ambiente.
+
+          `strategy="afterInteractive"` porque medir audiência nunca deve
+          disputar banda com o conteúdo. A página primeiro, a métrica depois.
+
+          A política de privacidade declara este script pelo nome. Se ele sair
+          daqui, ela precisa mudar junto, e `privacidade.test.ts` reprova quem
+          esquecer.
+        */}
+        <Script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="+RRBB277afCA1QVOdm2UfQ"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
