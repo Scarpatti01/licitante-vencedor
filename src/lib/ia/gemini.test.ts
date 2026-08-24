@@ -271,3 +271,27 @@ describe("noDialetoDoGemini", () => {
     expect(traduzido.anyOf[0]).toEqual({ type: "string" });
   });
 });
+
+describe("o 429 não pode esconder qual cota estourou", () => {
+  /**
+   * Em 24/08 a leitura parou o dia inteiro por 429 e as 55 ocorrências
+   * guardadas no banco diziam apenas "Cota ou limite de requisições excedido".
+   * Nenhuma delas sabia dizer se era limite por minuto ou por dia, do modelo ou
+   * do projeto — e é essa distinção que separa "espere um pouco" de "o tier
+   * gratuito acabou, ligue o faturamento".
+   */
+  it("mantém a mensagem do fornecedor, que nomeia a cota", () => {
+    const erro = new ApiError({
+      message: "Quota exceeded for quota metric 'GenerateRequestsPerDayPerProjectPerModel'",
+      status: 429,
+    });
+    const { falha, motivo } = classificarErro(erro);
+    expect(falha).toBe("limite");
+    expect(motivo).toContain("PerDay");
+  });
+
+  it("continua classificando como transitória, para a retentativa seguir valendo", () => {
+    const erro = new ApiError({ message: "rate limit", status: 429 });
+    expect(classificarErro(erro).falha).toBe("limite");
+  });
+});

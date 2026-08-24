@@ -197,7 +197,19 @@ export function classificarErro(erro: unknown): { falha: ModoDeFalha; motivo: st
       };
     }
     if (status === 429) {
-      return { falha: "limite", motivo: "Cota ou limite de requisições excedido (HTTP 429)." };
+      // A mensagem do Google vai junto, e não deveria ter sido descartada.
+      //
+      // Todo outro ramo desta função preserva `erro.message`; só o 429 resumia
+      // tudo a "cota excedida". O problema apareceu em 24/08, quando a leitura
+      // parou o dia inteiro por 429 e as 55 ocorrências guardadas no banco não
+      // sabiam dizer QUAL cota: por minuto ou por dia, do modelo ou do projeto.
+      // É justamente essa distinção que separa "espere um pouco" de "o tier
+      // gratuito acabou, ligue o faturamento" — e sem ela a investigação vira
+      // adivinhação.
+      return {
+        falha: "limite",
+        motivo: `Cota ou limite de requisições excedido (HTTP 429): ${erro.message}`,
+      };
     }
     if (status >= 500) {
       return { falha: "rede", motivo: `O fornecedor respondeu HTTP ${status}.` };
