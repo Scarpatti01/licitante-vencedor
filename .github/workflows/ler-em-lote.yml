@@ -29,6 +29,14 @@ on:
         description: "Montar os pedidos e NÃO mandar nada ao fornecedor"
         type: boolean
         default: true
+      limite:
+        description: "Ensaio: ler no máximo N editais (vazio = todos)"
+        type: string
+        default: ""
+      ignorar_cache:
+        description: "Ensaio: reler editais que já têm análise (paga de novo)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -69,11 +77,13 @@ jobs:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SIMULAR: ${{ inputs.simular && '--simular' || '' }}
+          LIMITE: ${{ inputs.limite && format('--limite={0}', inputs.limite) || '' }}
+          IGNORAR_CACHE: ${{ inputs.ignorar_cache && '--ignorar-cache' || '' }}
         run: |
           set -o pipefail
 
           codigo=0
-          node --conditions=react-server scripts/ler-em-lote.ts $SIMULAR \
+          node --conditions=react-server scripts/ler-em-lote.ts $SIMULAR $LIMITE $IGNORAR_CACHE \
             | tee saida-lote.txt || codigo=$?
 
           if [ "$codigo" = "78" ]; then
