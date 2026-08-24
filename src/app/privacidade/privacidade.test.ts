@@ -134,3 +134,61 @@ describe("a página de privacidade não pode virar mentira", () => {
     expect(pagina).toMatch(/art\.\s*18/);
   });
 });
+
+/**
+ * A guarda que faltava, e o defeito que ela deixou passar por semanas.
+ *
+ * A lista de `RASTREADORES` acima nomeia suspeitos: Google Analytics, Hotjar,
+ * PostHog. Ela nunca pegou o `@vercel/analytics`, que estava no `layout.tsx`
+ * desde o começo enquanto a página afirmava, em negrito, não usar "ferramenta
+ * de analytics — nenhum". A política era falsa, e o teste construído para
+ * impedir exatamente isso passava verde todo dia.
+ *
+ * O erro não foi a lista estar curta. Foi a REGRA estar errada. "Não existe
+ * analytics" é uma promessa que qualquer decisão futura de produto quebra, e
+ * quando ela quebra ninguém lembra de mexer no texto legal.
+ *
+ * A regra nova sobrevive a essa decisão: medir audiência é permitido, esconder
+ * não é. Se o medidor está no código, o nome dele está na política.
+ */
+describe("todo medidor de audiência é declarado pelo nome", () => {
+  /** `marca` é o que aparece no código; `nome` é o que o titular precisa ler. */
+  const MEDIDORES = [
+    { marca: "@vercel/analytics", nome: "Vercel Analytics" },
+    { marca: "analytics.ahrefs.com", nome: "Ahrefs Web Analytics" },
+  ];
+
+  const POLITICA = readFileSync("src/app/privacidade/page.tsx", "utf8");
+
+  it.each(MEDIDORES)("$nome, se estiver no código, aparece na política", ({ marca, nome }) => {
+    const noCodigo = CODIGO.some((arquivo) =>
+      readFileSync(arquivo, "utf8").includes(marca),
+    );
+    if (!noCodigo) return;
+
+    expect(
+      POLITICA.includes(nome),
+      `${marca} está no código e "${nome}" não aparece em /privacidade/. ` +
+        `Declaração incompleta ao titular é o que a LGPD pune, e foi assim que ` +
+        `o Vercel Analytics ficou meses sem constar. Nomeie a ferramenta na ` +
+        `política, ou tire-a do código.`,
+    ).toBe(true);
+  });
+
+  it("a política não volta a prometer ausência total de analytics", () => {
+    // A frase que era falsa. Ela é sedutora porque vende bem, e é por isso que
+    // precisa de guarda: alguém vai querer trazê-la de volta.
+    const promessasFalsas = [
+      /não usamos rastreador, pixel de anúncio nem\s+ferramenta de analytics/i,
+      /nenhuma ferramenta de analytics/i,
+      /sem nenhum tipo de analytics/i,
+    ];
+    for (const frase of promessasFalsas) {
+      expect(
+        frase.test(POLITICA),
+        `/privacidade/ voltou a prometer ausência total de analytics, e o site ` +
+          `tem ${MEDIDORES.map((m) => m.nome).join(" e ")}.`,
+      ).toBe(false);
+    }
+  });
+});
