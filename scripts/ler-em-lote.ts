@@ -74,6 +74,22 @@ function temFlag(nome: string): boolean {
   return process.argv.includes(`--${nome}`);
 }
 
+/**
+ * `--limite=N`, para o ensaio custar centavos.
+ *
+ * A primeira execução real deste script não mandou nada: todos os candidatos do
+ * dia já estavam em cache. Sem um jeito de forçar, a única forma de exercitar o
+ * formato do lote contra a API de verdade seria esperar a coleta trazer edital
+ * novo — e enquanto isso o script fica no repositório sem ninguém saber se
+ * funciona.
+ *
+ * Com `--limite=2 --ignorar-cache`, o ensaio custa dois editais e responde hoje.
+ */
+function valorDaFlag(nome: string): string | null {
+  const prefixo = `--${nome}=`;
+  return process.argv.find((a) => a.startsWith(prefixo))?.slice(prefixo.length) ?? null;
+}
+
 /** Um edital pronto para entrar no lote, com o que a resposta vai precisar. */
 type Preparado = {
   uuid: string;
@@ -84,6 +100,14 @@ type Preparado = {
 
 async function main() {
   const simular = temFlag("simular");
+  /*
+   * `--ignorar-cache` relê editais que já têm análise vigente, e regrava por
+   * cima. Serve ao ensaio, e só a ele: numa execução normal isso é pagar duas
+   * vezes pela mesma leitura. Por isso não tem equivalente no workflow sem que
+   * alguém digite.
+   */
+  const ignorarCache = temFlag("ignorar-cache");
+  const limite = Number(valorDaFlag("limite") ?? "") || null;
 
   const repositorio = abrirRepositorio();
   const repositorioDeAnalises = abrirRepositorioDeAnalises();
@@ -114,9 +138,18 @@ async function main() {
     return;
   }
 
-  const candidatos = candidatosParaLeitura(editaisAbertos, perfis, agora);
+  const todos = candidatosParaLeitura(editaisAbertos, perfis, agora);
+  const candidatos = limite ? new Map([...todos].slice(0, limite)) : todos;
+
+  if (limite) {
+    console.log(`[ENSAIO] limitado a ${candidatos.size} de ${todos.size} candidato(s)`);
+  }
+  if (ignorarCache) {
+    console.log("[ENSAIO] ignorando o cache: editais já lidos serão relidos e regravados");
+  }
+
   console.log(
-    `${candidatos.size} edital(is) único(s) com score ≥ ${CORTE_DE_LEITURA} em ao menos uma empresa ` +
+    `${todos.size} edital(is) único(s) com score ≥ ${CORTE_DE_LEITURA} em ao menos uma empresa ` +
       `(limite de ${LEITURAS_POR_EMPRESA_POR_DIA}/empresa/dia)`,
   );
 
@@ -136,7 +169,7 @@ async function main() {
 
     // O mesmo cache da leitura avulsa: a análise é UMA por edital, compartilhada
     // por toda empresa que casa com ele.
-    const existente = await repositorioDeAnalises
+    const existente = ignorarCache ? null : await repositorioDeAnalises
       .analiseVigente(uuid, edital.id)
       .catch((e) => {
         console.error(`  analises_de_edital: não leu o cache de ${edital.id} — ${e instanceof Error ? e.message : e}`);

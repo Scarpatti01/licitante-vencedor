@@ -103,6 +103,22 @@ describe("o lote não substitui a leitura avulsa", () => {
     expect(WORKFLOW).not.toMatch(/^\s*schedule:/m);
   });
 
+  /**
+   * As opções de ensaio (`--limite`, `--ignorar-cache`) existem porque a
+   * primeira execução real não mandou nada: todos os candidatos do dia já
+   * estavam em cache, e sem forçar não havia como exercitar o formato do lote
+   * contra a API.
+   *
+   * Elas precisam ficar DESLIGADAS por padrão. `ignorar-cache` ligado sozinho
+   * relê e paga de novo por análise que já existe — todo dia, sem ninguém
+   * perceber, porque o resultado fica idêntico.
+   */
+  it("as opções de ensaio não são o padrão do workflow", () => {
+    const bloco = WORKFLOW.slice(WORKFLOW.indexOf("ignorar_cache:"));
+    expect(bloco.slice(0, 200)).toMatch(/default:\s*false/);
+    expect(WORKFLOW).toMatch(/limite:[\s\S]{0,200}default:\s*""/);
+  });
+
   it("a leitura avulsa continua existindo", () => {
     const avulsa = readFileSync(join(".github", "workflows", "ler-recomendados.yml"), "utf8");
     expect(avulsa).toContain("scripts/ler-recomendados.ts");
