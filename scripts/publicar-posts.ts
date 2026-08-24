@@ -34,6 +34,7 @@ import type { Edital } from "../src/lib/fontes/tipos.ts";
 import { abrirRepositorioDeIA } from "../src/lib/ia/repositorio.ts";
 import type { ExecucaoDeIA } from "../src/lib/ia/custo.ts";
 import { lerEAnalisar } from "../src/lib/ia/lerEdital.ts";
+import { falhaSistemicaDeLeitura, resumoDaLeitura } from "../src/lib/ia/falhaSistemica.ts";
 
 function arg(nome: string): string | undefined {
   const i = process.argv.indexOf(`--${nome}`);
@@ -238,15 +239,21 @@ async function main() {
 
   const posts: PostDeEdital[] = [];
   let comLeitura = 0;
+  let semDocumento = 0;
+  let recusadosPeloModelo = 0;
+  let comErro = 0;
 
   for (const [i, edital] of escolhidos.entries()) {
     const post = paraPost(edital, agora.toISOString());
 
     if (temChave) {
-      const { analise, documentos } = await lerEAnalisar(edital, gravarExecucao);
+      const { analise, documentos, motivo } = await lerEAnalisar(edital, gravarExecucao);
       post.analise = analise;
       post.documentosLidos = documentos;
       if (analise?.analisadoEm) comLeitura++;
+      else if (motivo === "sem_documento") semDocumento++;
+      else if (motivo === "recusado_pelo_modelo") recusadosPeloModelo++;
+      else comErro++;
 
       console.log(
         `  [${String(i + 1).padStart(2)}/${escolhidos.length}] ${documentos} doc · ` +
@@ -264,10 +271,12 @@ async function main() {
   const leva: LevaDoDia = { dia, consideradosNoDia: editais.length, posts };
 
   if (temChave) {
-    console.log(`\ncom leitura: ${comLeitura} de ${posts.length}`);
+    const contagem = { lidos: comLeitura, semDocumento, recusadosPeloModelo, comErro };
+    console.log(`\ncom leitura: ${comLeitura} de ${posts.length} · ${resumoDaLeitura(contagem)}`);
 
     /*
-     * Zero leituras com a chave presente é falha de sistema, não azar.
+     * Zero leituras com a chave presente pode ser falha de sistema, e aí a leva
+     * NÃO é gravada.
      *
      * `lerEAnalisar` captura a falha de CADA edital e devolve `analise: null`,
      * para que um PDF corrompido não derrube a leva inteira. O efeito colateral
@@ -277,27 +286,25 @@ async function main() {
      * `pdfjs-dist`.
      *
      * Vinte e cinco editais independentes não falham todos por acaso. Quando
-     * nenhum é lido, o que quebrou está antes deles — e publicar assim entrega
-     * ao leitor exatamente o que o site promete não ser: a listagem crua que ele
-     * já acha no portal.
+     * nenhum é lido por causa nossa, o que quebrou está antes deles — e publicar
+     * assim entrega ao leitor exatamente o que o site promete não ser: a listagem
+     * crua que ele já acha no portal. Preferir o dia sem post ao dia com 25 posts
+     * ocos é a mesma escolha que a guarda de degradação da coleta já faz: o que
+     * se perde num dia volta no seguinte; a confiança de quem leu, não.
      *
-     * Então a leva NÃO é gravada. Preferir o dia sem post ao dia com 25 posts
-     * ocos é a mesma escolha que a guarda de degradação da coleta já faz, e pela
-     * mesma razão: o que se perde num dia volta no seguinte; a confiança de quem
-     * leu, não.
+     * O que NÃO derruba a leva é o edital sem documento legível. Ele não é falha
+     * nossa, é o edital que não publicou anexo (ou publicou um PDF digitalizado),
+     * e tratá-lo como quebra já produziu um alarme falso em 24/08. O critério
+     * está em `falhaSistemica.ts`, com testes.
      *
-     * Leitura parcial passa. É o resultado esperado num dia normal — nem todo
-     * edital publica documento legível, e post sem análise ao lado de posts com
-     * análise continua sendo notícia honesta.
+     * Leitura parcial passa. É o resultado esperado num dia normal — post sem
+     * análise ao lado de posts com análise continua sendo notícia honesta.
      */
-    if (comLeitura === 0 && posts.length > 0) {
+    const falha = posts.length > 0 ? falhaSistemicaDeLeitura(contagem) : null;
+    if (falha) {
       throw new ErroDeOperacao(
-        `nenhum dos ${posts.length} editais foi lido. Isso não é azar: é falha ` +
-          `comum a todos, anterior ao edital. A leva NÃO foi gravada — o dia sem ` +
-          `post é melhor que o dia com ${posts.length} posts sem a leitura, que ` +
-          `é o produto. A causa está nas linhas de erro acima: "análise recusada ` +
-          `em ..." quando o provedor de IA recusou, "leitura falhou em ..." ` +
-          `quando o download ou a extração lançou.`,
+        `${falha} A leva NÃO foi gravada: o dia sem post é melhor que o dia com ` +
+          `${posts.length} posts sem a leitura, que é o produto.`,
       );
     }
   }
