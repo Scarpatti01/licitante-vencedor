@@ -34,6 +34,7 @@ import { abrirRepositorio } from "../src/lib/triagem/repositorio.ts";
 import { abrirRepositorioDeAnalises } from "../src/lib/ia/analises.ts";
 import { abrirRepositorioDeIA } from "../src/lib/ia/repositorio.ts";
 import { lerEAnalisar } from "../src/lib/ia/lerEdital.ts";
+import { falhaSistemicaDeLeitura, resumoDaLeitura } from "../src/lib/ia/falhaSistemica.ts";
 import type { ExecucaoDeIA } from "../src/lib/ia/custo.ts";
 import {
   candidatosParaLeitura,
@@ -96,7 +97,9 @@ async function main() {
 
   let jaEmCache = 0;
   let lidosAgora = 0;
-  let semLeitura = 0;
+  let semDocumento = 0;
+  let recusadosPeloModelo = 0;
+  let comErro = 0;
 
   /** As análises reais obtidas nesta execução, por uuid do edital. */
   const analisesLidas = new Map<string, AnaliseDoEdital>();
@@ -145,7 +148,7 @@ async function main() {
         }
       : undefined;
 
-    const { analise, documentos } = await lerEAnalisar(edital, gravarExecucao);
+    const { analise, documentos, motivo } = await lerEAnalisar(edital, gravarExecucao);
 
     console.log(
       `  [${String(i + 1).padStart(3)}/${candidatos.size}] ${documentos} doc · ` +
@@ -160,32 +163,30 @@ async function main() {
           .gravarAnalise(analise, uuid, custoAcumuladoEmCentavosUsd)
           .catch((e) => console.error(`  analises_de_edital: não gravou ${edital.id} — ${e instanceof Error ? e.message : e}`)),
       );
+    } else if (motivo === "sem_documento") {
+      semDocumento++;
+    } else if (motivo === "recusado_pelo_modelo") {
+      recusadosPeloModelo++;
     } else {
-      semLeitura++;
+      comErro++;
     }
   }
 
   await Promise.allSettled(gravacoesPendentes);
-  console.log(`\nleitura: ${jaEmCache} em cache · ${lidosAgora} lidos agora · ${semLeitura} sem leitura`);
+
+  const contagem = { lidos: lidosAgora, semDocumento, recusadosPeloModelo, comErro };
+  console.log(`\nleitura: ${resumoDaLeitura({ ...contagem, jaEmCache })}`);
 
   /*
    * A mesma guarda de `publicar-posts.ts`, e pela mesma razão: N editais
    * independentes não falham todos por acaso. `jaEmCache` não prova nada sobre
    * o pipeline de HOJE — só que um dia anterior funcionou —, então a conta que
-   * importa é só entre as tentativas de leitura FRESCA desta execução. Zero
-   * lidos em pelo menos uma tentativa é o mesmo sintoma de 16/08: dependência
-   * que não instalou, chave revogada, `pdfjs` quebrado — a causa está antes do
-   * edital, não nele.
+   * importa é só entre as leituras FRESCAS desta execução, e só entre as que
+   * chegaram a tentar. O critério mora em `falhaSistemica.ts`, com os testes
+   * que dizem por que edital sem documento não entra na conta.
    */
-  const tentativas = lidosAgora + semLeitura;
-  if (tentativas > 0 && lidosAgora === 0) {
-    throw new Error(
-      `nenhuma das ${tentativas} tentativas de leitura funcionou. Isso não é ` +
-        `azar: é falha comum a todas, anterior ao edital. Nada foi regravado — ` +
-        `as linhas de erro acima ("análise recusada em ..." ou "leitura falhou ` +
-        `em ...") dizem a causa.`,
-    );
-  }
+  const falha = falhaSistemicaDeLeitura(contagem);
+  if (falha) throw new Error(falha);
 
   if (analisesLidas.size === 0) {
     console.log("nenhuma análise nova nem em cache — nada para regravar.");

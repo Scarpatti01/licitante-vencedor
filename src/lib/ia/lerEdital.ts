@@ -2,6 +2,23 @@ import type { Edital } from "../fontes/tipos.ts";
 import type { AnaliseDoEdital } from "../dominio/tipos.ts";
 import type { ExecucaoDeIA } from "./custo.ts";
 
+/** Por que não houve análise — ou `"lido"`, quando houve. */
+export type MotivoDaLeitura =
+  /** Análise real, com `analisadoEm`. */
+  | "lido"
+  /** Sem anexo, lista do PNCP indisponível, ou PDF sem texto extraível. */
+  | "sem_documento"
+  /** Texto extraído e mandado ao modelo, que recusou (quota, credencial, schema). */
+  | "recusado_pelo_modelo"
+  /** Download ou extração lançou. */
+  | "erro";
+
+export type ResultadoDaLeitura = {
+  analise: AnaliseDoEdital | null;
+  documentos: number;
+  motivo: MotivoDaLeitura;
+};
+
 /**
  * Lê os documentos de um edital e devolve a análise.
  *
@@ -15,6 +32,11 @@ import type { ExecucaoDeIA } from "./custo.ts";
  * Devolve `null` — e não uma análise vazia — quando não deu para ler. Quem
  * chama decide o que fazer com a ausência; inventar um resumo de placeholder
  * aqui seria o pior defeito que este produto pode ter.
+ *
+ * Junto com a ausência vem o `motivo`, porque "não leu" não é uma coisa só:
+ * um edital sem anexo legível não é a mesma notícia que o provedor de IA
+ * recusando a leitura, e a guarda de falha sistêmica de quem chama depende de
+ * distinguir os dois (veja `falhaSistemica.ts`).
  *
  * Falha aqui nunca deve derrubar um lote: um edital cujo documento não abre
  * não pode custar os outros, pelo mesmo princípio que isola UF na coleta.
@@ -30,7 +52,7 @@ export async function lerEAnalisar(
    * escrita ainda em voo.
    */
   gravarExecucao?: (execucao: ExecucaoDeIA) => void,
-): Promise<{ analise: AnaliseDoEdital | null; documentos: number }> {
+): Promise<ResultadoDaLeitura> {
   try {
     const { listarDocumentos, baixarDocumento } = await import("../documentos/pncp.ts");
     const { processarEdital } = await import("../documentos/processar.ts");
@@ -59,11 +81,18 @@ export async function lerEAnalisar(
 
     if (!resultado.processado) {
       console.log(`  sem documento (${resultado.motivo}) · ${edital.local.municipio}`);
-      return { analise: null, documentos: 0 };
+      return { analise: null, documentos: 0, motivo: "sem_documento" };
     }
 
     const texto = textoParaAnalise(resultado.documentos);
-    if (!texto) return { analise: null, documentos: 0 };
+    if (!texto) {
+      /*
+       * Baixou anexo e não sobrou texto: PDF digitalizado, quase sempre. É o
+       * edital que não dá para ler, não a leitura que quebrou.
+       */
+      console.log(`  sem texto extraível · ${edital.local.municipio}`);
+      return { analise: null, documentos: 0, motivo: "sem_documento" };
+    }
 
     /*
      * `registrar` não é telemetria opcional aqui — é a única forma de saber
@@ -88,9 +117,13 @@ export async function lerEAnalisar(
         );
       },
     });
-    return { analise, documentos: resultado.documentos.filter((d) => d.extracao.ok).length };
+    return {
+      analise,
+      documentos: resultado.documentos.filter((d) => d.extracao.ok).length,
+      motivo: analise?.analisadoEm ? "lido" : "recusado_pelo_modelo",
+    };
   } catch (e) {
     console.error(`  leitura falhou em ${edital.id}: ${(e as Error).message}`);
-    return { analise: null, documentos: 0 };
+    return { analise: null, documentos: 0, motivo: "erro" };
   }
 }

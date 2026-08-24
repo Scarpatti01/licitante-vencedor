@@ -28,6 +28,12 @@ const PUBLICAR = readFileSync(join("scripts", "publicar-posts.ts"), "utf8");
  * antes eram privados de `publicar-posts.ts`.
  */
 const LER_EDITAL = readFileSync(join("src", "lib", "ia", "lerEdital.ts"), "utf8");
+/**
+ * O critério da recusa saiu de dentro dos dois scripts em 24/08, quando ficou
+ * claro que "zero lidos" não é uma coisa só: veja `falhaSistemica.ts`.
+ */
+const FALHA_SISTEMICA = readFileSync(join("src", "lib", "ia", "falhaSistemica.ts"), "utf8");
+const LER_RECOMENDADOS = readFileSync(join("scripts", "ler-recomendados.ts"), "utf8");
 
 describe("o runner instala o que os scripts importam", () => {
   /**
@@ -149,7 +155,7 @@ describe("leva sem nenhuma leitura não é publicada", () => {
    */
   it("o script recusa gravar quando nada foi lido", () => {
     expect(
-      /comLeitura === 0/.test(PUBLICAR),
+      /falhaSistemicaDeLeitura\(/.test(PUBLICAR),
       "sumiu a recusa de gravar leva sem nenhuma leitura. Sem ela, uma falha " +
         "comum a todos os editais vira 25 posts publicados sem análise — a " +
         "listagem crua que o site existe para não ser.",
@@ -159,7 +165,7 @@ describe("leva sem nenhuma leitura não é publicada", () => {
   it("a recusa lança, e não apenas avisa", () => {
     // `console.warn` seria mais uma linha num log que ninguém abre quando o job
     // está verde. Foi exatamente esse o modo de falha.
-    const trecho = PUBLICAR.slice(PUBLICAR.indexOf("comLeitura === 0"));
+    const trecho = PUBLICAR.slice(PUBLICAR.indexOf("falhaSistemicaDeLeitura("));
     expect(trecho.slice(0, 400)).toMatch(/throw new ErroDeOperacao/);
   });
 
@@ -171,8 +177,31 @@ describe("leva sem nenhuma leitura não é publicada", () => {
    * 24 de 25 seria abandonada na primeira semana.
    */
   it("a recusa é só para o zero absoluto", () => {
-    const trecho = PUBLICAR.slice(PUBLICAR.indexOf("comLeitura === 0"), PUBLICAR.indexOf("comLeitura === 0") + 200);
-    expect(trecho).not.toMatch(/comLeitura\s*<\s*[1-9]/);
+    // O corte vive em `falhaSistemica.ts` agora: qualquer leitura de verdade
+    // nesta execução já basta para o dia ser considerado são.
+    expect(FALHA_SISTEMICA).toMatch(/if\s*\(lidos\s*>\s*0\)\s*return null/);
+    expect(PUBLICAR).not.toMatch(/comLeitura\s*<\s*[1-9]/);
+  });
+
+  /**
+   * A correção de 24/08, e a razão de ela virar guarda.
+   *
+   * A execução daquela noite parou com erro porque o único edital fresco do dia
+   * era um PDF digitalizado, sem texto extraível. Nenhuma chamada de IA chegou a
+   * ser feita: não havia o que mandar. A guarda gritou "falha comum a todos,
+   * anterior ao edital" e mandou procurar uma quebra que não existia.
+   *
+   * Alarme falso repetido é como se desliga uma guarda de verdade. Edital sem
+   * documento legível é resultado normal do dia, não defeito nosso.
+   */
+  it("edital sem documento legível não conta como tentativa de leitura", () => {
+    expect(
+      /semDocumento/.test(PUBLICAR) && /semDocumento/.test(LER_RECOMENDADOS),
+      "os scripts voltaram a jogar `sem documento`, `recusado pelo modelo` e " +
+        "`erro` no mesmo balde. Um dia de editais digitalizados volta a derrubar " +
+        "a execução inteira, como em 24/08.",
+    ).toBe(true);
+    expect(FALHA_SISTEMICA).toMatch(/const tentativasReais = recusadosPeloModelo \+ comErro;/);
   });
 });
 
@@ -218,8 +247,19 @@ describe("leva sem leitura tem de dizer POR QUÊ", () => {
    * Mandar alguém procurar a linha errada é pior que não mandar nada.
    */
   it("a mensagem da recusa cita as duas origens possíveis", () => {
-    const trecho = PUBLICAR.slice(PUBLICAR.indexOf("comLeitura === 0"));
-    expect(trecho.slice(0, 900)).toContain("análise recusada");
-    expect(trecho.slice(0, 900)).toContain("leitura falhou");
+    expect(FALHA_SISTEMICA).toContain("análise recusada");
+    expect(FALHA_SISTEMICA).toContain("leitura falhou");
+  });
+
+  /**
+   * E precisa dizer QUANTOS de cada tipo.
+   *
+   * "zero lidos" sozinho manda abrir o log inteiro. "2 recusadas pelo provedor,
+   * 9 sem documento legível" já diz onde olhar antes de abrir qualquer coisa.
+   */
+  it("a mensagem separa recusa do provedor, erro de leitura e falta de documento", () => {
+    expect(FALHA_SISTEMICA).toContain("recusada(s) pelo provedor de IA");
+    expect(FALHA_SISTEMICA).toContain("erro de download ou extração");
+    expect(FALHA_SISTEMICA).toContain("não conta como tentativa");
   });
 });
