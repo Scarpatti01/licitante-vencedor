@@ -375,6 +375,38 @@ jobs:
             echo "::error title=Retrato de abertos não gravado::código $codigo"
           fi
 
+      - name: Limpar decisões de editais encerrados
+        if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -o pipefail
+          codigo=0
+          node scripts/limpar-decisoes.ts | tee saida-limpeza.txt || codigo=$?
+
+          # DEPOIS da triagem, nunca antes: limpar primeiro apagaria o que esta
+          # madrugada acabou de decidir sobre editais que encerraram ontem, e é
+          # justamente na manhã seguinte que o cliente pergunta por que não foi
+          # avisado.
+          #
+          # Falha aqui não derruba a coleta, pelo mesmo motivo do retrato: o
+          # agregado e os posts do dia valem por si, e uma limpeza pulada custa
+          # um dia de crescimento, não um dia de produto.
+          if [ "$codigo" != "0" ]; then
+            {
+              echo "## ⚠️ Limpeza de decisões não rodou"
+              echo
+              echo "Código \`$codigo\`. A coleta seguiu. A tabela de decisões cresceu"
+              echo "mais um dia sem limpar; se repetir, o armazenamento é que paga."
+              echo
+              echo '```'
+              tail -20 saida-limpeza.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error title=Limpeza de decisões não rodou::código $codigo"
+          fi
+
       - name: Versionar agregado, revisão e posts
         if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
         env:
