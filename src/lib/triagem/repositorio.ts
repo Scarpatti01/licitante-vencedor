@@ -1,5 +1,6 @@
 import type { PerfilDaEmpresa, TipoDeDocumento } from "../dominio/tipos.ts";
 import type { Edital } from "../fontes/tipos.ts";
+import type { Recorte } from "../dominio/recorte.ts";
 import type { decisaoParaLinha, oportunidadeParaLinha } from "./mapeamento.ts";
 
 /**
@@ -232,6 +233,72 @@ const SELECAO_DO_PERFIL =
  */
 const POR_PAGINA = 1000;
 
+export type LinhaDoRecorte = {
+  id: string;
+  empresa_id: string;
+  nome: string;
+  abrangencia: "municipio" | "uf" | "brasil";
+  uf: string | null;
+  municipio_ibge: string | null;
+  municipio_nome: string | null;
+  palavras_chave: string[] | null;
+  palavras_excluidas: string[] | null;
+  ticket_minimo: string | number | null;
+  ticket_maximo: string | number | null;
+};
+
+/**
+ * A linha do banco virando o `Recorte` do domínio, ou `null` quando ela não
+ * consegue virar um.
+ *
+ * ## Por que `null` em vez de confiar na trava do banco
+ *
+ * `lugar_coerente_com_abrangencia` garante que município tem UF e código IBGE.
+ * A trava é real e foi provada contra o Postgres. Mesmo assim, o tipo do
+ * domínio é uma união discriminada — `{ tipo: "municipio", uf, codigoIbge }` —
+ * e montá-lo a partir de colunas que o TypeScript vê como `string | null`
+ * exigiria um `!` a cada campo. Cada `!` é uma promessa que ninguém verifica na
+ * hora em que ela quebra.
+ *
+ * Devolver `null` custa uma linha ignorada num caso que a trava do banco já
+ * torna impossível, e paga com um pipeline que não estoura de madrugada se
+ * alguém um dia adicionar a coluna por outro caminho.
+ */
+export function recorteDaLinha(l: LinhaDoRecorte): Recorte | null {
+  const numero = (v: string | number | null): number | null =>
+    v === null ? null : typeof v === "number" ? v : Number(v);
+
+  const base = {
+    id: l.id,
+    nome: l.nome,
+    palavrasChave: l.palavras_chave ?? [],
+    palavrasExcluidas: l.palavras_excluidas ?? [],
+    ticketMinimo: numero(l.ticket_minimo),
+    ticketMaximo: numero(l.ticket_maximo),
+  };
+
+  switch (l.abrangencia) {
+    case "brasil":
+      return { ...base, abrangencia: { tipo: "brasil" } };
+    case "uf":
+      if (!l.uf) return null;
+      return { ...base, abrangencia: { tipo: "uf", uf: l.uf } };
+    case "municipio":
+      if (!l.uf || !l.municipio_ibge) return null;
+      return {
+        ...base,
+        abrangencia: {
+          tipo: "municipio",
+          uf: l.uf,
+          codigoIbge: l.municipio_ibge,
+          // O nome só serve para a tela e para o e-mail. Sem ele o recorte
+          // continua funcionando; mostrar o código IBGE é feio, não é errado.
+          nome: l.municipio_nome ?? l.municipio_ibge,
+        },
+      };
+  }
+}
+
 export type EditalAberto = { uuid: string; edital: Edital };
 
 export type Repositorio = {
@@ -239,6 +306,15 @@ export type Repositorio = {
   perfis(): Promise<PerfilDaEmpresa[]>;
   /** Editais com proposta ainda aberta, mais recente primeiro a encerrar. */
   editaisAbertos(agora?: Date): Promise<EditalAberto[]>;
+  /**
+   * Os recortes de cada empresa, por `empresaId`.
+   *
+   * Empresa ausente do mapa é empresa SEM recorte, e isso não é falta de
+   * configuração: é o que os planos que leem o documento fazem, avaliando o
+   * perfil inteiro sem limite geográfico. Quem confunde "sem recorte" com
+   * "recorte vazio" desliga a triagem de quem paga mais.
+   */
+  recortesPorEmpresa(): Promise<Map<string, Recorte[]>>;
   /**
    * Quantas assinaturas vivas existem — `teste`, `ativa` ou `inadimplente`.
    *
@@ -316,6 +392,25 @@ export function abrirRepositorio(): Repositorio | null {
         if (p) perfis.push(p);
       }
       return perfis;
+    },
+
+    async recortesPorEmpresa() {
+      const linhas = await paginado("recortes_da_empresa", {
+        select:
+          "id,empresa_id,nome,abrangencia,uf,municipio_ibge,municipio_nome,palavras_chave,palavras_excluidas,ticket_minimo,ticket_maximo",
+        order: "criado_em.asc",
+      });
+
+      const porEmpresa = new Map<string, Recorte[]>();
+      for (const linha of linhas) {
+        const l = linha as unknown as LinhaDoRecorte;
+        const recorte = recorteDaLinha(l);
+        if (!recorte) continue;
+        const lista = porEmpresa.get(l.empresa_id) ?? [];
+        lista.push(recorte);
+        porEmpresa.set(l.empresa_id, lista);
+      }
+      return porEmpresa;
     },
 
     async assinantesVivos() {
