@@ -60,10 +60,11 @@ async function main() {
   }
 
   const agora = new Date();
-  const [perfis, editaisAbertos, assinantes] = await Promise.all([
+  const [perfis, editaisAbertos, assinantes, jaLidos] = await Promise.all([
     repositorio.perfis(),
     repositorio.editaisAbertos(agora),
     repositorio.assinantesVivos(),
+    repositorioDeAnalises.editaisJaAnalisados(),
   ]);
 
   /*
@@ -83,10 +84,11 @@ async function main() {
     return;
   }
 
-  const candidatos = candidatosParaLeitura(editaisAbertos, perfis, agora, teto);
+  const candidatos = candidatosParaLeitura(editaisAbertos, perfis, agora, teto, jaLidos);
   console.log(
     `${candidatos.size} edital(is) único(s) com score ≥ ${CORTE_DE_LEITURA} em ao menos uma empresa ` +
-      `(limite de ${teto}/empresa/dia · ${assinantes} assinatura(s) viva(s))`,
+      `(limite de ${teto} leitura(s) NOVA(s)/empresa/dia · ${assinantes} assinatura(s) viva(s) · ` +
+      `${jaLidos.size} edital(is) já com análise vigente)`,
   );
 
   if (simular) {

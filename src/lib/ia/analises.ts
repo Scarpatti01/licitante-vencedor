@@ -97,6 +97,16 @@ export type RepositorioDeAnalises = {
    */
   analiseVigente(editalUuid: string, editalIdCanonico: string): Promise<AnaliseDoEdital | null>;
   /**
+   * Os editais que JÁ têm análise vigente, por uuid.
+   *
+   * Serve à SELEÇÃO, não à leitura: `analiseVigente` continua sendo a fonte da
+   * verdade na hora de decidir se paga por um edital. Esta lista existe para
+   * que o edital já lido não ocupe a vaga do edital novo — ver o comentário de
+   * `candidatosParaLeitura`, e o dia 25/08, em que quatro dos cinco editais de
+   * maior score já estavam lidos e ficariam no topo até setembro.
+   */
+  editaisJaAnalisados(): Promise<Set<string>>;
+  /**
    * Grava a análise como vigente. Não lança em falha de rede — quem chama
    * decide se tenta de novo ou segue sem a leitura, mesmo princípio de
    * `lerEAnalisar`: um edital que não grava não pode custar os outros do lote.
@@ -137,6 +147,34 @@ export function abrirRepositorioDeAnalises(): RepositorioDeAnalises | null {
       const linhas = (await resposta.json()) as LinhaDeAnalise[];
       const linha = linhas[0];
       return linha ? linhaParaAnalise(linha, editalIdCanonico) : null;
+    },
+
+    async editaisJaAnalisados() {
+      const uuids = new Set<string>();
+
+      // Página a página: a tabela cresce com o tempo, e um `limit` fixo
+      // silenciosamente cortaria a lista — fazendo voltar exatamente o defeito
+      // que este método existe para impedir, e sem barulho nenhum.
+      for (let inicio = 0; ; inicio += 1000) {
+        const consulta = new URLSearchParams({
+          select: "edital_id",
+          vigente: "eq.true",
+          analisado_em: "not.is.null",
+          limit: "1000",
+          offset: String(inicio),
+        });
+        const resposta = await fetch(`${url}/rest/v1/analises_de_edital?${consulta}`, {
+          headers: cabecalhos,
+        });
+        if (!resposta.ok) {
+          throw new Error(`analises_de_edital: supabase respondeu ${resposta.status} ${await resposta.text()}`);
+        }
+        const linhas = (await resposta.json()) as { edital_id: string }[];
+        for (const linha of linhas) uuids.add(linha.edital_id);
+        if (linhas.length < 1000) break;
+      }
+
+      return uuids;
     },
 
     async gravarAnalise(analise, editalUuid, custoEmCentavos) {
