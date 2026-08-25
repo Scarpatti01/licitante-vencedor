@@ -93,7 +93,7 @@ describe("criarRegistroEmMemoria", () => {
     const registro = criarRegistroEmMemoria();
     const base = {
       em: "2026-08-13T00:00:00.000Z",
-      operacao: "analise-de-edital",
+      operacao: "analise-de-edital" as const,
       referencia: "PE-2026-000001",
       prompt: "analise-de-edital.v1",
       provedor: "falso",

@@ -1,4 +1,5 @@
 import type { ModoDeFalha, UsoDeTokens } from "./provedor.ts";
+import type { OperacaoDeIA } from "./mapeamento.ts";
 
 /**
  * Quanto custou, e qual modelo merecia o trabalho.
@@ -123,8 +124,15 @@ export function estimarCusto(
 export type ExecucaoDeIA = {
   /** ISO 8601. */
   em: string;
-  /** O que se tentou fazer. Ex.: `"analise-de-edital"`. */
-  operacao: string;
+  /**
+   * O que se tentou fazer.
+   *
+   * É a união fechada de `mapeamento.ts`, e não `string`, desde 25/08: uma
+   * operação que o mapeamento não conhece atravessava a tradução intacta e só
+   * era recusada pelo Postgres, em produção, depois de a análise já ter sido
+   * gravada. Agora não compila.
+   */
+  operacao: OperacaoDeIA;
   /** A que o trabalho se refere. Ex.: o `id` do edital. */
   referencia: string;
   /** Prompt versionado usado, ex.: `"analise-de-edital.v1"`. Permite reprocessar. */

@@ -16,9 +16,48 @@ export type ContextoDaExecucao = {
   editalId: string | null;
 };
 
-/** `finalidade_da_ia` no banco — hoje só o que a leitura de edital produz. */
-export function finalidadeDaOperacao(operacao: string): string {
-  return operacao === "analise-de-edital" ? "analise_de_edital" : operacao;
+/**
+ * De operação nossa para `finalidade_da_ia`, o enum do banco.
+ *
+ * ## Por que é uma tabela, e não um `if`
+ *
+ * Era um `if` que traduzia `analise-de-edital` e deixava todo o resto passar
+ * direto. Em 25/08 o primeiro lote que funcionou de ponta a ponta gravou as
+ * duas análises e PERDEU as duas linhas de custo: `analise-de-edital-em-lote`
+ * atravessou a tradução intacta e o Postgres recusou com
+ * `invalid input value for enum finalidade_da_ia`.
+ *
+ * Análise salva e custo perdido é o pior par possível. A análise aparece na
+ * tela, então tudo parece bem; o custo some, então o painel mostra a leitura
+ * mais cara do sistema como se fosse de graça.
+ *
+ * Agora a tabela é fechada e `OperacaoDeIA` sai dela. Uma operação nova não
+ * compila até alguém escrevê-la aqui — e escrevê-la aqui obriga a lembrar do
+ * enum no banco, porque o teste ao lado compara as duas listas.
+ *
+ * ⚠️ Todo valor desta tabela precisa existir em `finalidade_da_ia`. Ao
+ * acrescentar um, escreva a migração junto: `alter type finalidade_da_ia add
+ * value if not exists '...'`.
+ */
+export const FINALIDADE_POR_OPERACAO = {
+  "analise-de-edital": "analise_de_edital",
+  /*
+   * Finalidade PRÓPRIA, e não o rótulo da avulsa. Reaproveitar seria mais
+   * fácil e ninguém notaria — mas a razão de o lote existir é custar metade, e
+   * é esta separação que permite provar isso na fatura em vez de acreditar.
+   */
+  "analise-de-edital-em-lote": "analise_de_edital_em_lote",
+  extracao: "extracao",
+  embedding: "embedding",
+  triagem: "triagem",
+  redacao: "redacao",
+} as const;
+
+/** As operações que o sistema sabe registrar. Fora desta lista não compila. */
+export type OperacaoDeIA = keyof typeof FINALIDADE_POR_OPERACAO;
+
+export function finalidadeDaOperacao(operacao: OperacaoDeIA): string {
+  return FINALIDADE_POR_OPERACAO[operacao];
 }
 
 export function execucaoParaLinha(execucao: ExecucaoDeIA, contexto: ContextoDaExecucao) {
