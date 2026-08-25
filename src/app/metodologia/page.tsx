@@ -6,11 +6,11 @@ import { RodapeSite } from "@/components/RodapeSite";
 
 const TITULO = "Metodologia: de onde vêm os dados e o que eles não cobrem";
 const DESCRICAO =
-  "Como coletamos, tratamos e revisamos os dados de editais do PNCP: fonte, frequência, regras de normalização, revisão automática antes de publicar e as limitações conhecidas — inclusive o que a coleta não alcança.";
+  "De onde vêm os dados do PNCP, com que frequência coletamos, como normalizamos, o que a revisão automática barra e o que a coleta não alcança.";
 const ATUALIZADO = "2026-08-21";
 
 export const metadata: Metadata = {
-  title: "Metodologia dos dados de licitações",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/metodologia/" },
   openGraph: {

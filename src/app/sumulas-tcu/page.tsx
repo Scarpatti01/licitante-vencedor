@@ -7,14 +7,13 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO =
-  "Súmulas do TCU em licitações: o que cada uma muda na sua proposta";
+const TITULO = "Súmulas do TCU em licitações: o que cada uma muda na sua proposta";
 const DESCRICAO =
-  "As súmulas do TCU que mais aparecem em edital, com o texto oficial de cada uma e a leitura prática do efeito sobre habilitação, preço e divisão do objeto: 247, 262, 263, 269, 270, 272, 274, 275, 281, 283 e outras.";
+  "As súmulas do TCU que mais aparecem em edital: 247, 262, 263, 269, 270, 272, 274, 275, 281, 283 e outras, com texto oficial e efeito prático.";
 const ATUALIZADO = "2026-08-12";
 
 export const metadata: Metadata = {
-  title: "Súmulas do TCU em licitações: texto oficial e efeito prático",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/sumulas-tcu/" },
   openGraph: {

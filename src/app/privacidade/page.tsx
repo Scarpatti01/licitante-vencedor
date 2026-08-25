@@ -36,7 +36,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 
 const TITULO = "Privacidade e proteção de dados";
 const DESCRICAO =
-  "Quais dados coletamos, por quê, com quem compartilhamos e como você exerce seus direitos da LGPD. Sem rastreador, sem pixel de anúncio e sem venda de dados — verificado no código, não prometido.";
+  "Quais dados coletamos, por quê, com quem compartilhamos e como exercer seus direitos da LGPD. Sem rastreador, sem pixel de anúncio, sem venda.";
 const ATUALIZADO = "2026-08-15";
 
 export const metadata: Metadata = {

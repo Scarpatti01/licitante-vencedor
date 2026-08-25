@@ -7,13 +7,13 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO = "Lei 14.133/2021: o guia da Nova Lei de Licitações para quem vende ao governo";
+const TITULO = "Lei 14.133/2021: o que mudou para quem vende ao governo";
 const DESCRICAO =
-  "O que mudou da 8.666 para a Lei 14.133/2021 na prática do fornecedor: modalidades, critérios de julgamento, dispensa, prazos e os erros que mais desclassificam.";
+  "O que mudou da 8.666 para a Lei 14.133 na prática: modalidades, critérios de julgamento, dispensa, prazos e os erros que mais desclassificam.";
 const ATUALIZADO = "2026-08-10";
 
 export const metadata: Metadata = {
-  title: "Lei 14.133/2021: guia da Nova Lei de Licitações",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/lei-14133/" },
   openGraph: { title: TITULO, description: DESCRICAO, url: `${SITE.url}/lei-14133/`, type: "article" },

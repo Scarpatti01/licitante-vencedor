@@ -7,14 +7,13 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO =
-  "Contrato administrativo: o que muda para a sua empresa depois que a licitação acaba";
+const TITULO = "Contrato administrativo: prazo, aditivo de 25%, reajuste e sanções";
 const DESCRICAO =
-  "Guia prático do contrato administrativo na Lei 14.133/2021 para fornecedores: prazo e prorrogação, aditivos de 25%, reajuste, repactuação e reequilíbrio, garantia, pagamento em ordem cronológica, extinção e sanções.";
+  "Prazo e prorrogação, aditivo de 25%, reajuste, repactuação, reequilíbrio, garantia, pagamento em ordem cronológica e sanções na Lei 14.133.";
 const ATUALIZADO = "2026-08-11";
 
 export const metadata: Metadata = {
-  title: "Contrato administrativo: o guia do fornecedor",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/contratos/" },
   openGraph: {

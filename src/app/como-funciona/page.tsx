@@ -8,11 +8,11 @@ import { CapturaAlerta } from "@/components/CapturaAlerta";
 
 const TITULO = "Como funciona: do edital publicado ao seu e-mail";
 const DESCRICAO =
-  "As quatro etapas entre um órgão publicar um edital no PNCP e ele chegar filtrado no seu e-mail: coleta diária, revisão automática dos dados, filtro pelo seu perfil e entrega. Com o que já está no ar e o que ainda não está.";
+  "As quatro etapas entre o órgão publicar no PNCP e o edital chegar filtrado no seu e-mail: coleta diária, revisão dos dados, seu filtro e entrega.";
 const ATUALIZADO = "2026-08-21";
 
 export const metadata: Metadata = {
-  title: "Como funciona o alerta de licitações",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/como-funciona/" },
   openGraph: {

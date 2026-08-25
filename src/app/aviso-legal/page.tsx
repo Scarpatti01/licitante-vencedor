@@ -6,7 +6,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 
 const TITULO = "Aviso legal";
 const DESCRICAO =
-  "O que este site entrega e o que ele não entrega. Conteúdo e produto são informação operacional sobre licitações — não são parecer jurídico, e a decisão de participar de um certame é sempre da empresa.";
+  "O que este site entrega e o que não entrega. É informação operacional sobre licitações, não parecer jurídico: a decisão de disputar é da empresa.";
 const ATUALIZADO = "2026-08-12";
 
 export const metadata: Metadata = {

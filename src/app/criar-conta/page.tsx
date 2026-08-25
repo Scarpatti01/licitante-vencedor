@@ -4,7 +4,7 @@ import { criarConta } from "@/lib/auth/acoes";
 import { MINIMO_DA_SENHA } from "@/lib/auth/estado";
 
 export const metadata: Metadata = {
-  title: "Criar conta | Licitante Vencedor",
+  title: "Criar conta",
   robots: { index: false, follow: false },
 };
 
