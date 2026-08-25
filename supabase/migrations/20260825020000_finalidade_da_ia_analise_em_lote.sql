@@ -1,0 +1,12 @@
+-- A leitura em lote precisa de finalidade PRÓPRIA, e não do rótulo da avulsa.
+--
+-- Em 25/08 o primeiro lote que funcionou de ponta a ponta gravou as duas
+-- análises e perdeu as duas linhas de custo: o enum recusou
+-- "analise-de-edital-em-lote". Análise salva e custo perdido é o pior par
+-- possível — a tela fica certa, e o painel mostra a leitura mais cara do
+-- sistema como se fosse de graça.
+--
+-- Podia-se reaproveitar `analise_de_edital` e ninguém notaria. Seria errado: a
+-- razão de o lote existir é custar metade, e uma finalidade separada é o que
+-- permite provar isso na fatura em vez de acreditar.
+alter type finalidade_da_ia add value if not exists 'analise_de_edital_em_lote';
