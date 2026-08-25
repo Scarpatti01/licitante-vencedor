@@ -11,6 +11,7 @@ import {
 } from "@/lib/precos";
 import { limitarDescricao } from "@/lib/seo/resultado-de-busca";
 import { pagamentoLigado } from "@/lib/pagamento/configuracao";
+import { DIAS_DE_TESTE } from "@/lib/assinatura/teste";
 import { BotaoDeAssinatura } from "@/components/precos/BotaoDeAssinatura";
 import { Faq, P, RespostaDireta, Secao } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
@@ -217,7 +218,7 @@ export default function Precos() {
                 chamada={{
                   titulo: "Avise-me quando a assinatura abrir",
                   texto:
-                    "Você entra na frente e mantém o preço desta página. Enquanto isso, recebe o alerta gratuito da sua cidade.",
+                    "Você entra na frente e mantém o preço desta página. Enquanto isso, mandamos o convite para os 14 dias de teste — sem cartão, e o acesso para sozinho no fim.",
                 }}
                 textoDoBotao="Quero ser avisado"
               />
@@ -261,16 +262,29 @@ export default function Precos() {
             </ul>
           </Secao>
 
-          <Secao id="gratuito" titulo="Se ainda é cedo para assinar">
+          {/*
+            Esta seção chamava-se "Se ainda é cedo para assinar" e oferecia o
+            alerta gratuito. Ele acabou em 25/08 — entregava de graça e para
+            sempre o essencial do que o Leve cobra, e nenhuma tabela de preços
+            sobrevive a ter, no rodapé, um link para a versão sem preço.
+
+            O que ficou no lugar não é um plano menor: é o mesmo Leve, por
+            catorze dias, e depois ele para sozinho.
+          */}
+          <Secao id="teste" titulo="Se quiser ver antes de decidir">
             <P>
-              O alerta gratuito continua existindo e não vira plano pago sem
-              você pedir. Ele manda os editais abertos da sua cidade, todo dia
-              útil — sem leitura do documento e sem filtro pelo perfil da
-              empresa, que é o que os planos acrescentam.
+              São {DIAS_DE_TESTE} dias no plano Leve, sem cartão. Você cadastra
+              a empresa, escolhe até três recortes e passa a receber o resumo
+              nos dias úteis, exatamente como quem assina.
+            </P>
+            <P>
+              No fim do prazo o acesso para sozinho. Não há cobrança automática,
+              porque não há cartão cadastrado para cobrar — se você quiser
+              continuar, assina; se não quiser, não precisa fazer nada.
             </P>
             <P>
               <Link className="underline underline-offset-4" href="/alerta-de-licitacao/">
-                Conhecer o alerta gratuito
+                Como funciona o teste de {DIAS_DE_TESTE} dias
               </Link>
             </P>
           </Secao>

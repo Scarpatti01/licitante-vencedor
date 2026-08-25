@@ -271,9 +271,9 @@ export default function VenderParaOGoverno() {
               chamada={{
                 titulo: "O problema não é achar edital. É achar o seu no meio de milhares",
                 texto:
-                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende, com objeto, órgão, valor, prazo e o link para o registro oficial. As quatro perguntas da próxima seção você aplica a uma lista curta, em vez de a tudo que foi publicado.",
+                  "Teste por 14 dias, sem cartão: nos dias úteis, os editais publicados no PNCP que combinam com o que a sua empresa vende, com nota de aderência, órgão, valor, prazo e o link para o registro oficial. As quatro perguntas da próxima seção você aplica a uma lista curta, em vez de a tudo que foi publicado.",
               }}
-              textoDoBotao="Quero receber os editais do meu ramo"
+              textoDoBotao="Quero testar por 14 dias"
             />
           </section>
 

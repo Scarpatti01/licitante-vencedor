@@ -57,7 +57,7 @@ export const ATRASO_NO_PAGAMENTO: Artigo = {
     {
       tipo: "captura",
       chamada:
-        "Enquanto o pagamento de um contrato está travado, parar de disputar é o pior movimento possível. É justamente quando o caixa mais precisa de outra frente. O alerta gratuito manda, todo dia útil, os editais abertos na cidade que você indicar, com objeto, órgão, valor e prazo. Serve para o funil não parar enquanto você resolve o contrato atrasado.",
+        "Enquanto o pagamento de um contrato está travado, parar de disputar é o pior movimento possível. É justamente quando o caixa mais precisa de outra frente. No teste de 14 dias, sem cartão, o resumo manda nos dias úteis os editais abertos do recorte que você indicar, com objeto, órgão, valor e prazo. Serve para o funil não parar enquanto você resolve o contrato atrasado.",
     },
     {
       tipo: "subtitulo",

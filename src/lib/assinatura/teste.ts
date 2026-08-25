@@ -15,9 +15,25 @@
  * ## Como o acesso é cortado
  *
  * `limite_de_empresas_do_usuario`, no banco, considera viva a assinatura com
- * status `teste`, `ativa` ou `inadimplente`. `assinantesVivos()` e a consulta do
- * resumo diário usam o mesmo filtro. Então mudar o status para `encerrada` é o
- * corte, e não é preciso mexer em mais nada.
+ * status `teste`, `ativa` ou `inadimplente`. Mudar o status para `encerrada` é
+ * o corte.
+ *
+ * **Correção escrita no mesmo dia.** Este parágrafo dizia que a consulta do
+ * resumo diário usava o mesmo filtro, e que por isso não era preciso mexer em
+ * mais nada. Não era verdade: `destinatarias()` devolvia toda empresa com
+ * perfil, e só consultava a assinatura para descobrir a profundidade do plano.
+ * Eu tinha escrito a minha intenção como se fosse fato, e o efeito seria o
+ * teste nunca acabar — o alerta gratuito de volta com outro nome. O portão
+ * passou a existir em `assinatura/vivas.ts`, com guarda que roda a decisão em
+ * vez de reconhecer o texto do fonte.
+ *
+ * ## Onde o teste nasce
+ *
+ * Em `criar_empresa_com_dono`, no banco, na mesma transação da empresa. Uma vez
+ * por PESSOA, e não por empresa: a condição olha se existe qualquer assinatura
+ * do titular, sem filtrar status. Filtrar por status vivo — que é o que parece
+ * natural — daria um teste novo a cada empresa cadastrada por quem já teve o seu
+ * encerrado, e teste infinito é o plano grátis de volta.
  *
  * ## `encerrada`, e não `cancelada`
  *
@@ -39,6 +55,27 @@
  * mora aqui justamente para ser fácil de mudar quando houver dado.
  */
 export const DIAS_DE_TESTE = 14;
+
+/**
+ * O plano em que o teste roda.
+ *
+ * `leve`, e não o mais caro. Duas razões, e a segunda é a que decide.
+ *
+ * A primeira é custo: o plano que lê o documento gasta IA por edital aberto, e
+ * catorze dias disso para qualquer pessoa que preencha um formulário é conta
+ * aberta sem cliente do outro lado.
+ *
+ * A segunda é honestidade do que o teste demonstra. O teste substituiu o alerta
+ * gratuito, que era lista sem leitura; abrir o teste no plano de leitura
+ * mostraria por catorze dias um produto que, ao virar assinatura de R$ 59, some.
+ * Quem experimenta o Leve e assina o Leve recebe exatamente o que viu.
+ *
+ * O nome do plano está ESCRITO na migração `20260825190000`, e a guarda de
+ * `teste.test.ts` confere que os dois lados dizem a mesma coisa — a lição do
+ * `leve-escritorio` que o Postgres recusou porque só o TypeScript sabia do
+ * hífen.
+ */
+export const PLANO_DO_TESTE = "leve";
 
 /** Quando termina um teste que começa agora. */
 export function terminaEm(inicio: Date, dias: number = DIAS_DE_TESTE): Date {

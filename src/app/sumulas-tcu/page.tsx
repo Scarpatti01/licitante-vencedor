@@ -364,9 +364,9 @@ export default function SumulasTcu() {
               chamada={{
                 titulo: "Súmula só rende enquanto o edital ainda está aberto",
                 texto:
-                  "Você veio consultar súmula, e a lista continua logo abaixo. Siga em frente se for só isso. Fica o registro de que nenhuma delas se aplica a um edital que passou despercebido. Se ajudar, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+                  "Você veio consultar súmula, e a lista continua logo abaixo. Siga em frente se for só isso. Fica o registro de que nenhuma delas se aplica a um edital que passou despercebido. Se ajudar, dá para testar por 14 dias, sem cartão, o serviço que manda nos dias úteis os editais do PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
               }}
-              textoDoBotao="Quero receber os editais do meu ramo"
+              textoDoBotao="Quero testar por 14 dias"
             />
           </section>
 

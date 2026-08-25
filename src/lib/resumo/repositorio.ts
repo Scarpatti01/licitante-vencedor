@@ -1,6 +1,11 @@
 import "server-only";
 
 import type { OportunidadeDoResumo } from "./plano.ts";
+import {
+  FILTRO_POSTGREST_DE_VIVAS,
+  leituraInclusaNoPlano as planoInclui,
+  recebeOResumo,
+} from "../assinatura/vivas.ts";
 
 /**
  * De onde vêm os dados do resumo diário, e para onde vai o registro do envio.
@@ -34,7 +39,7 @@ export type EmpresaParaResumo = {
 };
 
 export type Repositorio = {
-  /** Empresas com perfil, com e-mail e com o canal LIGADO. */
+  /** Empresas com assinatura viva do titular, com perfil, com e-mail e com o canal LIGADO. */
   destinatarias(): Promise<EmpresaParaResumo[]>;
   oportunidadesDe(empresaId: string): Promise<OportunidadeDoResumo[]>;
   jaEnviados(empresaId: string): Promise<Set<string>>;
@@ -127,7 +132,7 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
         pedir(`empresas?${consulta}`),
         pedir(
           "assinaturas?select=titular_id,status,planos(limite_de_analises_profundas)" +
-            "&status=in.(teste,ativa,inadimplente)",
+            `&status=${FILTRO_POSTGREST_DE_VIVAS}`,
         ),
       ]);
       if (!Array.isArray(linhas)) return [];
@@ -201,17 +206,31 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
          */
         const viva = usuarioDoDono ? assinaturaDoTitular.get(usuarioDoDono) : undefined;
 
+        /*
+         * O PORTÃO. Sem assinatura viva do titular, não sai e-mail.
+         *
+         * Até 25/08 esta linha não existia, e a consulta acima servia só para
+         * descobrir a profundidade do plano. O efeito era que qualquer conta com
+         * perfil recebia o resumo diário para sempre — o alerta gratuito que
+         * acabou naquele dia, de volta pela porta dos fundos e com outro nome.
+         * Sem isto, `encerrar_testes_vencidos()` marca `encerrada` no banco e o
+         * e-mail continua saindo, que é o pior dos dois mundos: a métrica diz
+         * que o teste acabou e o cliente não sente nada.
+         *
+         * A decisão mora em `assinatura/vivas.ts` porque este arquivo é
+         * `server-only` e fala com o PostgREST: aqui ela não teria como ser
+         * testada sem subir banco.
+         */
+        if (!recebeOResumo(viva)) continue;
+
         const planoDaAssinatura = (
           Array.isArray(viva?.planos) ? viva?.planos[0] : viva?.planos
         ) as Record<string, unknown> | undefined;
 
-        const limiteDeLeitura = planoDaAssinatura?.limite_de_analises_profundas;
-        // `null` no banco é "sem limite", que é o plano que lê. `0` é o plano de
-        // lista. Ausência de plano legível cai para `false`, que erra para o
-        // lado de prometer menos.
-        const leituraInclusaNoPlano =
-          planoDaAssinatura !== undefined &&
-          (limiteDeLeitura === null || (numero(limiteDeLeitura) ?? 0) > 0);
+        const leituraInclusaNoPlano = planoInclui(
+          planoDaAssinatura?.limite_de_analises_profundas,
+          planoDaAssinatura !== undefined,
+        );
 
         empresas.push({
           id,

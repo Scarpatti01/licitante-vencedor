@@ -316,9 +316,9 @@ export default function Lei14133() {
               chamada={{
                 titulo: "Das cinco linhas acima, o monitoramento é a que ninguém faz à mão por muito tempo",
                 texto:
-                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende, com objeto, órgão, valor, prazo e o link para o registro oficial. Habilitação, proposta, prazos e contrato continuam com você; esta é a linha que dá para tirar da rotina.",
+                  "Teste por 14 dias, sem cartão: nos dias úteis, os editais publicados no PNCP que combinam com o que a sua empresa vende, com nota de aderência, órgão, valor, prazo e o link para o registro oficial. Habilitação, proposta, prazos e contrato continuam com você; esta é a linha que dá para tirar da rotina.",
               }}
-              textoDoBotao="Quero receber os editais do meu ramo"
+              textoDoBotao="Quero testar por 14 dias"
             />
           </section>
 

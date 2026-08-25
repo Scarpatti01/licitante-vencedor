@@ -248,9 +248,9 @@ export default function Jurisprudencia() {
               chamada={{
                 titulo: "O argumento só serve enquanto o prazo está aberto",
                 texto:
-                  "Este guia é sobre argumento, e ele continua logo abaixo. Pule esta caixa sem culpa. Fica só a observação prática: os prazos da tabela acima correm a partir da publicação. Se ajudar, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+                  "Este guia é sobre argumento, e ele continua logo abaixo. Pule esta caixa sem culpa. Fica só a observação prática: os prazos da tabela acima correm a partir da publicação. Se ajudar, dá para testar por 14 dias, sem cartão, o serviço que manda nos dias úteis os editais do PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
               }}
-              textoDoBotao="Quero receber os editais do meu ramo"
+              textoDoBotao="Quero testar por 14 dias"
             />
           </section>
 

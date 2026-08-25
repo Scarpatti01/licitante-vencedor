@@ -206,9 +206,9 @@ export default async function PaginaDoMunicipio({
           chamada={{
             titulo: `Quer saber quando ${m.municipio} publicar algo do seu ramo?`,
             texto:
-              "Esta página é um retrato do passado. O alerta diário compara o que sai " +
-              "hoje no PNCP com o perfil da sua empresa e manda só o que faz sentido — " +
-              "com o prazo em destaque.",
+              "Esta página é um retrato do passado. No teste de 14 dias, o resumo diário " +
+              "compara o que sai hoje no PNCP com o perfil da sua empresa e manda só o que " +
+              "faz sentido — com o prazo em destaque. Sem cartão.",
           }}
         />
 
