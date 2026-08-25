@@ -2,7 +2,13 @@ import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-import { jaEncerrou, quantosEncerraram, type EditalAberto } from "./tipos";
+import {
+  EDITAIS_NO_BRASIL,
+  jaEncerrou,
+  quantosEncerraram,
+  sobreviveAoRetrato,
+  type EditalAberto,
+} from "./tipos";
 import { temPaginaDeUf, MINIMO_PARA_TER_PAGINA } from "./paginas";
 
 /**
@@ -205,5 +211,83 @@ describe("a listagem não nasce órfã", () => {
 
   it("o sitemap só lista UF que virou página", () => {
     expect(SITEMAP).toContain("temPaginaDeUf");
+  });
+});
+
+describe("a lista não pode envelhecer antes de ser lida", () => {
+  /**
+   * O defeito que o dono viu, e ele era de DESENHO, não de dado.
+   *
+   * A primeira versão ordenava por "os que encerram primeiro" — a ordem que
+   * parece óbvia, o mais urgente no topo. É a pior possível para uma página que
+   * vive 24 horas: põe no topo justamente os que morrem primeiro. Nasceu boa às
+   * 3h da manhã e, ao meio-dia, a lista inteira estava encerrada.
+   *
+   * A marcação no relógio do leitor funcionou perfeitamente. Ela mostrou a
+   * verdade — e a verdade era que a lista não servia. Guarda que funciona não
+   * conserta escolha errada; só denuncia.
+   *
+   * A régua agora é o tempo de vida da própria página.
+   */
+  const CINCO_DA_MANHA = new Date("2026-08-25T05:00:00-03:00");
+
+  const comPrazo = (fim: string) => ({ encerramentoProposta: fim });
+
+  it("quem encerra hoje não entra na lista de hoje", () => {
+    expect(sobreviveAoRetrato(comPrazo("2026-08-25T11:00:00-03:00"), CINCO_DA_MANHA)).toBe(false);
+  });
+
+  it("quem encerra logo depois da próxima coleta também não entra", () => {
+    // 24h depois ainda é cedo demais: se a coleta atrasar, este vence com a
+    // página no ar. A margem existe para o dia em que a coleta falha.
+    expect(sobreviveAoRetrato(comPrazo("2026-08-26T06:00:00-03:00"), CINCO_DA_MANHA)).toBe(false);
+  });
+
+  it("quem sobrevive à próxima coleta com folga entra", () => {
+    expect(sobreviveAoRetrato(comPrazo("2026-08-26T12:00:00-03:00"), CINCO_DA_MANHA)).toBe(true);
+  });
+
+  /**
+   * O teste que prova a propriedade inteira, e não um caso: TODO item do
+   * retrato versionado tem de continuar aberto no fim da vida dele.
+   */
+  it("nenhum item do retrato publicado vence antes da próxima coleta", () => {
+    const retrato = JSON.parse(readFileSync(join("dados", "abertos.json"), "utf8")) as {
+      coletadoEm: string;
+      abertos: { encerramentoProposta: string; objeto: string }[];
+      ufs: { uf: string; editais: { encerramentoProposta: string }[] }[];
+    };
+    const coletadoEm = new Date(retrato.coletadoEm);
+
+    for (const e of retrato.abertos) {
+      expect(
+        sobreviveAoRetrato(e, coletadoEm),
+        `"${e.objeto.slice(0, 60)}" encerra em ${e.encerramentoProposta}, antes de a ` +
+          "próxima coleta substituir este retrato. Ele vai aparecer encerrado para " +
+          "quem abrir a página à tarde — foi exatamente esse o defeito de 25/08.",
+      ).toBe(true);
+    }
+
+    for (const uf of retrato.ufs) {
+      for (const e of uf.editais) {
+        expect(sobreviveAoRetrato(e, coletadoEm), `${uf.uf}: item vence cedo demais`).toBe(true);
+      }
+    }
+  });
+
+  it("a listagem nacional tem tamanho de listagem, não de amostra", () => {
+    // "Uma lista com cem, pelo menos" — o pedido foi literal, e a razão é boa:
+    // uma dúzia de itens não deixa ninguém encontrar o que serve para ele.
+    expect(EDITAIS_NO_BRASIL).toBeGreaterThanOrEqual(100);
+  });
+
+  it("as contagens continuam sendo de TUDO que está aberto", () => {
+    // O recorte é da lista, não do número. "28.973 abertos" é verdade sobre o
+    // PNCP; reduzir isso ao que coube na tela seria mentir para baixo.
+    const retrato = JSON.parse(readFileSync(join("dados", "abertos.json"), "utf8")) as {
+      totais: { abertos: number };
+      abertos: unknown[];
+    };
+    expect(retrato.totais.abertos).toBeGreaterThan(retrato.abertos.length * 10);
   });
 });

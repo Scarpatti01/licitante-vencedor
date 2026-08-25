@@ -25,6 +25,7 @@ import { abrirRepositorio } from "../src/lib/triagem/repositorio.ts";
 import {
   EDITAIS_NO_BRASIL,
   EDITAIS_POR_UF,
+  sobreviveAoRetrato,
   type EditalAberto,
   type RetratoDeAbertos,
   type UfAberta,
@@ -108,13 +109,29 @@ async function main() {
     new Date(a.edital.encerramentoProposta as string).getTime() -
     new Date(b.edital.encerramentoProposta as string).getTime();
 
+  /*
+   * A listagem só recebe quem sobrevive ao tempo de vida deste retrato — ver
+   * `sobreviveAoRetrato`. As CONTAGENS continuam sendo de tudo que está aberto:
+   * "28.973 abertos" é verdade sobre o PNCP, e seria enganoso reduzi-la para o
+   * recorte que coube na tela.
+   */
+  const paraListar = comPrazo.filter((a) =>
+    sobreviveAoRetrato({ encerramentoProposta: a.edital.encerramentoProposta as string }, agora),
+  );
+
   const ufs: UfAberta[] = [...porUf.entries()]
     .map(([uf, lista]) => ({
       uf,
       abertos: lista.length,
       novos: lista.filter((a) => ehNovo(a.edital)).length,
       encerramEm24h: lista.filter((a) => encerraLogo(a.edital)).length,
-      editais: [...lista].sort(maisUrgentesPrimeiro).slice(0, EDITAIS_POR_UF).map((a) => recorte(a.edital)),
+      editais: lista
+        .filter((a) =>
+          sobreviveAoRetrato({ encerramentoProposta: a.edital.encerramentoProposta as string }, agora),
+        )
+        .sort(maisUrgentesPrimeiro)
+        .slice(0, EDITAIS_POR_UF)
+        .map((a) => recorte(a.edital)),
     }))
     .sort((a, b) => b.abertos - a.abertos);
 
@@ -126,12 +143,16 @@ async function main() {
       encerramEm24h: comPrazo.filter((a) => encerraLogo(a.edital)).length,
     },
     ufs,
-    encerrandoAgora: [...comPrazo].sort(maisUrgentesPrimeiro).slice(0, EDITAIS_NO_BRASIL).map((a) => recorte(a.edital)),
+    abertos: [...paraListar]
+      .sort(maisUrgentesPrimeiro)
+      .slice(0, EDITAIS_NO_BRASIL)
+      .map((a) => recorte(a.edital)),
   };
 
   console.log(
     `${retrato.totais.abertos} aberto(s) · ${retrato.totais.novos} novo(s) nas últimas 24h · ` +
-      `${retrato.totais.encerramEm24h} encerra(m) nas próximas 24h · ${ufs.length} UF(s)` +
+      `${retrato.totais.encerramEm24h} encerra(m) nas próximas 24h · ${ufs.length} UF(s) · ` +
+      `${retrato.abertos.length} na listagem nacional (só os que sobrevivem a este retrato)` +
       (semPrazo > 0 ? ` · ${semPrazo} sem prazo publicado, fora da listagem` : ""),
   );
 
