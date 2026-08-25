@@ -240,6 +240,17 @@ export type Repositorio = {
   /** Editais com proposta ainda aberta, mais recente primeiro a encerrar. */
   editaisAbertos(agora?: Date): Promise<EditalAberto[]>;
   /**
+   * Quantas assinaturas vivas existem — `teste`, `ativa` ou `inadimplente`.
+   *
+   * A leitura usa isto para saber quanto pode gastar por dia: sem ninguém
+   * pagando, ler 25 editais por empresa é caro sem ser útil (medido em 25/08:
+   * entre R$ 500 e R$ 700 por mês para zero assinantes). Ver `tetoDeLeitura`.
+   *
+   * As três contam porque as três esperam serviço; a diferença entre elas é
+   * assunto da cobrança, não da leitura.
+   */
+  assinantesVivos(): Promise<number>;
+  /**
    * Grava as oportunidades (upsert por `empresa_id, edital_id`).
    *
    * Devolve o id de cada linha gravada, por `empresa_id:edital_id` — é o que
@@ -305,6 +316,14 @@ export function abrirRepositorio(): Repositorio | null {
         if (p) perfis.push(p);
       }
       return perfis;
+    },
+
+    async assinantesVivos() {
+      const linhas = await paginado("assinaturas", {
+        select: "id",
+        status: "in.(teste,ativa,inadimplente)",
+      });
+      return linhas.length;
     },
 
     async editaisAbertos(agora = new Date()) {

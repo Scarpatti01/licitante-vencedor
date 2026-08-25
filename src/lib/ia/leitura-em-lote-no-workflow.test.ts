@@ -99,8 +99,37 @@ describe("o lote não substitui a leitura avulsa", () => {
    * sabe escalar de modelo. Trocar um pelo outro tornaria toda falha do lote
    * uma leitura perdida.
    */
-  it("o workflow do lote não tem agendamento enquanto não for exercitado de verdade", () => {
-    expect(WORKFLOW).not.toMatch(/^\s*schedule:/m);
+  /**
+   * O lote roda ANTES da coleta, e é isso que faz os dois se somarem em vez de
+   * se atropelarem.
+   *
+   * Se o lote rodasse depois da coleta, a avulsa já teria lido tudo pelo preço
+   * cheio e o lote encontraria só cache — trabalho e espera para economizar
+   * nada. Três horas antes dá folga de sobra para o lote terminar e deixar o
+   * cache quente.
+   */
+  it("o lote é agendado antes da coleta das 06:10", () => {
+    const cron = /- cron: "(\d+) (\d+) \* \* \*"/.exec(WORKFLOW);
+    expect(cron, "o agendamento do lote sumiu — a leitura voltou a custar o dobro").not.toBeNull();
+
+    const horaDoLote = Number(cron![2]) + Number(cron![1]) / 60;
+    /*
+     * A coleta agendada é a PARALELA — `coletar-pncp.yml` teve os `cron`
+     * movidos para lá e hoje só roda à mão. Ler o arquivo errado faria este
+     * teste passar por não achar nada, que é a pior forma de passar.
+     */
+    const coleta = readFileSync(join(".github", "workflows", "coletar-pncp-paralelo.yml"), "utf8");
+    const horarios = [...coleta.matchAll(/- cron: "(\d+) (\d+) \* \* \*"/g)].map(
+      (m) => Number(m[2]) + Number(m[1]) / 60,
+    );
+    expect(horarios.length, "não achei o agendamento da coleta paralela").toBeGreaterThan(0);
+    const horaDaColeta = Math.min(...horarios);
+
+    expect(
+      horaDoLote,
+      `o lote roda às ${horaDoLote}h UTC e a coleta às ${horaDaColeta}h. Rodando depois, ` +
+        "a avulsa já leu tudo pelo preço cheio e o lote não economiza nada.",
+    ).toBeLessThan(horaDaColeta);
   });
 
   /**

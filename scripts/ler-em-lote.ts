@@ -59,7 +59,7 @@ import { falhaSistemicaDeLeitura, resumoDaLeitura } from "../src/lib/ia/falhaSis
 import {
   candidatosParaLeitura,
   CORTE_DE_LEITURA,
-  LEITURAS_POR_EMPRESA_POR_DIA,
+  tetoDeLeitura,
   type Candidato,
 } from "../src/lib/pipeline/candidatosParaLeitura.ts";
 
@@ -124,10 +124,19 @@ async function main() {
   }
 
   const agora = new Date();
-  const [perfis, editaisAbertos] = await Promise.all([
+  const [perfis, editaisAbertos, assinantes] = await Promise.all([
     repositorio.perfis(),
     repositorio.editaisAbertos(agora),
+    repositorio.assinantesVivos(),
   ]);
+
+  /*
+   * Quanto podemos gastar hoje depende de haver alguém pagando. Sem assinante
+   * vivo o teto cai — ver `tetoDeLeitura`. E volta sozinho no dia em que a
+   * primeira assinatura aparecer: economia que depende de alguém lembrar acaba
+   * virando cliente pagante com meia leitura.
+   */
+  const teto = tetoDeLeitura(assinantes);
 
   console.log(
     `${perfis.length} empresa(s) com perfil completo · ${editaisAbertos.length} edital(is) com proposta aberta`,
@@ -138,7 +147,7 @@ async function main() {
     return;
   }
 
-  const todos = candidatosParaLeitura(editaisAbertos, perfis, agora);
+  const todos = candidatosParaLeitura(editaisAbertos, perfis, agora, teto);
   const candidatos = limite ? new Map([...todos].slice(0, limite)) : todos;
 
   if (limite) {
@@ -150,7 +159,7 @@ async function main() {
 
   console.log(
     `${todos.size} edital(is) único(s) com score ≥ ${CORTE_DE_LEITURA} em ao menos uma empresa ` +
-      `(limite de ${LEITURAS_POR_EMPRESA_POR_DIA}/empresa/dia)`,
+      `(limite de ${teto}/empresa/dia · ${assinantes} assinatura(s) viva(s))`,
   );
 
   const catalogo = modelosGemini();

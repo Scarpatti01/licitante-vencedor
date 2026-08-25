@@ -39,6 +39,37 @@ export const CORTE_DE_LEITURA = 70;
 /** A rede de segurança por empresa — ver o comentário do topo do arquivo. */
 export const LEITURAS_POR_EMPRESA_POR_DIA = 25;
 
+/**
+ * O teto enquanto NINGUÉM assina.
+ *
+ * Medido em 25/08: a leitura diária custava entre US$ 2,96 e US$ 5,73 por dia
+ * — algo entre R$ 500 e R$ 700 por mês — para 1 empresa cadastrada e 0
+ * assinaturas. Ler 22 editais por dia para ninguém é caro sem ser útil.
+ *
+ * Zerar seria pior que caro: a leitura diária é o que pegou a queda do `pdfjs`
+ * em 16/08, a cota estourada em 24/08 e a análise que voltava vazia. Sistema
+ * exercitado só quando chega o primeiro cliente quebra na frente dele.
+ *
+ * Cinco por dia mantém o pipeline vivo por uns R$ 40 a R$ 60 por mês.
+ *
+ * O teto volta a ser 25 SOZINHO no dia em que a primeira assinatura viva
+ * aparecer — ver `tetoDeLeitura`. É de propósito que não dependa de alguém
+ * lembrar: economia que precisa de memória vira, mais cedo ou mais tarde, um
+ * cliente pagante recebendo cinco editais por dia.
+ */
+export const LEITURAS_SEM_ASSINANTE = 5;
+
+/**
+ * Quantos editais por empresa por dia, conforme haja ou não quem pague.
+ *
+ * `assinantesVivos` conta assinatura em `teste`, `ativa` ou `inadimplente` —
+ * as três esperam serviço, e a diferença entre elas é assunto da cobrança, não
+ * da leitura.
+ */
+export function tetoDeLeitura(assinantesVivos: number): number {
+  return assinantesVivos > 0 ? LEITURAS_POR_EMPRESA_POR_DIA : LEITURAS_SEM_ASSINANTE;
+}
+
 export type EditalAbertoParaLeitura = { uuid: string; edital: Edital };
 
 /** Um edital candidato a leitura, e toda empresa cujo topo-25 o inclui. */
@@ -58,6 +89,12 @@ export function candidatosParaLeitura(
   editaisAbertos: EditalAbertoParaLeitura[],
   perfis: PerfilDaEmpresa[],
   agora: Date = new Date(),
+  /**
+   * Quantos editais por empresa. Padrão 25, o teto de quem paga; quem chama
+   * passa `tetoDeLeitura(assinantesVivos)` para o dia sem assinante custar o
+   * que precisa custar e não mais.
+   */
+  teto: number = LEITURAS_POR_EMPRESA_POR_DIA,
 ): Map<string, Candidato> {
   const porEditalId = new Map(editaisAbertos.map((e) => [e.edital.id, e]));
   const paresSemLeitura = editaisAbertos.map(({ edital }) => ({
@@ -73,7 +110,7 @@ export function candidatosParaLeitura(
     const topo = resultado.entregues
       .filter((d) => (d.score ?? 0) >= CORTE_DE_LEITURA)
       .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
-      .slice(0, LEITURAS_POR_EMPRESA_POR_DIA);
+      .slice(0, teto);
 
     for (const decisao of topo) {
       const par = porEditalId.get(decisao.editalId);
