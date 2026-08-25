@@ -18,6 +18,19 @@ export type EmpresaParaResumo = {
   email: string;
   ufsAtendidas: string[];
   preferencias: { scoreMinimo: number; maximoPorEnvio: number };
+  /**
+   * O plano desta empresa inclui abrir o arquivo do edital?
+   *
+   * Lido de `planos.limite_de_analises_profundas` pela assinatura viva: zero
+   * significa que o plano É de lista, e não que a cota acabou. É a tabela de
+   * cobrança dizendo o que o produto é.
+   *
+   * Sem assinatura viva legível, o padrão é `false`. O erro para o lado de
+   * prometer menos: dizer "o seu plano não inclui" a quem paga pela leitura é
+   * um susto que o suporte desfaz numa frase; dizer "ainda não lemos" a quem
+   * nunca vai ser lido é a promessa que vira reembolso.
+   */
+  leituraInclusaNoPlano: boolean;
 };
 
 export type Repositorio = {
@@ -94,6 +107,7 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
         select:
           "id,razao_social,nome_fantasia," +
           "perfis_da_empresa(ufs_atendidas)," +
+          "assinaturas(status,planos(limite_de_analises_profundas))," +
           "preferencias_de_envio(canal_email,email,score_minimo,maximo_por_envio)," +
           "membros_da_empresa(usuario_id,papel,removido_em)",
       });
@@ -152,6 +166,29 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
           ? perfil.ufs_atendidas.filter((u): u is string => typeof u === "string").map((u) => u.toUpperCase())
           : [];
 
+        /*
+         * A assinatura viva desta empresa, e o plano dela. `find` e não `[0]`
+         * porque uma empresa pode ter assinatura antiga cancelada ao lado da
+         * atual, e a ordem que o PostgREST devolve não é promessa nossa.
+         */
+        const assinaturas = Array.isArray(l.assinaturas) ? l.assinaturas : [];
+        const viva = assinaturas.find((a) => {
+          const status = texto((a as Record<string, unknown>).status);
+          return status === "teste" || status === "ativa" || status === "inadimplente";
+        }) as Record<string, unknown> | undefined;
+
+        const planoDaAssinatura = (
+          Array.isArray(viva?.planos) ? viva?.planos[0] : viva?.planos
+        ) as Record<string, unknown> | undefined;
+
+        const limiteDeLeitura = planoDaAssinatura?.limite_de_analises_profundas;
+        // `null` no banco é "sem limite", que é o plano que lê. `0` é o plano de
+        // lista. Ausência de plano legível cai para `false`, que erra para o
+        // lado de prometer menos.
+        const leituraInclusaNoPlano =
+          planoDaAssinatura !== undefined &&
+          (limiteDeLeitura === null || (numero(limiteDeLeitura) ?? 0) > 0);
+
         empresas.push({
           id,
           nome: texto(l.nome_fantasia) ?? texto(l.razao_social) ?? "sua empresa",
@@ -161,6 +198,7 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
             scoreMinimo: numero(prefs?.score_minimo) ?? 70,
             maximoPorEnvio: numero(prefs?.maximo_por_envio) ?? 8,
           },
+          leituraInclusaNoPlano,
         });
       }
 
