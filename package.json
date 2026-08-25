@@ -24,7 +24,9 @@
     "custo-de-ia:verificar": "node --conditions=react-server scripts/verificar-custo-de-ia.ts",
     "custo-de-ia:simular": "node --conditions=react-server scripts/verificar-custo-de-ia.ts --simular",
     "decisoes:limpar": "node scripts/limpar-decisoes.ts",
-    "decisoes:simular": "node scripts/limpar-decisoes.ts --simular"
+    "decisoes:simular": "node scripts/limpar-decisoes.ts --simular",
+    "testes:encerrar": "node scripts/encerrar-testes.ts",
+    "testes:simular": "node scripts/encerrar-testes.ts --simular"
   },
   "dependencies": {
     "@google/genai": "^2.17.1",

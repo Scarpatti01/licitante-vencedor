@@ -118,6 +118,37 @@ jobs:
             } >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      - name: Encerrar os testes vencidos
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -o pipefail
+          codigo=0
+          node scripts/encerrar-testes.ts | tee saida-testes.txt || codigo=$?
+
+          # ANTES do envio, e a ordem é a decisão: quem teve o teste encerrado
+          # hoje não pode receber o e-mail de hoje. Encerrar depois de enviar
+          # daria um dia a mais de produto a cada pessoa, todo dia, e mandaria
+          # um e-mail prometendo um painel que ela já não consegue abrir.
+          #
+          # Falha aqui NÃO derruba o envio: um teste que sobrevive um dia a mais
+          # custa um dia de produto; um envio derrubado custa o dia de todo
+          # mundo que paga.
+          if [ "$codigo" != "0" ]; then
+            {
+              echo "## ⚠️ Testes vencidos não foram encerrados"
+              echo
+              echo "Código \`$codigo\`. O envio seguiu. Quem venceu continua com acesso"
+              echo "até a próxima execução."
+              echo
+              echo '```'
+              tail -20 saida-testes.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error title=Testes vencidos não encerrados::código $codigo"
+          fi
+
       - name: Enviar
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
