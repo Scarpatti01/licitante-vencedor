@@ -1,13 +1,14 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   conferirAssinatura,
   decidirPeloStatus,
   eventoImporta,
   partirOCabecalho,
   TOLERANCIA_EM_SEGUNDOS,
-  type StatusNaStripe,
-} from "./assinatura";
+  type StatusNaStripe, EVENTOS_QUE_IMPORTAM } from "./assinatura";
 
 const SEGREDO = "whsec_exemplo_de_teste";
 const AGORA = new Date("2026-08-23T12:00:00Z");
@@ -136,5 +137,61 @@ describe("quais eventos importam", () => {
     // No boleto ele dispara quando o documento é GERADO, não pago. É o evento
     // que integrações ingênuas tratam como venda.
     expect(eventoImporta("checkout.session.completed")).toBe(false);
+  });
+});
+
+describe("a rota do webhook usa esta camada, e não uma cópia dela", () => {
+  /**
+   * ## O que aconteceu em 25/08
+   *
+   * Escrevi `lib/pagamento/webhook.ts` do zero, com verificação de assinatura e
+   * mapeamento de status — sem saber que este arquivo já existia, testado,
+   * fazendo o mesmo. A busca que fiz antes (`grep "stripe\|STRIPE"`) era
+   * sensível a maiúscula e não casava com "Stripe", que é como o nome aparece
+   * aqui.
+   *
+   * A cópia não era só redundante: ela tratava `checkout.session.completed`
+   * como evento de pagamento. No boleto esse evento dispara quando o cliente
+   * GERA o documento, não quando paga — daria três dias de produto por boleto
+   * impresso, com tentativas ilimitadas. Este arquivo exclui esse evento de
+   * propósito, e a razão está escrita em `EVENTOS_QUE_IMPORTAM`.
+   */
+  const ROTA = readFileSync(join("src", "app", "api", "pagamento", "webhook", "route.ts"), "utf8");
+
+  /**
+   * O código da rota, sem comentário.
+   *
+   * A primeira versão desta guarda reprovou o comentário que EXPLICA por que
+   * `checkout.session.completed` está fora — que é justamente o que se quer que
+   * exista. Uma régua que proíbe falar do defeito impede documentar a decisão.
+   */
+  const CODIGO_DA_ROTA = ROTA.replace(/\/\*[\s\S]*?\*\//gu, "").replace(/\/\/.*$/gmu, "");
+
+  it("a rota importa de `cobranca/assinatura`", () => {
+    expect(
+      ROTA,
+      "a rota do webhook não usa esta camada: ou há outra cópia da verificação, ou ela sumiu.",
+    ).toContain("@/lib/cobranca/assinatura");
+  });
+
+  it("a rota NÃO trata checkout.session.completed", () => {
+    expect(
+      CODIGO_DA_ROTA,
+      "a rota trata `checkout.session.completed`, que no boleto dispara antes de o dinheiro entrar. " +
+        "Isso dá acesso a quem só imprimiu o boleto.",
+    ).not.toContain("checkout.session");
+  });
+
+  it("a rota não implementa a própria verificação de assinatura", () => {
+    // Um segundo HMAC no repositório é um segundo lugar para errar, e o erro
+    // aqui é dar acesso pago a quem não pagou.
+    expect(
+      CODIGO_DA_ROTA,
+      "a rota calcula HMAC por conta própria em vez de chamar `conferirAssinatura`.",
+    ).not.toContain("createHmac");
+  });
+
+  it("`checkout.session.completed` continua fora da lista de eventos", () => {
+    expect(EVENTOS_QUE_IMPORTAM as readonly string[]).not.toContain("checkout.session.completed");
   });
 });
