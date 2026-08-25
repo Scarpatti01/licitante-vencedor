@@ -1,14 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
-import { PLANOS, O_QUE_INCLUI, O_QUE_NAO_FAZ, emReais, porEmpresa } from "@/lib/precos";
+import {
+  PLANOS,
+  O_QUE_NENHUM_PLANO_FAZ,
+  O_QUE_O_PLANO_DE_LISTA_NAO_FAZ,
+  oQueIncluiO,
+  emReais,
+  porEmpresa,
+} from "@/lib/precos";
 import { limitarDescricao } from "@/lib/seo/resultado-de-busca";
 import { Faq, P, RespostaDireta, Secao } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 
-const TITULO = "Preços: quanto custa receber os editais já lidos";
+const TITULO = "Preços: o que muda entre saber do edital e saber o que ele exige";
 /*
  * A descrição DERIVA dos planos, e não os repete.
  *
@@ -17,14 +24,36 @@ const TITULO = "Preços: quanto custa receber os editais já lidos";
  * até alguém lembrar deste arquivo — e o visitante chegaria achando que o site
  * subiu o preço no meio do caminho.
  */
+/**
+ * Os dois grupos da página, na ordem em que o leitor decide.
+ *
+ * A pergunta que separa os planos não é "quanto posso gastar", é "eu preciso
+ * que alguém abra o arquivo do edital?". Quem responde não já sabe qual metade
+ * olhar, e não perde tempo comparando com o plano caro; quem responde sim
+ * precisa entender do que está abrindo mão antes de ser atraído pelo barato.
+ */
+const GRUPOS = [
+  {
+    profundidade: "lista" as const,
+    titulo: "Sem abrir o arquivo do edital",
+    explicacao:
+      "Você fica sabendo que o edital existe, onde, de quanto e até quando, com um score de aderência ao seu perfil. É o que a publicação informa, chegando cedo e filtrado.",
+  },
+  {
+    profundidade: "documento" as const,
+    titulo: "Com a leitura do documento",
+    explicacao:
+      "Além do acima, alguém lê o arquivo: exigências de habilitação, garantia, visita técnica, riscos, e o que falta na sua documentação para cada edital.",
+  },
+];
+
 const MAIS_BARATO = PLANOS.reduce((a, b) =>
   a.mensalidadeEmCentavos <= b.mensalidadeEmCentavos ? a : b,
 );
 
 const DESCRICAO = limitarDescricao(
-  `Dois planos, e o que muda é quantas empresas cabem na conta. A partir de ` +
-    `${emReais(MAIS_BARATO.mensalidadeEmCentavos)} por mês, com a leitura diária dos ` +
-    `editais de maior aderência ao seu perfil.`,
+  `Quatro planos, a partir de ${emReais(MAIS_BARATO.mensalidadeEmCentavos)} por mês. ` +
+    `O que muda é o quanto entramos no edital e quantas empresas cabem na conta.`,
 );
 const ATUALIZADO = "2026-08-22";
 
@@ -94,27 +123,53 @@ export default function Precos() {
           por um número; fazer a pessoa rolar por três parágrafos até achá-lo é
           o que transforma interesse em desistência.
         */}
-        <div className="mt-10 grid gap-5 sm:grid-cols-2">
-          {PLANOS.map((plano) => (
-            <div
-              key={plano.codigo}
-              className="rounded-xl border p-6"
-            >
-              <p className="text-sm font-semibold">{plano.nome}</p>
-              <p className="mt-1 text-sm text-[var(--muted)]">{plano.paraQuem}</p>
+        <div className="mt-10 space-y-10">
+          {/*
+            Agrupado por PROFUNDIDADE, e não por preço crescente.
 
-              <p className="mt-5 text-3xl font-semibold tracking-tight">
-                {emReais(plano.mensalidadeEmCentavos)}
-                <span className="text-base font-normal text-[var(--muted)]"> /mês</span>
-              </p>
+            O eixo que decide a compra não é quanto custa, é se o produto abre o
+            arquivo do edital ou não. Quem só quer saber que o edital existe não
+            precisa comparar com o plano caro; quem precisa das exigências de
+            habilitação não deve ser tentado pelo barato sem entender o que
+            está abrindo mão. Uma fileira de quatro cartões em ordem de preço
+            faria as duas coisas erradas ao mesmo tempo.
+          */}
+          {GRUPOS.map((grupo) => (
+            <section key={grupo.profundidade}>
+              <h2 className="text-lg font-semibold tracking-tight">{grupo.titulo}</h2>
+              <p className="mt-1 max-w-2xl text-sm text-[var(--muted)]">{grupo.explicacao}</p>
 
-              <p className="mt-1 text-sm text-[var(--muted)]">
-                {plano.empresas === 1
-                  ? "1 empresa"
-                  : `até ${plano.empresas} empresas`}
-                {plano.empresas > 1 ? ` · ${porEmpresa(plano)}` : ""}
-              </p>
-            </div>
+              <div className="mt-5 grid gap-5 sm:grid-cols-2">
+                {PLANOS.filter((p) => p.profundidade === grupo.profundidade).map((plano) => (
+                  <div key={plano.codigo} className="rounded-xl border p-6">
+                    <p className="text-sm font-semibold">{plano.nome}</p>
+                    <p className="mt-1 text-sm text-[var(--muted)]">{plano.paraQuem}</p>
+
+                    <p className="mt-5 text-3xl font-semibold tracking-tight">
+                      {emReais(plano.mensalidadeEmCentavos)}
+                      <span className="text-base font-normal text-[var(--muted)]"> /mês</span>
+                    </p>
+
+                    <p className="mt-1 text-sm text-[var(--muted)]">
+                      {plano.empresas === 1 ? "1 empresa" : `até ${plano.empresas} empresas`}
+                      {plano.empresas > 1 ? ` · ${porEmpresa(plano)}` : ""}
+                      {plano.recortes !== null ? ` · até ${plano.recortes} recortes` : ""}
+                    </p>
+
+                    <ul className="mt-5 space-y-2 border-t pt-4">
+                      {oQueIncluiO(plano).map((item) => (
+                        <li key={item} className="flex gap-2 text-sm leading-relaxed">
+                          <span aria-hidden className="text-[var(--accent)]">
+                            •
+                          </span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </section>
           ))}
         </div>
 
@@ -160,27 +215,34 @@ export default function Precos() {
             </div>
           </Secao>
 
-          <Secao id="incluso" titulo="O que os dois planos entregam">
-            <ul className="mt-2 space-y-2">
-              {O_QUE_INCLUI.map((item) => (
-                <li key={item} className="flex gap-2 text-sm leading-relaxed">
-                  <span aria-hidden className="text-[var(--accent)]">
-                    •
-                  </span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </Secao>
-
-          <Secao id="nao-faz" titulo="O que nenhum plano faz">
+          <Secao id="nao-faz" titulo="O que os planos não fazem">
             <P>
               Esta seção fica na mesma altura da de cima porque descobrir
               limitação depois de pagar é o que gera pedido de reembolso — e
               porque é o que separa uma ferramenta de trabalho de uma promessa.
             </P>
+
+            <h3 className="mt-6 text-base font-semibold">
+              O Leve e o Leve Escritório, especificamente
+            </h3>
+            <P>
+              Eles dizem <strong>que</strong> o edital existe e <strong>o quanto</strong>{" "}
+              ele parece combinar com o seu perfil. Eles não abrem o arquivo.
+            </P>
             <ul className="mt-2 space-y-2">
-              {O_QUE_NAO_FAZ.map((item) => (
+              {O_QUE_O_PLANO_DE_LISTA_NAO_FAZ.map((item) => (
+                <li key={item} className="flex gap-2 text-sm leading-relaxed">
+                  <span aria-hidden className="text-[var(--muted)]">
+                    —
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <h3 className="mt-8 text-base font-semibold">Nenhum plano, nem o mais caro</h3>
+            <ul className="mt-2 space-y-2">
+              {O_QUE_NENHUM_PLANO_FAZ.map((item) => (
                 <li key={item} className="flex gap-2 text-sm leading-relaxed text-[var(--muted)]">
                   <span aria-hidden>—</span>
                   <span>{item}</span>
@@ -207,9 +269,9 @@ export default function Precos() {
             <Faq
               itens={[
                 {
-                  pergunta: "Por que o preço muda por número de empresas, e não por uso?",
+                  pergunta: "O que muda de um plano para o outro?",
                   resposta:
-                    "Porque o trabalho é o mesmo para cada empresa acompanhada: coletar, triar pelo perfil e ler os editais de maior aderência. Cobrar por uso puniria justamente quem disputa mais — que é quem tira mais valor disto.",
+                    "Duas coisas, e só elas. Se abrimos o arquivo do edital ou não, que é a diferença entre saber que ele existe e saber o que ele exige; e quantas empresas cabem na mesma conta. Não cobramos por uso, porque isso puniria justamente quem disputa mais.",
                 },
                 {
                   pergunta: "Sou contador e cuido de vários clientes. Preciso de uma conta por cliente?",
@@ -231,7 +293,7 @@ export default function Precos() {
                 {
                   pergunta: "Vocês leem TODOS os editais que chegam?",
                   resposta:
-                    "Não, e isso está no produto de propósito: lemos os de maior aderência ao seu perfil, com volume diário limitado. Nos demais, o que você vê é o que o órgão publicou — e a tela diz explicitamente qual é qual.",
+                    "Depende do plano, e a tela diz sempre qual é o caso. No Leve e no Leve Escritório não lemos nenhum: você recebe o que o órgão publicou, cedo e filtrado pelo seu perfil. No Empresa e no Consultoria lemos os de maior aderência, com volume diário limitado, e nos demais aparece o que o órgão publicou — marcado como não analisado.",
                 },
               ]}
             />
