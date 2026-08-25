@@ -53,6 +53,21 @@ export function conteudoDoAvisoDeCusto(
     "Isto é um alerta, não um corte: a análise continua rodando normalmente. A decisão de revisar o teto, o plano de preços ou o volume de leitura é sua, com o dado abaixo.",
     `${resumo.execucoes} execução(ões) de IA neste mês, ${resumo.falhas} com falha.`,
     ...(semPreco ? [semPreco] : []),
+    /*
+     * A procedência do número, no corpo do aviso e não numa nota de rodapé.
+     *
+     * Até 25/08 não havia preço nenhum cadastrado e o aviso dizia honestamente
+     * que não sabia. Agora há — conferido na página pública do fornecedor, com
+     * data e URL. Isso é menos que a fatura: a fatura inclui imposto, câmbio do
+     * dia da cobrança e eventual crédito promocional.
+     *
+     * Quem lê um valor em reais num e-mail assume "foi isto que saiu da conta".
+     * Não avisar aqui seria deixar a suposição errada de pé — e é exatamente o
+     * tipo de silêncio que o produto inteiro existe para não praticar.
+     */
+    "Os valores são ESTIMATIVA, calculada com o preço publicado pelo fornecedor " +
+      "(ver PRECOS_POR_MODELO) e um câmbio de referência. A fatura real pode " +
+      "diferir: ela inclui imposto, o câmbio do dia da cobrança e eventual crédito.",
   ];
 
   const html = `
