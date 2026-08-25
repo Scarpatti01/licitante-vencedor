@@ -203,18 +203,71 @@ function textoDe(resposta: unknown): string | null {
  * `chavesEnviadas` precisa estar NA MESMA ORDEM do envio. É esse contrato que a
  * conferência de contagem protege.
  */
+/**
+ * Acha o array de respostas onde quer que o fornecedor o tenha posto.
+ *
+ * A primeira versão procurava em `dest.inlinedResponses` e desistia. O segundo
+ * ensaio real, em 25/08, mostrou por que isso é frágil: o lote CONCLUIU, as
+ * respostas vieram, e nós as descartamos por estarem em outro galho da
+ * estrutura. Um caminho literal é uma aposta na documentação estar completa.
+ *
+ * A busca é por NOME de chave (`inlinedResponses`), em profundidade limitada.
+ * Isso aceita as três formas que o fornecedor já usou em produtos diferentes
+ * (`dest.…`, `response.dest.…`, `response.inlinedResponses.inlinedResponses`)
+ * e as que ele inventar amanhã no mesmo espírito.
+ *
+ * O que NÃO afrouxa: achar o array não valida nada. A conferência de contagem
+ * por posição continua sendo a guarda, e ela é aplicada logo depois.
+ */
+function acharRespostas(valor: unknown, profundidade = 0): unknown[] | null {
+  if (profundidade > 6 || valor === null || typeof valor !== "object") return null;
+
+  for (const [chave, filho] of Object.entries(valor as Record<string, unknown>)) {
+    if (chave === "inlinedResponses" && Array.isArray(filho)) return filho;
+    const achado = acharRespostas(filho, profundidade + 1);
+    if (achado) return achado;
+  }
+
+  return null;
+}
+
+/**
+ * O esboço da estrutura que chegou, só com nomes de chave.
+ *
+ * Existe pela mesma razão que o `bruto` do estado: quando o nosso vocabulário
+ * não encontra o que espera, o log tem de mostrar o que o fornecedor mandou.
+ * Sem isto, "sem `dest.inlinedResponses`" manda procurar às cegas, e cada
+ * tentativa custa um lote.
+ *
+ * Só as CHAVES, nunca os valores: o corpo carrega a análise dos editais, e log
+ * não é lugar para despejar isso.
+ */
+export function esbocoDaEstrutura(valor: unknown, profundidade = 0): string {
+  if (valor === null) return "null";
+  if (Array.isArray(valor)) return `[${valor.length}]`;
+  if (typeof valor !== "object") return typeof valor;
+  if (profundidade > 3) return "{…}";
+
+  const partes = Object.entries(valor as Record<string, unknown>).map(
+    ([chave, filho]) => `${chave}: ${esbocoDaEstrutura(filho, profundidade + 1)}`,
+  );
+  return `{ ${partes.join(", ")} }`;
+}
+
 export function lerRespostasDoLote<T>(
   corpo: unknown,
   chavesEnviadas: readonly string[],
   schema: ZodType<T>,
 ): LeituraDoLote<T> {
-  const raiz = (corpo ?? {}) as Record<string, unknown>;
-  const destino = (raiz.dest ?? (raiz.response as Record<string, unknown>)?.dest ?? {}) as
-    Record<string, unknown>;
-  const brutas = destino.inlinedResponses;
+  const brutas = acharRespostas(corpo);
 
-  if (!Array.isArray(brutas)) {
-    return { ok: false, motivo: "resposta do lote sem `dest.inlinedResponses`" };
+  if (!brutas) {
+    return {
+      ok: false,
+      motivo:
+        `não achei o array \`inlinedResponses\` em lugar nenhum da resposta do lote. ` +
+        `A estrutura que chegou foi: ${esbocoDaEstrutura(corpo)}`,
+    };
   }
 
   // A guarda. Ver o comentário do topo: com o vínculo feito por posição,

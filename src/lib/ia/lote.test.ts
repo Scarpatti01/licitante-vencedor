@@ -3,6 +3,7 @@ import { z } from "zod";
 import {
   ehTerminal,
   estadoDoLote,
+  esbocoDaEstrutura,
   lerRespostasDoLote,
   montarCorpoDoLote,
   type ItemDoLote,
@@ -231,5 +232,77 @@ describe("os dois dialetos de estado do fornecedor", () => {
     // isso custe três horas de silêncio.
     expect(estadoDoLote("ESTADO_DE_2027")).toBe("desconhecido");
     expect(ehTerminal("desconhecido")).toBe(false);
+  });
+});
+
+describe("achar as respostas onde quer que o fornecedor as ponha", () => {
+  /**
+   * O segundo ensaio real, em 25/08.
+   *
+   * O lote CONCLUIU, as respostas vieram, e nós as descartamos com
+   * "resposta do lote sem `dest.inlinedResponses`" — porque procurávamos num
+   * caminho literal e elas estavam em outro galho. Um caminho literal é uma
+   * aposta na documentação estar completa, e cada aposta errada custa um lote.
+   */
+  const umItem = (texto: string) => ({
+    response: {
+      candidates: [{ content: { parts: [{ text: texto }] } }],
+      usageMetadata: { promptTokenCount: 10, candidatesTokenCount: 5, totalTokenCount: 15 },
+    },
+  });
+
+  const schema = z.object({ ok: z.boolean() });
+  const CONTEUDO = JSON.stringify({ ok: true });
+
+  it("acha em `dest.inlinedResponses`, a forma que já conhecíamos", () => {
+    const leitura = lerRespostasDoLote({ dest: { inlinedResponses: [umItem(CONTEUDO)] } }, ["a"], schema);
+    expect(leitura.ok).toBe(true);
+  });
+
+  it("acha em `response.inlinedResponses.inlinedResponses`, aninhado duas vezes", () => {
+    const leitura = lerRespostasDoLote(
+      { response: { inlinedResponses: { inlinedResponses: [umItem(CONTEUDO)] } } },
+      ["a"],
+      schema,
+    );
+    expect(leitura.ok).toBe(true);
+  });
+
+  it("acha em `output.inlinedResponses`, que ninguém prometeu mas pode vir", () => {
+    const leitura = lerRespostasDoLote({ output: { inlinedResponses: [umItem(CONTEUDO)] } }, ["a"], schema);
+    expect(leitura.ok).toBe(true);
+  });
+
+  /**
+   * Achar o array NÃO afrouxa a guarda de posição. Ela é o que impede o edital
+   * A de receber a análise do edital B, e continua valendo venha a resposta de
+   * onde vier.
+   */
+  it("a guarda de contagem continua valendo em qualquer forma", () => {
+    const leitura = lerRespostasDoLote(
+      { response: { inlinedResponses: { inlinedResponses: [umItem(CONTEUDO)] } } },
+      ["a", "b"],
+      schema,
+    );
+    expect(leitura.ok).toBe(false);
+    if (!leitura.ok) expect(leitura.motivo).toContain("POSIÇÃO");
+  });
+
+  it("quando não acha, o motivo mostra a forma que chegou", () => {
+    // Sem isto, "não achei" manda procurar às cegas — e cada tentativa custa
+    // um lote. É a mesma lição do estado em dialeto desconhecido.
+    const leitura = lerRespostasDoLote({ metadata: { state: "X" }, done: true }, ["a"], schema);
+    expect(leitura.ok).toBe(false);
+    if (!leitura.ok) {
+      expect(leitura.motivo).toContain("metadata");
+      expect(leitura.motivo).toContain("done");
+    }
+  });
+
+  it("o esboço mostra chaves, nunca valores", () => {
+    // O corpo carrega a análise dos editais. Log não é lugar para despejar isso.
+    const esboco = esbocoDaEstrutura({ segredo: "texto inteiro do edital", n: 42 });
+    expect(esboco).toContain("segredo");
+    expect(esboco).not.toContain("texto inteiro do edital");
   });
 });
