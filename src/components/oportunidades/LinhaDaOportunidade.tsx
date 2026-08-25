@@ -34,6 +34,23 @@ export function LinhaDaOportunidade({
 }) {
   const { edital, avaliacao, situacao } = oportunidade;
   const { score, recomendacao } = avaliacao;
+
+  /*
+   * O edital cujo documento ninguém abriu é marcado NA LISTA, e não só na tela
+   * de detalhe.
+   *
+   * A tela de detalhe já dizia isso desde sempre, e parecia suficiente. Não é:
+   * a lista é onde o cliente decide o que vale abrir, e é o único lugar que
+   * alguns editais chegam a ter. Sem o selo aqui, dez linhas com aderência 82
+   * parecem dez análises — e a diferença entre "avaliamos o documento" e
+   * "avaliamos o que o órgão publicou" só apareceria depois do clique, para os
+   * poucos que clicam.
+   *
+   * No plano de lista NENHUM edital é lido, então o selo aparece em todos. Isso
+   * é feio de propósito: é a diferença que o cliente comprou, e escondê-la para
+   * a tela ficar limpa é vender uma coisa e entregar outra.
+   */
+  const naoAnalisado = !avaliacao.checklist.analiseLeuTexto;
   const recomendado = RECOMENDACAO[recomendacao.nivel];
   const valor = valorDoEdital(edital);
   const prazo = prazoDoEdital(edital, agora);
@@ -66,6 +83,11 @@ export function LinhaDaOportunidade({
             <Selo tom={recomendado.tom} tamanho="pequeno">
               {recomendado.rotulo}
             </Selo>
+            {naoAnalisado ? (
+              <Selo tom="neutro" tamanho="pequeno" comGlifo={false}>
+                não analisado
+              </Selo>
+            ) : null}
             {recomendacao.urgente ? (
               <Selo tom="atencao" tamanho="pequeno" comGlifo={false}>
                 Urgente

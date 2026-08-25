@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { planejarResumoDiario, pracasQueFaltaram, type DadosDoResumo, type OportunidadeDoResumo } from "./plano";
+import { planejarResumoDiario, pracasQueFaltaram, type DadosDoResumo, type OportunidadeDoResumo, linhaDeLeitura, aberturaDoResumo } from "./plano";
 
 /**
  * As regras do resumo diário são promessas ao cliente, e é por isso que estão
@@ -33,6 +33,10 @@ function dados(over: Partial<DadosDoResumo> = {}): DadosDoResumo {
     jaEnviados: new Set<string>(),
     ufsAusentes: [],
     preferencias: { scoreMinimo: 70, maximoPorEnvio: 8 },
+    // O padrão dos testes existentes é o plano que LÊ, porque era o único que
+    // existia quando eles foram escritos. Os testes do plano de lista passam
+    // `false` explicitamente.
+    leituraInclusaNoPlano: true,
     ...over,
   };
 }
@@ -314,5 +318,73 @@ describe("a estrutura é a que o template sabe renderizar", () => {
         ).toBeLessThanOrEqual(12);
       }
     }
+  });
+});
+
+describe("o resumo de quem não paga pela leitura", () => {
+  it('não diz "ainda não lemos": para ele, nunca vamos', () => {
+    /*
+     * "Ainda" promete que um dia vamos. É verdade para quem assina Empresa ou
+     * Consultoria e falso para quem assina Leve — e é a diferença entre um
+     * cliente que espera e um cliente que abre o edital ele mesmo.
+     */
+    expect(linhaDeLeitura({ leuTexto: false }, false)).toBe(
+      "o seu plano não inclui a leitura do documento",
+    );
+    expect(linhaDeLeitura({ leuTexto: false }, true)).toBe("ainda não lemos o documento");
+  });
+
+  it("diz 'documento lido' quando leu, independente do plano", () => {
+    // Um edital lido é um edital lido. Se um dia o plano leve ganhar leitura
+    // avulsa paga, a linha precisa continuar dizendo a verdade sobre AQUELE
+    // edital, e não sobre o plano.
+    expect(linhaDeLeitura({ leuTexto: true }, false)).toBe("documento lido");
+  });
+
+  it("não promete exigências de habilitação no painel", () => {
+    /*
+     * O defeito mais caro que este PR conserta. O segundo parágrafo era fixo e
+     * prometia, em TODO envio, "exigências de habilitação, garantia, visita
+     * técnica e riscos" no painel. Para o plano de lista o painel não tem isso,
+     * e uma promessa repetida todo dia útil é a que mais rápido vira reembolso.
+     */
+    const paragrafos = aberturaDoResumo(3, 0, "Insect Never", false).join(" ");
+    expect(paragrafos).not.toMatch(/exigências de habilitação, garantia/i);
+    expect(paragrafos).toMatch(/não inclui abrir o arquivo do edital/i);
+  });
+
+  it("continua prometendo as exigências para quem paga por elas", () => {
+    // A guarda não pode virar medo de afirmar: quem assina o plano que lê tem
+    // exatamente isso no painel, e some daqui seria esconder o que foi vendido.
+    const paragrafos = aberturaDoResumo(3, 3, "Insect Never", true).join(" ");
+    expect(paragrafos).toMatch(/exigências de habilitação, garantia/i);
+  });
+
+  it("não fica em silêncio sobre a leitura quando nada foi lido", () => {
+    // Antes, `lidas === 0` simplesmente omitia a frase. Silêncio sobre a
+    // leitura, num produto cuja diferença entre planos É a leitura, deixa o
+    // cliente supor o que quiser.
+    const doPlanoDeLista = aberturaDoResumo(2, 0, "X", false).join(" ");
+    expect(doPlanoDeLista).toMatch(/plano não inclui/i);
+  });
+
+  it("o e-mail inteiro de um plano de lista não promete leitura em lugar nenhum", () => {
+    const plano = planejarResumoDiario(
+      dados({
+        leituraInclusaNoPlano: false,
+        oportunidades: [oportunidade({ leuTexto: false })],
+      }),
+    );
+    expect(plano.tipo).toBe("enviar");
+    if (plano.tipo !== "enviar") return;
+
+    const tudo = [
+      ...plano.conteudo.paragrafos,
+      ...(plano.conteudo.listas ?? []).flatMap((l) => l.itens.map((i) => i.texto)),
+    ].join(" | ");
+
+    expect(tudo).not.toMatch(/ainda não lemos/i);
+    expect(tudo).not.toMatch(/exigências de habilitação, garantia/i);
+    expect(tudo).toMatch(/plano não inclui/i);
   });
 });

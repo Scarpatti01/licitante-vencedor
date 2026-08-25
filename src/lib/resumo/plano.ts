@@ -70,8 +70,85 @@ export type DadosDoResumo = {
    * madrugada. A tela aceitava cliques que não chegavam a lugar nenhum.
    */
   preferencias: { scoreMinimo: number; maximoPorEnvio: number };
+  /**
+   * O plano desta empresa inclui abrir o arquivo do edital?
+   *
+   * Vem de `planos.limite_de_analises_profundas`: zero significa que o plano é
+   * de lista, e não que ele esgotou a cota. É a tabela de cobrança dizendo o
+   * que o produto é, e não a tela adivinhando.
+   */
+  leituraInclusaNoPlano: boolean;
   urlDoPainel?: string;
 };
+
+/**
+ * A linha "Leitura" de um edital no resumo.
+ *
+ * ## Por que "ainda não lemos" é mentira para metade dos clientes
+ *
+ * "Ainda" promete que um dia vamos. Para quem assina Empresa ou Consultoria é
+ * verdade: o edital entrou na fila e pode ser lido amanhã. Para quem assina
+ * Leve é falso e nunca deixa de ser — o plano dele não inclui a leitura, e a
+ * palavra "ainda" transforma um limite declarado em promessa pendente.
+ *
+ * A diferença importa porque é ela que decide o que o cliente faz. Quem lê
+ * "ainda não lemos" espera; quem lê "o seu plano não inclui" abre o edital ele
+ * mesmo — ou decide que vale pagar por isso. A primeira frase produz um cliente
+ * que se sente enganado no dia da sessão; a segunda produz uma decisão.
+ */
+export function linhaDeLeitura(
+  oportunidade: { leuTexto: boolean },
+  leituraInclusaNoPlano: boolean,
+): string {
+  if (oportunidade.leuTexto) return "documento lido";
+  return leituraInclusaNoPlano
+    ? "ainda não lemos o documento"
+    : "o seu plano não inclui a leitura do documento";
+}
+
+/**
+ * Os dois parágrafos que abrem o resumo diário.
+ *
+ * ## A frase que mentia em todo envio
+ *
+ * O segundo parágrafo era fixo: "A análise de cada um está no painel, com
+ * exigências de habilitação, garantia, visita técnica e riscos." Escrito quando
+ * só existia plano que lê o documento, e verdadeiro para ele.
+ *
+ * Para o plano de lista é falso, e falso do jeito mais caro: o cliente clica no
+ * painel esperando as exigências, não encontra, e conclui que o produto está
+ * quebrado — quando na verdade ele nunca comprou isso. Uma promessa repetida
+ * todo dia útil é a que mais rápido vira pedido de reembolso.
+ *
+ * A primeira frase tinha um problema menor e do mesmo tipo: quando nada foi
+ * lido ela simplesmente calava. Silêncio sobre a leitura, num produto cuja
+ * diferença entre planos É a leitura, deixa o cliente supor o que quiser.
+ */
+export function aberturaDoResumo(
+  quantos: number,
+  lidas: number,
+  empresa: string,
+  leituraInclusaNoPlano: boolean,
+): string[] {
+  const contagem = quantos === 1 ? "1 edital aderente" : `${quantos} editais aderentes`;
+
+  if (!leituraInclusaNoPlano) {
+    return [
+      `${contagem} ao perfil da ${empresa} hoje, com o que o órgão publicou sobre cada um.`,
+      "O seu plano não inclui abrir o arquivo do edital. O painel mostra objeto, órgão, valor, prazo e a aderência ao seu perfil. As exigências de habilitação estão no edital, e o link para ele vai em cada bloco abaixo.",
+    ];
+  }
+
+  const quantasLidas =
+    lidas === 0
+      ? ""
+      : `, ${lidas === quantos ? "todos com o documento já lido" : `${lidas} deles com o documento já lido`}`;
+
+  return [
+    `${contagem} ao perfil da ${empresa} hoje${quantasLidas}.`,
+    "Isto é o resumo. A análise de cada um está no painel, com exigências de habilitação, garantia, visita técnica e riscos.",
+  ];
+}
 
 export type PlanoDoResumo =
   | { tipo: "sem-novidade" }
@@ -120,7 +197,11 @@ function prazoEmTexto(encerramento: string | null, agora: Date): string {
  * arquivo passou a fazer igual — com dois campos a mais, que são o que o
  * produto pago acrescenta.
  */
-function blocoDoEdital(o: OportunidadeDoResumo, agora: Date): BlocoDeLista {
+function blocoDoEdital(
+  o: OportunidadeDoResumo,
+  agora: Date,
+  leituraInclusaNoPlano: boolean,
+): BlocoDeLista {
   return {
     // O objeto é o título porque é por ele que a pessoa decide se lê o resto.
     // Cortado em 120: o PNCP publica objeto com parágrafo inteiro.
@@ -137,7 +218,7 @@ function blocoDoEdital(o: OportunidadeDoResumo, agora: Date): BlocoDeLista {
        * que não foi. É a promessa que este produto passou meses sem cumprir, e
        * a que não pode voltar a ser afirmada sem base.
        */
-      { rotulo: "Leitura", texto: o.leuTexto ? "documento lido" : "ainda não lemos o documento" },
+      { rotulo: "Leitura", texto: linhaDeLeitura(o, leituraInclusaNoPlano) },
       // Por último e único com `url`: é a ação do bloco.
       { rotulo: "Edital", texto: "abrir a publicação oficial", url: o.link },
     ],
@@ -189,10 +270,12 @@ export function planejarResumoDiario(dados: DadosDoResumo, agora: Date = new Dat
   const excedentes = novas.length - escolhidas.length;
   const lidas = escolhidas.filter((o) => o.leuTexto).length;
 
-  const paragrafos = [
-    `${escolhidas.length === 1 ? "1 edital aderente" : `${escolhidas.length} editais aderentes`} ao perfil da ${dados.empresa} hoje${lidas > 0 ? `, ${lidas === escolhidas.length ? "todos com o documento já lido" : `${lidas} deles com o documento já lido`}` : ""}.`,
-    "Isto é o resumo. A análise de cada um está no painel, com exigências de habilitação, garantia, visita técnica e riscos.",
-  ];
+  const paragrafos = aberturaDoResumo(
+    escolhidas.length,
+    lidas,
+    dados.empresa,
+    dados.leituraInclusaNoPlano,
+  );
 
   const fecho: string[] = [];
 
@@ -234,7 +317,7 @@ export function planejarResumoDiario(dados: DadosDoResumo, agora: Date = new Dat
       // Depois das listas: o botão é complemento do que já veio, não o conteúdo.
       acaoDepoisDasListas: true,
       // Um bloco por edital, na ordem de aderência.
-      listas: escolhidas.map((o) => blocoDoEdital(o, agora)),
+      listas: escolhidas.map((o) => blocoDoEdital(o, agora, dados.leituraInclusaNoPlano)),
       fecho,
       rodape: {
         cadastradoComo: dados.email,

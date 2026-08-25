@@ -88,6 +88,7 @@ async function main(): Promise<void> {
         empresa: empresa.nome,
         email: empresa.email,
         ufsAtendidas: empresa.ufsAtendidas,
+        leituraInclusaNoPlano: empresa.leituraInclusaNoPlano,
         oportunidades,
         jaEnviados,
         ufsAusentes,
