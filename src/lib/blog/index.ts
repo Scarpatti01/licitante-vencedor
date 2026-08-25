@@ -3,6 +3,7 @@ import { ATRASO_NO_PAGAMENTO } from "./artigos/atraso-no-pagamento-de-contrato-a
 import { COMO_SABER_SE_SAIU_UMA_LICITACAO } from "./artigos/como-saber-se-saiu-uma-licitacao";
 import { DOCUMENTOS_PARA_PARTICIPAR } from "./artigos/documentos-para-participar-de-licitacao";
 import { PRAZO_PARA_IMPUGNAR_EDITAL } from "./artigos/prazo-para-impugnar-edital-de-licitacao";
+import { QUANTAS_LICITACOES_POR_DIA } from "./artigos/quantas-licitacoes-sao-publicadas-por-dia";
 import { VALE_A_PENA_PARTICIPAR } from "./artigos/vale-a-pena-participar-de-licitacao";
 
 export type { Artigo, BlocoDeConteudo, IntencaoDeBusca } from "./tipos";
@@ -21,6 +22,7 @@ const CATALOGO: readonly Artigo[] = [
   COMO_SABER_SE_SAIU_UMA_LICITACAO,
   DOCUMENTOS_PARA_PARTICIPAR,
   PRAZO_PARA_IMPUGNAR_EDITAL,
+  QUANTAS_LICITACOES_POR_DIA,
   VALE_A_PENA_PARTICIPAR,
 ];
 

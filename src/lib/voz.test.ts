@@ -36,6 +36,7 @@ const VIGIADOS = [
   "lib/blog/artigos/como-saber-se-saiu-uma-licitacao.ts",
   "lib/blog/artigos/documentos-para-participar-de-licitacao.ts",
   "lib/blog/artigos/prazo-para-impugnar-edital-de-licitacao.ts",
+  "lib/blog/artigos/quantas-licitacoes-sao-publicadas-por-dia.ts",
   "lib/blog/artigos/vale-a-pena-participar-de-licitacao.ts",
   "lib/resumo/plano.ts",
   "lib/resumo/repositorio.ts",
@@ -97,11 +98,11 @@ describe("o texto que o cliente lê não usa travessão", () => {
 });
 
 describe("a guarda vigia o que foi limpo", () => {
-  it("cobre os cinco artigos, os oito guias e o e-mail do resumo", () => {
+  it("cobre os seis artigos, os oito guias e o e-mail do resumo", () => {
     // Sem esta contagem, alguém "conserta" um teste vermelho removendo a linha
     // da lista, e a guarda passa a proteger um conjunto vazio sem ficar
     // vermelha nunca mais.
-    expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(5);
+    expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(6);
     expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(8);
     expect(VIGIADOS).toContain("lib/resumo/plano.ts");
   });
