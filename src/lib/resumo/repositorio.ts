@@ -107,13 +107,42 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
         select:
           "id,razao_social,nome_fantasia," +
           "perfis_da_empresa(ufs_atendidas)," +
-          "assinaturas(status,planos(limite_de_analises_profundas))," +
           "preferencias_de_envio(canal_email,email,score_minimo,maximo_por_envio)," +
           "membros_da_empresa(usuario_id,papel,removido_em)",
       });
 
-      const linhas = await pedir(`empresas?${consulta}`);
+      /*
+       * As assinaturas vêm numa consulta À PARTE, e não embutidas em
+       * `empresas`, porque não existe caminho entre as duas tabelas:
+       * `assinaturas.titular_id` aponta para `auth.users`, e a empresa chega
+       * ao usuário por `membros_da_empresa`. Sem chave estrangeira entre
+       * `empresas` e `assinaturas`, o PostgREST não consegue embutir — ele
+       * recusa a consulta inteira com PGRST200.
+       *
+       * Escrevi o embed assim mesmo em 25/08 e só descobri conferindo o
+       * esquema. O erro seria barulhento (o `pedir` lança, e o job de envio
+       * falharia), mas barulhento na madrugada é barulhento tarde demais.
+       */
+      const [linhas, linhasDeAssinatura] = await Promise.all([
+        pedir(`empresas?${consulta}`),
+        pedir(
+          "assinaturas?select=titular_id,status,planos(limite_de_analises_profundas)" +
+            "&status=in.(teste,ativa,inadimplente)",
+        ),
+      ]);
       if (!Array.isArray(linhas)) return [];
+
+      /** A assinatura viva de cada titular, por `usuario_id`. */
+      const assinaturaDoTitular = new Map<string, Record<string, unknown>>();
+      if (Array.isArray(linhasDeAssinatura)) {
+        for (const bruta of linhasDeAssinatura) {
+          const a = bruta as Record<string, unknown>;
+          const titular = texto(a.titular_id);
+          // A primeira ganha: o filtro já trouxe só as vivas, e uma conta com
+          // duas vivas ao mesmo tempo é problema de cobrança, não de envio.
+          if (titular && !assinaturaDoTitular.has(titular)) assinaturaDoTitular.set(titular, a);
+        }
+      }
 
       const empresas: EmpresaParaResumo[] = [];
 
@@ -167,15 +196,10 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
           : [];
 
         /*
-         * A assinatura viva desta empresa, e o plano dela. `find` e não `[0]`
-         * porque uma empresa pode ter assinatura antiga cancelada ao lado da
-         * atual, e a ordem que o PostgREST devolve não é promessa nossa.
+         * A assinatura é do TITULAR (um usuário), não da empresa. O dono da
+         * conta é quem a contratou, e é por ele que se chega ao plano.
          */
-        const assinaturas = Array.isArray(l.assinaturas) ? l.assinaturas : [];
-        const viva = assinaturas.find((a) => {
-          const status = texto((a as Record<string, unknown>).status);
-          return status === "teste" || status === "ativa" || status === "inadimplente";
-        }) as Record<string, unknown> | undefined;
+        const viva = usuarioDoDono ? assinaturaDoTitular.get(usuarioDoDono) : undefined;
 
         const planoDaAssinatura = (
           Array.isArray(viva?.planos) ? viva?.planos[0] : viva?.planos

@@ -10,6 +10,8 @@ import {
   porEmpresa,
 } from "@/lib/precos";
 import { limitarDescricao } from "@/lib/seo/resultado-de-busca";
+import { pagamentoLigado } from "@/lib/pagamento/configuracao";
+import { BotaoDeAssinatura } from "@/components/precos/BotaoDeAssinatura";
 import { Faq, P, RespostaDireta, Secao } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
@@ -156,6 +158,12 @@ export default function Precos() {
                       {plano.recortes !== null ? ` · até ${plano.recortes} recortes` : ""}
                     </p>
 
+                    {pagamentoLigado() ? (
+                      <div className="mt-5">
+                        <BotaoDeAssinatura plano={plano.codigo} nome={plano.nome} />
+                      </div>
+                    ) : null}
+
                     <ul className="mt-5 space-y-2 border-t pt-4">
                       {oQueIncluiO(plano).map((item) => (
                         <li key={item} className="flex gap-2 text-sm leading-relaxed">
@@ -182,6 +190,7 @@ export default function Precos() {
             checkout que não há checkout é o caminho mais curto para ele nunca
             mais voltar.
           */}
+          {pagamentoLigado() ? null : (
           <Secao id="ainda-nao-abriu" titulo="Ainda não dá para assinar — e é de propósito">
             <RespostaDireta>
               O preço está definido, a forma de pagamento ainda não. Preferimos
@@ -214,6 +223,7 @@ export default function Precos() {
               />
             </div>
           </Secao>
+          )}
 
           <Secao id="nao-faz" titulo="O que os planos não fazem">
             <P>
