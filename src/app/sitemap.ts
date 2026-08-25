@@ -4,6 +4,8 @@ import { GUIAS_PUBLICADOS, PAGINAS_INSTITUCIONAIS, PAGINAS_PRODUTO } from "@/lib
 import { ARTIGOS_PUBLICADOS } from "@/lib/blog";
 import { caminhoDoMunicipio, MEDIDO_EM, municipiosPublicaveis } from "@/lib/regioes";
 import { caminhoDoPost, todosOsPosts } from "@/lib/posts/acervo";
+import { COLETADO_EM, ufsComAbertos } from "@/lib/abertos/acervo";
+import { temPaginaDeUf } from "@/lib/abertos/paginas";
 
 /**
  * Só entram no sitemap páginas com conteúdo próprio.
@@ -93,5 +95,34 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "never" as const,
       priority: 0.7,
     })),
+
+    /*
+     * A listagem de abertos, pela lição do parágrafo acima: página fora do
+     * sitemap e sem link é URL órfã, e foi assim que 25 posts nasceram
+     * invisíveis em 16/08.
+     *
+     * `daily` aqui é literal, não otimista: o retrato é regravado a cada
+     * coleta, e `lastModified` é a hora da coleta — não a do build. Prioridade
+     * alta porque é a página que responde a busca mais frequente do setor
+     * ("licitações abertas"), com dado que só nós temos agregado.
+     *
+     * Só as UF que passaram no portão de `paginas.ts`: a lista vem da mesma
+     * função que gera as rotas, então não existe um segundo lugar capaz de
+     * sitemapear estado que não virou página.
+     */
+    {
+      url: `${SITE.url}/editais-abertos/`,
+      lastModified: new Date(COLETADO_EM),
+      changeFrequency: "daily" as const,
+      priority: 0.9,
+    },
+    ...ufsComAbertos()
+      .filter(temPaginaDeUf)
+      .map((u) => ({
+        url: `${SITE.url}/editais-abertos/${u.uf.toLowerCase()}/`,
+        lastModified: new Date(COLETADO_EM),
+        changeFrequency: "daily" as const,
+        priority: 0.8,
+      })),
   ];
 }

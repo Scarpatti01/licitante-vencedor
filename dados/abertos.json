@@ -1,0 +1,318 @@
+{
+  "coletadoEm": "2026-08-25T09:00:00.000Z",
+  "totais": {
+    "abertos": 28973,
+    "novos": 2725,
+    "encerramEm24h": 2924
+  },
+  "ufs": [
+    {
+      "uf": "SP",
+      "abertos": 5392,
+      "novos": 514,
+      "encerramEm24h": 554,
+      "editais": []
+    },
+    {
+      "uf": "MG",
+      "abertos": 3649,
+      "novos": 335,
+      "encerramEm24h": 322,
+      "editais": []
+    },
+    {
+      "uf": "PR",
+      "abertos": 3008,
+      "novos": 250,
+      "encerramEm24h": 223,
+      "editais": []
+    },
+    {
+      "uf": "RS",
+      "abertos": 2750,
+      "novos": 203,
+      "encerramEm24h": 267,
+      "editais": []
+    },
+    {
+      "uf": "BA",
+      "abertos": 1915,
+      "novos": 209,
+      "encerramEm24h": 256,
+      "editais": []
+    },
+    {
+      "uf": "SC",
+      "abertos": 1905,
+      "novos": 161,
+      "encerramEm24h": 159,
+      "editais": []
+    },
+    {
+      "uf": "RJ",
+      "abertos": 1341,
+      "novos": 138,
+      "encerramEm24h": 156,
+      "editais": []
+    },
+    {
+      "uf": "CE",
+      "abertos": 1159,
+      "novos": 176,
+      "encerramEm24h": 176,
+      "editais": []
+    },
+    {
+      "uf": "GO",
+      "abertos": 938,
+      "novos": 104,
+      "encerramEm24h": 141,
+      "editais": []
+    },
+    {
+      "uf": "PE",
+      "abertos": 813,
+      "novos": 86,
+      "encerramEm24h": 83,
+      "editais": []
+    },
+    {
+      "uf": "ES",
+      "abertos": 639,
+      "novos": 56,
+      "encerramEm24h": 59,
+      "editais": []
+    },
+    {
+      "uf": "PA",
+      "abertos": 546,
+      "novos": 51,
+      "encerramEm24h": 55,
+      "editais": []
+    },
+    {
+      "uf": "PB",
+      "abertos": 522,
+      "novos": 36,
+      "encerramEm24h": 37,
+      "editais": []
+    },
+    {
+      "uf": "RN",
+      "abertos": 520,
+      "novos": 69,
+      "encerramEm24h": 56,
+      "editais": []
+    },
+    {
+      "uf": "DF",
+      "abertos": 478,
+      "novos": 47,
+      "encerramEm24h": 45,
+      "editais": []
+    },
+    {
+      "uf": "MS",
+      "abertos": 429,
+      "novos": 35,
+      "encerramEm24h": 43,
+      "editais": []
+    },
+    {
+      "uf": "MT",
+      "abertos": 425,
+      "novos": 47,
+      "encerramEm24h": 43,
+      "editais": []
+    },
+    {
+      "uf": "MA",
+      "abertos": 411,
+      "novos": 31,
+      "encerramEm24h": 33,
+      "editais": []
+    },
+    {
+      "uf": "RO",
+      "abertos": 390,
+      "novos": 23,
+      "encerramEm24h": 43,
+      "editais": []
+    },
+    {
+      "uf": "PI",
+      "abertos": 360,
+      "novos": 34,
+      "encerramEm24h": 38,
+      "editais": []
+    },
+    {
+      "uf": "TO",
+      "abertos": 308,
+      "novos": 28,
+      "encerramEm24h": 27,
+      "editais": []
+    },
+    {
+      "uf": "SE",
+      "abertos": 307,
+      "novos": 32,
+      "encerramEm24h": 40,
+      "editais": []
+    },
+    {
+      "uf": "AL",
+      "abertos": 266,
+      "novos": 21,
+      "encerramEm24h": 22,
+      "editais": []
+    },
+    {
+      "uf": "AM",
+      "abertos": 257,
+      "novos": 23,
+      "encerramEm24h": 29,
+      "editais": []
+    },
+    {
+      "uf": "AC",
+      "abertos": 122,
+      "novos": 8,
+      "encerramEm24h": 10,
+      "editais": []
+    },
+    {
+      "uf": "RR",
+      "abertos": 72,
+      "novos": 5,
+      "encerramEm24h": 5,
+      "editais": []
+    },
+    {
+      "uf": "AP",
+      "abertos": 51,
+      "novos": 3,
+      "encerramEm24h": 2,
+      "editais": []
+    }
+  ],
+  "encerrandoAgora": [
+    {
+      "id": "6765988b-01e5-4ddf-85e6-22f253994ac9",
+      "objeto": "AQUISIÇÃO DE MATERIAL DE CONSUMO - DE LIMPEZA E PRODUÇÃO DE HIGIENIZAÇÃO - ECONOMIA GERADA EM FAVOR DA EEEP PAULO BARBOSA LEITE.",
+      "orgao": "ESTADO DO CEARA",
+      "uf": "CE",
+      "municipio": "Caririaçu",
+      "municipioSlug": "caririacu",
+      "modalidade": "Dispensa",
+      "valorEstimado": 1178.4,
+      "publicadoEm": "2026-08-19T19:32:20+00:00",
+      "encerramentoProposta": "2026-08-25T10:20:00+00:00",
+      "link": "https://pncp.gov.br/app/editais/07954480000179/2026/21531"
+    },
+    {
+      "id": "e0e0db82-7cf3-4de5-a63a-3ae9cb12bf3f",
+      "objeto": "AQUISIÇÃO DE 20 BICICLETAS ARO 26, DESTINADAS À PREMIAÇÃO EM EVENTOS ESPORTIVOS DA SECRETARIA MUNICIPAL DE ESPORTES",
+      "orgao": "MUNICIPIO DE MORRO AGUDO",
+      "uf": "SP",
+      "municipio": "Morro Agudo",
+      "municipioSlug": "morro-agudo",
+      "modalidade": "Dispensa",
+      "valorEstimado": 9213.4,
+      "publicadoEm": "2026-08-18T17:27:01+00:00",
+      "encerramentoProposta": "2026-08-25T10:29:00+00:00",
+      "link": "https://pncp.gov.br/app/editais/45345899000112/2026/80"
+    },
+    {
+      "id": "65c912ff-6836-49f6-a621-b67ba4f0af81",
+      "objeto": "O objeto da presente dispensa é a escolha da proposta mais vantajosa para a aquisição de kit educação ambiental",
+      "orgao": "SERVICO AUTONOMO DE AGUA E ESGOTO",
+      "uf": "BA",
+      "municipio": "Valença",
+      "municipioSlug": "valenca",
+      "modalidade": "Dispensa",
+      "valorEstimado": 15541.96,
+      "publicadoEm": "2026-08-18T12:31:38+00:00",
+      "encerramentoProposta": "2026-08-25T10:30:00+00:00",
+      "link": "https://pncp.gov.br/app/editais/16176067000111/2026/97"
+    },
+    {
+      "id": "7ab44799-6a70-45a6-a50d-d0dd7c4fb1d4",
+      "objeto": "CONTRATAÇÃO DE EMPRESA ESPECIALIZADA PARA FORNECIMENTO E INSTALAÇÃO DE PERSIANAS VERTICAIS EM TECIDO, PERSIANAS TIPO ROLÔ EM TELA SOLAR",
+      "orgao": "MUNICIPIO DE ARGIRITA",
+      "uf": "MG",
+      "municipio": "Argirita",
+      "municipioSlug": "argirita",
+      "modalidade": "Dispensa",
+      "valorEstimado": 49192,
+      "publicadoEm": "2026-08-18T16:49:36+00:00",
+      "encerramentoProposta": "2026-08-25T10:30:00+00:00",
+      "link": "https://pncp.gov.br/app/editais/17730011000120/2026/80"
+    },
+    {
+      "id": "996f5963-78cb-4779-bb69-3b31fdb4e9d3",
+      "objeto": "Aquisição de veículo(s) novo(s)",
+      "orgao": "MUNICIPIO DE SAO JOSE DO SUL",
+      "uf": "RS",
+      "municipio": "São José do Sul",
+      "municipioSlug": "sao-jose-do-sul",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 464884.05,
+      "publicadoEm": "2026-08-12T12:17:52+00:00",
+      "encerramentoProposta": "2026-08-25T10:30:00+00:00",
+      "link": "https://pncp.gov.br/app/editais/04208358000165/2026/67"
+    },
+    {
+      "id": "edd53d1d-dae5-4ecc-bfd1-8e5a0185dcb8",
+      "objeto": "CONTRATAÇÃO DE EMPRESA ESPECIALIZADA PARA FUTURAS E EVENTUAIS AQUISIÇÕES DE MATERIAIS DE CONSTRUÇÃO E MATERIAIS HIDRÁULICOS",
+      "orgao": "MUNICIPIO DE JOVIANIA",
+      "uf": "GO",
+      "municipio": "Joviânia",
+      "municipioSlug": "joviania",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 2592865.45,
+      "publicadoEm": "2026-08-10T12:10:11+00:00",
+      "encerramentoProposta": "2026-08-25T10:30:00+00:00",
+      "link": "https://pncp.gov.br/app/editais/02029957000196/2026/150"
+    },
+    {
+      "id": "f192c326-3675-486e-8cfe-385ec0645253",
+      "objeto": "Registro de preços para futura e eventual aquisição de tubos corrugados em polietileno de alta densidade (PEAD) e manta",
+      "orgao": "MUNICIPIO DE IBICARE",
+      "uf": "SC",
+      "municipio": "Ibicaré",
+      "municipioSlug": "ibicare",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 451296,
+      "publicadoEm": "2026-08-12T21:10:58+00:00",
+      "encerramentoProposta": "2026-08-25T10:30:00+00:00",
+      "link": "https://pncp.gov.br/app/editais/82939448000130/2026/182"
+    },
+    {
+      "id": "b55a424f-c5ae-4f35-8c05-a47f8719b254",
+      "objeto": "Contratação de empresa especializada para a prestação de serviços de decoração de evento destinado à solenidade de formatura da educação infantil",
+      "orgao": "MUNICIPIO DE PRANCHITA",
+      "uf": "PR",
+      "municipio": "Pranchita",
+      "municipioSlug": "pranchita",
+      "modalidade": "Dispensa",
+      "valorEstimado": 16950,
+      "publicadoEm": "2026-08-11T13:29:30+00:00",
+      "encerramentoProposta": "2026-08-25T10:50:00+00:00",
+      "link": "https://pncp.gov.br/app/editais/78113834000109/2026/41"
+    },
+    {
+      "id": "a664c8a1-e289-4a4b-b100-ca3f4a5993ae",
+      "objeto": "AQUISIÇÃO DE TROFÉUS E MEDALHAS PARA ATENDER AS NECESSIDADES DA SECRETARIA MUNICIPAL DE EDUCAÇÃO E SECRETARIA DE DESPORTOS",
+      "orgao": "MUNICIPIO DE VARRE-SAI",
+      "uf": "RJ",
+      "municipio": "Varre-Sai",
+      "municipioSlug": "varre-sai",
+      "modalidade": "Dispensa",
+      "valorEstimado": 10379.53,
+      "publicadoEm": "2026-08-19T12:39:04+00:00",
+      "encerramentoProposta": "2026-08-25T10:59:00+00:00",
+      "link": "https://pncp.gov.br/app/editais/39217831000155/2026/145"
+    }
+  ]
+}

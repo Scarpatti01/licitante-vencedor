@@ -33,6 +33,11 @@ import { CONTATO, SITE } from "@/lib/site";
  */
 
 const PRODUTO = [
+  // Primeiro da lista de propósito: é a página que responde a busca mais
+  // frequente do setor, e a única do site com dado do dia. Fora do rodapé ela
+  // ficaria acessível só pelo sitemap — que foi exatamente como 25 posts
+  // nasceram órfãos em 16/08.
+  { href: "/editais-abertos/", texto: "Editais abertos hoje" },
   { href: "/alerta-de-licitacao/", texto: "Alerta de licitações" },
   { href: "/como-funciona/", texto: "Como funciona" },
   { href: "/metodologia/", texto: "Como medimos" },

@@ -344,6 +344,37 @@ jobs:
       # `${{ }}` NUNCA entra no corpo de um `run:`, pela mesma regra do workflow
       # sequencial: a expressão é substituída no TEXTO do programa antes de o
       # shell existir, e `motivos` deriva de dado do PNCP.
+      # O retrato de abertos sai da MESMA coleta e é versionado no mesmo passo,
+      # sob a mesma trava de degradação: coleta recusada não publica retrato, e
+      # o anterior fica no ar. Um retrato de coleta pela metade seria pior que
+      # um de ontem, porque pareceria igualmente novo.
+      - name: Gravar o retrato de editais abertos
+        if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          set -o pipefail
+          codigo=0
+          node --conditions=react-server scripts/publicar-abertos.ts | tee saida-abertos.txt || codigo=$?
+
+          # Falha aqui NÃO derruba a coleta: o agregado e os posts do dia valem
+          # por si, e o retrato anterior continua servindo a página com a data
+          # dele à mostra. O que não pode é passar despercebido.
+          if [ "$codigo" != "0" ]; then
+            {
+              echo "## ⚠️ Retrato de editais abertos não foi gravado"
+              echo
+              echo "Código \`$codigo\`. A coleta seguiu. A página /editais-abertos/ continua"
+              echo "mostrando o retrato anterior, com a data dele no topo."
+              echo
+              echo '```'
+              tail -20 saida-abertos.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error title=Retrato de abertos não gravado::código $codigo"
+          fi
+
       - name: Versionar agregado, revisão e posts
         if: steps.classe.outputs.classe == 'completa' || steps.classe.outputs.classe == 'parcial-aceitavel'
         env:
@@ -351,7 +382,7 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f dados/agregados.json dados/revisao.md dados/posts/
+          git add -f dados/agregados.json dados/revisao.md dados/posts/ dados/abertos.json
           if git diff --cached --quiet; then
             echo "nada mudou, nada a commitar"
             exit 0
