@@ -1,5 +1,6 @@
 import type { Mensagem } from "./tipos.ts";
 import { SITE } from "../site.ts";
+import { DIAS_DE_TESTE } from "../assinatura/teste.ts";
 
 /**
  * As duas mensagens que o cadastro dispara: confirmação e boas-vindas.
@@ -160,59 +161,129 @@ export type DadosDeBoasVindas = {
 };
 
 export function conteudoDeBoasVindas(dados: DadosDeBoasVindas): ConteudoDeEmail {
+  const urlBase = dados.urlBase ?? SITE.url;
+
   return {
-    assunto: "E-mail confirmado — seu alerta de licitação começa no próximo dia útil",
+    assunto: `E-mail confirmado. Seus ${DIAS_DE_TESTE} dias começam quando você quiser`,
     titulo: "Pronto. Seu e-mail está confirmado",
     paragrafos: [
-      `Os alertas com os editais ${regiaoEmTexto(dados.cidade)} chegam nos dias úteis, pela manhã. Quando não houver publicação nova para acompanhar naquele dia, você não recebe e-mail: silêncio também é resposta, e caixa de entrada cheia de “nada por aqui” só ensina a ignorar o remetente.`,
+      /*
+       * "Plano Leve", e não "acesso completo".
+       *
+       * A primeira versão desta frase dizia acesso completo, e a lista logo
+       * abaixo dizia que no plano Leve não abrimos o arquivo do edital. As duas
+       * no mesmo e-mail: a de cima vendendo o que a de baixo negava. O teste
+       * roda no Leve (`assinatura/teste.ts`), então é o Leve que a abertura tem
+       * de prometer — quem experimenta o Leve e assina o Leve recebe o que viu.
+       */
+      `Você tem ${DIAS_DE_TESTE} dias no plano Leve, sem cartão e sem cobrança no fim. Para começar, falta cadastrar a empresa e escolher onde procurar — leva uns cinco minutos, e é o que permite a triagem comparar cada edital com o que você vende.`,
+      /*
+       * A cidade digitada volta aqui de propósito.
+       *
+       * Ela some do produto no momento em que o alerta gratuito acaba: quem
+       * escolhe o recorte passa a ser o cliente, na tela de recortes. Sem esta
+       * frase, a pessoa que escreveu "Caruaru" no formulário recebe um convite
+       * que nunca menciona Caruaru, e a impressão é a de ter caído numa lista
+       * qualquer. Dizer o que ela pediu, e dizer que agora a escolha é dela, é
+       * o que liga uma coisa na outra.
+       */
+      `Você se cadastrou de olho nos editais ${regiaoEmTexto(dados.cidade)}. No teste, quem escolhe o recorte é você: até três, e essa região pode ser um deles.`,
+      /*
+       * A frase mais importante deste e-mail, e ela é a que dá má notícia.
+       *
+       * Até 25/08 este endereço recebia um alerta gratuito diário, para sempre.
+       * Quem se cadastrou esperando aquilo precisa ler, aqui, que a promessa
+       * mudou — antes de esperar por um e-mail que não vem. Descobrir pelo
+       * silêncio é o caminho mais curto para uma denúncia de spam, e denúncia
+       * derruba a entrega de todo mundo na lista.
+       */
+      "Uma mudança que você precisa saber: o alerta gratuito diário deixou de existir. Ele mandava os editais abertos de uma cidade sem filtrar pelo seu ramo, e era, na prática, uma versão pior do produto pago. Em vez de manter os dois, preferimos abrir o produto inteiro por um tempo.",
     ],
-    acao: null,
+    acao: {
+      rotulo: `Começar os ${DIAS_DE_TESTE} dias`,
+      url: `${urlBase}/criar-conta/`,
+    },
     listas: [
       {
-        titulo: "O que vem em cada alerta, por edital",
+        /*
+         * Os rótulos desta lista são os MESMOS de `resumo/plano.ts`, e isso não
+         * é estilo: é a promessa e a entrega usando uma palavra só. Quem lê
+         * "Aderência" aqui encontra "Aderência" no primeiro e-mail, em vez de
+         * ter de traduzir "nota de combinação" para o que a linha diz.
+         */
+        titulo: "O que chega, e quando",
         itens: [
-          { rotulo: "Objeto", texto: "o que o órgão quer comprar ou contratar, no texto da publicação" },
-          { rotulo: "Órgão", texto: "quem abriu o certame, e em qual município" },
           {
+            rotulo: "Quando",
+            texto:
+              "nos dias úteis, pela manhã, e silêncio no dia em que não houver edital novo para você",
+          },
+          {
+            rotulo: "Onde procurar",
+            texto:
+              "até três recortes: uma cidade, um estado ou o Brasil, cada um com o próprio filtro de palavras e de faixa de valor",
+          },
+          {
+            rotulo: "Aderência",
+            texto:
+              "cada edital chega com uma nota de 0 a 100 sobre o quanto ele combina com o que a sua empresa vende",
+          },
+          {
+            rotulo: "Órgão e local",
+            texto: "quem abriu a licitação, e em que município e estado",
+          },
+          {
+            /*
+             * A promessa que existe para NÃO poder ser cumprida com zero.
+             *
+             * Boa parte dos editais do PNCP sai sem valor estimado. Escrever
+             * "R$ 0,00" ali seria informação inventada em cima de ausência, e o
+             * assinante descartaria oportunidade boa achando que é migalha. A
+             * guarda que impede isso mora onde a linha é montada, em
+             * `resumo/plano.test.ts`.
+             */
             rotulo: "Valor",
             texto:
-              "o valor estimado publicado. Quando o órgão não publica, o alerta diz que não há valor — nunca mostra R$ 0,00 no lugar",
+              "o valor estimado, e “não informado” quando o órgão não publica — nunca R$ 0,00 no lugar do que falta",
           },
-          { rotulo: "Prazo", texto: "quanto falta para o encerramento na data do envio" },
-          { rotulo: "Link oficial", texto: "o endereço da publicação na fonte, para você conferir e baixar o edital" },
+          {
+            rotulo: "Prazo",
+            texto: "quanto tempo falta para a proposta encerrar",
+          },
+          {
+            rotulo: "Edital",
+            texto: "o link para a publicação oficial, que é onde a decisão é tomada",
+          },
+          {
+            rotulo: "Painel",
+            texto:
+              "o histórico do que passou pelo seu perfil, e a resposta para “por que este edital não apareceu para mim?”",
+          },
         ],
       },
       {
         /*
-         * Este bloco existe para a pessoa não descobrir sozinha, no terceiro
-         * alerta fora do ramo dela, que o recorte é grosso.
-         *
-         * Até 21/08 ele se chamava "o que ainda NÃO está no ar", e as duas
-         * coisas listadas de fato não existiam em lugar nenhum do produto.
-         * Agora existem — para quem cadastra a empresa (`triar-editais.ts` e
-         * `ler-recomendados.ts`). O título mudou porque a limitação deixou de
-         * ser temporal ("ainda não construímos") e passou a ser de escopo
-         * ("este e-mail não faz isso"), e as duas afirmações pedem palavras
-         * diferentes: a antiga viraria mentira sobre o produto, a nova
-         * continua verdade sobre este alerta.
+         * Mesmo lugar e mesmo peso da lista de cima, e pelo mesmo motivo de
+         * sempre: quem descobre limitação depois de investir tempo pede
+         * reembolso, e quem descobre antes decide com informação.
          */
-        titulo: "O que este alerta gratuito NÃO faz — para você não contar com isso",
+        titulo: `O que o teste NÃO faz — para você não contar com isso`,
         itens: [
           {
-            rotulo: "Filtro fino por perfil",
+            rotulo: "Leitura do documento",
             texto:
-              "aqui o recorte é geográfico. Este alerta não filtra por CNAE, por faixa de valor nem pelo histórico da sua empresa, então vai chegar edital que não serve para você",
+              "no plano Leve não abrimos o arquivo do edital. Você recebe o que o órgão publicou, cedo e filtrado; as exigências de habilitação continuam sendo leitura sua, no documento oficial",
           },
           {
-            rotulo: "Leitura do edital",
+            rotulo: "Garantia de resultado",
             texto:
-              "não lemos o texto nem os anexos dos editais deste alerta. Ele não afirma o que o edital exige de habilitação, de garantia ou de qualificação técnica — isso continua sendo leitura sua, no documento oficial",
+              "nada aqui garante habilitação nem vitória, e nada substitui ler o edital inteiro antes de disputar",
           },
         ],
       },
     ],
     fecho: [
-      "Preferimos dizer isso agora a deixar você descobrir depois. As duas coisas existem para quem cadastra a empresa: aí a triagem compara cada edital com o seu ramo, faturamento e experiência, e os de maior aderência chegam com o documento lido. O alerta gratuito continua como está, sem virar plano pago sem você pedir.",
+      `Ao fim dos ${DIAS_DE_TESTE} dias o acesso para, sem cobrança automática e sem cartão cadastrado. Se quiser continuar, você assina; se não quiser, não precisa fazer nada.`,
     ],
     rodape: {
       cadastradoComo: dados.email,

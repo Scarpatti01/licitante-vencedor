@@ -388,3 +388,54 @@ describe("o resumo de quem não paga pela leitura", () => {
     expect(tudo).toMatch(/plano não inclui/i);
   });
 });
+
+describe("valor ausente é dito, nunca vira R$ 0,00", () => {
+  /*
+   * O princípio existia desde o alerta gratuito e era cobrado só lá
+   * (`alertas/alertas.test.ts`, `alertas/mensagem-do-lead.test.ts`). Ao acabar
+   * com o alerta gratuito, em 25/08, fui conferir se o produto pago guardava a
+   * mesma regra: não guardava. A lição estava presa ao código que ia morrer.
+   *
+   * A regra: boa parte dos editais do PNCP sai sem valor estimado. Escrever
+   * "R$ 0,00" no lugar do que falta é inventar informação em cima de ausência,
+   * e o efeito não é estético — o assinante descarta oportunidade boa achando
+   * que é migalha, e nunca descobre que o número era nosso, não do órgão.
+   */
+  function linhaDeValor(valorEstimado: number | null): string {
+    const plano = planejarResumoDiario(
+      dados({ oportunidades: [oportunidade({ valorEstimado })] }),
+      AGORA,
+    );
+    if (plano.tipo !== "enviar") throw new Error("esperava um resumo para enviar");
+
+    const item = plano.conteudo.listas[0].itens.find((i) => i.rotulo === "Valor");
+    if (!item) throw new Error("o bloco do edital perdeu a linha de Valor");
+    return item.texto;
+  }
+
+  it("sem valor publicado, diz que não foi informado", () => {
+    expect(linhaDeValor(null)).toMatch(/não informado/i);
+  });
+
+  it("sem valor publicado, NÃO escreve moeda nenhuma", () => {
+    expect(linhaDeValor(null)).not.toContain("R$");
+    expect(linhaDeValor(null)).not.toMatch(/0/);
+  });
+
+  it("com valor publicado, mostra o valor", () => {
+    expect(linhaDeValor(250_000)).toContain("250.000");
+  });
+
+  it("zero publicado pelo órgão continua sendo zero, e não some", () => {
+    /*
+     * A armadilha do outro lado: tratar `0` como ausência faria o produto
+     * esconder um valor que o órgão realmente publicou. Ausência é `null`; zero
+     * é um número, e um número informado se mostra.
+     */
+    // `real` formata sem centavos (`maximumFractionDigits: 0`), então o zero
+    // publicado sai como "R$ 0" — e não como "R$ 0,00", que foi o que escrevi
+    // primeiro aqui. A guarda afirma o que o código faz, não o que eu supus.
+    expect(linhaDeValor(0)).toMatch(/R\$\s*0\b/);
+    expect(linhaDeValor(0)).not.toMatch(/não informado/i);
+  });
+});

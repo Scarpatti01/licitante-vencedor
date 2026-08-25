@@ -23,17 +23,17 @@ const FAQ = [
   {
     pergunta: "Com que frequência os dados são atualizados?",
     resposta:
-      "A coleta roda uma vez por dia, de madrugada, e o alerta sai pela manhã nos dias úteis. Edital publicado durante o dia entra na coleta seguinte — por isso o alerta traz o prazo de encerramento em destaque, para você julgar a urgência.",
+      "A coleta roda uma vez por dia, de madrugada, e o resumo sai pela manhã nos dias úteis. Edital publicado durante o dia entra na coleta seguinte — por isso o resumo traz o prazo de encerramento em destaque, para você julgar a urgência.",
   },
   {
     pergunta: "Vocês leem o edital para mim?",
     resposta:
-      "No alerta gratuito, não: ele traz objeto, órgão, valor, prazo e o link direto para o registro oficial, para a decisão de abrir ser rápida. Com a empresa cadastrada, sim — mas não todos. Todo dia lemos os de maior aderência ao seu perfil, e é neles que aparecem as exigências de habilitação, a garantia, a visita técnica e os riscos extraídos do texto. Nos demais, o que você vê é o que o órgão publicou, e a tela diz explicitamente qual é o caso. Nem a leitura substitui ler o edital inteiro antes de disputar: quando o nosso resumo divergir do documento, vale o documento.",
+      "Depende do plano, e a tela sempre diz qual é o caso. No Leve — que é também o plano do teste de 14 dias — não abrimos o arquivo: você recebe objeto, órgão, valor, prazo, a nota de aderência e o link para o registro oficial, para a decisão de abrir ser rápida. Nos planos que incluem a leitura, todo dia lemos os de maior aderência ao seu perfil, e é neles que aparecem as exigências de habilitação, a garantia, a visita técnica e os riscos extraídos do texto. Nem a leitura substitui ler o edital inteiro antes de disputar: quando o nosso resumo divergir do documento, vale o documento.",
   },
   {
     pergunta: "Como vocês sabem que um edital é do meu ramo?",
     resposta:
-      "Pelo que você declara no cadastro: cidade, atividade e faixa de valor que faz sentido para o seu porte. O filtro trabalha sobre o objeto declarado pelo órgão — e como a descrição varia muito entre órgãos, o alerta erra mais para o lado de mostrar do que de esconder.",
+      "Pelo que você declara no cadastro: os recortes que escolher, a atividade e a faixa de valor que faz sentido para o seu porte. O filtro trabalha sobre o objeto declarado pelo órgão — e como a descrição varia muito entre órgãos, a triagem erra mais para o lado de mostrar do que de esconder.",
   },
   {
     pergunta: "E se o dado estiver errado na origem?",
@@ -251,7 +251,7 @@ export default function ComoFunciona() {
               <a className="underline underline-offset-4" href="https://pncp.gov.br/app/editais/10282945000105/2026/84" target="_blank" rel="noopener">
                 no PNCP
               </a>
-              . É sempre assim: o alerta leva você à fonte, não substitui a
+              . É sempre assim: o resumo leva você à fonte, não substitui a
               fonte.
             </P>
           </Secao>
@@ -305,10 +305,10 @@ export default function ComoFunciona() {
               ]}
             />
             <P>
-              As quatro etapas descritas acima rodam sozinhas, todo dia. O que
-              ainda não existe é cobrança: não há plano pago aberto, e por isso
-              não há nada a contratar nesta página. O alerta gratuito, esse
-              sim, já sai.
+              As quatro etapas descritas acima rodam sozinhas, todo dia. A
+              assinatura ainda não abriu, e por isso não há nada a contratar
+              nesta página. O teste de 14 dias, esse sim, já roda — é o produto
+              inteiro no plano Leve, sem cartão, e ele para sozinho no fim.
             </P>
             <div className="mt-2">
               <CapturaAlerta origem="/como-funciona/" />
@@ -317,7 +317,8 @@ export default function ComoFunciona() {
 
           <Secao id="nao-faz" titulo="O que este serviço não faz">
             <P>
-              Ele não lê o edital por você na etapa gratuita, não garante
+              Ele não lê o edital por você nos planos de lista — o Leve e o
+              Leve Escritório, que são também onde o teste roda —, não garante
               habilitação, não avalia se você tem chance de ganhar e não emite
               opinião jurídica. Organiza, confere e entrega — a decisão de
               disputar é sua, e depende de ler o edital inteiro.

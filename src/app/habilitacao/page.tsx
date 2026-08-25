@@ -226,9 +226,9 @@ export default function Habilitacao() {
                 titulo:
                   "O prazo para renovar certidão começa quando o edital sai, não quando você vence",
                 texto:
-                  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende, com objeto, órgão, valor, prazo e o link para o registro oficial. Ver o edital na publicação é o que dá tempo de pedir a certidão municipal antes de ela ser cobrada.",
+                  "Teste por 14 dias, sem cartão: nos dias úteis, os editais publicados no PNCP que combinam com o que a sua empresa vende, com nota de aderência, órgão, valor, prazo e o link para o registro oficial. Ver o edital na publicação é o que dá tempo de pedir a certidão municipal antes de ela ser cobrada.",
               }}
-              textoDoBotao="Quero receber os editais do meu ramo"
+              textoDoBotao="Quero testar por 14 dias"
             />
           </section>
 

@@ -5,11 +5,12 @@ import { Faq, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { DIAS_DE_TESTE } from "@/lib/assinatura/teste";
 
 const TITULO = "Alerta de licitação: os editais da sua cidade no seu e-mail";
 const DESCRICAO =
-  "Todo dia útil, os editais abertos da sua cidade filtrados pelo que a sua empresa vende. Sem abrir dezenas de portais. Grátis, sem cartão.";
-const ATUALIZADO = "2026-08-21";
+  "Nos dias úteis, os editais abertos que combinam com o que a sua empresa vende. Sem abrir dezenas de portais. Teste 14 dias, sem cartão.";
+const ATUALIZADO = "2026-08-25";
 
 export const metadata: Metadata = {
   title: TITULO,
@@ -21,9 +22,14 @@ export const metadata: Metadata = {
 
 const FAQ = [
   {
-    pergunta: "O alerta é gratuito mesmo?",
+    pergunta: "Quanto custa para experimentar?",
     resposta:
-      "O acompanhamento de uma cidade é gratuito e não pede cartão. Planos pagos existem para quem precisa de mais cidades, filtro por CNAE e faixa de valor, e a leitura prévia do edital com checklist de habilitação.",
+      "Nada, por 14 dias, e não pedimos cartão. O teste roda no plano Leve, o mesmo que custa R$ 59 por mês depois: até três recortes, nota de aderência e o resumo nos dias úteis. No fim do prazo o acesso para sozinho — como não há cartão cadastrado, não há como cobrar sem você pedir.",
+  },
+  {
+    pergunta: "O alerta gratuito diário acabou mesmo?",
+    resposta:
+      "Acabou em 25 de agosto de 2026. Ele mandava os editais abertos de uma cidade sem comparar com o perfil da empresa, e era, na prática, uma versão pior do produto pago — de graça e para sempre. Em vez de manter os dois, preferimos abrir o produto inteiro por 14 dias. Quem estava cadastrado recebeu o convite por e-mail.",
   },
   {
     pergunta: "De onde vêm os editais?",
@@ -36,9 +42,9 @@ const FAQ = [
       "Sim — as 27 unidades da federação, coletadas todo dia. A operação começou por seis estados do Nordeste, para ser revisada antes de crescer, e hoje pede o país inteiro. Quando um estado não vem completo, o dia é classificado como parcial e o relatório diz qual faltou: ausência aqui não significa ausência no PNCP.",
   },
   {
-    pergunta: "O alerta substitui a leitura do edital?",
+    pergunta: "O resumo substitui a leitura do edital?",
     resposta:
-      "Não, e nem tenta. Ele te avisa que existe um edital compatível com o que você vende, com prazo e valor à vista, para você decidir se vale abrir. A decisão de disputar exige ler o edital inteiro — inclusive os anexos.",
+      "Não, e nem tenta. Ele avisa que existe um edital compatível com o que você vende, com prazo e valor à vista, para você decidir se vale abrir. No plano Leve, que é onde o teste roda, não abrimos o arquivo: a decisão de disputar exige ler o edital inteiro, inclusive os anexos.",
   },
   {
     pergunta: "Como faço para sair?",
@@ -88,12 +94,13 @@ export default function AlertaDeLicitacao() {
         <Trilha atual="Alerta de licitação" />
 
         <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl">
-          Os editais da sua cidade, no seu e-mail, todo dia útil
+          Os editais do seu ramo, no seu e-mail, nos dias úteis
         </h1>
 
         <p className="mt-5 text-lg leading-relaxed text-[var(--muted)]">
           Sem abrir dezenas de portais para descobrir que não tinha nada do seu
-          ramo. Grátis para uma cidade, sem cartão.
+          ramo. Teste {DIAS_DE_TESTE} dias, sem cartão, e o acesso para sozinho
+          no fim.
         </p>
 
         <div className="mt-8">
@@ -125,17 +132,24 @@ export default function AlertaDeLicitacao() {
             />
           </Secao>
 
-          <Secao id="como" titulo="O que o alerta faz">
+          <Secao id="como" titulo="O que chega no e-mail">
             <P>
-              Todo dia útil de manhã, você recebe os editais abertos da sua
-              cidade que combinam com o que a sua empresa vende. Cada linha traz
-              o que é, quem está comprando, quanto vale, quando fecha e o link
-              direto para o registro oficial.
+              Nos dias úteis de manhã, você recebe os editais abertos dos
+              recortes que escolheu — até três: uma cidade, um estado ou o Brasil
+              — que combinam com o que a sua empresa vende. Cada linha traz o que
+              é, o quanto combina com o seu perfil, quem está comprando, quanto
+              vale, quando fecha e o link direto para o registro oficial.
+            </P>
+            <P>
+              Dia sem edital novo é dia sem e-mail. É deliberado: mensagem
+              diária que às vezes não tem nada dentro treina o leitor a não abrir
+              a que tem.
             </P>
             <Tabela
               cabecalho={["No e-mail você vê", "Para quê"]}
               linhas={[
                 ["Objeto da contratação", "Decidir em dois segundos se é do seu ramo"],
+                ["Aderência, de 0 a 100", "Ler de cima para baixo e parar quando quiser"],
                 ["Órgão comprador", "Reconhecer quem você já atendeu"],
                 ["Valor estimado", "Saber se cabe no seu porte antes de abrir"],
                 ["Dias até o encerramento", "Não descobrir na véspera"],
@@ -184,9 +198,10 @@ export default function AlertaDeLicitacao() {
             </P>
           </Secao>
 
-          <Secao id="nao-e" titulo="O que este alerta não é">
+          <Secao id="nao-e" titulo="O que o teste não é">
             <P>
-              Ele não lê o edital por você, não garante habilitação e não diz se
+              Ele não lê o edital por você — no plano Leve, que é onde o teste
+              roda, não abrimos o arquivo. Não garante habilitação e não diz se
               você vai ganhar. Avisa que existe algo compatível, com prazo e
               valor à vista, para a decisão de abrir ser sua e ser rápida.
             </P>
@@ -208,12 +223,18 @@ export default function AlertaDeLicitacao() {
             </P>
           </Secao>
 
-          <Secao id="cadastro" titulo="Comece pela sua cidade">
+          <Secao id="cadastro" titulo="Comece o teste">
             <P>
-              Uma cidade, de graça, sem cartão. Se depois você precisar de mais
-              cidades, filtro por CNAE e faixa de valor, ou da leitura prévia com
-              checklist de habilitação, existem planos para isso — mas só faz
-              sentido depois que o alerta provar valor para você.
+              {DIAS_DE_TESTE} dias, sem cartão. Deixe o e-mail e mandamos o
+              convite; o teste começa quando você cadastrar a empresa e escolher
+              os recortes, que é o que permite comparar cada edital com o que
+              você vende.
+            </P>
+            <P>
+              Se depois você precisar da leitura prévia do documento, com as
+              exigências de habilitação extraídas do texto, existem planos para
+              isso — mas só faz sentido depois que o resumo provar valor para
+              você.
             </P>
             <CapturaAlerta origem="/alerta-de-licitacao/#cadastro" />
           </Secao>

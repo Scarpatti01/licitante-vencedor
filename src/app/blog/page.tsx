@@ -118,9 +118,9 @@ export default function Blog() {
             chamada={{
               titulo: "Antes de continuar lendo: os editais podem vir até você",
               texto:
-                "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e link para o registro oficial. É de graça e você sai quando quiser.",
+                "Teste por 14 dias, sem cartão: nos dias úteis, os editais publicados no PNCP que combinam com o que a sua empresa vende — com nota de aderência, órgão, valor, prazo e link para o registro oficial. No fim dos 14 dias o acesso para sozinho, sem cobrança.",
             }}
-            textoDoBotao="Quero receber os editais do meu ramo"
+            textoDoBotao="Quero testar por 14 dias"
           />
         </section>
 

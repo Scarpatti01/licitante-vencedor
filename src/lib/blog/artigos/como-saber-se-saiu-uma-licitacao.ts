@@ -58,7 +58,7 @@ export const COMO_SABER_SE_SAIU_UMA_LICITACAO: Artigo = {
     {
       tipo: "captura",
       chamada:
-        "Se o seu problema é ficar sabendo tarde, dá para resolver a parte mais penosa sem pagar nada. O alerta gratuito varre o PNCP todo dia útil e manda por e-mail os editais abertos da cidade que você escolher, com a data da sessão e o prazo que ainda resta. A decisão de disputar continua sendo sua, e o edital sempre prevalece.",
+        "Se o seu problema é ficar sabendo tarde, dá para resolver a parte mais penosa sem cartão: são 14 dias de teste. O serviço varre o PNCP nos dias úteis e manda por e-mail os editais abertos do recorte que você escolher, com a data da sessão e o prazo que ainda resta. A decisão de disputar continua sendo sua, e o edital sempre prevalece.",
     },
     {
       tipo: "subtitulo",

@@ -3,7 +3,11 @@ import { enviarConfirmacao } from "@/lib/leads-emails";
 import { dentroDoLimite, identificarChamador } from "@/lib/limite-de-taxa";
 
 /**
- * Recebe o cadastro no alerta gratuito.
+ * Recebe o cadastro no convite do teste.
+ *
+ * Chamava-se "alerta gratuito" até 25/08. A ROTA não mudou de forma: ela grava
+ * o lead e dispara a confirmação, igual. O que mudou é o que a confirmação
+ * promete — ver `email/mensagens.ts`.
  *
  * Regra que atravessa todo o arquivo: só responder sucesso quando o lead foi
  * realmente gravado. Qualquer outro caso devolve erro explícito, para a página

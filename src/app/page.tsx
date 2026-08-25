@@ -146,16 +146,19 @@ export default function Home() {
             </p>
 
             {/*
-              O botão principal leva a PREÇOS, e não ao alerta gratuito.
-              
+              O botão principal leva a PREÇOS, e não ao teste.
+
               Era a incoerência mais cara da página: o texto acima vende a
               leitura diária comparada ao perfil da empresa — que é o produto
               pago — e o botão entregava o alerta por cidade, que não lê nada.
               Quem clicava atrás do que acabou de ler recebia outra coisa, e a
               única forma de descobrir o preço era não existir.
 
-              O gratuito não sumiu: virou o botão do meio, para quem ainda não
-              quer pagar. E a página de preços leva a ele de novo, no fim.
+              Em 25/08 o botão do meio deixou de oferecer o alerta gratuito, que
+              acabou, e passou a oferecer os 14 dias de teste. A hierarquia é a
+              mesma e o destino também (`/alerta-de-licitacao/`, reescrita): o
+              principal mostra o preço, o do meio dá o caminho para quem quer
+              ver antes de decidir.
             */}
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
@@ -168,7 +171,7 @@ export default function Home() {
                 href="/alerta-de-licitacao/"
                 className="rounded-md border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-slate-400"
               >
-                Começar pelo alerta gratuito
+                Testar 14 dias, sem cartão
               </Link>
               <Link
                 href="/como-funciona/"

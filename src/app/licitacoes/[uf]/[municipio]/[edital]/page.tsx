@@ -320,9 +320,9 @@ export default async function PaginaDoEdital({
               ? "Este já encerrou. Quer receber os próximos enquanto dá tempo?"
               : `Quer saber quando ${post.municipio} publicar algo do seu ramo?`,
             texto:
-              "Publicamos aqui uma amostra do que sai todo dia. O alerta gratuito manda " +
-              "por e-mail os editais abertos da cidade que você indicar, com o prazo em " +
-              "destaque, enquanto ainda dá para participar.",
+              "Publicamos aqui uma amostra do que sai todo dia. No teste de 14 dias, o " +
+              "resumo manda por e-mail os editais abertos do recorte que você escolher, com " +
+              "o prazo em destaque, enquanto ainda dá para participar. Sem cartão.",
           }}
         />
 

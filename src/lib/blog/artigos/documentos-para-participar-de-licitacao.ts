@@ -88,7 +88,7 @@ export const DOCUMENTOS_PARA_PARTICIPAR: Artigo = {
     {
       tipo: "captura",
       chamada:
-        "Enquanto você organiza a papelada, vale começar a acompanhar o que está sendo publicado. O alerta gratuito manda, todo dia útil, os editais abertos da cidade que você indicar, com prazo e link para o registro oficial. Conferir cada um contra os seus documentos continua sendo trabalho seu, mas pelo menos o certame não passa sem você ver.",
+        "Enquanto você organiza a papelada, vale começar a acompanhar o que está sendo publicado. No teste de 14 dias, sem cartão, o resumo manda nos dias úteis os editais abertos do recorte que você indicar, com prazo e link para o registro oficial. Conferir cada um contra os seus documentos continua sendo trabalho seu, mas pelo menos o certame não passa sem você ver.",
     },
     {
       tipo: "subtitulo",

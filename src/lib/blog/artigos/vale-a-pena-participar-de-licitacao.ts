@@ -39,7 +39,7 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       tipo: "captura",
       chamada:
-        "Essa triagem começa por saber o que existe. O alerta gratuito manda, todo dia útil, os editais abertos da cidade que você indicar, com objeto, órgão, valor estimado, prazo e o link para o registro oficial. A partir daí a conta de vale a pena é sua, e o edital sempre prevalece.",
+        "Essa triagem começa por saber o que existe. No teste de 14 dias, sem cartão, o resumo manda nos dias úteis os editais abertos do recorte que você escolher, com objeto, órgão, valor estimado, prazo, nota de aderência e o link para o registro oficial. A partir daí a conta de vale a pena é sua, e o edital sempre prevalece.",
     },
     {
       tipo: "subtitulo",

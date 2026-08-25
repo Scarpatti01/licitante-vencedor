@@ -1,6 +1,7 @@
 import type { PerfilDaEmpresa, TipoDeDocumento } from "../dominio/tipos.ts";
 import type { Edital } from "../fontes/tipos.ts";
 import type { Recorte } from "../dominio/recorte.ts";
+import { FILTRO_POSTGREST_DE_VIVAS } from "../assinatura/vivas.ts";
 import type { decisaoParaLinha, oportunidadeParaLinha } from "./mapeamento.ts";
 
 /**
@@ -416,7 +417,7 @@ export function abrirRepositorio(): Repositorio | null {
     async assinantesVivos() {
       const linhas = await paginado("assinaturas", {
         select: "id",
-        status: "in.(teste,ativa,inadimplente)",
+        status: FILTRO_POSTGREST_DE_VIVAS,
       });
       return linhas.length;
     },

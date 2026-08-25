@@ -299,9 +299,9 @@ export default function Legislacao() {
               chamada={{
                 titulo: "Saber qual norma vale não coloca o edital na sua frente",
                 texto:
-                  "Esta página é de consulta e o guia segue abaixo. Pode pular. Só a observação prática do parágrafo acima: quem rege a disputa é o edital, e ele precisa chegar até você. Se quiser, todo dia útil a gente manda os editais publicados no PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+                  "Esta página é de consulta e o guia segue abaixo. Pode pular. Só a observação prática do parágrafo acima: quem rege a disputa é o edital, e ele precisa chegar até você. Se quiser, dá para testar por 14 dias, sem cartão, o serviço que manda nos dias úteis os editais do PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
               }}
-              textoDoBotao="Quero receber os editais do meu ramo"
+              textoDoBotao="Quero testar por 14 dias"
             />
           </section>
 

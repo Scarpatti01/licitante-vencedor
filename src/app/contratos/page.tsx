@@ -326,9 +326,9 @@ export default function Contratos() {
               chamada={{
                 titulo: "Contrato que está acabando volta como edital, e costuma pegar o fornecedor de surpresa",
                 texto:
-                  "Não acompanhamos o seu contrato: data-base, ressalva e prorrogação são calendário interno da sua empresa. O que chega, todo dia útil, são os editais publicados no PNCP que combinam com o que você vende, inclusive o certame que vai substituir um contrato em fim de vigência, com prazo e link para o registro oficial.",
+                  "Não acompanhamos o seu contrato: data-base, ressalva e prorrogação são calendário interno da sua empresa. O que chega, nos dias úteis do teste de 14 dias, são os editais publicados no PNCP que combinam com o que você vende, inclusive o certame que vai substituir um contrato em fim de vigência, com prazo e link para o registro oficial.",
               }}
-              textoDoBotao="Quero receber os editais do meu ramo"
+              textoDoBotao="Quero testar por 14 dias"
             />
           </section>
 

@@ -2,8 +2,15 @@
 
 import { useState } from "react";
 
+import { BOTAO_DO_TESTE, PROMESSA_CURTA } from "@/lib/convite";
+
 /**
- * Formulário de cadastro no alerta.
+ * Formulário de cadastro no convite do teste.
+ *
+ * Chamava-se "cadastro no alerta" até 25/08, quando o alerta gratuito diário
+ * acabou. O nome do arquivo ficou: renomear componente usado em dezoito páginas
+ * é um diff que esconde a mudança de verdade — a de PROMESSA — no meio de
+ * dezoito trocas de import.
  *
  * Ele nunca diz "pronto" sem que o servidor tenha confirmado a gravação. Se a
  * captura ainda não tem destino configurado, a resposta 503 vira uma mensagem
@@ -26,7 +33,7 @@ type Estado =
 export function CapturaAlerta({
   origem,
   chamada,
-  textoDoBotao = "Receber editais da minha cidade",
+  textoDoBotao = BOTAO_DO_TESTE,
 }: {
   /** Qual página gerou o cadastro. É o que permite saber qual conteúdo converte. */
   origem: string;
@@ -95,8 +102,8 @@ export function CapturaAlerta({
             <p className="leading-relaxed">
               <strong>Falta um clique.</strong> Enviamos um e-mail de confirmação
               para o endereço que você digitou. Só depois que você clicar no link
-              é que os editais começam a chegar — é assim que garantimos que
-              ninguém entra na lista sem pedir.
+              é que o convite do teste sai — é assim que garantimos que ninguém
+              entra na lista sem pedir.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
               Não chegou em alguns minutos? Confira a caixa de spam e o promoções.
@@ -110,7 +117,7 @@ export function CapturaAlerta({
               <strong>Recebemos seu cadastro, mas o e-mail de confirmação não
               saiu.</strong>{" "}
               Seu interesse está registrado — o que falhou foi o envio, do nosso
-              lado. Sem a confirmação, o alerta não começa.
+              lado. Sem a confirmação, o convite não sai.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
               Tente de novo daqui a pouco ou fale com a gente pelo{" "}
@@ -200,8 +207,8 @@ export function CapturaAlerta({
           entregar o e-mail, que a pessoa quer conferir.
         */}
         <p className="text-xs leading-relaxed text-[var(--muted)]">
-          Grátis, sem cartão. Usamos seu e-mail apenas para enviar os editais que
-          você pediu, e você sai com um clique. Sem rastreador e sem repasse a
+          {PROMESSA_CURTA} Usamos seu e-mail apenas para enviar o convite e os
+          editais que você pediu, e você sai com um clique. Sem rastreador e sem repasse a
           terceiros — veja a{" "}
           <a href="/privacidade/" className="underline underline-offset-4">
             política de privacidade

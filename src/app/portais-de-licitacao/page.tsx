@@ -270,9 +270,9 @@ export default function PortaisDeLicitacao() {
               chamada={{
                 titulo: "São 54 sistemas para vigiar, ou um e-mail por dia útil",
                 texto:
-                  "A publicação é a parte centralizada, e dá para usar isso a favor. Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende, com objeto, órgão, valor, prazo e o link para o registro oficial. Você continua disputando no portal que o edital indicar; o que sai da rotina é abrir todos eles para descobrir se tem algo seu.",
+                  "A publicação é a parte centralizada, e dá para usar isso a favor. Teste por 14 dias, sem cartão: nos dias úteis, os editais publicados no PNCP que combinam com o que a sua empresa vende, com nota de aderência, órgão, valor, prazo e o link para o registro oficial. Você continua disputando no portal que o edital indicar; o que sai da rotina é abrir todos eles para descobrir se tem algo seu.",
               }}
-              textoDoBotao="Quero receber os editais do meu ramo"
+              textoDoBotao="Quero testar por 14 dias"
             />
           </section>
 

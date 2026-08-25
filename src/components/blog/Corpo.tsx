@@ -153,7 +153,7 @@ function renderizar(bloco: BlocoDeConteudo, origem: string, indice: number) {
             // muda o formato de todos os textos seguintes.
             origem={`${origem}#captura-${indice}`}
             chamada={{ titulo: bloco.chamada, texto: TEXTO_DA_CAPTURA }}
-            textoDoBotao="Quero receber os editais do meu ramo"
+            textoDoBotao="Quero testar por 14 dias"
           />
         </div>
       );
@@ -168,7 +168,7 @@ function renderizar(bloco: BlocoDeConteudo, origem: string, indice: number) {
  * geraria cancelamento no primeiro envio.
  */
 const TEXTO_DA_CAPTURA =
-  "Todo dia útil, os editais publicados no PNCP que combinam com o que a sua empresa vende — com objeto, órgão, valor, prazo e o link direto para o registro oficial. Sem garimpar portal.";
+  "Teste por 14 dias, sem cartão: nos dias úteis, os editais publicados no PNCP que combinam com o que a sua empresa vende — com nota de aderência, órgão, valor, prazo e o link direto para o registro oficial. Sem garimpar portal.";
 
 export function ancora(texto: string): string {
   return texto

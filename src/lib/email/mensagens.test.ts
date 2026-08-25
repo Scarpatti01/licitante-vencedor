@@ -10,6 +10,7 @@ import {
   type ConteudoDeEmail,
 } from "./mensagens";
 import { SITE } from "../site";
+import { DIAS_DE_TESTE } from "../assinatura/teste";
 
 const CONFIRMACAO = {
   email: "compras@fornecedora.com.br",
@@ -122,26 +123,60 @@ describe("boas-vindas", () => {
   const texto = emTextoSimples(conteudo);
   const html = emHtml(conteudo);
 
-  it("diz quando os alertas chegam", () => {
+  /*
+   * As guardas deste bloco mudaram de assunto em 25/08, e nenhuma foi apagada.
+   *
+   * O e-mail deixou de ser "bem-vindo ao alerta gratuito diário" e virou
+   * "comece o teste de catorze dias". Cada uma destas guardava uma lição sobre
+   * o que um e-mail de boas-vindas deve ao leitor, e as lições não mudaram com
+   * a mudança da oferta: dizer quando chega, dizer o que chega, não inventar
+   * número onde falta dado, e declarar o que o produto NÃO faz. O que mudou foi
+   * o produto sobre o qual elas falam.
+   *
+   * Apagar em bloco teria sido mais rápido, e teria perdido o motivo de cada
+   * uma existir.
+   */
+  it("diz quando o resumo chega", () => {
     for (const t of [texto, html]) {
       expect(t).toMatch(/dias úteis/i);
       expect(t).toMatch(/manhã/i);
+      // A regra que mais gera dúvida no suporte: dia sem edital é dia sem
+      // e-mail, e quem não sabe disso acha que o produto quebrou.
+      expect(t).toMatch(/silêncio no dia em que não houver edital novo/i);
     }
   });
 
-  it("lista o que vem em cada alerta", () => {
+  it("lista o que vem em cada edital, com os rótulos que o resumo usa", () => {
+    /*
+     * Os rótulos são conferidos contra `resumo/plano.ts`, e não digitados aqui
+     * de memória: prometer "nota de combinação" e entregar "Aderência" obriga o
+     * leitor a traduzir, e a tradução é onde ele desiste. Se alguém renomear um
+     * rótulo lá, esta guarda cobra a promessa aqui.
+     */
     for (const t of [texto, html]) {
-      expect(t).toMatch(/Objeto/);
+      expect(t).toMatch(/Aderência/);
       expect(t).toMatch(/Órgão/);
       expect(t).toMatch(/Valor/);
       expect(t).toMatch(/Prazo/);
-      expect(t).toMatch(/Link oficial/);
+      expect(t).toMatch(/Edital/);
     }
   });
 
   it("não converte valor ausente em zero — nem na promessa do que vai chegar", () => {
-    expect(texto).toMatch(/quando o órgão não publica/i);
-    expect(texto).toMatch(/nunca mostra R\$ 0,00/i);
+    /*
+     * A lição sobrevive à troca de produto, e ela é a mais cara deste arquivo:
+     * boa parte dos editais do PNCP sai sem valor estimado, e "R$ 0,00" no
+     * lugar do que falta faz o assinante descartar oportunidade boa achando que
+     * é migalha.
+     *
+     * A guarda no lugar onde a linha é MONTADA está em `resumo/plano.test.ts`.
+     * Ela não existia até hoje: a única cobrança do princípio vivia nos testes
+     * do alerta gratuito, que é justamente o que acabou.
+     */
+    for (const t of [texto, html]) {
+      expect(t).toMatch(/quando o órgão não publica/i);
+      expect(t).toMatch(/nunca R\$ 0,00/i);
+    }
   });
 
   /*
@@ -150,38 +185,66 @@ describe("boas-vindas", () => {
    * do que este alerta não faz, o cadastro passa a ser conquistado com o
    * assinante acreditando em um filtro que não roda para ele.
    */
-  it("declara, com todas as letras, o que este alerta NÃO faz", () => {
+  it("declara, com todas as letras, o que o teste NÃO faz", () => {
     /*
-     * A redação mudou em 21/08 — de "o que ainda NÃO está no ar" para "o que
-     * este alerta gratuito NÃO faz" — porque as duas coisas passaram a existir
-     * para quem cadastra a empresa (`ler-recomendados.ts`). O que NÃO mudou, e
-     * é o que este teste guarda, é a divulgação: quem assina o alerta gratuito
-     * continua tendo de saber que o recorte é geográfico e que nada aqui é
-     * lido.
+     * A redação mudou duas vezes, e o que ela guarda nunca mudou.
+     *
+     * Em 21/08, de "o que ainda NÃO está no ar" para "o que este alerta
+     * gratuito NÃO faz". Em 25/08, para "o que o teste NÃO faz", quando o
+     * alerta gratuito acabou. Em todas as versões a divulgação é a mesma:
+     * preferimos perder um cadastro a conquistá-lo por omissão. Quem descobre a
+     * limitação depois de investir tempo pede reembolso; quem descobre antes
+     * decide com informação.
      */
     for (const t of [texto, html]) {
       expect(t).toMatch(/NÃO faz/);
-      expect(t).toMatch(/filtro fino por perfil/i);
-      expect(t).toMatch(/não filtra por CNAE/i);
-      expect(t).toMatch(/vai chegar edital que não serve para você/i);
-      expect(t).toMatch(/leitura do edital/i);
-      expect(t).toMatch(/não lemos o texto nem os anexos dos editais deste alerta/i);
+      expect(t).toMatch(/leitura do documento/i);
+      expect(t).toMatch(/não abrimos o arquivo do edital/i);
+      expect(t).toMatch(/garantia de resultado/i);
     }
   });
 
-  it("a leitura só é prometida para quem cadastra a empresa, nunca para este alerta", () => {
-    // O fecho vende o produto pago; o bloco acima nega a leitura AQUI. As duas
-    // frases têm de conviver — sem a segunda, o assinante entende que o e-mail
-    // que está recebendo já vem lido.
+  it("o teste NUNCA promete a leitura do documento", () => {
+    /*
+     * Esta guarda inverteu de sentido, e ficou mais dura.
+     *
+     * Antes: o alerta gratuito não lê, mas quem cadastra a empresa recebe o
+     * documento lido — as duas frases tinham de conviver. Agora o teste roda no
+     * plano Leve (`assinatura/teste.ts`), que também não lê. Prometer leitura
+     * em qualquer canto deste e-mail seria vender por catorze dias um produto
+     * que some no dia em que a assinatura de R$ 59 começa.
+     *
+     * Por isso a afirmação virou negativa: não é mais "diga as duas coisas", é
+     * "não diga a primeira". Guarda de ausência é frágil por natureza, e por
+     * isso ela vem acompanhada da positiva acima, que exige a negação escrita.
+     */
     for (const t of [texto, html]) {
-      expect(t).toMatch(/existem para quem cadastra a empresa/i);
-      expect(t).toMatch(/os de maior aderência chegam com o documento lido/i);
+      expect(t).not.toMatch(/chegam com o documento lido/i);
+      expect(t).not.toMatch(/lemos o edital/i);
+      expect(t).not.toMatch(/acesso completo/i);
     }
   });
 
-  it("não pede ação: quem chegou aqui já confirmou", () => {
-    expect(conteudo.acao).toBeNull();
-    expect(html).not.toContain("<a href=\"https://licitantevencedor.com.br/confirmar");
+  it("pede uma ação, e é a única — a inversão de 25/08", () => {
+    /*
+     * Aqui havia `expect(conteudo.acao).toBeNull()`, com o comentário "quem
+     * chegou aqui já confirmou". Estava certo enquanto a confirmação do e-mail
+     * era o fim do caminho: o alerta passava a chegar sozinho, e um botão seria
+     * anúncio no lugar de uma boa notícia.
+     *
+     * Com o alerta gratuito extinto, a confirmação virou meio do caminho. Não
+     * há nada para receber até a empresa existir, e um e-mail que não diz para
+     * onde ir deixa a pessoa esperando um resumo que nunca vem. A inversão é
+     * deliberada, e fica escrita para não parecer descuido de quem passar aqui
+     * depois.
+     */
+    expect(conteudo.acao).not.toBeNull();
+    expect(conteudo.acao?.url).toContain("/criar-conta/");
+    expect(conteudo.acao?.rotulo).toMatch(new RegExp(`${DIAS_DE_TESTE}`));
+
+    // Uma só. Duas chamadas competindo dividem o clique e nenhuma ganha.
+    const botoes = html.match(/<a [^>]*background/g) ?? [];
+    expect(botoes).toHaveLength(1);
   });
 });
 

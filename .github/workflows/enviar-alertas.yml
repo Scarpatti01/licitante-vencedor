@@ -32,14 +32,21 @@
 name: Enviar alertas
 
 on:
-  schedule:
-    # 10:10 UTC = 07:10 em Brasília, de segunda a sexta. O alerta está na caixa
-    # antes do começo do expediente, que é o que as boas-vindas prometem.
-    #
-    # Dia útil é decidido AQUI, e não dentro do script: dois lugares para a
-    # mesma regra é o caminho clássico para alguém mudar o cron e o produto
-    # continuar mandando no sábado.
-    - cron: "10 10 * * 1-5"
+  # ⚠️ SEM AGENDAMENTO desde 25/08 — o alerta gratuito diário acabou.
+  #
+  # Ele entregava, de graça e para sempre, o essencial do que o plano Leve
+  # cobra: os editais abertos de uma cidade, todo dia útil. O dono decidiu
+  # encerrá-lo e pôr no lugar 14 dias de teste do produto de verdade.
+  #
+  # O workflow continua aqui INTEIRO e disparável à mão, e isso é deliberado:
+  # é a máquina que já provou funcionar contra esta base, com dedupe, double
+  # opt-in e descadastro. Se um dia o alerta voltar em outra forma — semanal,
+  # ou como amostra de campanha —, voltar é devolver o `cron` para cá.
+  #
+  # `alerta-virou-convite.test.ts` cobra que ele NÃO tenha agendamento, para
+  # ninguém religar sem decidir religar.
+  #
+  # O cron que estava aqui era: "10 10 * * 1-5" (07:10 de Brasília, dias úteis).
   workflow_dispatch:
     inputs:
       simular:

@@ -96,7 +96,7 @@ export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
     {
       tipo: "captura",
       chamada:
-        "Se quase um terço dos editais dá menos de oito dias, a diferença entre disputar e não disputar costuma ser a data em que você ficou sabendo. O Licitante Vencedor varre o PNCP todo dia útil nas 27 unidades da federação e manda por e-mail os editais que combinam com o perfil da sua empresa, de graça, pela cidade que você escolher.",
+        "Se quase um terço dos editais dá menos de oito dias, a diferença entre disputar e não disputar costuma ser a data em que você ficou sabendo. O Licitante Vencedor varre o PNCP nos dias úteis nas 27 unidades da federação e manda por e-mail os editais que combinam com o perfil da sua empresa. Dá para experimentar por 14 dias, sem cartão, no recorte que você escolher.",
     },
     {
       tipo: "subtitulo",

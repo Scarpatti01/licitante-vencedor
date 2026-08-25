@@ -6,21 +6,26 @@ import { PLANOS, emReais } from "@/lib/precos";
  *
  * ## Por que ele existe separado da captura
  *
- * `CapturaAlerta` vende o alerta GRATUITO, e ele é honesto sobre o que
- * entrega: a lista dos editais publicados que combinam com a cidade e o ramo
- * que a pessoa pediu. Ponto.
+ * `CapturaAlerta` vende o TESTE, e ele é honesto sobre o que entrega: a lista
+ * dos editais publicados que combinam com o recorte e o ramo que a pessoa
+ * pediu, por catorze dias, no plano Leve. Ponto.
  *
- * O que o alerta gratuito NÃO faz é ler o documento, conferir o que falta na
- * habilitação e dar nota de aderência. Isso é o produto pago, e misturar as
- * duas descrições num formulário que diz "grátis, sem cartão" foi exatamente o
- * defeito que o dono apontou em 23/08: o texto em negrito descrevia a leitura
- * do edital e a checagem de cadastro, e a letra miúda logo abaixo dizia que
- * era de graça. Quem lê acredita na promessa maior e descobre a diferença
- * depois, que é a pior hora.
+ * O que o plano de lista NÃO faz é ler o documento e conferir o que falta na
+ * habilitação. Isso são os planos com leitura, e misturar as duas descrições
+ * num formulário que diz "sem cartão" foi exatamente o defeito que o dono
+ * apontou em 23/08: o texto em negrito descrevia a leitura do edital e a
+ * checagem de cadastro, e a letra miúda logo abaixo dizia que era de graça.
+ * Quem lê acredita na promessa maior e descobre a diferença depois, que é a
+ * pior hora.
  *
- * Então cada post passa a ter os dois, e cada um diz a verdade do seu lado:
- * a captura gratuita no meio do texto, onde a dor aparece, e este cartão no
- * fim, para quem chegou até lá querendo mais.
+ * Então cada post passa a ter os dois, e cada um diz a verdade do seu lado: a
+ * captura do teste no meio do texto, onde a dor aparece, e este cartão no fim,
+ * para quem chegou até lá querendo mais.
+ *
+ * A troca de 25/08 não mudou essa divisão de trabalho — mudou o que está do
+ * lado de cá. Onde se lia "gratuito" agora se lê "teste de 14 dias", e a
+ * assimetria que justifica os dois blocos continua sendo a leitura do
+ * documento.
  *
  * ## O preço vem de `precos.ts`
  *
@@ -41,12 +46,10 @@ export function CardAssinatura() {
       </p>
 
       <p className="mt-3 leading-relaxed">
-        O alerta gratuito manda os editais abertos da sua cidade. O plano pago
-        faz a triagem inteira pelo perfil da sua empresa: região de atuação,
-        CNAE, faixa de orçamento e as exigências de habilitação que você já
-        declarou. Cada edital chega com uma nota de aderência, e os mais
-        compatíveis chegam com o documento lido: o que exigem, o que falta no
-        seu cadastro e qual é o prazo.
+        O teste manda os editais abertos dos recortes que você escolher, com
+        nota de aderência. Os planos com leitura vão além: os mais compatíveis
+        chegam com o documento lido: o que exigem, o que falta no seu cadastro
+        e qual é o prazo.
       </p>
 
       <p className="mt-3 leading-relaxed">

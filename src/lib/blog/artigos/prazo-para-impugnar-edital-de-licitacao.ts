@@ -55,7 +55,7 @@ export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
     {
       tipo: "captura",
       chamada:
-        "O prazo de impugnação só serve a quem viu o edital cedo. O alerta gratuito manda, todo dia útil, os editais abertos da cidade que você escolher, com a data de encerramento em destaque. Descobrir a exigência estranha na semana da publicação, e não na véspera da sessão, é o que mantém a impugnação como opção sua em vez de opção vencida. Quem decide se impugna, e com que fundamento, continua sendo você, e o edital sempre prevalece.",
+        "O prazo de impugnação só serve a quem viu o edital cedo. No teste de 14 dias, sem cartão, o resumo manda nos dias úteis os editais abertos do recorte que você escolher, com a data de encerramento em destaque. Descobrir a exigência estranha na semana da publicação, e não na véspera da sessão, é o que mantém a impugnação como opção sua em vez de opção vencida. Quem decide se impugna, e com que fundamento, continua sendo você, e o edital sempre prevalece.",
     },
     {
       tipo: "subtitulo",
