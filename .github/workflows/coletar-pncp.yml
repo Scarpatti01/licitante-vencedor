@@ -382,7 +382,37 @@ jobs:
             exit 0
           fi
           git commit -m "Coleta do PNCP de $(date -u +%Y-%m-%d) ($CLASSE)"
-          git push
+
+          # Rebase antes de empurrar, com retentativa.
+          #
+          # Em 25/08 as DUAS coletas do dia falharam aqui, e a coleta em si tinha
+          # funcionado: `git push` foi recusado por não estar em fast-forward,
+          # porque houve merge no `main` enquanto o job rodava. A coleta demora
+          # de 30 a 110 minutos; a janela para alguém mesclar algo no meio é
+          # enorme, e nesses dias o agregado, os posts e o retrato de abertos
+          # simplesmente não eram versionados.
+          #
+          # Falhava em silêncio útil: o job ficava vermelho, mas quem olhava via
+          # "coleta" e não "push recusado", e o site continuava servindo o dado
+          # de ontem sem nada explicar.
+          #
+          # `--rebase` e não `merge` porque este commit só toca `dados/`, e um
+          # merge encheria o histórico de commits de junção sem conteúdo. Se
+          # houver conflito de verdade — dois processos gravando o mesmo arquivo
+          # de dados —, o rebase falha e o job falha junto, que é o certo: nesse
+          # caso alguém precisa olhar.
+          for tentativa in 1 2 3; do
+            if git push; then
+              echo "empurrado na tentativa $tentativa"
+              exit 0
+            fi
+            echo "push recusado; rebaseando sobre o main e tentando de novo"
+            git pull --rebase origin main || exit 1
+            sleep $((tentativa * 5))
+          done
+
+          echo "::error title=Coleta não conseguiu versionar::push recusado em 3 tentativas"
+          exit 1
 
       # Coleta degradada NÃO commita — e também não passa em silêncio, que era
       # metade do defeito. A falha do job é o mecanismo de aviso de propósito:
