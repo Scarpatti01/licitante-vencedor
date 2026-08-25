@@ -1,6 +1,7 @@
 import { EDITAIS_DE_EXEMPLO, PERFIL_COMPLETO, PERFIL_DOCUMENTACAO_RUIM, PERFIL_INCOMPLETO } from "../dominio/exemplos";
 import { analiseNaoRealizada, avaliarOportunidade } from "../dominio/recomendacao";
 import type { PerfilDaEmpresa, SituacaoDaOportunidade } from "../dominio/tipos";
+import type { Recorte } from "../dominio/recorte";
 import type {
   FiltroDeOportunidades,
   IdentidadeDaEmpresa,
@@ -89,6 +90,20 @@ export class RepositorioDeDemonstracao implements RepositorioDoProduto {
   async salvarPerfil(perfil: PerfilDaEmpresa): Promise<void> {
     this.perfis.set(perfil.empresaId, perfil);
   }
+
+  async recortes(empresaId: string): Promise<Recorte[]> {
+    return this.recortesPorEmpresa.get(empresaId) ?? [];
+  }
+
+  async salvarRecortes(empresaId: string, recortes: Recorte[]): Promise<void> {
+    // A demonstração NÃO cobra o limite de três: quem cobra é
+    // `conferirConjunto`, antes de chegar aqui, e a trava do banco no caminho
+    // real. Repetir a regra numa terceira implementação seria criar mais um
+    // lugar de onde ela pode divergir.
+    this.recortesPorEmpresa.set(empresaId, recortes);
+  }
+
+  private readonly recortesPorEmpresa = new Map<string, Recorte[]>();
 
   private avaliarTodas(empresaId: string, agora: Date): ResumoDaOportunidade[] {
     const perfil = this.perfis.get(empresaId);

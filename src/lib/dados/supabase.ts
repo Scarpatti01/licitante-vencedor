@@ -5,8 +5,9 @@ import type { PerfilDaEmpresa, SituacaoDaOportunidade, TipoDeDocumento } from ".
 import type { Avaliacao } from "../dominio/recomendacao";
 import { diasAteEncerrar } from "../pncp/normaliza";
 import { explicarDecisao, type MotivoDeDescarte } from "../pipeline/triagem";
+import type { Recorte } from "../dominio/recorte";
 import { avaliacaoDaLinha, type LinhaDeOportunidade } from "../triagem/mapeamento";
-import { editalDaLinha, type LinhaDoEdital } from "../triagem/repositorio";
+import { recorteDaLinha, type LinhaDoRecorte, editalDaLinha, type LinhaDoEdital } from "../triagem/repositorio";
 import type {
   FiltroDeOportunidades,
   IdentidadeDaEmpresa,
@@ -261,6 +262,63 @@ export class RepositorioSupabase implements RepositorioDoProduto {
     if (error || !data) return null;
 
     return montarPerfil(empresaId, data as unknown as LinhaDaEmpresa);
+  }
+
+  async recortes(empresaId: string): Promise<Recorte[]> {
+    if (ehEmpresaDeDemonstracao(empresaId)) return this.demonstracao.recortes(empresaId);
+
+    const { data, error } = await this.supabase
+      .from("recortes_da_empresa")
+      .select(
+        "id,empresa_id,nome,abrangencia,uf,municipio_ibge,municipio_nome,palavras_chave,palavras_excluidas,ticket_minimo,ticket_maximo",
+      )
+      .eq("empresa_id", empresaId)
+      .order("criado_em", { ascending: true });
+
+    if (error || !data) return [];
+
+    // `recorteDaLinha` devolve `null` para linha incoerente, e aqui ela é
+    // simplesmente ignorada: a trava do banco torna o caso impossível, e a
+    // alternativa seria a tela quebrar por causa de uma linha que não deveria
+    // existir.
+    return (data as unknown as LinhaDoRecorte[]).map(recorteDaLinha).filter((r): r is Recorte => r !== null);
+  }
+
+  async salvarRecortes(empresaId: string, recortes: Recorte[]): Promise<void> {
+    if (ehEmpresaDeDemonstracao(empresaId)) {
+      return this.demonstracao.salvarRecortes(empresaId, recortes);
+    }
+
+    /*
+     * Apaga e regrava, numa transação só, e não é preguiça.
+     *
+     * A trava `recorte_respeita_o_limite` conta as linhas que EXISTEM na hora
+     * do insert. Editando um a um, trocar três recortes por outros três exigiria
+     * apagar antes de inserir, e qualquer falha no meio deixaria a empresa com
+     * menos recortes do que ela tinha — sem ela ter pedido isso. Substituir o
+     * conjunto inteiro faz o estado final ser o que a tela mostrou, ou nada.
+     *
+     * `empresa_id` vem de `empresaAtual()`, nunca do formulário, e a função no
+     * banco roda como `security invoker`: a RLS confere de novo do lado de lá.
+     */
+    const { error } = await this.supabase.rpc("salvar_recortes_da_empresa", {
+      p_empresa_id: empresaId,
+      p_recortes: recortes.map((r) => ({
+        nome: r.nome,
+        abrangencia: r.abrangencia.tipo,
+        uf: r.abrangencia.tipo === "brasil" ? null : r.abrangencia.uf,
+        municipio_ibge: r.abrangencia.tipo === "municipio" ? r.abrangencia.codigoIbge : null,
+        municipio_nome: r.abrangencia.tipo === "municipio" ? r.abrangencia.nome : null,
+        palavras_chave: r.palavrasChave,
+        palavras_excluidas: r.palavrasExcluidas,
+        ticket_minimo: r.ticketMinimo,
+        ticket_maximo: r.ticketMaximo,
+      })),
+    });
+
+    if (error) {
+      throw new Error(`salvar_recortes_da_empresa: ${error.message}`);
+    }
   }
 
   async salvarPerfil(perfil: PerfilDaEmpresa): Promise<void> {

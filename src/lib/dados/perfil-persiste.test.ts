@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { RepositorioDeDemonstracao, EMPRESA_DE_DEMONSTRACAO, ehDemonstracao } from "./demonstracao";
 import { RepositorioSupabase } from "./supabase";
@@ -122,16 +122,48 @@ describe("a porta de dados tem uma implementação que persiste", () => {
     expect(chamadas.rpc[0].argumentos.p_empresa_id).toBe(EMPRESA_REAL);
   });
 
-  /** O nome da função é um contrato entre dois arquivos que ninguém compila junto. */
-  it("o nome chamado é o nome criado na migração", () => {
-    const chamado = FONTE_DO_SUPABASE.match(/\.rpc\(\s*"([^"]+)"/)?.[1];
-    expect(chamado).toBeTruthy();
-    expect(
-      MIGRACAO.includes(`create or replace function public.${chamado}(`),
-      `\`supabase.ts\` chama \`${chamado}\`, que a migração não cria. Um erro ` +
-        `deste tipo não aparece em tipo nem em build: só em produção, como ` +
-        `"não conseguimos gravar o cadastro agora".`,
-    ).toBe(true);
+  /**
+   * O nome da função é um contrato entre dois arquivos que ninguém compila
+   * junto.
+   *
+   * ## Por que esta guarda foi generalizada em 25/08
+   *
+   * Ela conferia UMA chamada (a primeira `.rpc(` que achasse) contra UM arquivo
+   * de migração, e exigia o prefixo `public.` na declaração. Funcionava
+   * enquanto existia uma função só.
+   *
+   * No dia em que `salvarRecortes` nasceu, três coisas quebraram de uma vez: a
+   * primeira `.rpc(` do arquivo passou a ser outra, a migração certa era outro
+   * arquivo, e a declaração nova não usava o prefixo `public.` — que é
+   * opcional, porque as migrações rodam com `search_path = public`.
+   *
+   * A guarda reprovou, e reprovou por três motivos errados ao mesmo tempo. Uma
+   * guarda que só funciona para o primeiro caso é uma guarda que passa a
+   * atrapalhar no segundo. Agora ela confere TODAS as chamadas contra TODAS as
+   * migrações, o que é o que ela sempre quis dizer.
+   */
+  it("todo nome chamado por .rpc existe em alguma migração", () => {
+    const chamados = [...FONTE_DO_SUPABASE.matchAll(/\.rpc\(\s*"([^"]+)"/gu)].map((m) => m[1]);
+    expect(chamados.length, "nenhuma chamada `.rpc(` encontrada: a guarda ficou sem alvo").toBeGreaterThan(0);
+
+    const migracoes = readdirSync(join("supabase", "migrations"))
+      .filter((f) => f.endsWith(".sql"))
+      .map((f) => readFileSync(join("supabase", "migrations", f), "utf8"))
+      .join("\n");
+
+    for (const nome of new Set(chamados)) {
+      // `public.` é opcional na declaração: as migrações rodam com
+      // `search_path = public`, e exigir o prefixo reprovaria função correta.
+      const declarada =
+        migracoes.includes(`function public.${nome}(`) || migracoes.includes(`function ${nome}(`);
+
+      expect(
+        declarada,
+        `\`supabase.ts\` chama \`${nome}\`, que nenhuma migração cria. Um erro ` +
+          `deste tipo não aparece em tipo nem em build: só em produção, como ` +
+          `"não conseguimos gravar o cadastro agora".`,
+      ).toBe(true);
+    }
   });
 
   /**
