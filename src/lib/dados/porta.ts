@@ -1,6 +1,7 @@
 import type { Edital } from "../pncp/tipos";
 import type { Avaliacao } from "../dominio/recomendacao";
 import type { PerfilDaEmpresa, SituacaoDaOportunidade } from "../dominio/tipos";
+import type { Recorte } from "../dominio/recorte";
 
 /**
  * A porta de dados do produto.
@@ -104,6 +105,18 @@ export interface RepositorioDoProduto {
 
   perfil(empresaId: string): Promise<PerfilDaEmpresa | null>;
   salvarPerfil(perfil: PerfilDaEmpresa): Promise<void>;
+
+  /** Os recortes desta empresa, na ordem em que ela os criou. */
+  recortes(empresaId: string): Promise<Recorte[]>;
+  /**
+   * Grava a lista INTEIRA de recortes da empresa, substituindo a anterior.
+   *
+   * Substituir em vez de criar/editar/apagar um por um é o que permite a trava
+   * do limite de três valer sobre o resultado final. Salvar um a um deixaria a
+   * empresa passar de três se duas abas do navegador salvassem ao mesmo tempo,
+   * e cada chamada estaria certa isoladamente.
+   */
+  salvarRecortes(empresaId: string, recortes: Recorte[]): Promise<void>;
 
   painelDoDia(empresaId: string, agora?: Date): Promise<PainelDoDia>;
 
