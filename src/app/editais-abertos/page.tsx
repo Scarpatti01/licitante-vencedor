@@ -7,7 +7,7 @@ import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { CardAssinatura } from "@/components/CardAssinatura";
 import { RodapeSite } from "@/components/RodapeSite";
 import { ListaDeAbertos, RetratoDatado } from "@/components/abertos/ListaDeAbertos";
-import { COLETADO_EM, TOTAIS, encerrandoAgora, ufsComAbertos } from "@/lib/abertos/acervo";
+import { COLETADO_EM, TOTAIS, abertosNoBrasil, ufsComAbertos } from "@/lib/abertos/acervo";
 import { temPaginaDeUf } from "@/lib/abertos/paginas";
 
 /**
@@ -68,17 +68,18 @@ export default function EditaisAbertos() {
           PNCP quando este retrato foi tirado. <strong>{numero(TOTAIS.novos)}</strong>{" "}
           apareceram nas últimas 24 horas, e <strong>{numero(TOTAIS.encerramEm24h)}</strong>{" "}
           encerram nas próximas 24 — cerca de {Math.round(TOTAIS.encerramEm24h / 24)} por
-          hora. É por isso que cada item abaixo mostra o próprio prazo, e é marcado
-          quando o horário dele passa no seu relógio.
+          hora. Por isso a lista abaixo só traz edital cujo prazo vai além da próxima
+          coleta: nenhum deles vence enquanto esta página estiver no ar. Cada um
+          mostra o próprio prazo, e é marcado se o horário passar no seu relógio.
         </RespostaDireta>
 
-        <Secao id="encerrando" titulo="Os que encerram primeiro">
+        <Secao id="abertos" titulo={`${abertosNoBrasil().length} editais abertos agora`}>
           <P>
-            Ordenados pelo fim do prazo, os mais urgentes no topo. Um edital marcado
-            como encerrado continua na lista de propósito: ele existiu, e sumir sem
-            explicação é pior que aparecer riscado.
+            Todos com prazo que vai além da próxima coleta — nenhum deles encerra
+            enquanto esta página estiver no ar. Os de prazo mais próximo vêm primeiro,
+            porque são os que exigem decisão antes.
           </P>
-          <ListaDeAbertos editais={encerrandoAgora()} />
+          <ListaDeAbertos editais={abertosNoBrasil()} />
         </Secao>
 
         <Secao id="estados" titulo="Por estado">
@@ -123,8 +124,11 @@ export default function EditaisAbertos() {
         <Secao id="limites" titulo="O que esta página não é">
           <P>
             Ela não é a lista completa: são quase 29 mil editais abertos, e nenhuma
-            página se lê até o fim. O que está aqui é uma amostra ordenada por
-            urgência, suficiente para mostrar que o dado existe e é fresco.
+            página se lê até o fim. Os {abertosNoBrasil().length} daqui são um recorte
+            — e um recorte com um viés declarado, o de deixar de fora quem encerra nas
+            próximas horas. Isso é de propósito: uma lista que envelhece antes de ser
+            lida não serve a ninguém. Quem precisa justamente do que encerra hoje
+            precisa de alerta, não de página.
           </P>
           <P>
             Ela também não substitui o PNCP. Os números vêm de lá, o link de cada

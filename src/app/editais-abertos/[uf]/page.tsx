@@ -91,10 +91,10 @@ export default async function EditaisAbertosDaUf({
           encerram nas próximas 24.
         </RespostaDireta>
 
-        <Secao id="encerrando" titulo={`Os que encerram primeiro em ${u.uf}`}>
+        <Secao id="abertos" titulo={`${u.editais.length} editais abertos em ${u.uf}`}>
           <P>
-            Ordenados pelo fim do prazo. O que já encerrou fica marcado, e continua
-            na lista: sumir sem explicação é pior que aparecer riscado.
+            Todos com prazo além da próxima coleta — nenhum encerra enquanto esta
+            página estiver no ar. Os de prazo mais próximo primeiro.
           </P>
           <ListaDeAbertos editais={u.editais} />
         </Secao>

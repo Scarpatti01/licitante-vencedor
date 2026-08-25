@@ -23,8 +23,8 @@ export function ufAberta(sigla: string): UfAberta | null {
   return dados.ufs.find((u) => u.uf === alvo) ?? null;
 }
 
-export function encerrandoAgora() {
-  return dados.encerrandoAgora;
+export function abertosNoBrasil() {
+  return dados.abertos;
 }
 
 /**

@@ -60,20 +60,64 @@ export type RetratoDeAbertos = {
   coletadoEm: string;
   totais: ContagemDeAbertos;
   ufs: UfAberta[];
-  /** Os que encerram primeiro no país inteiro. */
-  encerrandoAgora: EditalAberto[];
+  /**
+   * A lista nacional: os que continuam abertos por toda a vida deste retrato,
+   * do prazo mais próximo ao mais distante.
+   *
+   * Não se chama mais `encerrandoAgora`, e o nome importa: o nome antigo
+   * descrevia o defeito. Uma lista dos que encerram agora é, algumas horas
+   * depois, uma lista dos que já encerraram.
+   */
+  abertos: EditalAberto[];
 };
 
 /**
  * Quantos editais cada página mostra.
  *
- * Não é a lista inteira de propósito: são 28.995 abertos, e versionar isso
- * diariamente encheria o repositório de megabytes para entregar uma página que
- * ninguém rola até o fim. O que a listagem faz é provar que o dado existe e é
- * fresco; quem precisa do recorte dele assina.
+ * Não é a lista inteira de propósito: são quase 29 mil abertos, e versionar
+ * isso diariamente encheria o repositório de megabytes para entregar uma página
+ * que ninguém rola até o fim. O que a listagem faz é provar que o dado existe e
+ * é fresco; quem precisa do recorte dele assina.
  */
-export const EDITAIS_POR_UF = 20;
-export const EDITAIS_NO_BRASIL = 30;
+export const EDITAIS_POR_UF = 40;
+export const EDITAIS_NO_BRASIL = 100;
+
+/**
+ * Só entra na lista quem continua aberto até a próxima coleta.
+ *
+ * ## O defeito que isto conserta, e ele era de desenho
+ *
+ * A primeira versão ordenava por "os que encerram primeiro", que parecia a
+ * ordem óbvia — o mais urgente no topo. É a pior possível para uma página que
+ * vive 24 horas: ela põe no topo justamente os que morrem primeiro. Nasceu boa
+ * às 3h da manhã e, ao meio-dia, o dono abriu e viu **a lista inteira
+ * encerrada**. A marcação de encerrado funcionou; errado era o que a lista
+ * escolhia mostrar.
+ *
+ * A régua agora é o tempo de vida da própria página: um edital só entra se
+ * ainda estiver aberto quando a coleta seguinte substituir este retrato. Assim
+ * nenhum item vence enquanto a página está no ar — não por sorte, por
+ * construção.
+ *
+ * A margem é maior que as 24 horas entre coletas de propósito. Coleta atrasa,
+ * falha, é recusada por degradação; nesses dias o retrato de ontem continua
+ * servindo, e as duas horas extras são o que impede a lista de começar a
+ * apodrecer no exato momento em que ninguém está olhando.
+ *
+ * A marcação no relógio do leitor continua existindo, e continua sendo
+ * necessária: ela é a rede embaixo desta regra, para o dia em que a coleta
+ * ficar dois dias fora.
+ */
+export const MARGEM_DE_VALIDADE_MS = 26 * 60 * 60 * 1000;
+
+/** O edital sobrevive ao tempo de vida deste retrato? */
+export function sobreviveAoRetrato(
+  edital: { encerramentoProposta: string },
+  coletadoEm: Date,
+): boolean {
+  const fim = new Date(edital.encerramentoProposta).getTime();
+  return fim > coletadoEm.getTime() + MARGEM_DE_VALIDADE_MS;
+}
 
 /**
  * O edital já encerrou, no relógio de quem está lendo?
