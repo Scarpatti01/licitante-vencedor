@@ -85,7 +85,21 @@ export async function criarLote(opcoes: {
 }
 
 export type ConsultaDoLote =
-  | { ok: true; estado: EstadoDoLote; corpo: unknown }
+  | {
+      ok: true;
+      estado: EstadoDoLote;
+      /**
+       * A palavra que o fornecedor disse, sem tradução.
+       *
+       * Existe por causa de 24/08: 176 consultas registraram "desconhecido" e
+       * nenhuma registrou QUAL estado tinha chegado. Bastaria uma linha com
+       * `BATCH_STATE_SUCCEEDED` para o erro ser óbvio em trinta segundos.
+       */
+      bruto: string | null;
+      /** `done` da operação: verdadeiro quando o fornecedor a considera encerrada. */
+      concluida: boolean;
+      corpo: unknown;
+    }
   | { ok: false; motivo: string };
 
 export async function consultarLote(opcoes: {
@@ -118,7 +132,15 @@ export async function consultarLote(opcoes: {
 
   const raiz = (corpo ?? {}) as Record<string, unknown>;
   const metadados = (raiz.metadata ?? {}) as Record<string, unknown>;
-  return { ok: true, estado: estadoDoLote(raiz.state ?? metadados.state), corpo };
+  const bruto = raiz.state ?? metadados.state;
+
+  return {
+    ok: true,
+    estado: estadoDoLote(bruto),
+    bruto: typeof bruto === "string" ? bruto : null,
+    concluida: raiz.done === true,
+    corpo,
+  };
 }
 
 export type EsperaDoLote =
@@ -145,7 +167,7 @@ export async function esperarLote(opcoes: {
   prazoMs?: number;
   esperar?: (ms: number) => Promise<void>;
   agora?: () => number;
-  aoConsultar?: (estado: EstadoDoLote, consultas: number) => void;
+  aoConsultar?: (estado: EstadoDoLote, consultas: number, bruto: string | null) => void;
 }): Promise<EsperaDoLote> {
   const intervaloMs = opcoes.intervaloMs ?? 60_000;
   const prazoMs = opcoes.prazoMs ?? 3 * 60 * 60 * 1000;
@@ -161,9 +183,24 @@ export async function esperarLote(opcoes: {
     consultas += 1;
 
     if (consulta.ok) {
-      opcoes.aoConsultar?.(consulta.estado, consultas);
-      if (ehTerminal(consulta.estado)) {
-        return { ok: true, estado: consulta.estado, corpo: consulta.corpo, consultas };
+      opcoes.aoConsultar?.(consulta.estado, consultas, consulta.bruto);
+
+      /*
+       * `done` é a segunda porta de saída, e ela existe porque a primeira já
+       * falhou uma vez. Em 24/08 o estado veio num dialeto que não
+       * reconhecíamos e a espera não terminou nunca. `done` é campo da
+       * operação, não do nosso vocabulário: se o fornecedor diz que acabou,
+       * acabou, mesmo que a palavra do estado seja nova para nós.
+       */
+      if (ehTerminal(consulta.estado) || consulta.concluida) {
+        return {
+          ok: true,
+          // Quando só o `done` fecha a espera, o estado ainda é o que a
+          // tradução deu. Quem chama decide o que fazer com "desconhecido".
+          estado: consulta.estado,
+          corpo: consulta.corpo,
+          consultas,
+        };
       }
     } else {
       // Guardado para virar o motivo final se o prazo acabar antes de qualquer

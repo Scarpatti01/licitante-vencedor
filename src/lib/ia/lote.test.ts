@@ -191,3 +191,45 @@ describe("a leitura das respostas", () => {
     expect(lerRespostasDoLote({ dest: {} }, ["e1"], SCHEMA)).toMatchObject({ ok: false });
   });
 });
+
+describe("os dois dialetos de estado do fornecedor", () => {
+  /**
+   * O erro que custou o primeiro ensaio real, em 24/08.
+   *
+   * O lote foi criado com sucesso e a espera consultou 176 vezes recebendo
+   * `desconhecido`, até desistir por prazo. O lote quase certamente já tinha
+   * terminado; nós é que não entendíamos a resposta.
+   *
+   * `JOB_STATE_*` é o dialeto da Vertex AI. A Batch API da Gemini Developer
+   * API — a que usamos — responde `BATCH_STATE_*`. Dois produtos do mesmo
+   * fornecedor, dois prefixos, e eu tinha programado o do produto errado.
+   */
+  it("entende o BATCH_STATE_ da Gemini Developer API", () => {
+    expect(estadoDoLote("BATCH_STATE_SUCCEEDED")).toBe("concluido");
+    expect(estadoDoLote("BATCH_STATE_PENDING")).toBe("pendente");
+    expect(estadoDoLote("BATCH_STATE_RUNNING")).toBe("rodando");
+    expect(estadoDoLote("BATCH_STATE_FAILED")).toBe("falhou");
+    expect(estadoDoLote("BATCH_STATE_CANCELLED")).toBe("cancelado");
+    expect(estadoDoLote("BATCH_STATE_EXPIRED")).toBe("expirado");
+  });
+
+  it("continua entendendo o JOB_STATE_ da Vertex AI", () => {
+    // Não é excesso de zelo: se um dia a leitura mudar de produto, o vocabulário
+    // antigo volta, e ninguém vai lembrar de reativá-lo.
+    expect(estadoDoLote("JOB_STATE_SUCCEEDED")).toBe("concluido");
+    expect(estadoDoLote("JOB_STATE_RUNNING")).toBe("rodando");
+  });
+
+  it("um sufixo concluído é terminal, venha do dialeto que vier", () => {
+    expect(ehTerminal(estadoDoLote("BATCH_STATE_SUCCEEDED"))).toBe(true);
+    expect(ehTerminal(estadoDoLote("JOB_STATE_SUCCEEDED"))).toBe(true);
+  });
+
+  it("um dialeto que ainda não existe continua sendo desconhecido, e não terminal", () => {
+    // A decisão original segue de pé: estado novo não pode virar leitura
+    // perdida. O que mudou é que agora `done` e o `bruto` no log impedem que
+    // isso custe três horas de silêncio.
+    expect(estadoDoLote("ESTADO_DE_2027")).toBe("desconhecido");
+    expect(ehTerminal("desconhecido")).toBe(false);
+  });
+});

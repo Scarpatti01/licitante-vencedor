@@ -158,6 +158,33 @@ describe("esperarLote", () => {
     });
 
     expect(espera.ok).toBe(false);
-    expect(aoConsultar).toHaveBeenCalledWith("desconhecido", 1);
+    expect(aoConsultar).toHaveBeenCalledWith("desconhecido", 1, "JOB_STATE_INVENTADO_AMANHA");
+  });
+
+  /**
+   * A regressão de 24/08, do lado do transporte.
+   *
+   * O primeiro ensaio real consultou 176 vezes e registrou "desconhecido" em
+   * todas, sem NUNCA dizer qual palavra tinha chegado. Se o `bruto` estivesse
+   * no log, o erro de dialeto seria óbvio na primeira linha.
+   */
+  it("entrega ao chamador a palavra crua do fornecedor, para ela poder ir ao log", async () => {
+    const { buscar } = respondendo([{ corpo: { state: "BATCH_STATE_RUNNING" } }]);
+    const consulta = await consultarLote({ nome: "batches/abc", chave: CHAVE, buscar });
+    expect(consulta.ok && consulta.bruto).toBe("BATCH_STATE_RUNNING");
+  });
+
+  /**
+   * A segunda porta de saída.
+   *
+   * Se o fornecedor disser que a operação acabou, acabou — mesmo que a palavra
+   * do estado seja de um dialeto que ainda não conhecemos. Sem isto, um
+   * prefixo novo volta a custar três horas de espera por um lote já pronto.
+   */
+  it("`done: true` encerra a espera mesmo com estado que não reconhecemos", async () => {
+    const { buscar } = respondendo([{ corpo: { state: "ESTADO_DE_2027", done: true } }]);
+    const espera = await esperarLote({ nome: "batches/abc", chave: CHAVE, buscar, ...semEspera });
+    expect(espera.ok).toBe(true);
+    expect(espera.consultas).toBe(1);
   });
 });
