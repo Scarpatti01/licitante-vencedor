@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { PLANOS, O_QUE_INCLUI, O_QUE_NAO_FAZ, emReais, porEmpresa } from "@/lib/precos";
+import { limitarDescricao } from "@/lib/seo/resultado-de-busca";
 import { Faq, P, RespostaDireta, Secao } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
@@ -20,14 +21,15 @@ const MAIS_BARATO = PLANOS.reduce((a, b) =>
   a.mensalidadeEmCentavos <= b.mensalidadeEmCentavos ? a : b,
 );
 
-const DESCRICAO =
-  `Dois planos, e o que muda entre eles é quantas empresas cabem na conta. ` +
-  `A partir de ${emReais(MAIS_BARATO.mensalidadeEmCentavos)} por mês, com a leitura diária ` +
-  `dos editais de maior aderência ao perfil.`;
+const DESCRICAO = limitarDescricao(
+  `Dois planos, e o que muda é quantas empresas cabem na conta. A partir de ` +
+    `${emReais(MAIS_BARATO.mensalidadeEmCentavos)} por mês, com a leitura diária dos ` +
+    `editais de maior aderência ao seu perfil.`,
+);
 const ATUALIZADO = "2026-08-22";
 
 export const metadata: Metadata = {
-  title: "Preços",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/precos/" },
   openGraph: {

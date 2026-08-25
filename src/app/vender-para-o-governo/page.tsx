@@ -7,14 +7,13 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO =
-  "Como vender para o governo: o caminho completo de quem nunca participou de uma licitação";
+const TITULO = "Como vender para o governo: do CNPJ à primeira proposta entregue";
 const DESCRICAO =
-  "Guia prático para começar a vender ao poder público sob a Lei 14.133/2021: cadastro no SICAF e no PNCP, onde encontrar edital, benefícios de MEI, ME e EPP, formação de preço, o dia do pregão eletrônico e o recurso administrativo.";
+  "Cadastro no SICAF e no PNCP, onde encontrar edital, benefícios de ME e EPP, formação de preço, o dia do pregão e o recurso administrativo.";
 const ATUALIZADO = "2026-08-11";
 
 export const metadata: Metadata = {
-  title: "Como vender para o governo: o guia de quem está começando",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/vender-para-o-governo/" },
   openGraph: {

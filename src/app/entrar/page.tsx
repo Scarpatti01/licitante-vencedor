@@ -12,7 +12,7 @@ import { entrar } from "@/lib/auth/acoes";
  * a intenção nenhuma e ainda dilui o rastreamento das páginas que convertem.
  */
 export const metadata: Metadata = {
-  title: "Entrar | Licitante Vencedor",
+  title: "Entrar",
   robots: { index: false, follow: false },
 };
 

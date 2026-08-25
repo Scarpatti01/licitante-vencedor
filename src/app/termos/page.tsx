@@ -32,7 +32,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 
 const TITULO = "Termos de uso";
 const DESCRICAO =
-  "As regras do serviço em português claro: o que entregamos, o que não prometemos, como é a cobrança, o cancelamento e o reembolso, e o que prevalece quando o resumo diverge do edital.";
+  "As regras do serviço em português claro: o que entregamos, o que não prometemos, cobrança, cancelamento, e o que prevalece se o resumo divergir.";
 const ATUALIZADO = "2026-08-23";
 
 export const metadata: Metadata = {

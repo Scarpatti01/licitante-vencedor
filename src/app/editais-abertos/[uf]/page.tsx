@@ -10,6 +10,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { ListaDeAbertos, RetratoDatado } from "@/components/abertos/ListaDeAbertos";
 import { COLETADO_EM, ufAberta, ufsComAbertos } from "@/lib/abertos/acervo";
 import { temPaginaDeUf } from "@/lib/abertos/paginas";
+import { limitarDescricao } from "@/lib/seo/resultado-de-busca";
 
 /**
  * A listagem de editais abertos de um estado.
@@ -51,12 +52,12 @@ export async function generateMetadata({
 
   return {
     title: titulo,
-    description: descricao.slice(0, 160),
+    description: limitarDescricao(descricao),
     alternates: { canonical: `/editais-abertos/${u.uf.toLowerCase()}/` },
     openGraph: {
       images: IMAGENS_DE_COMPARTILHAMENTO,
       title: titulo,
-      description: descricao.slice(0, 160),
+      description: limitarDescricao(descricao),
       url: `${SITE.url}/editais-abertos/${u.uf.toLowerCase()}/`,
       type: "website",
     },

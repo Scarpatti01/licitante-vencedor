@@ -9,6 +9,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { ListaDeAbertos, RetratoDatado } from "@/components/abertos/ListaDeAbertos";
 import { COLETADO_EM, TOTAIS, abertosNoBrasil, ufsComAbertos } from "@/lib/abertos/acervo";
 import { temPaginaDeUf } from "@/lib/abertos/paginas";
+import { limitarDescricao } from "@/lib/seo/resultado-de-busca";
 
 /**
  * A listagem nacional de editais abertos.
@@ -35,12 +36,12 @@ const descricao =
 
 export const metadata: Metadata = {
   title: titulo,
-  description: descricao.slice(0, 160),
+  description: limitarDescricao(descricao),
   alternates: { canonical: "/editais-abertos/" },
   openGraph: {
     images: IMAGENS_DE_COMPARTILHAMENTO,
     title: titulo,
-    description: descricao.slice(0, 160),
+    description: limitarDescricao(descricao),
     url: `${SITE.url}/editais-abertos/`,
     type: "website",
   },

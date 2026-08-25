@@ -9,13 +9,13 @@ import { artigosDoGuia } from "@/lib/blog";
 import { municipiosPublicaveis, pracasPorUf } from "@/lib/regioes";
 import { PracasEmAcordeao } from "@/components/regioes/PracasEmAcordeao";
 
-const TITULO = "Portais de licitação: onde o edital é publicado e onde a disputa acontece";
+const TITULO = "Portais de licitação: onde o edital sai e onde a disputa acontece";
 const DESCRICAO =
-  "O PNCP centraliza a publicação, mas a disputa acontece em outro lugar. Medimos 500 editais abertos em 5 estados e encontramos 54 sistemas diferentes. Como descobrir em qual portal cada certame corre.";
+  "Medimos 500 editais abertos em 5 estados e achamos 54 sistemas diferentes. O PNCP publica, mas a disputa corre noutro portal. Como achar qual.";
 const ATUALIZADO = "2026-08-12";
 
 export const metadata: Metadata = {
-  title: "Portais de licitação: onde publicam e onde se disputa",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/portais-de-licitacao/" },
   openGraph: {

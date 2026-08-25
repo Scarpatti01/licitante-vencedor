@@ -7,14 +7,13 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO =
-  "Jurisprudência em licitações: como as decisões do TCU e dos tribunais definem o que é exigível de você";
+const TITULO = "Jurisprudência em licitações: o que o TCU já decidiu que é exigível";
 const DESCRICAO =
-  "Guia prático de jurisprudência em licitações para fornecedores: quem decide o quê, a diferença entre súmula e acórdão, e como usar uma decisão do TCU para impugnar edital ou sustentar recurso.";
+  "Quem decide o quê, a diferença entre súmula e acórdão, e como usar uma decisão do TCU para impugnar edital ou sustentar recurso.";
 const ATUALIZADO = "2026-08-10";
 
 export const metadata: Metadata = {
-  title: "Jurisprudência em licitações: o guia do fornecedor",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/jurisprudencia/" },
   openGraph: { title: TITULO, description: DESCRICAO, url: `${SITE.url}/jurisprudencia/`, type: "article" },

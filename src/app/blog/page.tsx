@@ -11,7 +11,7 @@ import { dataDeBrasilia } from "@/lib/dominio/datas";
 
 const TITULO = "Guias e artigos sobre licitações públicas";
 const DESCRICAO =
-  "Guias e artigos do Licitante Vencedor sobre licitações, habilitação, contratos e jurisprudência — para quem vende ao poder público, atualizados para a Lei 14.133/2021.";
+  "Artigos sobre licitação, habilitação, contratos e jurisprudência para quem vende ao poder público, atualizados para a Lei 14.133/2021.";
 
 export const metadata: Metadata = {
   title: TITULO,

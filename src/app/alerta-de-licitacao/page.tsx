@@ -8,11 +8,11 @@ import { CapturaAlerta } from "@/components/CapturaAlerta";
 
 const TITULO = "Alerta de licitação: os editais da sua cidade no seu e-mail";
 const DESCRICAO =
-  "Receba todos os dias úteis os editais abertos da sua cidade, filtrados pelo que a sua empresa vende. Sem abrir dezenas de portais. Grátis para uma cidade, sem cartão.";
+  "Todo dia útil, os editais abertos da sua cidade filtrados pelo que a sua empresa vende. Sem abrir dezenas de portais. Grátis, sem cartão.";
 const ATUALIZADO = "2026-08-21";
 
 export const metadata: Metadata = {
-  title: "Alerta de licitação: editais da sua cidade por e-mail",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/alerta-de-licitacao/" },
   openGraph: {

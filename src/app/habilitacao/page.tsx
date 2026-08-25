@@ -7,13 +7,13 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO = "Habilitação em licitação: os documentos, os limites e o que desclassifica";
+const TITULO = "Habilitação em licitação: documentos, limites e o que desclassifica";
 const DESCRICAO =
-  "O que a Lei 14.133 permite exigir na habilitação e o que ela proíbe: os 4% dos atestados, o teto de 50%, o limite de 10% para capital mínimo, o que dá para corrigir depois de entregue e quando a amostra pode ser pedida.";
+  "O que a Lei 14.133 permite exigir e o que ela proíbe: os 4% dos atestados, o teto de 50%, o limite de 10% de capital e o que dá para corrigir.";
 const ATUALIZADO = "2026-08-12";
 
 export const metadata: Metadata = {
-  title: "Habilitação em licitação: documentos, limites e o que desclassifica",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/habilitacao/" },
   openGraph: {

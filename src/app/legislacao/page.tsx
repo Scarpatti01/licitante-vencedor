@@ -9,11 +9,11 @@ import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO = "Legislação de licitações: o que vale hoje e o que já foi revogado";
 const DESCRICAO =
-  "Quais normas de licitação estão em vigor em 2026, a data exata em que a Lei 8.666 e a Lei do Pregão foram revogadas, por que elas ainda aparecem em contrato vivo, e como conferir o status de qualquer norma sozinho.";
+  "Quais normas valem em 2026, a data exata em que a Lei 8.666 e a Lei do Pregão foram revogadas, e por que elas ainda aparecem em contrato vivo.";
 const ATUALIZADO = "2026-08-12";
 
 export const metadata: Metadata = {
-  title: "Legislação de licitações: o que vale hoje",
+  title: TITULO,
   description: DESCRICAO,
   alternates: { canonical: "/legislacao/" },
   openGraph: {
