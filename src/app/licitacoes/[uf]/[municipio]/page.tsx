@@ -20,6 +20,7 @@ import {
   type MunicipioAgregado,
 } from "@/lib/regioes";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
+import { descricaoDoMunicipio, tituloDoMunicipio } from "@/lib/regioes/serp";
 import { caminhoDoPost, postsDoMunicipio } from "@/lib/posts/acervo";
 import { encerrado, instanteDaPagina } from "@/lib/posts/tipos";
 
@@ -73,10 +74,10 @@ export async function generateMetadata({
   const m = municipioPorSlug(uf, municipio);
   if (!m) return {};
 
-  const titulo = `Licitações em ${m.municipio} (${m.uf}): o que os órgãos compram`;
-  const descricao =
-    `Retrato do mercado público de ${m.municipio}/${m.uf} a partir dos dados do PNCP: ` +
-    `${m.editais} contratações medidas, ${m.orgaos} órgãos compradores e as modalidades usadas.`;
+  // Título e descrição moram em `regioes/serp.ts`, com o motivo medido e as
+  // guardas — inclusive a que impede prometer "edital aberto agora" aqui.
+  const titulo = tituloDoMunicipio(m);
+  const descricao = descricaoDoMunicipio(m, dataDeBrasilia(MEDIDO_EM));
 
   return {
     title: titulo,
