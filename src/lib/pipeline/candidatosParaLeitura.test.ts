@@ -3,7 +3,13 @@ import { edital as editalFixture } from "../fontes/fixtures.ts";
 import { PERFIL_COMPLETO } from "../dominio/exemplos.ts";
 import type { PerfilDaEmpresa } from "../dominio/tipos.ts";
 import type { EditalAbertoParaLeitura } from "./candidatosParaLeitura.ts";
-import { candidatosParaLeitura, CORTE_DE_LEITURA, LEITURAS_POR_EMPRESA_POR_DIA } from "./candidatosParaLeitura.ts";
+import {
+  candidatosParaLeitura,
+  CORTE_DE_LEITURA,
+  LEITURAS_POR_EMPRESA_POR_DIA,
+  LEITURAS_SEM_ASSINANTE,
+  tetoDeLeitura,
+} from "./candidatosParaLeitura.ts";
 
 const AGORA = new Date("2026-08-21T09:00:00-03:00");
 
@@ -102,5 +108,47 @@ describe("candidatosParaLeitura", () => {
 
   it("o corte é exatamente o piso da faixa boa, não um número solto", () => {
     expect(CORTE_DE_LEITURA).toBe(70);
+  });
+});
+
+describe("o teto de leitura acompanha quem paga", () => {
+  /**
+   * Medido em 25/08, e é o motivo desta regra existir.
+   *
+   *   empresas: 1 · assinaturas: 0
+   *   25/08: 22 leituras, US$ 2,96   23/08: 44 leituras, US$ 5,73
+   *
+   * Entre R$ 500 e R$ 700 por mês lendo editais para ninguém. Zerar seria pior
+   * que caro — a leitura diária é o que pegou a queda do `pdfjs` em 16/08 e a
+   * cota estourada em 24/08, e sistema exercitado só quando chega o primeiro
+   * cliente quebra na frente dele. Cinco por dia mantém o pipeline vivo por uns
+   * R$ 50 por mês.
+   */
+  it("sem assinante vivo, o teto é o pequeno", () => {
+    expect(tetoDeLeitura(0)).toBe(LEITURAS_SEM_ASSINANTE);
+    expect(LEITURAS_SEM_ASSINANTE).toBeLessThan(LEITURAS_POR_EMPRESA_POR_DIA);
+  });
+
+  /**
+   * A parte que importa mais que a economia.
+   *
+   * O teto volta ao normal SOZINHO na primeira assinatura. Se dependesse de
+   * alguém lembrar de trocar uma constante, o primeiro cliente pagante ia
+   * receber cinco editais por dia — e a economia teria custado exatamente a
+   * coisa que ela existia para financiar.
+   */
+  it("com um assinante que seja, o teto volta ao normal sozinho", () => {
+    expect(tetoDeLeitura(1)).toBe(LEITURAS_POR_EMPRESA_POR_DIA);
+    expect(tetoDeLeitura(40)).toBe(LEITURAS_POR_EMPRESA_POR_DIA);
+  });
+
+  it("o teto é de verdade: entra na seleção, não só no log", () => {
+    // Um teto que não corta a lista é um número bonito num console.log.
+    const editais = Array.from({ length: 30 }, (_, i) => editalCompativel(`e${i}`));
+    const comTetoPequeno = candidatosParaLeitura(editais, [perfil("a")], AGORA, LEITURAS_SEM_ASSINANTE);
+    const comTetoNormal = candidatosParaLeitura(editais, [perfil("a")], AGORA, LEITURAS_POR_EMPRESA_POR_DIA);
+
+    expect(comTetoPequeno.size).toBeLessThanOrEqual(LEITURAS_SEM_ASSINANTE);
+    expect(comTetoNormal.size).toBeGreaterThan(comTetoPequeno.size);
   });
 });

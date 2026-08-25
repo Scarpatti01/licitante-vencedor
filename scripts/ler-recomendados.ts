@@ -38,7 +38,7 @@ import type { ExecucaoDeIA } from "../src/lib/ia/custo.ts";
 import {
   candidatosParaLeitura,
   CORTE_DE_LEITURA,
-  LEITURAS_POR_EMPRESA_POR_DIA,
+  tetoDeLeitura,
 } from "../src/lib/pipeline/candidatosParaLeitura.ts";
 
 /** Mesmo código de saída de `triar-editais.ts`: "falta configurar", não "quebrou". */
@@ -60,10 +60,19 @@ async function main() {
   }
 
   const agora = new Date();
-  const [perfis, editaisAbertos] = await Promise.all([
+  const [perfis, editaisAbertos, assinantes] = await Promise.all([
     repositorio.perfis(),
     repositorio.editaisAbertos(agora),
+    repositorio.assinantesVivos(),
   ]);
+
+  /*
+   * Quanto podemos gastar hoje depende de haver alguém pagando. Sem assinante
+   * vivo o teto cai — ver `tetoDeLeitura`. E volta sozinho no dia em que a
+   * primeira assinatura aparecer: economia que depende de alguém lembrar acaba
+   * virando cliente pagante com meia leitura.
+   */
+  const teto = tetoDeLeitura(assinantes);
 
   console.log(
     `${perfis.length} empresa(s) com perfil completo · ${editaisAbertos.length} edital(is) com proposta aberta`,
@@ -74,10 +83,10 @@ async function main() {
     return;
   }
 
-  const candidatos = candidatosParaLeitura(editaisAbertos, perfis, agora);
+  const candidatos = candidatosParaLeitura(editaisAbertos, perfis, agora, teto);
   console.log(
     `${candidatos.size} edital(is) único(s) com score ≥ ${CORTE_DE_LEITURA} em ao menos uma empresa ` +
-      `(limite de ${LEITURAS_POR_EMPRESA_POR_DIA}/empresa/dia)`,
+      `(limite de ${teto}/empresa/dia · ${assinantes} assinatura(s) viva(s))`,
   );
 
   if (simular) {

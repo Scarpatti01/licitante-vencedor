@@ -1,28 +1,27 @@
 # Lê os editais recomendados pela Batch API do Gemini (`scripts/ler-em-lote.ts`).
 #
-# ⚠️ SEM AGENDAMENTO, E DE PROPÓSITO — por enquanto por uma razão diferente da
-# de `ler-recomendados.yml`.
+# AGENDADO desde 25/08, depois de quatro ensaios reais. Ficou desligado até
+# então porque o formato REST do lote nunca tinha sido exercitado contra a API
+# de verdade — e os quatro ensaios provaram que essa cautela valia: cada um
+# derrubou um degrau que nenhum teste nosso pegaria (o dialeto do estado, o
+# lugar das respostas, o enum do custo).
 #
-# Lá o motivo é duplicação: aquele script já roda como passo das coletas. Aqui o
-# motivo é que o formato REST do lote nunca foi exercitado contra a API de
-# verdade. Ele foi escrito a partir da documentação e testado contra respostas
-# forjadas, o que prova o nosso lado e não prova o do fornecedor. Enquanto uma
-# execução manual não terminar com editais gravados, agendar isto seria trocar
-# uma leitura que funciona por uma que talvez funcione.
+# 03:00 UTC é meia-noite em Brasília, e é ANTES da coleta das 06:10 de
+# propósito: quando a leitura avulsa da coleta rodar, encontra o cache já
+# quente e só lê o que o lote não conseguiu.
 #
-# QUANDO LIGAR: depois de uma execução manual com `simular: false` que grave
-# análise de verdade, o lugar de agendar é 03:00 UTC (00:00 em Brasília) — antes
-# da coleta das 06:10, para que a leitura avulsa da coleta encontre o cache já
-# quente e só leia o que o lote não conseguiu.
-#
-# Rodar isto NÃO desliga a leitura avulsa. Os dois convivem de propósito: o lote
-# pega a maioria pela metade do preço, e o que ele deixa passar — edital sem
-# evidência suficiente, lote recusado, prazo estourado — continua caindo na
-# leitura avulsa, que sabe escalar de modelo.
+# Rodar isto NÃO desliga a leitura avulsa, e não é para desligar. Os dois
+# convivem: o lote pega a maioria pela metade do preço, e o que ele deixa
+# passar — edital sem evidência suficiente, lote recusado, prazo estourado —
+# continua caindo na avulsa, que sabe escalar de modelo. Trocar um pelo outro
+# tornaria toda falha do lote uma leitura perdida.
 
 name: Ler editais em lote
 
 on:
+  schedule:
+    # 03:00 UTC = meia-noite em Brasília, três horas antes da coleta.
+    - cron: "0 3 * * *"
   workflow_dispatch:
     inputs:
       simular:
