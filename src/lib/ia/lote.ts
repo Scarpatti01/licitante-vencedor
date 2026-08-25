@@ -105,26 +105,51 @@ export type EstadoDoLote =
   | "expirado"
   | "desconhecido";
 
-/** Traduz `JOB_STATE_*` para o vocabulário do projeto. */
+/**
+ * Traduz o estado do fornecedor para o vocabulário do projeto.
+ *
+ * ## Os dois dialetos, e as três horas que custaram
+ *
+ * O primeiro ensaio real, em 24/08, criou o lote com sucesso e depois consultou
+ * 176 vezes seguidas recebendo `desconhecido`, até desistir por prazo. O lote
+ * quase certamente já tinha terminado; nós é que não entendíamos a resposta.
+ *
+ * A causa: esta função só conhecia `JOB_STATE_*`, que é o dialeto da **Vertex
+ * AI**. A Batch API da **Gemini Developer API** — a que usamos — responde
+ * `BATCH_STATE_*`. Dois produtos do mesmo fornecedor, dois prefixos.
+ *
+ * Agora o prefixo é descartado e a decisão é pelo sufixo, que é igual nos dois.
+ * Um terceiro dialeto amanhã continua caindo em `desconhecido`, e é para isso
+ * que existe o `bruto` no retorno: quem chama TEM de conseguir imprimir a
+ * palavra que o fornecedor disse. Traduzir para "desconhecido" e jogar o
+ * original fora foi o que transformou um erro de uma linha em três horas de
+ * log inútil.
+ */
 export function estadoDoLote(bruto: unknown): EstadoDoLote {
-  switch (bruto) {
-    case "JOB_STATE_PENDING":
-    case "JOB_STATE_QUEUED":
+  if (typeof bruto !== "string") return "desconhecido";
+
+  const sufixo = bruto.replace(/^(JOB|BATCH)_STATE_/, "");
+
+  switch (sufixo) {
+    case "PENDING":
+    case "QUEUED":
       return "pendente";
-    case "JOB_STATE_RUNNING":
+    case "RUNNING":
       return "rodando";
-    case "JOB_STATE_SUCCEEDED":
+    case "SUCCEEDED":
       return "concluido";
-    case "JOB_STATE_FAILED":
+    case "FAILED":
       return "falhou";
-    case "JOB_STATE_CANCELLED":
+    case "CANCELLED":
+    case "CANCELED":
       return "cancelado";
-    case "JOB_STATE_EXPIRED":
+    case "EXPIRED":
       return "expirado";
     default:
       return "desconhecido";
   }
 }
+
 
 /**
  * Vale parar de esperar?

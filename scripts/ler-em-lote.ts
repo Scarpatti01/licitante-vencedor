@@ -262,11 +262,19 @@ async function main() {
       chave: chave!,
       intervaloMs: INTERVALO_ENTRE_CONSULTAS_MS,
       prazoMs: PRAZO_DE_ESPERA_MS,
-      aoConsultar: (estado, consultas) => {
-        // Uma linha por consulta é log demais numa espera de horas; a cada dez
-        // dá para acompanhar sem afogar.
+      aoConsultar: (estado, consultas, bruto) => {
+        /*
+         * O `bruto` na linha não é enfeite: em 24/08 o log registrou 176 vezes
+         * "desconhecido" e nenhuma vez a palavra que o fornecedor tinha
+         * mandado. Com ela, o erro de dialeto (`BATCH_STATE_` contra
+         * `JOB_STATE_`) apareceria na primeira linha.
+         *
+         * Uma linha por consulta é log demais numa espera de horas; a cada dez
+         * dá para acompanhar sem afogar. Mas a PRIMEIRA sempre sai, e é nela
+         * que o dialeto se revela.
+         */
         if (consultas === 1 || consultas % 10 === 0) {
-          console.log(`    consulta ${consultas}: ${estado}`);
+          console.log(`    consulta ${consultas}: ${estado}${bruto ? ` (${bruto})` : " (o fornecedor não mandou estado)"}`);
         }
       },
     });
