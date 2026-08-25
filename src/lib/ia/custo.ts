@@ -36,34 +36,81 @@ export type PrecoDoModelo = {
   entradaPorMilhao: number;
   /** Dólares por milhão de tokens de saída. */
   saidaPorMilhao: number;
-  /** Data em que alguém CONFERIU este preço na fatura ou no painel. */
+  /** Data em que alguém CONFERIU este preço. */
   conferidoEm: string;
+  /**
+   * ONDE foi conferido, em uma linha.
+   *
+   * Não é enfeite: "preço publicado na página do fornecedor" e "preço que
+   * apareceu na fatura" são afirmações diferentes, e a segunda inclui imposto,
+   * câmbio do dia e eventual crédito promocional. Um número sem a fonte junto
+   * vira, meses depois, um número que ninguém sabe se pode confiar.
+   */
+  fonte: string;
 };
+
+/**
+ * Acima disto o Gemini cobra outro preço — e nós não sabemos qual.
+ *
+ * `gemini-3.1-pro-preview` dobra a entrada (US$ 2 → 4) e sobe a saída
+ * (US$ 12 → 18) quando o prompt passa de 200 mil tokens. `PrecoDoModelo` só
+ * guarda uma faixa, a de baixo, que é onde toda leitura nossa cai hoje: o maior
+ * prompt já registrado tem 45.190 tokens, e `ORCAMENTO_PADRAO` corta o
+ * documento em 60 mil CARACTERES.
+ *
+ * Se um dia passar, `estimarCusto` devolve "não sei" em vez de aplicar a faixa
+ * errada. Custo subestimado pela metade é o erro que ninguém percebe, porque
+ * ninguém desconfia de conta barata.
+ */
+export const LIMITE_DA_FAIXA_DE_PRECO = 200_000;
 
 /**
  * A tabela de preços. Ponto único do sistema que conhece dinheiro por token.
  *
- * Está deliberadamente VAZIA. Preço de modelo muda, varia por região, por
- * volume e por contrato, e chutar um número aqui produziria relatórios de custo
- * com aparência de exatidão e conteúdo de invenção — exatamente o pecado que o
- * resto do produto foi construído para não cometer (ver `procedencia.ts`).
+ * Nasceu vazia de propósito, e ficou vazia até 25/08 — chutar um número aqui
+ * produziria relatório de custo com aparência de exatidão e conteúdo de
+ * invenção, que é o pecado que o resto do produto existe para não cometer.
  *
- * Enquanto estiver vazia, `estimarCusto` devolve `null` com motivo, e o painel
- * mostra "custo não estimado" em vez de um número bonito e errado.
+ * O que mudou: os preços foram conferidos na página oficial do fornecedor, com
+ * data e URL. Isso é MENOS que a fatura e MAIS que um chute, e a diferença
+ * importa — a fatura inclui imposto, câmbio do dia e eventual crédito
+ * promocional. Por isso cada linha carrega `fonte`, e por isso o aviso de custo
+ * diz "estimativa pelo preço publicado".
  *
- * PARA HABILITAR: confira os valores vigentes no painel do fornecedor, e
- * preencha aqui — em dólares por milhão de tokens — com a data da conferência:
+ * Um modelo ausente daqui não quebra nada: `estimarCusto` devolve `null` com
+ * motivo e o painel mostra "custo não estimado". É o comportamento certo, e é o
+ * que acontece hoje com `gemini-3.7-flash` — o id configurado como econômico
+ * não aparece na tabela de preços do fornecedor.
  *
- *     PRECOS_POR_MODELO["gemini-2.5-flash"] = {
- *       entradaPorMilhao: 0.00,
- *       saidaPorMilhao: 0.00,
- *       conferidoEm: "2026-08-13",
- *     };
- *
- * Antes de repassar custo ao cliente, confira de novo: um erro de fator dez
- * aqui não aparece em teste nenhum.
+ * Preço muda. Ao reconferir, troque o número E a data: uma data velha ao lado
+ * de um número certo ainda é honesta; uma data nova ao lado de um número velho
+ * não é.
  */
-export const PRECOS_POR_MODELO: Record<string, PrecoDoModelo> = {};
+const FONTE = "ai.google.dev/gemini-api/docs/pricing (preço publicado, não a fatura)";
+
+export const PRECOS_POR_MODELO: Record<string, PrecoDoModelo> = {
+  // A faixa de até 200k tokens de prompt — ver `LIMITE_DA_FAIXA_DE_PRECO`.
+  // É o modelo que faz TODA leitura real hoje: 153 chamadas contra 11 do
+  // econômico, que só foi exercitado por ping de diagnóstico.
+  "gemini-3.1-pro-preview": {
+    entradaPorMilhao: 2,
+    saidaPorMilhao: 12,
+    conferidoEm: "2026-08-25",
+    fonte: FONTE,
+  },
+  "gemini-2.5-pro": {
+    entradaPorMilhao: 1.25,
+    saidaPorMilhao: 10,
+    conferidoEm: "2026-08-25",
+    fonte: FONTE,
+  },
+  "gemini-2.5-flash": {
+    entradaPorMilhao: 0.3,
+    saidaPorMilhao: 2.5,
+    conferidoEm: "2026-08-25",
+    fonte: FONTE,
+  },
+};
 
 /**
  * A mesma tabela, com o desconto do lote aplicado.
@@ -112,6 +159,21 @@ export function estimarCusto(
     return {
       usd: null,
       motivo: `Não há preço conferido cadastrado para "${modelo}" em PRECOS_POR_MODELO.`,
+    };
+  }
+
+  /*
+   * Fora da faixa que a tabela cobre. Ver `LIMITE_DA_FAIXA_DE_PRECO`: o preço
+   * do fornecedor muda acima de 200 mil tokens de prompt, e aplicar a faixa de
+   * baixo devolveria metade do custo real com cara de número exato.
+   */
+  if (uso.entrada > LIMITE_DA_FAIXA_DE_PRECO) {
+    return {
+      usd: null,
+      motivo:
+        `O prompt teve ${uso.entrada.toLocaleString("pt-BR")} tokens, acima dos ` +
+        `${LIMITE_DA_FAIXA_DE_PRECO.toLocaleString("pt-BR")} que a tabela cobre. ` +
+        `Acima dessa faixa o fornecedor cobra mais, e o valor não está cadastrado.`,
     };
   }
   const usd =

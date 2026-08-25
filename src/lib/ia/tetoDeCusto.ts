@@ -4,13 +4,19 @@
  *
  * ## O que este arquivo NÃO decide
  *
- * `PRECOS_POR_MODELO` (`custo.ts`) nasce vazio de propósito, e continua vazio
- * aqui — preencher com o preço público do fornecedor, sem conferir contra a
- * fatura real, é a mesma invenção de certeza que o resto do produto existe
- * para recusar (ver `procedencia.ts`). Este arquivo funciona nos dois estados:
- * sem preço conferido, ele diz claramente que não sabe; com preço, ele soma e
- * compara contra o teto de verdade. Nenhum código muda quando o preço for
- * preenchido — só o veredito.
+ * `PRECOS_POR_MODELO` (`custo.ts`) nasceu vazio de propósito e foi preenchido
+ * em 25/08 com o preço PUBLICADO pelo fornecedor, com data e URL em cada linha.
+ *
+ * Isso é menos que a fatura, e a diferença está declarada onde importa: cada
+ * preço carrega `fonte`, e o aviso que o dono recebe diz, no corpo, que o valor
+ * é estimativa e que a fatura inclui imposto, câmbio do dia e eventual crédito.
+ * Preço publicado com procedência é conhecimento; preço sem ela seria a mesma
+ * invenção de certeza que o resto do produto existe para recusar (ver
+ * `procedencia.ts`).
+ *
+ * Este arquivo funciona nos dois estados, e continuou funcionando sem uma linha
+ * de mudança: sem preço conferido para um modelo, ele diz que não sabe; com
+ * preço, soma e compara contra o teto. Só o veredito mudou.
  *
  * ## Nunca um interruptor
  *
