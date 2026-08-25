@@ -152,3 +152,61 @@ describe("o teto de leitura acompanha quem paga", () => {
     expect(comTetoNormal.size).toBeGreaterThan(comTetoPequeno.size);
   });
 });
+
+describe("o edital já lido não ocupa a vaga do edital novo", () => {
+  /**
+   * O defeito que quase parou a leitura, medido em 25/08.
+   *
+   * Entre os cinco editais abertos de maior score, QUATRO já estavam lidos — e
+   * encerram só em setembro, então ficariam no topo por semanas. Com o teto em
+   * 5, a leitura teria parado sozinha em um ou dois dias: todo dia gastaria as
+   * cinco vagas com editais que não precisavam de nada e nunca chegaria ao
+   * primeiro edital novo.
+   *
+   * E pararia em SILÊNCIO. Nenhum erro, nenhuma linha vermelha: o log diria
+   * "5 candidatos, 5 já em cache" e o job terminaria verde todo dia.
+   *
+   * O cache já impedia de pagar duas vezes pelo mesmo edital. O que faltava era
+   * isto: não deixar o já lido consumir o orçamento do dia.
+   */
+  const AMANHA = new Date("2026-08-21T09:00:00-03:00");
+
+  it("com o topo inteiro já lido, o dia ainda lê editais novos", () => {
+    const editais = Array.from({ length: 10 }, (_, i) => editalCompativel(`e${i}`));
+    const topoJaLido = new Set(editais.slice(0, 4).map((e) => e.uuid));
+
+    const candidatos = candidatosParaLeitura(editais, [perfil("a")], AMANHA, 2, topoJaLido);
+    const novos = [...candidatos.keys()].filter((uuid) => !topoJaLido.has(uuid));
+
+    expect(
+      novos.length,
+      "o teto voltou a ser gasto com editais já lidos. A leitura para sozinha em " +
+        "poucos dias, com o job verde e o log dizendo 'já em cache' — que foi " +
+        "exatamente o que quase aconteceu em 25/08.",
+    ).toBe(2);
+  });
+
+  /**
+   * Os já lidos continuam entrando — de graça.
+   *
+   * Eles não gastam IA nenhuma, e continuar passando por eles mantém a
+   * oportunidade fresca conforme o prazo se aproxima: a triagem depende de
+   * `agora`, então a decisão de ontem pode não ser a de hoje.
+   */
+  it("os já lidos continuam na lista, sem consumir vaga", () => {
+    const editais = Array.from({ length: 10 }, (_, i) => editalCompativel(`e${i}`));
+    const jaLidos = new Set(editais.slice(0, 4).map((e) => e.uuid));
+
+    const candidatos = candidatosParaLeitura(editais, [perfil("a")], AMANHA, 2, jaLidos);
+
+    for (const uuid of jaLidos) {
+      expect(candidatos.has(uuid), `o edital já lido ${uuid} sumiu da regravação`).toBe(true);
+    }
+    expect(candidatos.size).toBe(jaLidos.size + 2);
+  });
+
+  it("sem nada lido ainda, o teto vale como sempre valeu", () => {
+    const editais = Array.from({ length: 10 }, (_, i) => editalCompativel(`e${i}`));
+    expect(candidatosParaLeitura(editais, [perfil("a")], AMANHA, 3, new Set()).size).toBe(3);
+  });
+});

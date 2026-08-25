@@ -95,6 +95,20 @@ export function candidatosParaLeitura(
    * que precisa custar e não mais.
    */
   teto: number = LEITURAS_POR_EMPRESA_POR_DIA,
+  /**
+   * Os editais (por uuid) que JÁ têm análise vigente.
+   *
+   * Sem isto, o teto era gasto com quem não precisava de nada. Medido em
+   * 25/08, entre os cinco editais abertos de maior score, QUATRO já estavam
+   * lidos — e ficariam no topo por semanas, porque encerram só em setembro.
+   * Com o teto em 5, a leitura teria parado sozinha em um ou dois dias, sem
+   * erro nenhum em log nenhum: todo dia gastaria as cinco vagas relendo do
+   * cache e nunca chegaria ao primeiro edital novo.
+   *
+   * O cache já impedia de PAGAR duas vezes. O que faltava era não deixar o
+   * edital já lido ocupar a vaga do edital novo.
+   */
+  jaLidos: ReadonlySet<string> = new Set(),
 ): Map<string, Candidato> {
   const porEditalId = new Map(editaisAbertos.map((e) => [e.edital.id, e]));
   const paresSemLeitura = editaisAbertos.map(({ edital }) => ({
@@ -107,10 +121,26 @@ export function candidatosParaLeitura(
   for (const perfil of perfis) {
     const resultado = triar(paresSemLeitura, perfil, agora);
 
-    const topo = resultado.entregues
+    const acimaDoCorte = resultado.entregues
       .filter((d) => (d.score ?? 0) >= CORTE_DE_LEITURA)
-      .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
-      .slice(0, teto);
+      .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+
+    const uuidDe = (editalId: string) => porEditalId.get(editalId)?.uuid;
+    const foiLido = (d: (typeof acimaDoCorte)[number]) => {
+      const uuid = uuidDe(d.editalId);
+      return uuid !== undefined && jaLidos.has(uuid);
+    };
+
+    /*
+     * O teto vale só para quem vai CUSTAR. Os já lidos entram sem consumir
+     * vaga: eles não gastam IA nenhuma, e continuar passando por eles mantém a
+     * oportunidade fresca conforme o prazo se aproxima — a triagem depende de
+     * `agora`, então a decisão de ontem pode não ser a de hoje.
+     */
+    const topo = [
+      ...acimaDoCorte.filter(foiLido),
+      ...acimaDoCorte.filter((d) => !foiLido(d)).slice(0, teto),
+    ];
 
     for (const decisao of topo) {
       const par = porEditalId.get(decisao.editalId);
