@@ -40,6 +40,7 @@
 import { analiseNaoRealizada } from "../src/lib/dominio/recomendacao.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
 import { triar, type DecisaoDeTriagem } from "../src/lib/pipeline/triagem.ts";
+import { paraAvaliarDaEmpresa } from "../src/lib/pipeline/selecaoPorRecorte.ts";
 import { decisaoParaLinha, oportunidadeParaLinha } from "../src/lib/triagem/mapeamento.ts";
 import { abrirRepositorio } from "../src/lib/triagem/repositorio.ts";
 
@@ -65,9 +66,10 @@ async function main() {
   }
 
   const agora = new Date();
-  const [perfis, editaisAbertos] = await Promise.all([
+  const [perfis, editaisAbertos, recortesPorEmpresa] = await Promise.all([
     repositorio.perfis(),
     repositorio.editaisAbertos(agora),
+    repositorio.recortesPorEmpresa(),
   ]);
 
   console.log(
@@ -91,16 +93,35 @@ async function main() {
   const porDecidir: { empresaId: string; editalUuid: string; edital: Edital; decisao: DecisaoDeTriagem }[] = [];
 
   let entregues = 0;
+  // Quantas avaliações os recortes pouparam. Sem este número, a economia que
+  // justifica o plano de R$ 59 vira fé.
+  let recortadas = 0;
+
 
   for (const perfil of perfis) {
+    /*
+     * Empresa COM recorte avalia só o que os recortes dela deixam entrar;
+     * empresa SEM recorte continua avaliando tudo que está aberto.
+     *
+     * A ausência de recorte não é falta de configuração: é o que os planos que
+     * leem o documento fazem, cobrindo o perfil inteiro sem limite geográfico.
+     * Tratar "sem recorte" como "recorte vazio" desligaria a triagem justamente
+     * de quem paga mais — o tipo de defeito que passa no teste e aparece como
+     * um cliente reclamando que parou de receber e-mail.
+     */
+    const recortes = recortesPorEmpresa.get(perfil.empresaId) ?? [];
+    const daEmpresa = paraAvaliarDaEmpresa(pares, recortes, perfil);
+
+    recortadas += pares.length - daEmpresa.length;
+
     const resultado = triar(
-      pares.map(({ edital, analise }) => ({ edital, analise })),
+      daEmpresa.map(({ edital, analise }) => ({ edital, analise })),
       perfil,
       agora,
     );
 
     resultado.decisoes.forEach((decisao, i) => {
-      const { uuid: editalUuid, edital } = pares[i];
+      const { uuid: editalUuid, edital } = daEmpresa[i];
 
       if (decisao.entregue) {
         entregues++;
@@ -120,7 +141,10 @@ async function main() {
   }
 
   console.log(
-    `${entregues} oportunidade(s) a gravar · ${porDecidir.length - entregues} descarte(s) explicado(s)`,
+    `${entregues} oportunidade(s) a gravar · ${porDecidir.length - entregues} descarte(s) explicado(s)` +
+      (recortadas > 0
+        ? ` · ${recortadas.toLocaleString("pt-BR")} avaliação(ões) poupada(s) pelos recortes`
+        : ""),
   );
 
   if (simular) {
