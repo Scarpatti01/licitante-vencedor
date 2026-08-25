@@ -1,7 +1,18 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { PLANOS, O_QUE_INCLUI, O_QUE_NAO_FAZ, emReais, porEmpresa, divergenciasDePreco, type PlanoNoBanco } from "./precos";
+import {
+  PLANOS,
+  FORMATO_DO_CODIGO,
+  O_QUE_NENHUM_PLANO_FAZ,
+  O_QUE_O_PLANO_DE_LISTA_NAO_FAZ,
+  oQueIncluiO,
+  oQueNaoFazO,
+  emReais,
+  porEmpresa,
+  divergenciasDePreco,
+  type PlanoNoBanco,
+} from "./precos";
 
 const PAGINA = readFileSync(
   join(import.meta.dirname, "..", "app", "precos", "page.tsx"),
@@ -38,11 +49,19 @@ describe("os planos", () => {
      */
     expect(semNbsp(emReais(80_000))).toBe("R$ 800");
     expect(semNbsp(emReais(150_000))).toBe("R$ 1.500");
-    expect(semNbsp(porEmpresa(PLANOS[1]))).toBe("R$ 300 por empresa");
+    // Por código, e não por posição: `PLANOS[1]` deixou de ser o mesmo plano no
+    // dia em que o plano leve nasceu, e a asserção passou a falar de outro
+    // produto sem ninguém escrever isso.
+    const consultoria = PLANOS.find((p) => p.codigo === "consultoria")!;
+    expect(semNbsp(porEmpresa(consultoria))).toBe("R$ 300 por empresa");
+    const escritorio = PLANOS.find((p) => p.codigo === "leve_escritorio")!;
+    expect(semNbsp(porEmpresa(escritorio))).toBe("R$ 50 por empresa");
   });
 
   it("tem código estável, que o checkout vai referenciar", () => {
-    for (const p of PLANOS) expect(p.codigo).toMatch(/^[a-z-]+$/);
+    // A régua vem de `FORMATO_DO_CODIGO`, que espelha `planos_codigo_check`.
+    // Escrever a expressão de novo aqui foi o que deixou as duas divergirem.
+    for (const p of PLANOS) expect(p.codigo).toMatch(FORMATO_DO_CODIGO);
     expect(new Set(PLANOS.map((p) => p.codigo)).size).toBe(PLANOS.length);
   });
 
@@ -53,8 +72,47 @@ describe("os planos", () => {
      * projeto declara limitação em toda superfície; a página que cobra dinheiro
      * não é a exceção.
      */
-    expect(O_QUE_NAO_FAZ.length).toBeGreaterThan(0);
-    expect(O_QUE_INCLUI.length).toBeGreaterThan(0);
+    expect(O_QUE_NENHUM_PLANO_FAZ.length).toBeGreaterThan(0);
+    for (const p of PLANOS) {
+      expect(oQueIncluiO(p).length, `${p.codigo} não lista o que entrega`).toBeGreaterThan(0);
+      expect(oQueNaoFazO(p).length, `${p.codigo} não lista o que não faz`).toBeGreaterThan(0);
+    }
+  });
+
+  it("o plano sem leitura declara isso onde ninguém deixa de ver", () => {
+    /*
+     * A frase mais importante da página. Sem ela, o cliente de R$ 59 acha que
+     * comprou o de R$ 800, descobre no primeiro edital que perdeu por falta de
+     * um documento que ninguém avisou que era exigido, e pede reembolso com
+     * razão. A guarda cobra que a limitação apareça na lista do PRÓPRIO plano,
+     * e não só numa seção genérica lá embaixo.
+     */
+    for (const p of PLANOS.filter((x) => x.profundidade === "lista")) {
+      const naoFaz = oQueNaoFazO(p).join(" | ");
+      expect(naoFaz, `${p.codigo} não avisa que não abre o arquivo do edital`).toMatch(
+        /não abre o arquivo do edital/i,
+      );
+      expect(naoFaz, `${p.codigo} não avisa que não traz exigência de habilitação`).toMatch(
+        /habilitação/i,
+      );
+    }
+    // E o contrário: o plano que LÊ não pode carregar esse aviso, senão a
+    // página desmente o que ela mesma está vendendo.
+    for (const p of PLANOS.filter((x) => x.profundidade === "documento")) {
+      expect(oQueNaoFazO(p).join(" | ")).not.toMatch(/não abre o arquivo/i);
+    }
+  });
+
+  it("o plano de lista não promete leitura em lugar nenhum da própria lista", () => {
+    // O erro mais fácil de cometer aqui é copiar a linha da leitura para o
+    // plano leve por descuido. Seria vender o que ele não entrega.
+    for (const p of PLANOS.filter((x) => x.profundidade === "lista")) {
+      const inclui = oQueIncluiO(p).join(" | ");
+      expect(inclui, `${p.codigo} promete ler o documento`).not.toMatch(
+        /leitura do documento|exigências de habilitação|prontidão documental/i,
+      );
+    }
+    expect(O_QUE_O_PLANO_DE_LISTA_NAO_FAZ.length).toBeGreaterThan(0);
   });
 });
 
@@ -118,6 +176,8 @@ describe("o preço publicado e o preço cobrável não podem divergir", () => {
    * este caso quebra e diz qual dos dois ficou para trás.
    */
   const COMO_ESTA_NO_BANCO: PlanoNoBanco[] = [
+    { codigo: "leve", ativo: true, mensalidade_em_centavos: 5_900, limite_de_empresas: 1 },
+    { codigo: "leve_escritorio", ativo: true, mensalidade_em_centavos: 24_900, limite_de_empresas: 5 },
     { codigo: "empresa", ativo: true, mensalidade_em_centavos: 80_000, limite_de_empresas: 1 },
     { codigo: "consultoria", ativo: true, mensalidade_em_centavos: 150_000, limite_de_empresas: 5 },
   ];
@@ -203,7 +263,9 @@ describe("a página não promete volume que o produto não garante", () => {
    * O que o produto garante é o PROCESSO rodando; o volume depende do que os
    * órgãos publicam e do perfil do cliente. A lista precisa dizer isso.
    */
-  const inclui = O_QUE_INCLUI.join(" | ");
+  // Agora cobre TODOS os planos, e não uma lista única: cada plano tem a sua, e
+  // uma promessa exagerada pode entrar em qualquer uma delas.
+  const inclui = PLANOS.flatMap((p) => oQueIncluiO(p)).join(" | ");
 
   it("não promete leitura com periodicidade garantida", () => {
     expect(inclui).not.toMatch(/leitura[^|]*todo dia/i);
@@ -220,5 +282,117 @@ describe("a página não promete volume que o produto não garante", () => {
     // concreto.
     expect(inclui).toMatch(/coleta diária/i);
     expect(inclui).toMatch(/27 unidades/i);
+  });
+});
+
+describe("o código do plano não diverge entre o TypeScript e o banco", () => {
+  /**
+   * `FORMATO_DO_CODIGO` espelha o CHECK `planos_codigo_check`. Se um mudar e o
+   * outro não, volta a existir um código que passa num lado e é recusado no
+   * outro — e a descoberta é um `insert` recusado em produção, como aconteceu
+   * em 25/08 com `leve-escritorio`.
+   */
+  const migracoes = readdirSync(join("supabase", "migrations"))
+    .filter((f) => f.endsWith(".sql"))
+    .map((f) => readFileSync(join("supabase", "migrations", f), "utf8"));
+
+  it("a régua do banco existe numa migração", () => {
+    const comCheck = migracoes.filter((sql) => sql.includes("codigo ~ "));
+    expect(
+      comCheck.length,
+      "nenhuma migração declara o formato do código de plano; se o CHECK mudou de forma, esta guarda virou decoração.",
+    ).toBeGreaterThan(0);
+  });
+
+  it("a régua do banco e a do TypeScript são a mesma", () => {
+    const sql = migracoes.find((s) => s.includes("codigo ~ "))!;
+    const doBanco = sql.match(/codigo ~ '([^']+)'/u);
+    expect(doBanco, "não achei a expressão do CHECK").not.toBeNull();
+
+    expect(
+      doBanco![1],
+      `o banco exige ${doBanco![1]} e o código exige ${FORMATO_DO_CODIGO.source}. ` +
+        "Um plano válido de um lado é recusado do outro.",
+    ).toBe(FORMATO_DO_CODIGO.source);
+  });
+});
+
+describe("a página de preços não promete leitura no preço de quem não lê", () => {
+  /**
+   * O defeito que esta guarda existe para impedir aconteceu em 25/08, no mesmo
+   * dia em que o plano leve nasceu, e passou por TODOS os outros testes.
+   *
+   * A página tinha um título ("Preços: quanto custa receber os editais já
+   * lidos") e uma descrição ("A partir de R$ 59 por mês, com a leitura diária
+   * dos editais de maior aderência") escritos quando o plano mais barato custava
+   * R$ 800 e lia o documento de todo edital. As duas frases usavam
+   * `MAIS_BARATO`, então elas se ATUALIZARAM SOZINHAS para R$ 59 e continuaram
+   * prometendo leitura — o preço mudou, a promessa ficou, e o resultado é a
+   * página anunciando por R$ 59 exatamente aquilo que o plano de R$ 59 declara,
+   * três parágrafos abaixo, que não faz.
+   *
+   * Nenhuma guarda pegou porque nenhuma comparava a PROMESSA com a
+   * PROFUNDIDADE do plano cujo preço ela cita.
+   */
+  const pagina = readFileSync(join("src", "app", "precos", "page.tsx"), "utf8");
+
+  const maisBarato = [...PLANOS].sort(
+    (a, b) => a.mensalidadeEmCentavos - b.mensalidadeEmCentavos,
+  )[0];
+
+  /**
+   * Palavras que afirmam que alguém abriu o arquivo do edital.
+   *
+   * A régua é grosseira DE PROPÓSITO, e vale dizer por quê: ela reprova até
+   * "se lemos o arquivo ou não", que é uma frase honesta. Nenhuma expressão
+   * regular distingue promessa de ressalva sem errar de outro jeito, e o custo
+   * dos dois erros é assimétrico — reprovar uma frase honesta custa uma
+   * reescrita, e aprovar uma frase mentirosa custa um reembolso.
+   *
+   * A saída, quando a reprovação for injusta, não é afrouxar a régua: é parar
+   * de citar o preço do plano mais barato na mesma frase em que se fala de
+   * leitura. Foi juntar as duas coisas que criou o defeito.
+   */
+  const PROMESSA_DE_LEITURA = /j[áa] lidos?|leitura|lemos|lidos/i;
+
+  it("o plano mais barato é de lista — se deixar de ser, esta guarda precisa ser relida", () => {
+    // A guarda inteira assume isto. Se um dia o mais barato voltar a ler, ela
+    // passa a proibir uma frase verdadeira, e é aqui que se descobre.
+    expect(maisBarato.profundidade).toBe("lista");
+  });
+
+  it("o título não promete edital lido", () => {
+    const titulo = pagina.match(/const TITULO = "([^"]+)"/u);
+    expect(titulo, "não achei `const TITULO` na página").not.toBeNull();
+    expect(
+      titulo![1],
+      `o título promete leitura, e o plano mais barato ("${maisBarato.codigo}") não lê o documento.`,
+    ).not.toMatch(PROMESSA_DE_LEITURA);
+  });
+
+  it("a descrição não promete leitura junto do preço mais barato", () => {
+    const inicio = pagina.indexOf("const DESCRICAO");
+    expect(inicio, "não achei `const DESCRICAO` na página").toBeGreaterThan(-1);
+    const descricao = pagina.slice(inicio, pagina.indexOf("const ATUALIZADO"));
+
+    // A descrição cita `MAIS_BARATO`. Citar o preço de quem não lê e falar de
+    // leitura na mesma frase é a armadilha exata.
+    if (descricao.includes("MAIS_BARATO")) {
+      expect(
+        descricao,
+        "a descrição cita o preço do plano mais barato E promete leitura. " +
+          "Foi assim que a página passou a anunciar por R$ 59 o que o plano de R$ 59 não faz.",
+      ).not.toMatch(PROMESSA_DE_LEITURA);
+    }
+  });
+
+  it("a página nomeia o limite do plano de lista em algum lugar do corpo", () => {
+    // Não basta não mentir: o limite precisa estar dito. Se a lista de
+    // `O_QUE_O_PLANO_DE_LISTA_NAO_FAZ` deixar de ser renderizada num refactor,
+    // a página fica tecnicamente honesta e praticamente omissa.
+    expect(
+      pagina,
+      "a página não renderiza `O_QUE_O_PLANO_DE_LISTA_NAO_FAZ`: o cliente de R$ 59 não tem onde ler que não abrimos o arquivo.",
+    ).toContain("O_QUE_O_PLANO_DE_LISTA_NAO_FAZ");
   });
 });
