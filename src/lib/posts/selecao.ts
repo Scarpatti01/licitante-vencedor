@@ -27,9 +27,26 @@
  */
 
 import type { Edital } from "../fontes/tipos.ts";
+import { categoriaDoObjeto, pesoDaDemanda } from "./demanda.ts";
 
-/** Quantos posts por dia, no padrão. */
-export const POSTS_POR_DIA = 25;
+/**
+ * Quantos posts por dia, no padrão.
+ *
+ * **Cinco, e não 25, desde 26/08.** Decisão do dono, e a pesquisa que a
+ * acompanhou explica por que ela não é só economia.
+ *
+ * Vinte e cinco por dia custavam entre US$ 2,96 e US$ 5,73 por dia de leitura de
+ * IA — a maior linha da conta depois que a leitura de cliente passou a respeitar
+ * o plano. E não havia evidência de retorno: para consulta de edital por cidade,
+ * quem ocupa os primeiros lugares é o portal do próprio órgão e a página-âncora
+ * do concorrente por praça. Página de UM edital, de agregador nenhum, aparece.
+ * Ver `demanda.ts`, que carrega a pesquisa inteira.
+ *
+ * Cinco por dia é o que mantém a prova pública de que a leitura existe — que é
+ * o que a página do município tem para mostrar — sem financiar volume que não
+ * traz ninguém. São ~150 páginas por mês em vez de 750.
+ */
+export const POSTS_POR_DIA = 5;
 
 /**
  * Objeto curto demais não vira post.
@@ -66,6 +83,22 @@ export const MAXIMO_POR_MUNICIPIO = 3;
 /** Teto por órgão, pela mesma razão — uma prefeitura não pauta o dia inteiro. */
 export const MAXIMO_POR_ORGAO = 2;
 
+/**
+ * Teto por categoria de compra.
+ *
+ * Nasceu junto com a ordenação por demanda, e existe por causa dela: sem este
+ * teto, "Alimentação escolar" tem o maior peso da tabela e levaria a leva
+ * inteira todo dia, porque toda prefeitura do país compra merenda toda semana.
+ * O leitor abriria o site cinco dias seguidos e veria vinte e cinco posts de
+ * gêneros alimentícios.
+ *
+ * Dois de cinco deixa a categoria mais buscada liderar sem monopolizar, e
+ * garante pelo menos três assuntos diferentes por dia. Com a torneira em 25 o
+ * problema não aparecia, porque havia espaço para todo mundo — foi fechar para
+ * cinco que o criou.
+ */
+export const MAXIMO_POR_CATEGORIA = 2;
+
 export type Criterios = {
   /** Quantos selecionar. */
   limite?: number;
@@ -81,6 +114,7 @@ export type Recusa =
   | "sem-valor-informado"
   | "cota-do-municipio"
   | "cota-do-orgao"
+  | "cota-da-categoria"
   | "fora-do-limite";
 
 export type Selecao = {
@@ -130,11 +164,26 @@ export function motivoDaRecusa(
 /**
  * A leva do dia.
  *
- * A ordem de escolha é por **prazo mais próximo primeiro**, entre os que ainda
- * são acionáveis. Não é por valor: um edital bilionário de obra interessa a
+ * ## A ordem mudou em 26/08: DEMANDA primeiro, prazo depois
+ *
+ * Era só prazo, entre os acionáveis, e o argumento continua válido pela metade:
+ * prazo primeiro faz o post chegar enquanto ainda dá para participar, que é o
+ * valor de quem já está lendo. O que faltava era a outra metade — prazo não é
+ * assunto que ninguém procura, então ordenar só por ele publica sem nunca
+ * perguntar quem viria.
+ *
+ * Agora a ordem é o peso de `demanda.ts` primeiro, e o prazo desempata. Com a
+ * torneira em cinco por dia isso deixou de ser detalhe: escolher cinco entre
+ * milhares é uma decisão editorial de verdade, e "os cinco que fecham antes" não
+ * é uma.
+ *
+ * O que NÃO mudou: nada entra sem ser acionável. Um edital de merenda com peso
+ * 10 e prazo de dois dias continua recusado por `prazo-curto-demais`, porque
+ * post que nasce vencido não serve a leitor nenhum, procurado ou não.
+ *
+ * Não é por valor, e isso segue firme: um edital bilionário de obra interessa a
  * pouquíssimas empresas, enquanto o de R$ 80 mil de material escolar interessa a
- * muitas — e o site existe para PMEs. Prazo primeiro também é o que faz o post
- * chegar enquanto ainda dá para participar, que é o valor que o leitor tira dele.
+ * muitas — e o site existe para PMEs.
  */
 export function selecionarDoDia(
   editais: readonly Edital[],
@@ -152,9 +201,18 @@ export function selecionarDoDia(
     else elegiveis.push(edital);
   }
 
-  // Prazo mais próximo primeiro; empate desfeito pelo id, para a seleção do
-  // mesmo conjunto dar sempre o mesmo resultado entre execuções.
+  /*
+   * Demanda primeiro, prazo desempatando, id desempatando o desempate.
+   *
+   * O `id` no fim não é enfeite: sem ele, dois editais com o mesmo peso e o
+   * mesmo prazo trocariam de lugar entre execuções conforme a ordem que a
+   * coleta devolveu, e a mesma entrada daria levas diferentes. Um teste cobra
+   * exatamente isso.
+   */
   const ordenados = [...elegiveis].sort((a, b) => {
+    const da = pesoDaDemanda(b) - pesoDaDemanda(a);
+    if (da !== 0) return da;
+
     const pa = a.encerramentoProposta ?? "";
     const pb = b.encerramentoProposta ?? "";
     return pa.localeCompare(pb) || a.id.localeCompare(b.id);
@@ -163,6 +221,7 @@ export function selecionarDoDia(
   const escolhidos: Edital[] = [];
   const porMunicipio = new Map<string, number>();
   const porOrgao = new Map<string, number>();
+  const porCategoria = new Map<string, number>();
 
   for (const edital of ordenados) {
     if (escolhidos.length >= limite) {
@@ -182,9 +241,24 @@ export function selecionarDoDia(
       continue;
     }
 
+    /*
+     * A cota de categoria vale só para quem TEM categoria.
+     *
+     * Os sem classificação — 36% da amostra de 26/08 — não competem entre si por
+     * uma vaga: eles não são um assunto, são a ausência de um. Contá-los juntos
+     * limitaria a três por dia um grupo que na verdade é uma dúzia de nichos
+     * diferentes, e justamente os nichos que o concorrente não cobre.
+     */
+    const categoria = categoriaDoObjeto(edital.objeto);
+    if (categoria && (porCategoria.get(categoria.nome) ?? 0) >= MAXIMO_POR_CATEGORIA) {
+      conta("cota-da-categoria");
+      continue;
+    }
+
     escolhidos.push(edital);
     porMunicipio.set(chaveMunicipio, (porMunicipio.get(chaveMunicipio) ?? 0) + 1);
     porOrgao.set(chaveOrgao, (porOrgao.get(chaveOrgao) ?? 0) + 1);
+    if (categoria) porCategoria.set(categoria.nome, (porCategoria.get(categoria.nome) ?? 0) + 1);
   }
 
   return { escolhidos, recusas };
