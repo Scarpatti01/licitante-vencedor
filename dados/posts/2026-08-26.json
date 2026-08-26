@@ -1,0 +1,1681 @@
+{
+  "dia": "2026-08-26",
+  "consideradosNoDia": 28817,
+  "posts": [
+    {
+      "slug": "credenciamento-chamamento-publico-credenciamento-pessoas-juridicas-classificadas-181-2025",
+      "editalId": "13701966000106-1-000181/2025",
+      "objeto": "Chamamento Público para credenciamento de pessoas jurídicas classificadas como hotel ou pousada localizadas na sede dos Municípios de Itagibá-BA, Ipiaú-BA ou Jequié-BA, para prestação de serviços de hospedagem com alimentação no atendimento das necessidades da prefeitura municipal de Itagibá-BA",
+      "orgao": "MUNICIPIO DE ITAGIBA",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 106635.72,
+      "registroDePrecos": false,
+      "uf": "BA",
+      "municipio": "Itagibá",
+      "municipioSlug": "itagiba",
+      "codigoIbge": "2915205",
+      "publicadoEm": "2025-08-29T12:41:31+00:00",
+      "encerramentoProposta": "2026-08-29T11:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:18.862+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/13701966000106/2025/181",
+      "analise": {
+        "editalId": "13701966000106-1-000181/2025",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "credenciamento-credenciamento-empresas-especializadas-material-limpeza-63-2025",
+      "editalId": "14195358000121-1-000063/2025",
+      "objeto": "CREDENCIAMENTO de empresas especializadas para a eventual aquisição de material de limpeza",
+      "orgao": "MUNICIPIO DE GANDU",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 5811755.73,
+      "registroDePrecos": false,
+      "uf": "BA",
+      "municipio": "Gandu",
+      "municipioSlug": "gandu",
+      "codigoIbge": "2911204",
+      "publicadoEm": "2025-09-08T11:38:20+00:00",
+      "encerramentoProposta": "2026-08-29T11:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:18.862+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/14195358000121/2025/63",
+      "analise": {
+        "editalId": "14195358000121-1-000063/2025",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 6
+    },
+    {
+      "slug": "credenciamento-credenciamento-medicos-clinico-geral-ginecologista-obstetra-1287-2025",
+      "editalId": "12998458000160-1-001287/2025",
+      "objeto": "CREDENCIAMENTO DE SERVICOS MEDICOS (CLINICO GERAL, GINECOLOGISTA/OBSTETRA, MEDICO DE FAMILIA E PEDIATRA)",
+      "orgao": "FUNDO MUNICIPAL DE SAUDE DE SAO JOSE DOS CAMPOS",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 5328000,
+      "registroDePrecos": false,
+      "uf": "SP",
+      "municipio": "São José dos Campos",
+      "municipioSlug": "sao-jose-dos-campos",
+      "codigoIbge": "3549904",
+      "publicadoEm": "2025-11-04T14:04:21+00:00",
+      "encerramentoProposta": "2026-08-29T12:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:45.473+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/12998458000160/2025/1287",
+      "analise": {
+        "editalId": "12998458000160-1-001287/2025",
+        "analisadoEm": "2026-08-26T07:21:33.725Z",
+        "versaoDoPrompt": "analise-de-edital.v1",
+        "modelo": "gemini-3.1-pro-preview",
+        "resumoExecutivo": {
+          "origem": "edital",
+          "valor": "O edital visa o credenciamento de empresas para prestação de serviços médicos (clínico geral, ginecologista/obstetra, médico de família e pediatra) na cidade de São José dos Campos pelo prazo de 12 meses. Não há pagamento fixo mensal, sendo a remuneração baseada exclusivamente nos atendimentos efetivamente prestados. Pequenas empresas devem atentar-se à necessidade de possuir estrutura local (CNES no município) e à ausência de reajuste automático dos valores.",
+          "evidencia": "OBJETO: CREDENCIAMENTO DE SERVIÇOS MÉDICOS (CLÍNICO GERAL, GINECOLOGISTA/OBSTETRA, MÉDICO DE FAMÍLIA E PEDIATRA) [...] O credenciamento tem o prazo improrrogável de 12 (doze) meses [...] A execução dos serviços deverá ser realizada na cidade de São José dos Campos [...] Não haverá pagamento fixo mensal, sendo devido ao CONTRATADO o pagamento referente aos atendimentos efetivamente prestados.",
+          "confianca": "media"
+        },
+        "exigencias": [
+          {
+            "tipo": "contrato_social",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Ato constitutivo, estatuto ou contrato social em vigor",
+              "evidencia": "b) ato constitutivo, estatuto ou contrato social em vigor, devidamente registrado, em se tratando de sociedades comerciais",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "5.1. DOCUMENTOS DE HABILITAÇÃO JURIDICA / FINANCEIRA [...] b) ato constitutivo, estatuto ou contrato social em vigor",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "certidao_federal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão conjunta emitida pela RFB e PGFN",
+              "evidencia": "g.1) Nacional através de certidão conjunta emitida pela RFB e PGFN, abrangendo inclusive as contribuições sociais",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "g) prova de regularidade da empresa, através de Certidão Negativa de Débito ou Certidão Positiva com Efeitos de Negativa, perante as Fazendas: g.1) Nacional através de certidão conjunta emitida pela RFB e PGFN",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "certidao_municipal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade perante a Fazenda Municipal",
+              "evidencia": "g.2) Municipal (no mínimo, no que se refere a tributos mobiliários), do domicílio ou sede do licitante, pertinente ao seu ramo de atividade",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "g) prova de regularidade da empresa, através de Certidão Negativa de Débito ou Certidão Positiva com Efeitos de Negativa, perante as Fazendas: [...] g.2) Municipal",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "fgts",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade relativa ao FGTS",
+              "evidencia": "h) prova de regularidade relativa ao Fundo de Garantia por Tempo de Serviço (FGTS) demonstrando situação regular quanto aos recolhimentos;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "h) prova de regularidade relativa ao Fundo de Garantia por Tempo de Serviço (FGTS) demonstrando situação regular quanto aos recolhimentos;",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "trabalhista_cndt",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão Negativa de Débitos Trabalhistas (CNDT)",
+              "evidencia": "i) prova de regularidade relativa à Justiça do Trabalho, através de Certidão Negativa de Débitos Trabalhistas (CNDT) ou Certidão Positiva com Efeitos de Negativa;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "i) prova de regularidade relativa à Justiça do Trabalho, através de Certidão Negativa de Débitos Trabalhistas (CNDT)",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "falencia_concordata",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão negativa de feitos sobre falência",
+              "evidencia": "j) Pessoa jurídica, apresentar certidão negativa de feitos sobre falência, expedida pelo distribuidor da sede da empresa interessada.",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "j) Pessoa jurídica, apresentar certidão negativa de feitos sobre falência, expedida pelo distribuidor da sede da empresa interessada.",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "atestado_capacidade_tecnica",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Atestado de capacidade técnica",
+              "evidencia": "k) Comprovação de aptidão para desempenho da atividade compatível com o objeto deste Credenciamento (no mínimo um atestado de capacidade técnica, emitido por pessoa jurídica de direito público ou privado que comprove a aptidão do participante no mesmo segmento de mercado).",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "k) Comprovação de aptidão para desempenho da atividade compatível com o objeto deste Credenciamento (no mínimo um atestado de capacidade técnica",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "alvara_licenca",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Alvará ou Licença de Funcionamento da Vigilância Sanitária",
+              "evidencia": "c) Alvará de Funcionamento ou Licença de Funcionamento, com validade em vigor, expedido por órgão competente da Vigilância Sanitária, referentes ao estabelecimento e equipamentos disponíveis, se o caso.",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "c) Alvará de Funcionamento ou Licença de Funcionamento, com validade em vigor, expedido por órgão competente da Vigilância Sanitária",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "outro",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Registro no conselho de classe da empresa e dos profissionais, e Cadastro Nacional de Estabelecimentos de Saúde (CNES)",
+              "evidencia": "a) registro ou inscrição da empresa no conselho de classe referente ao objeto deste Credenciamento. [...] d) Cadastro Nacional de Estabelecimentos de Saúde (CNES) no município de São José dos Campos, devidamente atualizado",
+              "confianca": "media"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "5.2. DOCUMENTOS DE HABILITAÇÃO TÉCNICA a) registro ou inscrição da empresa no conselho de classe [...] d) Cadastro Nacional de Estabelecimentos de Saúde (CNES)",
+              "confianca": "media"
+            }
+          }
+        ],
+        "criterioDeJulgamento": {
+          "origem": "edital",
+          "valor": "Não há disputa de preços ou julgamento competitivo; trata-se de credenciamento onde todos os interessados que cumprirem os requisitos serão contratados.",
+          "evidencia": "Todos os interessados que cumprirem os requisitos deste edital serão credenciados, respeitando-se o prazo para apresentação da documentação, não havendo prioridade de nenhuma natureza, inclusive para a prestação dos serviços.",
+          "confianca": "alta"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O texto menciona a palavra 'garantia' de forma genérica ao tratar de descontos ('caso exigida no edital'), mas não há nenhuma cláusula no trecho fornecido que efetivamente exija a apresentação de garantia de proposta ou garantia contratual."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "edital",
+          "valor": true,
+          "evidencia": "Não obstante, as instalações, o aparelhamento e pessoal técnico devem estar disponíveis e contratados, se o caso, quando da realização de vistoria pela área técnica, que irá avaliar o serviço.",
+          "confianca": "alta"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O texto não faz nenhuma menção à exigência de apresentação de amostras, protótipos, laudos ou provas de conceito."
+        },
+        "riscos": [
+          {
+            "origem": "edital",
+            "valor": "Obrigação de possuir estrutura local para a prestação dos serviços.",
+            "evidencia": "A execução dos serviços deverá ser realizada na cidade de São José dos Campos, sob a responsabilidade do credenciado;",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Ausência de reajuste automático dos valores pagos pelos serviços.",
+            "evidencia": "Os valores dos serviços não terão reajuste automático, sendo fixados conforme estabelecido nos anexos deste edital.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Risco de faturamento variável, pois não há garantia de pagamento fixo mensal.",
+            "evidencia": "Não haverá pagamento fixo mensal, sendo devido ao CONTRATADO o pagamento referente aos atendimentos efetivamente prestados.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Multa compensatória pesada em caso de inexecução total.",
+            "evidencia": "Compensatória de 20% (vinte por cento) sobre o valor total do contrato, no caso de inexecução total do objeto.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Risco de descredenciamento por inatividade.",
+            "evidencia": "Não permanecerão credenciadas empresas que não ofertarem serviços por 3 (três) meses consecutivos, exceto nos casos em que a contratante não disponibilizar a demanda.",
+            "confianca": "alta"
+          }
+        ],
+        "profundidade": "documento_parcial"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "dispensa-reabastecimento-extintores-incendio-atendimento-necessidades-municipio-25-2025",
+      "editalId": "24179426000112-1-000025/2025",
+      "objeto": "CONTRATAÇÃO DE EMPRESA PARA FORNECIMENTO E REABASTECIMENTO DE EXTINTORES DE INCÊNDIO EM ATENDIMENTO ÀS NECESSIDADES DO MUNICÍPIO DE LAMIM/MG",
+      "orgao": "MUNICIPIO DE LAMIM",
+      "modalidade": "Dispensa",
+      "valorEstimado": 3293.92,
+      "registroDePrecos": false,
+      "uf": "MG",
+      "municipio": "Lamim",
+      "municipioSlug": "lamim",
+      "codigoIbge": "3137908",
+      "publicadoEm": "2026-04-28T20:30:25+00:00",
+      "encerramentoProposta": "2026-08-29T12:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:52.312+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/24179426000112/2025/25",
+      "analise": {
+        "editalId": "24179426000112-1-000025/2025",
+        "analisadoEm": "2026-08-26T07:24:55.394Z",
+        "versaoDoPrompt": "analise-de-edital.v1",
+        "modelo": "gemini-3.1-pro-preview",
+        "resumoExecutivo": {
+          "origem": "edital",
+          "valor": "O edital visa a contratação de empresa para fornecimento e reabastecimento de extintores de incêndio para o município de Lamim/MG. A disputa será por dispensa eletrônica com critério de menor preço por item. Pequenas empresas devem atentar-se aos prazos curtos de entrega e às multas elevadas por inexecução.",
+          "evidencia": "CONTRATAÇÃO DE EMPRESA PARA FORNECIMENTO E REABASTECIMENTO DE EXTINTORES DE INCÊNDIO EM ATENDIMENTO ÀS NECESSIDADES DO MUNICÍPIO DE LAMIM/MG",
+          "confianca": "alta"
+        },
+        "exigencias": [
+          {
+            "tipo": "contrato_social",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Ato constitutivo, estatuto ou contrato social",
+              "evidencia": "Ato constitutivo, estatuto ou contrato social e última alteração (se houver) em vigor, devidamente registrado",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Será exigida a apresentação dos documentos de habilitação indicados nos itens subsequentes apenas pelo licitante vencedor",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "certidao_federal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade fiscal perante a Fazenda Nacional",
+              "evidencia": "Prova de regularidade fiscal perante a Fazenda Nacional, mediante apresentação de certidão expedida conjuntamente pela Secretaria da Receita Federal do Brasil (RFB) e pela Procuradoria-Geral da Fazenda Nacional (PGFN)",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Será exigida a apresentação dos documentos de habilitação indicados nos itens subsequentes apenas pelo licitante vencedor",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "fgts",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade com o FGTS",
+              "evidencia": "Prova de regularidade com o Fundo de Garantia do Tempo de Serviço (FGTS)",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Será exigida a apresentação dos documentos de habilitação indicados nos itens subsequentes apenas pelo licitante vencedor",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "trabalhista_cndt",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de inexistência de débitos inadimplidos perante a Justiça do Trabalho",
+              "evidencia": "Prova de inexistência de débitos inadimplidos perante a Justiça do Trabalho, mediante a apresentação de certidão negativa ou positiva com efeito de negativa",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Será exigida a apresentação dos documentos de habilitação indicados nos itens subsequentes apenas pelo licitante vencedor",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "certidao_estadual",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade com a Fazenda Estadual",
+              "evidencia": "Prova de regularidade com a Fazenda Estaduais e Municipais do domicílio ou sede do fornecedor",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Será exigida a apresentação dos documentos de habilitação indicados nos itens subsequentes apenas pelo licitante vencedor",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "certidao_municipal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade com a Fazenda Municipal",
+              "evidencia": "Prova de regularidade com a Fazenda Estaduais e Municipais do domicílio ou sede do fornecedor",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Será exigida a apresentação dos documentos de habilitação indicados nos itens subsequentes apenas pelo licitante vencedor",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "alvara_licenca",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Alvará de localização e funcionamento",
+              "evidencia": "Alvará de localização e funcionamento , emitido pela autoridade municipal competente do local de sede da empresa",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Será exigida a apresentação dos documentos de habilitação indicados nos itens subsequentes apenas pelo licitante vencedor",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "falencia_concordata",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão negativa de falência",
+              "evidencia": "Certidão negativa de falência expedida pelo distribuidor da sede do fornecedor",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Será exigida a apresentação dos documentos de habilitação indicados nos itens subsequentes apenas pelo licitante vencedor",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "atestado_capacidade_tecnica",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Atestados ou certidões de capacidade técnica",
+              "evidencia": "Para comprovação da qualificação técnica, a licitante deverá apresentar obrigatoriamente comprovar aptidão para a prestação de serviços similares com o(s) ITENS por meio da apresentação de certidões ou atestados",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "a licitante deverá apresentar obrigatoriamente comprovar aptidão para a prestação de serviços similares",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "declaracao_me_epp",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Declaração de enquadramento como ME/EPP",
+              "evidencia": "Declaro para os devidos fins legais, sem prejuízo das sanções e multas previstas neste ato convocatório, estar enquadrado como ME/EPP/Cooperativa",
+              "confianca": "alta"
+            },
+            "fase": "proposta",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "( ) Sim, ME ( ) Sim, EPP ( ) Não, outros enquadramentos.",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "outro",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certificação do INMETRO para serviços de manutenção",
+              "evidencia": "Todos os serviços de manutenção devem ser realizados por empresa certificada pelo INMETRO, conforme a ABNT NBR 12962",
+              "confianca": "alta"
+            },
+            "fase": "execucao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Todos os serviços de manutenção devem ser realizados por empresa certificada pelo INMETRO",
+              "confianca": "alta"
+            }
+          }
+        ],
+        "criterioDeJulgamento": {
+          "origem": "edital",
+          "valor": "Menor preço por item",
+          "evidencia": "O critério de julgamento adotado será o menor preço por item observadas as exigências contidas neste Aviso de Dispensa Eletrônica",
+          "confianca": "alta"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O edital não menciona exigência de garantia de proposta ou garantia contratual (caução, seguro-garantia ou fiança), apenas garantia do produto/serviço."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "Não há menção a visita técnica ou vistoria no trecho analisado."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O texto não prevê a entrega de amostras, protótipos ou prova de conceito."
+        },
+        "riscos": [
+          {
+            "origem": "edital",
+            "valor": "Multas elevadas (até 30%)",
+            "evidencia": "multa no percentual de 30% do valor estimado para licitação nos itens propostos pelo licitante.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Prazo curto para entrega de extintores",
+            "evidencia": "Após pedido entrega em 5 dias úteis.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Prazo muito curto para atendimento de recarga",
+            "evidencia": "Disposição para atendimento a secretaria em 2 (dois) dias úteis,após o pedido da secretaria.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Prazo curto para substituição de itens com defeito",
+            "evidencia": "A contratada deverá garantir a substituição dos itens entregues com defeito ou em desacordo com as especificações, sem ônus para a Administração , no prazo de até 5 (cinco) dias úteis após a notificação.",
+            "confianca": "alta"
+          }
+        ],
+        "profundidade": "documento_parcial"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "credenciamento-credenciamento-pessoa-juridica-refeicao-necessidades-vereadores-32-2025",
+      "editalId": "16129785000137-1-000032/2025",
+      "objeto": "CREDENCIAMENTO DE PESSOA JURÍDICA PARA FORNECIMENTO DE REFEIÇÃO PARA ATENDER AS NECESSIDADES DOS VEREADORES E FUNCIONÁRIOS DA CÂMARA MUNICIPAL EM HORÁRIOS EXTRAORDINÁRIOS.",
+      "orgao": "ITAPICURU CAMARA DE VEREADORES",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 30500,
+      "registroDePrecos": false,
+      "uf": "BA",
+      "municipio": "Itapicuru",
+      "municipioSlug": "itapicuru",
+      "codigoIbge": "2916500",
+      "publicadoEm": "2025-08-29T13:56:59+00:00",
+      "encerramentoProposta": "2026-08-29T17:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:18.862+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/16129785000137/2025/32",
+      "analise": null,
+      "documentosLidos": 0
+    },
+    {
+      "slug": "credenciamento-execucao-acoes-culturais-apoio-direto-projetos-72-2026",
+      "editalId": "01130277000100-1-000072/2026",
+      "objeto": "EXECUÇÃO DE AÇÕES CULTURAIS (APOIO DIRETO A PROJETOS) SELEÇÃO DE PROJETOS PARA FIRMAR TERMO DE EXECUÇÃO CULTURAL COM RECURSOS DA POLÍTICA NACIONAL ALDIR BLANC DE FOMENTO À CULTURA – PNAB (LEI Nº 14.399/202",
+      "orgao": "MUNICIPIO DE DAVINOPOLIS",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 31789.48,
+      "registroDePrecos": false,
+      "uf": "GO",
+      "municipio": "Davinópolis",
+      "municipioSlug": "davinopolis",
+      "codigoIbge": "5206909",
+      "publicadoEm": "2026-06-22T14:44:13+00:00",
+      "encerramentoProposta": "2026-08-29T20:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:18.821+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/01130277000100/2026/72",
+      "analise": {
+        "editalId": "01130277000100-1-000072/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 2
+    },
+    {
+      "slug": "credenciamento-presente-chamamento-publico-tem-como-credenciamento-44-2025",
+      "editalId": "21611579000107-1-000044/2025",
+      "objeto": "O presente chamamento publico tem como objeto o credenciamento para a eventual contratacao de servicos artisticos culturais  PESSOAS FISICAS OU JURIDICAS interessadas na prestacao de servicos  shows  espetaculos  oficinas  palestras  encontros culturais e exibicoes e oficinas de artistas e grupos ligados as festividades  dentre outros   a fim de atender a Agenda de Eventos da FCCDA  contemplando os criterios tecnicos especificos  os pre requisitos e os valores fixados para a realizacao da prestacao dos servicos.As quantidades de atividades contratadas serao estabelecidas Mediante a necessidade  disponibilidade orcamentaria e projeto curatorial para atender as demandas da Agenda Cultural  da Realizacao do Carnaval de Itabira  do Circuito de Festivais e da Difusao da Obra Drummondiana da FCCDA.",
+      "orgao": "FUNDACAO CULTURAL CARLOS DRUMMOND DE ANDRADE",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 3628326.2,
+      "registroDePrecos": false,
+      "uf": "MG",
+      "municipio": "Itabira",
+      "municipioSlug": "itabira",
+      "codigoIbge": "3131703",
+      "publicadoEm": "2025-09-16T17:54:59+00:00",
+      "encerramentoProposta": "2026-08-29T20:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:52.312+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/21611579000107/2025/44",
+      "analise": {
+        "editalId": "21611579000107-1-000044/2025",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "concorrencia-presencial-publicitarios-natureza-continua-executar-conjunto-atividades-39-2026",
+      "editalId": "03217916000196-1-000039/2026",
+      "objeto": "Contratação de 01 (uma) empresa especializada para a prestação de serviços publicitários de natureza contínua, visando executar um conjunto de atividades realizadas integradamente que tenham por objetivo o estudo, o planejamento, a conceituação, a concepção, a criação, a execução interna, a intermediação e a supervisão da execução externa e a distribuição de peças publicitárias e demais meios de divulgação, com o objetivo de promover a venda de bens ou serviços de qualquer natureza, difundir ideias ou informar o público em geral.",
+      "orgao": "MUNICIPIO DE BELA VISTA",
+      "modalidade": "Concorrência - Presencial",
+      "valorEstimado": 500000,
+      "registroDePrecos": false,
+      "uf": "MS",
+      "municipio": "Bela Vista",
+      "municipioSlug": "bela-vista",
+      "codigoIbge": "5002100",
+      "publicadoEm": "2026-06-15T18:15:10+00:00",
+      "encerramentoProposta": "2026-08-30T02:59:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:54.178+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/03217916000196/2026/39",
+      "analise": {
+        "editalId": "03217916000196-1-000039/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "credenciamento-credenciamento-empresas-especializadas-controle-pragas-urbanas-18-2025",
+      "editalId": "00794962000160-1-000018/2025",
+      "objeto": "Credenciamento de empresas especializadas na prestação de serviços de controle de pragas urbanas (dedetização, descupinização e desratização), controle de pombos e aves semelhantes, e limpeza, higienização e desinfecção de reservatórios de água potável, visando atender às demandas dos entes consorciados ao CISVAS",
+      "orgao": "CONSORCIO INTERMUN. DE SAUDE DA M DO VALE DO SUACUI",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 321327.4,
+      "registroDePrecos": false,
+      "uf": "MG",
+      "municipio": "Santa Maria do Suaçuí",
+      "municipioSlug": "santa-maria-do-suacui",
+      "codigoIbge": "3158201",
+      "publicadoEm": "2025-08-28T16:36:05+00:00",
+      "encerramentoProposta": "2026-08-30T02:59:59+00:00",
+      "coletadoEm": "2026-08-26T07:05:52.312+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/00794962000160/2025/18",
+      "analise": {
+        "editalId": "00794962000160-1-000018/2025",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor respondeu HTTP 503."
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "credenciamento-deste-edital-pre-qualificacao-sondas-canulas-106-2025",
+      "editalId": "18301002000186-1-000106/2025",
+      "objeto": "O objeto deste edital é a pré-qualificação de sondas, cânulas, máscaras e afins para formação de cadastro para futuras licitações, conforme especificações constantes no Termo de Referência (Anexo I).",
+      "orgao": "MUNICIPIO DE BOM DESPACHO",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 10.29,
+      "registroDePrecos": false,
+      "uf": "MG",
+      "municipio": "Bom Despacho",
+      "municipioSlug": "bom-despacho",
+      "codigoIbge": "3107406",
+      "publicadoEm": "2025-08-29T15:45:24+00:00",
+      "encerramentoProposta": "2026-08-30T02:59:59+00:00",
+      "coletadoEm": "2026-08-26T07:05:52.312+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/18301002000186/2025/106",
+      "analise": {
+        "editalId": "18301002000186-1-000106/2025",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "manifestacao-de-interesse-dispoe-sobre-solicitacao-manifestacao-interesse-apresentacao-112-2026",
+      "editalId": "19718360000151-1-000112/2026",
+      "objeto": "Dispõe sobre a solicitação de manifestação de interesse para a apresentação de\nprojetos, levantamentos, investigações e estudos destinados à concessão de uso\nonerosa do Terminal Rodoviário Municipal de Conselheiro Lafaiete, incluindo sua\nrecuperação, modernização, operação, manutenção, conservação, administração\ne exploração econômica.",
+      "orgao": "MUNICIPIO DE CONSELHEIRO LAFAIETE",
+      "modalidade": "Manifestação de Interesse",
+      "valorEstimado": 0.01,
+      "registroDePrecos": false,
+      "uf": "MG",
+      "municipio": "Conselheiro Lafaiete",
+      "municipioSlug": "conselheiro-lafaiete",
+      "codigoIbge": "3118304",
+      "publicadoEm": "2026-07-30T18:45:47+00:00",
+      "encerramentoProposta": "2026-08-30T03:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:52.312+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/19718360000151/2026/112",
+      "analise": {
+        "editalId": "19718360000151-1-000112/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "credenciamento-credenciamento-pelo-periodo-meses-empresas-especializadas-19-2025",
+      "editalId": "23907409000191-1-000019/2025",
+      "objeto": "Credenciamento, pelo período de 12 meses, de empresas especializadas para a prestação de serviços, sob demanda e sem exclusividade, de: passagens aéreas nacionais, hospedagem e transporte rodoviário",
+      "orgao": "INSTITUTO DE PREVIDENCIA SOCIAL DOS SERVIDORES MUNICIPAIS DE ITUPEVA",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 197000,
+      "registroDePrecos": false,
+      "uf": "SP",
+      "municipio": "Itupeva",
+      "municipioSlug": "itupeva",
+      "codigoIbge": "3524006",
+      "publicadoEm": "2025-08-27T17:55:24+00:00",
+      "encerramentoProposta": "2026-08-30T03:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:45.473+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/23907409000191/2025/19",
+      "analise": {
+        "editalId": "23907409000191-1-000019/2025",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 34
+    },
+    {
+      "slug": "dispensa-graficos-compreendendo-diagramacao-formatacao-impressao-acabamento-21-2026",
+      "editalId": "31787922000114-1-000021/2026",
+      "objeto": "Contratação de empresa especializada para prestação de serviços gráficos compreendendo diagramação, formatação, impressão, acabamento e entrega de livreto institucional contendo o Regimento Interno da Câmara Municipal de Jaguaré/ES.",
+      "orgao": "JAGUARE CAMARA MUNICIPAL",
+      "modalidade": "Dispensa",
+      "valorEstimado": 9236.67,
+      "registroDePrecos": false,
+      "uf": "ES",
+      "municipio": "Jaguaré",
+      "municipioSlug": "jaguare",
+      "codigoIbge": "3203056",
+      "publicadoEm": "2026-08-18T20:08:06+00:00",
+      "encerramentoProposta": "2026-08-30T11:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:24.141+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/31787922000114/2026/21",
+      "analise": {
+        "editalId": "31787922000114-1-000021/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 2
+    },
+    {
+      "slug": "dispensa-confeccao-instalacao-moveis-planejados-cozinha-camara-22-2026",
+      "editalId": "31787922000114-1-000022/2026",
+      "objeto": "Contratação de empresa especializada para confecção, fornecimento e instalação de móveis planejados destinados à cozinha da Câmara Municipal de Jaguaré/ES, Geladeira/Refrigerador Duplex Frost Free, capacidade mínima de 310 litros, acabamento em inox.",
+      "orgao": "JAGUARE CAMARA MUNICIPAL",
+      "modalidade": "Dispensa",
+      "valorEstimado": 27169.97,
+      "registroDePrecos": false,
+      "uf": "ES",
+      "municipio": "Jaguaré",
+      "municipioSlug": "jaguare",
+      "codigoIbge": "3203056",
+      "publicadoEm": "2026-08-19T17:35:40+00:00",
+      "encerramentoProposta": "2026-08-30T11:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:24.141+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/31787922000114/2026/22",
+      "analise": {
+        "editalId": "31787922000114-1-000022/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 3
+    },
+    {
+      "slug": "dispensa-certificado-digital-pessoa-fisica-cpf-certificado-120-2026",
+      "editalId": "63761993000134-1-000120/2026",
+      "objeto": "AQUISIÇÃO DE CERTIFICADO DIGITAL PESSOA FÍSICA A-3 (e-CPF) E CERTIFICADO DIGITAL PESSOA JURÍDICA A-1 (e-CNPJ), para atender à Prefeitura Municipal de Seringueiras/RO, especialmente à Secretaria Municipal de Fazenda e Planejamento – SEMAF e à Secretaria Municipal de Administração – SEMAD, inclusive para acesso e utilização de sistemas eletrônicos governamentais, como a plataforma eSocial.",
+      "orgao": "MUNICIPIO DE SERINGUEIRAS",
+      "modalidade": "Dispensa",
+      "valorEstimado": 1104.6,
+      "registroDePrecos": false,
+      "uf": "RO",
+      "municipio": "Seringueiras",
+      "municipioSlug": "seringueiras",
+      "codigoIbge": "1101500",
+      "publicadoEm": "2026-08-25T16:31:07+00:00",
+      "encerramentoProposta": "2026-08-30T12:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:16.91+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/63761993000134/2026/120",
+      "analise": {
+        "editalId": "63761993000134-1-000120/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "credenciamento-dispoe-sobre-chamamento-publico-selecao-organizacoes-630-2026",
+      "editalId": "45781176000166-1-000630/2026",
+      "objeto": "DISPÕE SOBRE O CHAMAMENTO PÚBLICO VISANDO A SELEÇÃO DE ORGANIZAÇÕES DA SOCIEDADE CIVIL (OSC’s), SEM FINS LUCRATIVOS, PARA A CELEBRAÇÃO DE PARCERIA COM A ADMINISTRAÇÃO PÚBLICA PARA A EXECUÇÃO DE OFERTAS EDUCACIONAIS.",
+      "orgao": "MUNICIPIO DE AMERICANA",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 16648550.88,
+      "registroDePrecos": false,
+      "uf": "SP",
+      "municipio": "Americana",
+      "municipioSlug": "americana",
+      "codigoIbge": "3501608",
+      "publicadoEm": "2026-07-24T14:16:51+00:00",
+      "encerramentoProposta": "2026-08-30T19:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:45.473+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/45781176000166/2026/630",
+      "analise": {
+        "editalId": "45781176000166-1-000630/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "dispensa-generos-alimenticios-nao-pereciveis-achocolatado-liquido-287-2026",
+      "editalId": "88150495000186-1-000287/2026",
+      "objeto": "AQUISIÇÃO DE GÊNEROS ALIMENTÍCIOS NÃO PERECÍVEIS (ACHOCOLATADO LÍQUIDO E BARRA DE FRUTAS) - SME - SOL. 160846 (Portal de Compras Públicas)",
+      "orgao": "MUNICIPIO DE ESTEIO",
+      "modalidade": "Dispensa",
+      "valorEstimado": 5612,
+      "registroDePrecos": false,
+      "uf": "RS",
+      "municipio": "Esteio",
+      "municipioSlug": "esteio",
+      "codigoIbge": "4307708",
+      "publicadoEm": "2026-07-22T13:57:47+00:00",
+      "encerramentoProposta": "2026-08-30T19:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:30+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/88150495000186/2026/287",
+      "analise": {
+        "editalId": "88150495000186-1-000287/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 2
+    },
+    {
+      "slug": "credenciamento-chamamento-publico-vistas-credenciamento-especializados-administracao-155-2026",
+      "editalId": "13694468000175-1-000155/2026",
+      "objeto": "Chamamento Público com vistas ao CREDENCIAMENTO de empresa para prestação de serviços especializados de administração de cartões eletrônicos magnéticos com chip, para fornecimento de benefícios destinados aos alunos da Educação de Jovens e Adultos (EJA) contemplados com o Programa “Bolsa Estudante – EJA do Município de Cordeiros – BA, nos termos permitidos pela Lei Municipal n.º 782/2026.",
+      "orgao": "MUNICIPIO DE CORDEIROS",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 100000,
+      "registroDePrecos": false,
+      "uf": "BA",
+      "municipio": "Cordeiros",
+      "municipioSlug": "cordeiros",
+      "codigoIbge": "2909000",
+      "publicadoEm": "2026-07-28T13:10:40+00:00",
+      "encerramentoProposta": "2026-08-30T20:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:18.862+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/13694468000175/2026/155",
+      "analise": {
+        "editalId": "13694468000175-1-000155/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "concorrencia-eletronica-reforma-quadra-society-centro-educacional-esportivo-271-2026",
+      "editalId": "44660272000193-1-000271/2026",
+      "objeto": "Reforma da Quadra Society do Centro Educacional e Esportivo Paulo Freire",
+      "orgao": "MUNICIPIO DE CORDEIROPOLIS",
+      "modalidade": "Concorrência - Eletrônica",
+      "valorEstimado": 446350,
+      "registroDePrecos": false,
+      "uf": "SP",
+      "municipio": "Cordeirópolis",
+      "municipioSlug": "cordeiropolis",
+      "codigoIbge": "3512407",
+      "publicadoEm": "2026-08-17T11:48:34+00:00",
+      "encerramentoProposta": "2026-08-30T20:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:45.473+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/44660272000193/2026/271",
+      "analise": {
+        "editalId": "44660272000193-1-000271/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 2
+    },
+    {
+      "slug": "dispensa-seguro-veicular-total-compreensivo-casco-fipe-12-2026",
+      "editalId": "02664384000172-1-000012/2026",
+      "objeto": "Contratação de seguro veicular total compreensivo (casco 100% FIPE, RCFV, Assistência 24h nacional sem limite rígido de km) para 12 meses.",
+      "orgao": "INSTITUTO DE PREVIDENCIA E ASSISTENCIA DOS SERVIDORES DO MUN. DE ARAGUAINA",
+      "modalidade": "Dispensa",
+      "valorEstimado": 1329.33,
+      "registroDePrecos": false,
+      "uf": "TO",
+      "municipio": "Araguaína",
+      "municipioSlug": "araguaina",
+      "codigoIbge": "1702109",
+      "publicadoEm": "2026-08-25T12:51:44+00:00",
+      "encerramentoProposta": "2026-08-30T21:00:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:51.443+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/02664384000172/2026/12",
+      "analise": {
+        "editalId": "02664384000172-1-000012/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "concorrencia-eletronica-obras-engenharia-execucao-drenagem-urbana-rua-80-2026",
+      "editalId": "02070589000120-1-000080/2026",
+      "objeto": "Contratação de empresa especializada em obras e serviços de engenharia para a execução de drenagem urbana na Rua Sousa Aguiar, visando atender às demandas da Secretaria Municipal Extraordinária de Resolução de Problemáticas Pluviais.",
+      "orgao": "MUNICIPIO DE PEDRO AFONSO",
+      "modalidade": "Concorrência - Eletrônica",
+      "valorEstimado": 408539.57,
+      "registroDePrecos": true,
+      "uf": "TO",
+      "municipio": "Pedro Afonso",
+      "municipioSlug": "pedro-afonso",
+      "codigoIbge": "1716505",
+      "publicadoEm": "2026-08-11T18:28:36+00:00",
+      "encerramentoProposta": "2026-08-31T02:59:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:51.443+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/02070589000120/2026/80",
+      "analise": {
+        "editalId": "02070589000120-1-000080/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "pregao-eletronico-empresas-bens-permanentes-consumo-duraveis-intuito-99-2026",
+      "editalId": "10408839000117-1-000099/2026",
+      "objeto": "Registro de Preços para futura e eventual Contratação de empresas destinado ao fornecimento de bens permanentes e de consumo duráveis, no intuito de suprir a necessidade de diferentes setores e equipamentos socioassistenciais que estão sob a égide da Secretaria de Desenvolvimento Social, Políticas Sobre Drogas, Direitos Humanos e Juventude do Município do Paulista/PE",
+      "orgao": "MUNICIPIO DE PAULISTA",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 277431.9,
+      "registroDePrecos": true,
+      "uf": "PE",
+      "municipio": "Paulista",
+      "municipioSlug": "paulista",
+      "codigoIbge": "2610707",
+      "publicadoEm": "2026-08-17T09:49:14+00:00",
+      "encerramentoProposta": "2026-08-31T02:59:00+00:00",
+      "coletadoEm": "2026-08-25T08:57:53.659+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/10408839000117/2026/99",
+      "analise": {
+        "editalId": "10408839000117-1-000099/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 3
+    },
+    {
+      "slug": "dispensa-manutencao-preventiva-corretiva-pecas-veiculos-frota-62-2026",
+      "editalId": "13750681000157-1-000062/2026",
+      "objeto": "Serviços de manutenção preventiva e corretiva, com fornecimento de peças, em veículos da frota da ARES-PCJ fora do período de garantia de fábrica.",
+      "orgao": "AGENCIA REGULADORA DOS SERVICOS DE SANEAMENTO DAS BACIAS DOS RIOS PIRACICABA, CAPIVARI E JUNDIAI",
+      "modalidade": "Dispensa",
+      "valorEstimado": 29000,
+      "registroDePrecos": false,
+      "uf": "SP",
+      "municipio": "Americana",
+      "municipioSlug": "americana",
+      "codigoIbge": "3501608",
+      "publicadoEm": "2026-08-21T18:12:29+00:00",
+      "encerramentoProposta": "2026-08-31T02:59:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:45.473+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/13750681000157/2026/62",
+      "analise": {
+        "editalId": "13750681000157-1-000062/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "dispensa-uniformes-padronizados-personalizados-colaboradores-ares-pcj-63-2026",
+      "editalId": "13750681000157-1-000063/2026",
+      "objeto": "Aquisição de uniformes padronizados e personalizados para os colaboradores da ARES-PCJ (camisas, camisetes e polos).",
+      "orgao": "AGENCIA REGULADORA DOS SERVICOS DE SANEAMENTO DAS BACIAS DOS RIOS PIRACICABA, CAPIVARI E JUNDIAI",
+      "modalidade": "Dispensa",
+      "valorEstimado": 59407.94,
+      "registroDePrecos": false,
+      "uf": "SP",
+      "municipio": "Americana",
+      "municipioSlug": "americana",
+      "codigoIbge": "3501608",
+      "publicadoEm": "2026-08-25T11:36:24+00:00",
+      "encerramentoProposta": "2026-08-31T02:59:00+00:00",
+      "coletadoEm": "2026-08-26T07:07:45.473+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/13750681000157/2026/63",
+      "analise": {
+        "editalId": "13750681000157-1-000063/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "concorrencia-eletronica-engenharia-execucao-manutencao-corretiva-pavimentos-contemplando-114-2026",
+      "editalId": "18094847000148-1-000114/2026",
+      "objeto": "Registro de Preços para futura e eventual contratação, de empresa especializada de engenharia para execução de serviços de Manutenção corretiva de pavimentos contemplando \"Tapa-buracos e Remendos Profundo\", compreendendo operações de capeamento e recuperação de pavimentação asfáltica (reparo, correção de defeitos/falhas), com corte/escavação do local, requadramento, limpeza, fornecimento e aplicação de imprimição ligante (RR1C), usinagem e aplicação de concreto betuminoso usinado a quente (CBUQ), e fornecimento total de mão de obra, transporte e materiais, manutenção e adequação de \"Sinalização Horizontal Viária\", em vias públicas do município que demandarem tais reparos, sob o regime de empreitada por menor preço unitário.",
+      "orgao": "MUNICIPIO DE RESSAQUINHA",
+      "modalidade": "Concorrência - Eletrônica",
+      "valorEstimado": 1257426.74,
+      "registroDePrecos": true,
+      "uf": "MG",
+      "municipio": "Ressaquinha",
+      "municipioSlug": "ressaquinha",
+      "codigoIbge": "3154408",
+      "publicadoEm": "2026-08-17T20:38:04+00:00",
+      "encerramentoProposta": "2026-08-31T02:59:00+00:00",
+      "coletadoEm": "2026-08-26T07:05:52.312+00:00",
+      "postadoEm": "2026-08-26T07:14:02.741Z",
+      "link": "https://pncp.gov.br/app/editais/18094847000148/2026/114",
+      "analise": {
+        "editalId": "18094847000148-1-000114/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: Cota ou limite de requisições excedido (HTTP 429): {\"error\":{\"code\":429,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    }
+  ]
+}
