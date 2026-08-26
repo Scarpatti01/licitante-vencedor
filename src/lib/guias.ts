@@ -73,6 +73,22 @@ export const GUIAS: readonly Guia[] = [
     publicado: true,
   },
   {
+    /*
+     * Nasceu em 26/08 como a "página viva" dos números que envelhecem.
+     *
+     * Os limites de dispensa mudam por decreto todo janeiro. Impressos em
+     * material que não se atualiza, envelhecem em silêncio: este guia carregou
+     * os valores de 2021 por cinco anos sem que nada reclamasse. A regra que
+     * passou a valer é que todo material distribuído cita este endereço em vez
+     * de imprimir o número.
+     */
+    href: "/limites/",
+    titulo: "Limites de dispensa da Lei 14.133",
+    resumo:
+      "Os valores que decidem se uma contratação pode ser feita sem licitação, com o decreto que os fixou, a data de vigência, quem trabalha com o dobro e por que fracionar despesa para caber é irregularidade.",
+    publicado: true,
+  },
+  {
     href: "/portais-de-licitacao/",
     titulo: "Portais de licitação",
     resumo:
