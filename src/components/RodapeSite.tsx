@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { CONTATO, SITE } from "@/lib/site";
+import { SelosDeConfianca } from "./SelosDeConfianca";
 
 /**
  * O rodapé de todas as páginas públicas.
@@ -94,6 +95,8 @@ export function RodapeSite() {
           <Coluna titulo="Produto" itens={PRODUTO} />
           <Coluna titulo="Conteúdo" itens={CONTEUDO} />
         </div>
+
+        <SelosDeConfianca />
 
         <div className="mt-10 border-t pt-8">
           <p className="font-medium text-[var(--foreground)]">{SITE.name}</p>

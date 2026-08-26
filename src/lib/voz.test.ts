@@ -42,6 +42,12 @@ const VIGIADOS = [
   "lib/resumo/repositorio.ts",
   "lib/leads-emails.ts",
   "components/CardAssinatura.tsx",
+  /*
+   * Entrou em 26/08 com a faixa de procedência. É texto de venda como qualquer
+   * outro: fala de fonte, de lei e de privacidade para quem ainda decide se
+   * confia.
+   */
+  "components/SelosDeConfianca.tsx",
   "app/vender-para-o-governo/page.tsx",
   "app/contratos/page.tsx",
   "app/sumulas-tcu/page.tsx",
