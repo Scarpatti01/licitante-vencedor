@@ -46,13 +46,15 @@ export const LEITURAS_POR_EMPRESA_POR_DIA = 25;
  * — algo entre R$ 500 e R$ 700 por mês — para 1 empresa cadastrada e 0
  * assinaturas. Ler 22 editais por dia para ninguém é caro sem ser útil.
  *
- * Zerar seria pior que caro: a leitura diária é o que pegou a queda do `pdfjs`
- * em 16/08, a cota estourada em 24/08 e a análise que voltava vazia. Sistema
- * exercitado só quando chega o primeiro cliente quebra na frente dele.
+ * O argumento de "não zerar" mudou de dono em 26/08, e vale dizer por quê. Ele
+ * era: a leitura diária é o que pegou a queda do `pdfjs` em 16/08, a cota
+ * estourada em 24/08 e a análise que voltava vazia, e sistema exercitado só
+ * quando chega o primeiro cliente quebra na frente dele. Continua verdade — só
+ * que quem exercita a cadeia todo dia é `publicar-posts.ts`, que chama o mesmo
+ * `lerEAnalisar` para montar as páginas públicas, com ou sem cliente. O teto
+ * daqui não precisa mais carregar essa responsabilidade sozinho.
  *
- * Cinco por dia mantém o pipeline vivo por uns R$ 40 a R$ 60 por mês.
- *
- * O teto volta a ser 25 SOZINHO no dia em que a primeira assinatura viva
+ * O teto volta a ser 25 SOZINHO no dia em que a primeira assinatura PAGA
  * aparecer — ver `tetoDeLeitura`. É de propósito que não dependa de alguém
  * lembrar: economia que precisa de memória vira, mais cedo ou mais tarde, um
  * cliente pagante recebendo cinco editais por dia.
@@ -60,14 +62,31 @@ export const LEITURAS_POR_EMPRESA_POR_DIA = 25;
 export const LEITURAS_SEM_ASSINANTE = 5;
 
 /**
- * Quantos editais por empresa por dia, conforme haja ou não quem pague.
+ * Quantos editais por empresa por dia, conforme haja ou não quem PAGUE.
  *
- * `assinantesVivos` conta assinatura em `teste`, `ativa` ou `inadimplente` —
- * as três esperam serviço, e a diferença entre elas é assunto da cobrança, não
- * da leitura.
+ * ## A correção de 26/08, e o que ela custou para aparecer
+ *
+ * Este parâmetro se chamava `assinantesVivos` e recebia a contagem de
+ * assinaturas em `teste`, `ativa` ou `inadimplente`. O comentário dizia "as
+ * três esperam serviço, e a diferença entre elas é assunto da cobrança, não da
+ * leitura" — e estava errado exatamente onde parecia mais razoável.
+ *
+ * Em 25/08 o teste de catorze dias nasceu, e o primeiro foi aberto para a conta
+ * do próprio dono. `teste` conta como viva, então de um dia para o outro o teto
+ * saltou de 5 para 25: cinco vezes o gasto de IA, disparado por uma assinatura
+ * que nunca vai gerar fatura por si.
+ *
+ * A pergunta certa nunca foi "alguém espera serviço?". É "alguém está pagando
+ * a conta?" — porque é disso que o tamanho do gasto depende.
+ *
+ * Repare que o teto é a SEGUNDA trava, e não a primeira. Quem é elegível à
+ * leitura é decidido antes, pelo plano de cada empresa: um teste no plano Leve
+ * não entra na lista de jeito nenhum. O teto só limita o volume de quem entrou.
+ * As duas coisas juntas dão o caso sensato de um teste num plano COM leitura:
+ * ele lê, e lê 5 por dia enquanto ninguém paga.
  */
-export function tetoDeLeitura(assinantesVivos: number): number {
-  return assinantesVivos > 0 ? LEITURAS_POR_EMPRESA_POR_DIA : LEITURAS_SEM_ASSINANTE;
+export function tetoDeLeitura(assinantesPagantes: number): number {
+  return assinantesPagantes > 0 ? LEITURAS_POR_EMPRESA_POR_DIA : LEITURAS_SEM_ASSINANTE;
 }
 
 export type EditalAbertoParaLeitura = { uuid: string; edital: Edital };
