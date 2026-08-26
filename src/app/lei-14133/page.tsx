@@ -6,11 +6,18 @@ import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
+import {
+  DISPENSA_POR_VALOR,
+  DOBRAM_O_LIMITE,
+  REAJUSTE_VIGENTE,
+  emReais,
+  vigenciaPorExtenso,
+} from "@/lib/dominio/limites-legais";
 
 const TITULO = "Lei 14.133/2021: o que mudou para quem vende ao governo";
 const DESCRICAO =
   "O que mudou da 8.666 para a Lei 14.133 na prática: modalidades, critérios de julgamento, dispensa, prazos e os erros que mais desclassificam.";
-const ATUALIZADO = "2026-08-10";
+const ATUALIZADO = "2026-08-26";
 
 export const metadata: Metadata = {
   title: TITULO,
@@ -45,7 +52,7 @@ const FAQ = [
   {
     pergunta: "Qual é o limite de valor para dispensa de licitação?",
     resposta:
-      "O artigo 75 fixou R$ 100 mil para obras e serviços de engenharia e R$ 50 mil para as demais compras e serviços. Esses valores são corrigidos anualmente por decreto, então sempre confirme o decreto vigente antes de usar o número. Trabalhar com valor desatualizado é um erro caro.",
+      `Em ${REAJUSTE_VIGENTE.ano}, ${emReais(DISPENSA_POR_VALOR.obrasEEngenharia)} para obras e serviços de engenharia (art. 75, I) e ${emReais(DISPENSA_POR_VALOR.comprasEServicos)} para as demais compras e serviços (art. 75, II). São os valores do ${REAJUSTE_VIGENTE.decreto}, que reajustou os limites em ${String(REAJUSTE_VIGENTE.percentual).replace(".", ",")}% e vale desde ${vigenciaPorExtenso()}. Os dois dobram quando a contratação é feita por ${DOBRAM_O_LIMITE}. O decreto sai todo fim de dezembro, então em janeiro confira se já há um novo.`,
   },
   {
     pergunta: "O pregoeiro deixou de existir?",
@@ -253,11 +260,36 @@ export default function Lei14133() {
               ]}
             />
             <P>
-              Os limites de valor do artigo 75 foram fixados em R$ 100 mil para obras
-              e serviços de engenharia e R$ 50 mil para as demais compras e serviços.
-              Esses números são corrigidos anualmente por decreto, então confirme
-              sempre o decreto em vigor no ano corrente. Trabalhar com o valor do ano
-              passado é erro que aparece em proposta e em cotação.
+              Os limites do artigo 75 são corrigidos por decreto todo ano. Em{" "}
+              {REAJUSTE_VIGENTE.ano} eles valem assim:
+            </P>
+            <Tabela
+              cabecalho={["O que está sendo contratado", `Limite em ${REAJUSTE_VIGENTE.ano}`, "Base"]}
+              linhas={[
+                [
+                  "Obras e serviços de engenharia",
+                  emReais(DISPENSA_POR_VALOR.obrasEEngenharia),
+                  "Art. 75, I",
+                ],
+                [
+                  "Demais compras e serviços",
+                  emReais(DISPENSA_POR_VALOR.comprasEServicos),
+                  "Art. 75, II",
+                ],
+              ]}
+            />
+            <P>
+              Os valores vêm do {REAJUSTE_VIGENTE.decreto}, que reajustou os limites
+              em {String(REAJUSTE_VIGENTE.percentual).replace(".", ",")}% pelo IPCA-E
+              e vale desde {vigenciaPorExtenso()}. Os dois dobram quando quem contrata
+              é {DOBRAM_O_LIMITE}. É a exceção que mais confunde, e ela aparece
+              bastante em saúde e em resíduos, onde o consórcio intermunicipal é
+              comum.
+            </P>
+            <P>
+              O decreto novo sai todo fim de dezembro. Em janeiro, confira se já há
+              outro: trabalhar com o valor do ano passado é erro que aparece em
+              proposta e em cotação.
             </P>
             <P>
               Para o fornecedor pequeno, a dispensa eletrônica é a porta de entrada
