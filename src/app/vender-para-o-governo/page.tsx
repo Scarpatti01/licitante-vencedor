@@ -7,7 +7,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO = "Como vender para o governo: do CNPJ à primeira proposta entregue";
+const TITULO = "Como vender para o governo: do CNPJ à proposta";
 const DESCRICAO =
   "Cadastro no SICAF e no PNCP, onde encontrar edital, benefícios de ME e EPP, formação de preço, o dia do pregão e o recurso administrativo.";
 const ATUALIZADO = "2026-08-11";

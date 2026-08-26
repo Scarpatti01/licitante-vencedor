@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { descricaoDoMunicipio, tituloDoMunicipio, valorResumido } from "./serp";
+import { TETO_DO_TITULO, tituloRenderizado } from "../seo/resultado-de-busca";
 import type { MunicipioAgregado } from "../pncp/agregarPorMunicipio";
 
 /**
@@ -37,32 +38,52 @@ describe("o título entra na faixa que o Google mostra", () => {
    * validação, é desperdício: o que vem depois some, e o que some costuma ser
    * exatamente o argumento que faria clicar.
    */
-  it("cabe em 60 caracteres nos municípios de nome comum", () => {
+  /*
+   * ## O título encolheu em 26/08, e os três testes abaixo mudaram de assunto
+   *
+   * Eles afirmavam o formato antigo, `Licitações em Iguatu (CE): 21
+   * contratações, R$ 18,1 mi`, e a lição era "o número antes de qualquer coisa
+   * vaga". A lição continua de pé; o que caiu foi a conta.
+   *
+   * A régua media o título CRU e o layout acrescenta ` | Licitante Vencedor`
+   * depois. Aqueles 54 caracteres chegavam ao Google com 75, e o valor era
+   * cortado exatamente como o comentário antigo temia. O Ahrefs contou 912
+   * páginas de município assim, em 26/08.
+   *
+   * Os números não foram apagados: foram para a DESCRIÇÃO, e é lá que estes
+   * testes passaram a cobrá-los. O título ficou com o que não pode faltar.
+   */
+  it("é só o lugar, e cabe com a marca que o layout acrescenta", () => {
     for (const nome of ["Iguatu", "Sobral", "Recife", "Mossoró"]) {
       const t = tituloDoMunicipio(municipio({ municipio: nome }));
-      expect(t.length, `"${t}" tem ${t.length} caracteres`).toBeLessThanOrEqual(62);
+      expect(t).toBe(`Licitações em ${nome} (CE)`);
+      expect(
+        tituloRenderizado(t).length,
+        `"${tituloRenderizado(t)}" tem ${tituloRenderizado(t).length} caracteres`,
+      ).toBeLessThanOrEqual(TETO_DO_TITULO);
     }
   });
 
-  it("põe o número antes de qualquer outra coisa depois do nome", () => {
-    const t = tituloDoMunicipio(municipio());
-    // O título velho era "Licitações em Iguatu (CE): o que os órgãos compram" —
-    // três palavras vagas antes de qualquer informação.
-    expect(t).toBe("Licitações em Iguatu (CE): 21 contratações, R$ 18,1 mi");
-  });
-
-  it("sem valor somado, não inventa e usa o que tem", () => {
-    // 185 dos 3.895 municípios do agregado não têm valor. "R$ 0 em compras"
-    // afirmaria que o município não compra, que é outra coisa.
-    const t = tituloDoMunicipio(municipio({ valor: 0 }));
-    expect(t).toBe("Licitações em Iguatu (CE): 21 contratações de 5 órgãos");
-    expect(t).not.toContain("R$");
-  });
-
-  it("concorda em número com o que está contando", () => {
-    expect(tituloDoMunicipio(municipio({ editais: 1, valor: 0, orgaos: 1 }))).toContain(
-      "1 contratação de 1 órgão",
+  it("nome comprido não é cortado: a cidade vem para a frente", () => {
+    /*
+     * Dois municípios em 3.805 estouram o orçamento, e por um ou dois
+     * caracteres. Cortar o nome seria pior de longe: ele é o token mais
+     * distintivo da página e é exatamente o que a pessoa digitou.
+     */
+    const t = tituloDoMunicipio(
+      municipio({ municipio: "Vila Bela da Santíssima Trindade", uf: "MT" }),
     );
+    expect(t).toBe("Vila Bela da Santíssima Trindade (MT): licitações");
+    expect(t).toContain("Vila Bela da Santíssima Trindade");
+    expect(tituloRenderizado(t).length).toBeLessThanOrEqual(TETO_DO_TITULO);
+  });
+
+  it("o título não carrega número nenhum: eles são da descrição", () => {
+    // A guarda que impede o número de voltar por conveniência. Ele volta e o
+    // título estoura de novo, sem nada reclamar.
+    const t = tituloDoMunicipio(municipio());
+    expect(t).not.toMatch(/\d/);
+    expect(t).not.toContain("R$");
   });
 });
 
@@ -78,6 +99,23 @@ describe("a descrição responde antes de explicar o método", () => {
    */
   it("mostra QUANDO foi medido", () => {
     expect(descricaoDoMunicipio(municipio(), MEDIDO)).toContain(MEDIDO);
+  });
+
+  it("sem valor somado, não inventa e usa o que tem", () => {
+    /*
+     * 185 dos 3.895 municípios do agregado não têm valor. "R$ 0 em compras"
+     * afirmaria que o município não compra, que é outra coisa.
+     *
+     * A lição era do título até 26/08, quando os números passaram para cá.
+     */
+    const d = descricaoDoMunicipio(municipio({ valor: 0 }), MEDIDO);
+    expect(d).toContain("21 contratações de 5 órgãos");
+    expect(d).not.toContain("R$");
+  });
+
+  it("concorda em número com o que está contando", () => {
+    const d = descricaoDoMunicipio(municipio({ editais: 1, valor: 0, orgaos: 1 }), MEDIDO);
+    expect(d).toContain("1 contratação de 1 órgão");
   });
 
   it("cabe nos 160 caracteres que o Google mostra", () => {

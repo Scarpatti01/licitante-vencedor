@@ -28,19 +28,30 @@ import { limitarDescricao } from "@/lib/seo/resultado-de-busca";
  * Sem as três, isto seria a mesma promessa quebrada com outra roupa.
  */
 
-const titulo = "Editais abertos no Brasil hoje: quantos são e quais encerram primeiro";
+/*
+ * `TITULO`, em maiúsculas, e não `titulo`.
+ *
+ * Não é gosto: `resultado-de-busca.guarda.test.ts` extrai o título lendo o
+ * fonte, e reconhece `const TITULO = "..."` ou um literal em `title:`. Escrito
+ * `titulo`, o extrator devolvia `null` e a guarda PULAVA esta página inteira,
+ * em silêncio. Foi a única do site que escapou, e foi a única estática que
+ * chegou à busca com 90 caracteres.
+ *
+ * A guarda agora reprova quem ela não consegue ler, em vez de ignorar.
+ */
+const TITULO = "Editais abertos hoje: quantos são e até quando";
 const descricao =
   `${TOTAIS.abertos.toLocaleString("pt-BR")} editais com proposta aberta no PNCP, ` +
   `${TOTAIS.novos.toLocaleString("pt-BR")} publicados nas últimas 24 horas. ` +
   `Atualizado a cada coleta, com a hora do retrato e o prazo de cada um.`;
 
 export const metadata: Metadata = {
-  title: titulo,
+  title: TITULO,
   description: limitarDescricao(descricao),
   alternates: { canonical: "/editais-abertos/" },
   openGraph: {
     images: IMAGENS_DE_COMPARTILHAMENTO,
-    title: titulo,
+    title: TITULO,
     description: limitarDescricao(descricao),
     url: `${SITE.url}/editais-abertos/`,
     type: "website",

@@ -7,7 +7,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO = "Jurisprudência em licitações: o que o TCU já decidiu que é exigível";
+const TITULO = "Jurisprudência em licitações: o que o TCU exige";
 const DESCRICAO =
   "Quem decide o quê, a diferença entre súmula e acórdão, e como usar uma decisão do TCU para impugnar edital ou sustentar recurso.";
 const ATUALIZADO = "2026-08-10";

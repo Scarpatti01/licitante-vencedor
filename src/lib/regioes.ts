@@ -65,6 +65,7 @@ import { normalizarParaBusca } from "./busca-de-pracas";
 import { temLastro, MINIMO_DE_EDITAIS, MINIMO_DE_ORGAOS } from "./pncp/lastro.ts";
 import { estaNoRegistro, normalizarRegistro } from "./pncp/registroDePublicacao.ts";
 import type { MunicipioAgregado } from "./pncp/agregarPorMunicipio.ts";
+import { postsDoMunicipio } from "./posts/acervo.ts";
 
 export { temLastro, MINIMO_DE_EDITAIS, MINIMO_DE_ORGAOS };
 export type { MunicipioAgregado };
@@ -167,7 +168,40 @@ const REGISTRO = normalizarRegistro(registroBruto);
  */
 export function publicavel(m: MunicipioAgregado): boolean {
   if (temLastro(m)) return true;
+
+  /*
+   * ## O terceiro portão, aberto em 26/08: município com post publicado
+   *
+   * O relatório do Ahrefs acusou 57 páginas órfãs, e a causa era exata: os 97
+   * posts de edital nascem para QUALQUER município que a seleção do dia
+   * escolher, mas a página do município só existe com lastro (5 editais, 2
+   * órgãos). Dos 97, 40 tinham pai e 57 não tinham — o post ficava sem um único
+   * link interno de entrada, invisível para o buscador e inalcançável navegando.
+   *
+   * A escolha aqui foi entre parar de publicar post de cidade pequena e deixar a
+   * cidade pequena ganhar página. A segunda é melhor pelo motivo que sustenta o
+   * portão original: ele existe para não criar página VAZIA, e um município com
+   * post publicado tem conteúdo, com a leitura do edital que ninguém mais faz.
+   * Cidade pequena é justamente o nicho que o concorrente não cobre.
+   *
+   * O lastro continua sendo a porta principal. Esta é a porta que o próprio
+   * conteúdo abre.
+   */
+  if (temPostPublicado(m)) return true;
+
   return estaNoRegistro(REGISTRO, m) && m.editais >= PISO_STICKY_EM_EDITAIS;
+}
+
+/**
+ * Este município tem post publicado?
+ *
+ * Lê o acervo de posts, que é montado na build a partir de `dados/posts/`. É a
+ * única dependência de `regioes.ts` fora dos JSON versionados, e ela é segura
+ * porque nenhum componente de cliente importa este arquivo — conferido, e há
+ * guarda em `orfas.test.ts`.
+ */
+function temPostPublicado(m: Pick<MunicipioAgregado, "uf" | "slug">): boolean {
+  return postsDoMunicipio(m.uf, m.slug).length > 0;
 }
 
 /**

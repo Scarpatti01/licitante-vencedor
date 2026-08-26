@@ -10,6 +10,7 @@ import type { Artigo } from "../tipos";
  */
 export const VALE_A_PENA_PARTICIPAR: Artigo = {
   slug: "vale-a-pena-participar-de-licitacao",
+  tituloDaBusca: "Vale a pena participar de licitação?",
   titulo: "Vale a pena participar de licitação? Como decidir antes de montar a proposta",
   descricao:
     "Sete critérios objetivos para decidir se um edital merece a sua semana: objeto, região, valor, prazo, documentação e as exigências extras que mudam a conta.",

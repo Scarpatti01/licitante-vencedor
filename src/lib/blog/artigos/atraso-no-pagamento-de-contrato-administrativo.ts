@@ -24,6 +24,7 @@ import type { Artigo } from "../tipos";
  */
 export const ATRASO_NO_PAGAMENTO: Artigo = {
   slug: "atraso-no-pagamento-de-contrato-administrativo",
+  tituloDaBusca: "Atraso no pagamento de contrato administrativo",
   titulo: "Atraso no pagamento de contrato administrativo: o que a Lei 14.133 garante",
   descricao:
     "Atraso superior a 2 meses no pagamento dá ao contratado o direito de suspender a execução ou pedir a extinção do contrato, com indenização.",

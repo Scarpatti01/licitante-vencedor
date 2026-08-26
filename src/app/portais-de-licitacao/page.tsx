@@ -9,7 +9,7 @@ import { artigosDoGuia } from "@/lib/blog";
 import { municipiosPublicaveis, pracasPorUf } from "@/lib/regioes";
 import { PracasEmAcordeao } from "@/components/regioes/PracasEmAcordeao";
 
-const TITULO = "Portais de licitação: onde o edital sai e onde a disputa acontece";
+const TITULO = "Portais de licitação: onde o edital sai";
 const DESCRICAO =
   "Medimos 500 editais abertos em 5 estados e achamos 54 sistemas diferentes. O PNCP publica, mas a disputa corre noutro portal. Como achar qual.";
 const ATUALIZADO = "2026-08-12";

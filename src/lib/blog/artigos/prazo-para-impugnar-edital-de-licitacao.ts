@@ -21,6 +21,7 @@ import type { Artigo } from "../tipos";
  */
 export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
   slug: "prazo-para-impugnar-edital-de-licitacao",
+  tituloDaBusca: "Prazo para impugnar edital: 3 dias úteis",
   titulo: "Prazo para impugnar edital de licitação: 3 dias úteis, contados para trás",
   descricao:
     "O prazo do art. 164 da Lei 14.133 corre a partir da abertura do certame, não da publicação. Como contar, o que difere de esclarecimento e de recurso.",

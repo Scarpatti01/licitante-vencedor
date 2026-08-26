@@ -33,8 +33,17 @@ export async function generateMetadata({
   if (!artigo) return {};
 
   const url = `${SITE.url}/blog/${artigo.slug}/`;
+
+  /*
+   * A busca recebe o título curto; o `<h1>` e o cartão recebem o longo.
+   *
+   * Divergência DELIBERADA, ao contrário da que `resultado-de-busca.guarda.test.ts`
+   * pune nas páginas estáticas. Lá dois títulos significavam que ninguém escolheu
+   * um dos dois; aqui os dois foram escritos de propósito, para vitrines com
+   * réguas diferentes, e `tipos.ts` explica por quê.
+   */
   return {
-    title: artigo.titulo,
+    title: artigo.tituloDaBusca ?? artigo.titulo,
     description: artigo.descricao,
     alternates: { canonical: `/blog/${artigo.slug}/` },
     openGraph: {
