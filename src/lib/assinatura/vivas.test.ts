@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  FILTRO_POSTGREST_DE_PAGANTES,
   FILTRO_POSTGREST_DE_VIVAS,
+  STATUS_PAGANTES,
   STATUS_VIVOS,
   assinaturaEstaViva,
+  assinaturaPaga,
   leituraInclusaNoPlano,
   recebeOResumo,
 } from "./vivas.ts";
@@ -79,5 +82,50 @@ describe("o plano lê o documento?", () => {
     // coluna ausente não podem virar "este plano lê".
     expect(leituraInclusaNoPlano("20", true)).toBe(false);
     expect(leituraInclusaNoPlano(undefined, true)).toBe(false);
+  });
+});
+
+describe("quem PAGA, que não é a mesma pergunta de quem está vivo", () => {
+  /*
+   * A guarda que existe por causa de um custo real.
+   *
+   * Em 25/08 o primeiro teste de catorze dias foi aberto, e `tetoDeLeitura`
+   * — que pergunta "há assinante?" para decidir quantos editais ler por dia —
+   * viu um. O teto subiu de 5 para 25 leituras por empresa por dia, de um dia
+   * para o outro, sem ninguém ter pago nada.
+   *
+   * Se alguém trocar `assinaturaPaga` por `assinaturaEstaViva` aqui, o gasto
+   * quintuplica de novo e nada no sistema reclama: as duas devolvem booleano,
+   * as duas parecem certas, e a fatura chega um mês depois.
+   */
+  it("teste está VIVO e NÃO paga", () => {
+    expect(assinaturaEstaViva("teste")).toBe(true);
+    expect(assinaturaPaga("teste")).toBe(false);
+  });
+
+  it("ativa e inadimplente pagam", () => {
+    expect(assinaturaPaga("ativa")).toBe(true);
+    // Cartão recusado é cliente com problema de cobrança, não cliente que
+    // sumiu. Ele continua contando como receita esperada.
+    expect(assinaturaPaga("inadimplente")).toBe(true);
+  });
+
+  it("cancelada e encerrada não pagam", () => {
+    expect(assinaturaPaga("cancelada")).toBe(false);
+    expect(assinaturaPaga("encerrada")).toBe(false);
+  });
+
+  it("quem paga é subconjunto de quem está vivo", () => {
+    // Se um dia alguém acrescentar um status a `STATUS_PAGANTES` sem pô-lo em
+    // `STATUS_VIVOS`, existiria assinatura que paga e não recebe serviço.
+    for (const status of STATUS_PAGANTES) {
+      expect(assinaturaEstaViva(status)).toBe(true);
+    }
+    expect(STATUS_PAGANTES.length).toBeLessThan(STATUS_VIVOS.length);
+  });
+
+  it("o filtro de pagantes sai da lista", () => {
+    expect(FILTRO_POSTGREST_DE_PAGANTES).toBe("in.(ativa,inadimplente)");
+    expect(FILTRO_POSTGREST_DE_PAGANTES).not.toContain("teste");
   });
 });

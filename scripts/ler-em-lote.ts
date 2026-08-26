@@ -124,26 +124,55 @@ async function main() {
   }
 
   const agora = new Date();
-  const [perfis, editaisAbertos, assinantes, jaLidos] = await Promise.all([
-    repositorio.perfis(),
-    repositorio.editaisAbertos(agora),
-    repositorio.assinantesVivos(),
-    repositorioDeAnalises.editaisJaAnalisados(),
-  ]);
+  const [todosOsPerfis, editaisAbertos, pagantes, comLeituraNoPlano, jaLidos] =
+    await Promise.all([
+      repositorio.perfis(),
+      repositorio.editaisAbertos(agora),
+      repositorio.assinantesPagantes(),
+      repositorio.empresasComLeituraNoPlano(),
+      repositorioDeAnalises.editaisJaAnalisados(),
+    ]);
 
   /*
-   * Quanto podemos gastar hoje depende de haver alguém pagando. Sem assinante
-   * vivo o teto cai — ver `tetoDeLeitura`. E volta sozinho no dia em que a
-   * primeira assinatura aparecer: economia que depende de alguém lembrar acaba
-   * virando cliente pagante com meia leitura.
+   * O PLANO decide quem é elegível, antes de qualquer score.
+   *
+   * Até 26/08 este filtro não existia: `perfis()` devolvia toda empresa ativa e
+   * a escolha era só por aderência. Uma conta no plano Leve — o plano que a
+   * página de preços descreve como "não abrimos o arquivo do edital" — recebia
+   * a leitura assim mesmo, e o resumo dela dizia "documento lido", porque
+   * `linhaDeLeitura` mostra a leitura sempre que ela existe.
+   *
+   * O efeito era pagar a leitura mais cara do sistema para entregar de graça
+   * aquilo que separa o plano de R$ 59 do de R$ 800. Produto cujo plano caro
+   * entrega o mesmo que o barato não tem plano caro.
    */
-  const teto = tetoDeLeitura(assinantes);
+  const perfis = todosOsPerfis.filter((p) => comLeituraNoPlano.has(p.empresaId));
+
+  /*
+   * Quanto podemos gastar depende de haver alguém PAGANDO, e essa palavra
+   * custou caro para chegar aqui: até 26/08 a contagem incluía `teste`, e o
+   * primeiro teste de catorze dias quintuplicou o teto sozinho, de 5 para 25
+   * leituras por empresa por dia, sem uma fatura do outro lado.
+   *
+   * É a segunda trava, não a primeira: o plano acima já decidiu quem entra.
+   */
+  const teto = tetoDeLeitura(pagantes);
 
   console.log(
-    `${perfis.length} empresa(s) com perfil completo · ${editaisAbertos.length} edital(is) com proposta aberta`,
+    `${perfis.length} de ${todosOsPerfis.length} empresa(s) com perfil completo têm leitura no plano · ` +
+      `${editaisAbertos.length} edital(is) com proposta aberta`,
   );
 
   if (perfis.length === 0 || editaisAbertos.length === 0) {
+    /*
+     * Sair sem ler aqui é o caso NORMAL enquanto ninguém assina um plano com
+     * leitura, e não um defeito a ser consertado afrouxando o filtro.
+     *
+     * A cadeia de leitura continua sendo exercitada todo dia por
+     * `publicar-posts.ts`, que chama o mesmo `lerEAnalisar` para montar as
+     * páginas públicas. Era esse o argumento que sustentava ler para ninguém, e
+     * ele já é atendido de graça por outro caminho.
+     */
     console.log("nada a cruzar — encerrando sem ler.");
     return;
   }
@@ -160,7 +189,7 @@ async function main() {
 
   console.log(
     `${todos.size} edital(is) único(s) com score ≥ ${CORTE_DE_LEITURA} em ao menos uma empresa ` +
-      `(limite de ${teto} leitura(s) NOVA(s)/empresa/dia · ${assinantes} assinatura(s) viva(s) · ` +
+      `(limite de ${teto} leitura(s) NOVA(s)/empresa/dia · ${pagantes} assinatura(s) PAGA(s) · ` +
       `${jaLidos.size} edital(is) já com análise vigente)`,
   );
 

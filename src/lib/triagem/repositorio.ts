@@ -1,7 +1,11 @@
 import type { PerfilDaEmpresa, TipoDeDocumento } from "../dominio/tipos.ts";
 import type { Edital } from "../fontes/tipos.ts";
 import type { Recorte } from "../dominio/recorte.ts";
-import { FILTRO_POSTGREST_DE_VIVAS } from "../assinatura/vivas.ts";
+import {
+  FILTRO_POSTGREST_DE_PAGANTES,
+  FILTRO_POSTGREST_DE_VIVAS,
+  leituraInclusaNoPlano,
+} from "../assinatura/vivas.ts";
 import type { decisaoParaLinha, oportunidadeParaLinha } from "./mapeamento.ts";
 
 /**
@@ -317,16 +321,33 @@ export type Repositorio = {
    */
   recortesPorEmpresa(): Promise<Map<string, Recorte[]>>;
   /**
-   * Quantas assinaturas vivas existem — `teste`, `ativa` ou `inadimplente`.
+   * Quantas assinaturas PAGAS existem — `ativa` ou `inadimplente`.
    *
-   * A leitura usa isto para saber quanto pode gastar por dia: sem ninguém
-   * pagando, ler 25 editais por empresa é caro sem ser útil (medido em 25/08:
-   * entre R$ 500 e R$ 700 por mês para zero assinantes). Ver `tetoDeLeitura`.
-   *
-   * As três contam porque as três esperam serviço; a diferença entre elas é
-   * assunto da cobrança, não da leitura.
+   * A leitura usa isto para saber quanto pode gastar por dia. Ver
+   * `tetoDeLeitura`, que carrega a história inteira: até 26/08 esta função
+   * contava `teste` junto, e o primeiro teste aberto quintuplicou o gasto
+   * diário sem uma fatura do outro lado.
    */
-  assinantesVivos(): Promise<number>;
+  assinantesPagantes(): Promise<number>;
+  /**
+   * As empresas cujo plano INCLUI abrir o arquivo do edital.
+   *
+   * Existe porque a escolha do que ler não olhava plano nenhum: `perfis()`
+   * devolvia toda empresa ativa, e `candidatosParaLeitura` decidia só por
+   * score. O resultado é que uma conta no plano Leve — o plano que a página de
+   * preços descreve como "não abrimos o arquivo do edital" — recebia a leitura
+   * assim mesmo, e o resumo dela dizia "documento lido".
+   *
+   * Isso apaga a diferença entre o plano de R$ 59 e o de R$ 800, que é
+   * exatamente esta: um diz que o edital existe, o outro diz o que ele exige.
+   * Produto cujo plano caro entrega o mesmo que o barato não tem plano caro.
+   *
+   * A ponte é a mesma de `resumo/repositorio.ts`, e pelo mesmo motivo:
+   * `assinaturas.titular_id` aponta para `auth.users`, e a empresa chega ao
+   * usuário por `membros_da_empresa`. Sem chave estrangeira entre `empresas` e
+   * `assinaturas`, o PostgREST recusa o embed com PGRST200.
+   */
+  empresasComLeituraNoPlano(): Promise<Set<string>>;
   /**
    * Grava as oportunidades (upsert por `empresa_id, edital_id`).
    *
@@ -414,12 +435,54 @@ export function abrirRepositorio(): Repositorio | null {
       return porEmpresa;
     },
 
-    async assinantesVivos() {
+    async assinantesPagantes() {
       const linhas = await paginado("assinaturas", {
         select: "id",
-        status: FILTRO_POSTGREST_DE_VIVAS,
+        status: FILTRO_POSTGREST_DE_PAGANTES,
       });
       return linhas.length;
+    },
+
+    async empresasComLeituraNoPlano() {
+      const [assinaturas, membros] = await Promise.all([
+        paginado("assinaturas", {
+          select: "titular_id,status,planos(limite_de_analises_profundas)",
+          status: FILTRO_POSTGREST_DE_VIVAS,
+        }),
+        paginado("membros_da_empresa", {
+          select: "empresa_id,usuario_id,papel,removido_em",
+          papel: "eq.dono",
+          removido_em: "is.null",
+        }),
+      ]);
+
+      /** Os titulares cujo plano vivo inclui a leitura. */
+      const titulares = new Set<string>();
+      for (const bruta of assinaturas) {
+        const a = bruta as unknown as {
+          titular_id?: unknown;
+          planos?: unknown;
+        };
+        const titular = typeof a.titular_id === "string" ? a.titular_id : null;
+        if (!titular) continue;
+
+        const plano = (Array.isArray(a.planos) ? a.planos[0] : a.planos) as
+          | Record<string, unknown>
+          | undefined;
+
+        if (leituraInclusaNoPlano(plano?.limite_de_analises_profundas, plano !== undefined)) {
+          titulares.add(titular);
+        }
+      }
+
+      const empresas = new Set<string>();
+      for (const bruta of membros) {
+        const m = bruta as unknown as { empresa_id?: unknown; usuario_id?: unknown };
+        const empresa = typeof m.empresa_id === "string" ? m.empresa_id : null;
+        const usuario = typeof m.usuario_id === "string" ? m.usuario_id : null;
+        if (empresa && usuario && titulares.has(usuario)) empresas.add(empresa);
+      }
+      return empresas;
     },
 
     async editaisAbertos(agora = new Date()) {

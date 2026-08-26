@@ -37,6 +37,35 @@ export const STATUS_VIVOS = ["teste", "ativa", "inadimplente"] as const;
 
 export type StatusVivo = (typeof STATUS_VIVOS)[number];
 
+/**
+ * Os status que representam DINHEIRO ENTRANDO.
+ *
+ * `teste` está viva e não está aqui, e a distinção custou uma quintuplicação de
+ * custo para aparecer.
+ *
+ * Em 25/08 o teste de catorze dias passou a existir, e o primeiro deles foi
+ * aberto para a conta do próprio dono. `tetoDeLeitura` decidia quantos editais
+ * ler por dia olhando "há assinante vivo?" — e passou a ver um. O teto subiu
+ * de 5 para 25 leituras por empresa por dia, de um dia para o outro, sem
+ * ninguém ter pago nada. O comentário que justificava aquele teto falava em
+ * "no dia em que a primeira assinatura viva aparecer", e a frase era do tempo
+ * em que assinatura viva só nascia de um cartão.
+ *
+ * Teste não é receita. Quem decide o tamanho do gasto é quem paga.
+ *
+ * `inadimplente` fica: é cliente com cartão recusado, não cliente que sumiu, e
+ * cortar o serviço dele na primeira falha de cobrança perde quem ia pagar na
+ * segunda tentativa.
+ */
+export const STATUS_PAGANTES = ["ativa", "inadimplente"] as const;
+
+/** O filtro do PostgREST para quem paga. Montado da lista, nunca digitado. */
+export const FILTRO_POSTGREST_DE_PAGANTES = `in.(${STATUS_PAGANTES.join(",")})`;
+
+export function assinaturaPaga(status: unknown): boolean {
+  return typeof status === "string" && (STATUS_PAGANTES as readonly string[]).includes(status);
+}
+
 /** O filtro do PostgREST, montado a partir da lista — nunca digitado de novo. */
 export const FILTRO_POSTGREST_DE_VIVAS = `in.(${STATUS_VIVOS.join(",")})`;
 
