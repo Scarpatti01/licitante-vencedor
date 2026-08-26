@@ -1,7 +1,11 @@
 /**
  * Junta os parciais de uma coleta paralela num agregado só.
  *
- *   node scripts/juntar-coleta.ts --parciais dados/parciais/shards
+ *   node scripts/juntar-coleta.ts --parciais dados/parciais/shards \
+ *     --ufs AC,AL,AM,...
+ *
+ * `--ufs` é a lista que a rodada PEDIU, e não é opcional por capricho: ver
+ * "Quem sabe quantas UFs eram para vir", abaixo.
  *
  * ## O que este script existe para resolver
  *
@@ -30,6 +34,28 @@
  *   órgão é estadual e a unidade compradora fica em outro estado.
  *
  * Custa ~30 MB de artefatos por rodada. É barato para manter a semântica.
+ *
+ * ## Quem sabe quantas UFs eram para vir
+ *
+ * Quem pediu. E até 26/08 este script não perguntava.
+ *
+ * `resumirCobertura(ufsSolicitadas, resultados)` já sabe marcar como `falha`,
+ * com o motivo "não coletada nesta rodada", toda UF pedida que não voltou. A
+ * mecânica estava pronta e certa. O defeito era o argumento: `ufsSolicitadas`
+ * saía de um `for` sobre os shards ENCONTRADOS na pasta.
+ *
+ * Ou seja, o pedido era derivado da entrega. Shard que morre não deixa arquivo;
+ * sem arquivo, a UF nunca é citada; não sendo citada, ela não consta como
+ * pedida; e o relatório soma "25 de 25 completas" com o produto faltando dois
+ * estados. Foi o que aconteceu na coleta de 26/08, que gravou `completa: true`
+ * e `ufsComFalha: []` sem MA e sem PE.
+ *
+ * Comparar uma lista consigo mesma é sempre verdadeiro, e por isso a falha era
+ * silenciosa: não havia nada para dar errado.
+ *
+ * Agora a lista chega por `--ufs`, do mesmo `planejar` que monta a matriz do
+ * workflow — a única fonte que sabe o que foi pedido, porque foi ela que pediu.
+ * `juncao-confere-o-pedido.test.ts` cobra que o workflow continue passando.
  */
 
 import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
@@ -44,6 +70,28 @@ import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao
 import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
 import { fontePncp } from "../src/lib/fontes/pncp.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
+
+/**
+ * Lê a lista de UFs de `--ufs`, nos dois formatos que ela chega.
+ *
+ * O `planejar` do workflow produz JSON (`["AC","AL"]`), porque é o que a matriz
+ * do GitHub Actions consome. Quem roda à mão escreve `AC,AL`. Aceitar os dois é
+ * o que permite o YAML repassar a saída do `planejar` sem converter no meio, e
+ * conversão no meio é justamente onde a lista pedida e a conferida começariam a
+ * divergir de novo.
+ */
+function listaDeUfs(bruto: string | undefined): string[] {
+  const texto = (bruto ?? "").trim();
+  if (!texto) return [];
+
+  const cru = texto.startsWith("[")
+    ? (JSON.parse(texto) as unknown[]).filter((u): u is string => typeof u === "string")
+    : texto.split(",");
+
+  // `Set` porque lista com UF repetida faria a cobertura contar o mesmo estado
+  // duas vezes e `completa` passar a depender da ordem.
+  return [...new Set(cru.map((u) => u.trim().toUpperCase()).filter(Boolean))];
+}
 
 function arg(nome: string): string | undefined {
   const i = process.argv.indexOf(`--${nome}`);
@@ -96,9 +144,20 @@ async function main() {
     throw new ErroDeOperacao(`${pastaDeParciais} está vazia — nenhum shard entregou resultado.`);
   }
 
+  /*
+   * A lista que a rodada PEDIU, vinda de fora.
+   *
+   * Aceita `AC,AL,...` e também o JSON que o `planejar` do workflow produz
+   * (`["AC","AL",...]`), para o passo do YAML poder repassar a saída dele sem
+   * traduzir nada no meio do caminho — tradução no meio é onde as duas listas
+   * começam a divergir.
+   */
+  const pedidas = listaDeUfs(arg("ufs"));
+
   const coletados: Edital[] = [];
   const porUf: ColetaDeUf[] = [];
-  const ufs: string[] = [];
+  /** As que responderam. Só serve de fallback quando ninguém disse o que pediu. */
+  const ufsQueVoltaram: string[] = [];
   let coletadoEm = "";
 
   for (const nome of arquivos) {
@@ -118,7 +177,7 @@ async function main() {
 
     for (const linha of parcial.cobertura?.porUf ?? []) {
       porUf.push(linha);
-      if (typeof linha.uf === "string") ufs.push(linha.uf);
+      if (typeof linha.uf === "string") ufsQueVoltaram.push(linha.uf);
     }
     for (const edital of parcial.editais ?? []) coletados.push(edital);
 
@@ -137,7 +196,39 @@ async function main() {
     );
   }
 
-  const cobertura = resumirCobertura(ufs, porUf);
+  /*
+   * Sem `--ufs`, a conta volta a ser a antiga e não há como conferir nada.
+   *
+   * O aviso é gritado em vez de silenciosamente aceito, e a guarda cobra que o
+   * workflow sempre passe a lista. Rodar à mão sobre um punhado de shards
+   * continua funcionando: ali quem executa sabe o recorte, e forçar o
+   * parâmetro só atrapalharia.
+   */
+  if (pedidas.length === 0) {
+    console.warn(
+      "\n  AVISO: --ufs não foi informado. A cobertura vai ser derivada dos " +
+        "shards encontrados,\n  então UF que morreu sem deixar arquivo não " +
+        "aparece como falha. Passe --ufs para conferir.\n",
+    );
+  }
+
+  const solicitadas = pedidas.length > 0 ? pedidas : ufsQueVoltaram;
+  const cobertura = resumirCobertura(solicitadas, porUf);
+
+  /*
+   * O que faltou, dito em voz alta no log.
+   *
+   * `cobertura` já carrega isso, e ninguém abre JSON de 30 MB para conferir. A
+   * linha no log é o que aparece no resumo da execução, que é onde alguém olha.
+   */
+  const ausentes = cobertura.ufsComFalha
+    .filter((c) => c.motivo === "não coletada nesta rodada")
+    .map((c) => c.uf);
+  if (ausentes.length > 0) {
+    console.error(
+      `  ${ausentes.length} UF(s) pedidas e não coletadas: ${ausentes.join(", ")}`,
+    );
+  }
 
   const dedup = deduplicar(coletados, { [fontePncp.nome]: fontePncp.precedencia });
   const editais = dedup.editais.sort((a, b) =>

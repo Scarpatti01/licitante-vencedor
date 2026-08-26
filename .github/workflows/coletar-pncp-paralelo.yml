@@ -169,13 +169,22 @@ jobs:
 
       # As credenciais aqui são para `execucoes_de_coleta` (o veredito da
       # rodada, que `painelDoDia` lê) — a junção em si não toca no banco.
+      #
+      # `--ufs` é o conserto de 26/08, e vem do MESMO `planejar` que montou a
+      # matriz. Sem ele, a junção montava a lista de "solicitadas" a partir dos
+      # shards que achava na pasta: shard morto não deixa arquivo, a UF não era
+      # citada, não constava como pedida, e o relatório dizia "25 de 25
+      # completas" faltando MA e PE. Pedido derivado da entrega é comparação de
+      # uma lista com ela mesma, e sempre fecha.
       - name: Juntar num agregado só
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          UFS_PEDIDAS: ${{ needs.planejar.outputs.ufs }}
         run: |
           set -o pipefail
-          node scripts/juntar-coleta.ts --parciais shards | tee saida-juncao.txt
+          node scripts/juntar-coleta.ts --parciais shards --ufs "$UFS_PEDIDAS" \
+            | tee saida-juncao.txt
 
       # O artefato que `enviar-alertas.yml` baixa todo dia útil. Publicado LOGO
       # depois da junção, e antes dos passos de post/triagem/leitura, porque

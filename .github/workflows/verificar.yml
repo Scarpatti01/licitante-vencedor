@@ -30,11 +30,25 @@ on:
   push:
     branches: [main]
 
-# Um PR que recebe três pushes seguidos não precisa de três verificações: a
-# última é a única que responde à pergunta.
+# Cancelar a execução em andamento vale em PR, e NÃO vale na `main`.
+#
+# Num PR, três pushes seguidos são três versões do mesmo trabalho, e só a última
+# responde à pergunta: cancelar as anteriores economiza runner sem perder
+# resposta nenhuma.
+#
+# Na `main` cada push é um COMMIT DIFERENTE, e cada um precisa do próprio
+# veredito — é dela que a Vercel publica. Aconteceu em 26/08: a fila do Actions
+# atrasou uns sete minutos e as duas execuções entraram fora de ordem. A do
+# commit mais VELHO começou depois, caiu no mesmo grupo de concorrência e
+# cancelou a do commit mais novo, que era o `head`. Sobrou uma `main` publicada
+# com verificação cancelada, e um check verde apontando para um commit que já
+# não era o topo.
+#
+# O grupo continua por `github.ref`, que já separa um PR do outro. O que muda é
+# só quem pode ser cancelado.
 concurrency:
   group: verificar-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   verificar:
