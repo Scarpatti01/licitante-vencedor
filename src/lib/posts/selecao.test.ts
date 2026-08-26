@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
   DIAS_MINIMOS_DE_PRAZO,
+  MAXIMO_POR_CATEGORIA,
   MAXIMO_POR_MUNICIPIO,
   MAXIMO_POR_ORGAO,
   MINIMO_DO_OBJETO,
+  POSTS_POR_DIA,
   motivoDaRecusa,
   selecionarDoDia,
 } from "./selecao";
@@ -15,6 +17,21 @@ const DIA = 86_400_000;
 /** Objeto realista e comprido o bastante para passar no piso. */
 const OBJETO =
   "Registro de preços para aquisição de gêneros alimentícios destinados à merenda escolar da rede municipal de ensino";
+
+/**
+ * Um objeto que NÃO casa com nenhuma categoria de `demanda.ts`.
+ *
+ * Existe desde 26/08, quando a cota por categoria passou a valer. Os testes que
+ * medem a cota de MUNICÍPIO ou de ÓRGÃO precisam de editais que não disputem
+ * também uma vaga de categoria — senão eles param de medir o que dizem medir e
+ * passam a medir a cota nova, que é o que aconteceu com dois deles.
+ *
+ * Repare que o `OBJETO` padrão é de merenda escolar: sem esta constante, toda
+ * lista construída pela fábrica é da MESMA categoria, e a uniformidade da
+ * fábrica escondia exatamente a monotonia que a cota nova existe para evitar.
+ */
+const OBJETO_SEM_CATEGORIA =
+  "Contratação de serviço especializado de tradução simultânea para as sessões públicas do órgão";
 
 let sequencia = 0;
 
@@ -106,20 +123,26 @@ describe("motivoDaRecusa", () => {
 
 describe("selecionarDoDia", () => {
   it("respeita o limite pedido", () => {
-    const lista = Array.from({ length: 60 }, () => edital());
+    // Objeto sem categoria: a cota de categoria não vale para quem não tem uma,
+    // e é isso que deixa este teste medir o LIMITE em vez da cota.
+    const lista = Array.from({ length: 60 }, () => edital({ objeto: OBJETO_SEM_CATEGORIA }));
     const { escolhidos } = selecionarDoDia(lista, { limite: 25, agora: AGORA });
     expect(escolhidos).toHaveLength(25);
   });
 
   /**
-   * Prazo primeiro, e não valor.
+   * Entre iguais em demanda, o prazo decide. E o valor nunca decide.
    *
-   * Um edital bilionário de obra interessa a pouquíssimas empresas; o de R$ 80
-   * mil de material escolar interessa a muitas — e o site existe para PMEs.
-   * Prazo primeiro também é o que faz o post chegar enquanto ainda dá para
-   * participar.
+   * O título deste teste dizia "prazo primeiro" e era a regra inteira até
+   * 26/08. Hoje o prazo é o SEGUNDO critério: `demanda.ts` ordena antes. Os dois
+   * editais abaixo são da mesma categoria de propósito, e é isso que mantém o
+   * teste medindo o desempate por prazo em vez de medir a demanda por acidente.
+   *
+   * O que não mudou: um edital bilionário de obra interessa a pouquíssimas
+   * empresas; o de R$ 80 mil de material escolar interessa a muitas, e o site
+   * existe para PMEs.
    */
-  it("põe o prazo mais próximo na frente, ignorando o valor", () => {
+  it("entre a mesma categoria, põe o prazo mais próximo na frente, ignorando o valor", () => {
     const caro = edital({ dias: 30, valorEstimado: 90_000_000 });
     const urgente = edital({ dias: 4, valorEstimado: 80_000 });
 
@@ -136,6 +159,7 @@ describe("selecionarDoDia", () => {
   it("não deixa um município tomar a leva inteira", () => {
     const muitos = Array.from({ length: 10 }, (_, i) =>
       edital({
+        objeto: OBJETO_SEM_CATEGORIA,
         local: { uf: "CE", municipio: "Fortaleza", municipioSlug: "fortaleza", codigoIbge: "2304400" },
         dias: 4 + i,
       }),
@@ -150,6 +174,7 @@ describe("selecionarDoDia", () => {
     const mesmoOrgao = { cnpj: "11111111111111", nome: "Prefeitura X", esfera: "municipal" as const };
     const lista = Array.from({ length: 6 }, (_, i) =>
       edital({
+        objeto: OBJETO_SEM_CATEGORIA,
         orgao: mesmoOrgao,
         // Municípios diferentes, para isolar a cota de órgão da de município.
         local: { uf: "PE", municipio: `M${i}`, municipioSlug: `m-${i}`, codigoIbge: `26000${i}0` },
@@ -189,5 +214,118 @@ describe("selecionarDoDia", () => {
 
   it("lista vazia não quebra", () => {
     expect(selecionarDoDia([], { agora: AGORA })).toEqual({ escolhidos: [], recusas: {} });
+  });
+});
+
+describe("a demanda manda na ordem, desde 26/08", () => {
+  /*
+   * A mudança que estes testes guardam.
+   *
+   * A leva era escolhida por prazo, o que publica sem nunca perguntar quem
+   * viria. Com a torneira em cinco por dia — e não mais 25 — escolher virou
+   * decisão editorial de verdade: "os cinco que fecham antes" não é uma.
+   */
+  it("um edital muito procurado passa na frente de um que fecha antes", () => {
+    const obraUrgente = edital({
+      objeto:
+        "Contratação de empresa de engenharia para pavimentação asfáltica de vias urbanas do município",
+      dias: 4,
+    });
+    const merendaFolgada = edital({
+      objeto:
+        "Registro de preços para aquisição de gêneros alimentícios destinados à merenda escolar da rede municipal",
+      dias: 20,
+    });
+
+    const { escolhidos } = selecionarDoDia([obraUrgente, merendaFolgada], { agora: AGORA });
+    expect(escolhidos[0].id).toBe(merendaFolgada.id);
+  });
+
+  it("mas nada entra sem ser acionável, por mais procurado que seja", () => {
+    /*
+     * O limite da regra nova, e ele é inegociável: post que nasce vencido não
+     * serve a leitor nenhum, procurado ou não. Sem esta guarda, a ordenação por
+     * demanda convidaria alguém a "só relaxar o prazo para os de peso 10".
+     */
+    const merendaVencendo = edital({
+      objeto: "Aquisição de gêneros alimentícios para a merenda escolar do município",
+      dias: DIAS_MINIMOS_DE_PRAZO - 1,
+    });
+
+    const { escolhidos, recusas } = selecionarDoDia([merendaVencendo], { agora: AGORA });
+    expect(escolhidos).toHaveLength(0);
+    expect(recusas["prazo-curto-demais"]).toBe(1);
+  });
+
+  it("uma categoria não leva a leva inteira", () => {
+    /*
+     * Com 25 por dia o problema não existia, porque havia espaço para todos.
+     * Fechar para cinco é o que o criou: "Alimentação escolar" tem o maior peso
+     * da tabela e toda prefeitura do país compra merenda toda semana.
+     */
+    const soMerenda = Array.from({ length: 8 }, (_, i) =>
+      edital({
+        objeto: `Aquisição de gêneros alimentícios para a merenda escolar, lote ${i}`,
+        dias: 5 + i,
+      }),
+    );
+
+    const { escolhidos, recusas } = selecionarDoDia(soMerenda, { agora: AGORA });
+    expect(escolhidos).toHaveLength(MAXIMO_POR_CATEGORIA);
+    expect(recusas["cota-da-categoria"]).toBe(8 - MAXIMO_POR_CATEGORIA);
+  });
+
+  it("quem não tem categoria NÃO disputa cota entre si", () => {
+    /*
+     * Os sem classificação foram 36% da amostra de 26/08, e eles não são um
+     * assunto: são a ausência de um. Contá-los juntos limitaria a dois por dia
+     * uma dúzia de nichos diferentes, e justamente os que o concorrente não
+     * cobre.
+     */
+    const variados = Array.from({ length: 5 }, (_, i) =>
+      edital({ objeto: `${OBJETO_SEM_CATEGORIA} — lote ${i}`, dias: 5 + i }),
+    );
+
+    const { escolhidos, recusas } = selecionarDoDia(variados, { agora: AGORA });
+    expect(escolhidos).toHaveLength(5);
+    expect(recusas["cota-da-categoria"]).toBeUndefined();
+  });
+
+  it("a mesma entrada dá sempre a mesma leva", () => {
+    // Sem o `id` desempatando o desempate, dois editais de mesmo peso e mesmo
+    // prazo trocariam de lugar conforme a ordem que a coleta devolveu.
+    const lista = [
+      edital({ objeto: "Aquisição de medicamentos para a farmácia básica", dias: 7 }),
+      edital({ objeto: "Aquisição de gêneros alimentícios para a merenda", dias: 7 }),
+      edital({ objeto: "Serviço de limpeza e conservação predial continuada", dias: 7 }),
+      edital({ objeto: OBJETO_SEM_CATEGORIA, dias: 7 }),
+    ];
+
+    const uma = selecionarDoDia(lista, { agora: AGORA }).escolhidos.map((e) => e.id);
+    const outra = selecionarDoDia([...lista].reverse(), { agora: AGORA }).escolhidos.map((e) => e.id);
+    expect(uma).toEqual(outra);
+  });
+});
+
+describe("o número de posts por dia", () => {
+  it("é cinco, e não vinte e cinco", () => {
+    /*
+     * Guarda de constante, e ela vale porque este número é dinheiro: 25 por dia
+     * custavam entre US$ 2,96 e US$ 5,73 por dia de leitura de IA, sem evidência
+     * de retorno — nenhuma página de UM edital, de agregador nenhum, aparece nas
+     * buscas deste mercado. Ver `demanda.ts`.
+     *
+     * Se alguém devolver o número para 25, que seja de propósito.
+     */
+    expect(POSTS_POR_DIA).toBe(5);
+  });
+
+  it("o padrão da função é o mesmo da constante", () => {
+    // A constante existir e a função ignorá-la é o jeito silencioso de a
+    // decisão não valer.
+    const lista = Array.from({ length: 20 }, (_, i) =>
+      edital({ objeto: `${OBJETO_SEM_CATEGORIA} — ${i}`, dias: 5 + i }),
+    );
+    expect(selecionarDoDia(lista, { agora: AGORA }).escolhidos).toHaveLength(POSTS_POR_DIA);
   });
 });
