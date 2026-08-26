@@ -154,6 +154,9 @@ describe("UF sem amostra não vira URL vazia", () => {
     novos: 176,
     encerramEm24h: 176,
     editais: Array.from({ length: quantos }, (_, i) => ({ id: String(i) }) as EditalAberto),
+    // O portão olha só o tamanho da amostra; o perfil está aqui porque o tipo o
+    // exige desde 26/08, e vazio é o que uma UF sem editais teria de verdade.
+    perfil: { porCategoria: [], porModalidade: [] },
   });
 
   it("sem amostra suficiente, não tem página", () => {
