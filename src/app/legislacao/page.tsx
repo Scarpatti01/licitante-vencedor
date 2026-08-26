@@ -7,7 +7,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO = "Legislação de licitações: o que vale hoje e o que já foi revogado";
+const TITULO = "Legislação de licitações: o que vale hoje";
 const DESCRICAO =
   "Quais normas valem em 2026, a data exata em que a Lei 8.666 e a Lei do Pregão foram revogadas, e por que elas ainda aparecem em contrato vivo.";
 const ATUALIZADO = "2026-08-12";

@@ -44,6 +44,7 @@
 /** O sufixo que `app/layout.tsx` gruda em todo título, via `title.template`. */
 export const SUFIXO_DA_MARCA = " | Licitante Vencedor";
 
+
 /**
  * Quantos caracteres do título o Google costuma exibir antes de cortar.
  *
@@ -63,6 +64,37 @@ export const CARACTERES_EXIBIDOS = 60;
  * pode é o título ser tão longo que a resposta caia depois do corte.
  */
 export const TETO_DO_TITULO = 70;
+
+/**
+ * O teto do título COMO ELE CHEGA À BUSCA, com a marca já grudada.
+ *
+ * ## A correção de 26/08, e ela invalidou o número de todo mundo
+ *
+ * Esta régua nasceu medindo o título CRU e comparando com 70. O layout acrescenta
+ * `SUFIXO_DA_MARCA` depois, e ninguém tinha descontado isso: um título de 55
+ * caracteres passava na guarda e chegava ao Google com 76.
+ *
+ * O relatório do Ahrefs de 26/08 mostrou o tamanho do estrago: **1.028 páginas
+ * com título longo demais**, de 1.071 analisadas. Reproduzi na build e achei
+ * 1.026. Nenhum teste tinha reclamado, porque todos mediam a string errada.
+ *
+ * Agora a conferência é sobre o título renderizado, e o orçamento do título cru
+ * passa a ser o que sobra: 49 caracteres. É apertado de propósito. O Google
+ * exibe uns 60, então tudo que passa disso é espaço que o leitor não vê.
+ */
+export const ORCAMENTO_DO_TITULO = TETO_DO_TITULO - SUFIXO_DA_MARCA.length;
+
+/**
+ * O título como o buscador vai mostrá-lo.
+ *
+ * Existe para a régua medir a mesma coisa que o leitor lê. Quem já traz a marca
+ * no texto não ganha outra: `conferirTitulo` reprova esse caso à parte, e somar
+ * de novo aqui daria um número que não corresponde a página nenhuma.
+ */
+export function tituloRenderizado(titulo: string): string {
+  const limpo = titulo.trim();
+  return limpo.includes(SUFIXO_DA_MARCA.trim()) ? limpo : limpo + SUFIXO_DA_MARCA;
+}
 
 /**
  * As palavras que descrevem o FORMATO do texto em vez do seu conteúdo.
@@ -162,12 +194,20 @@ export function conferirTitulo(titulo: string): FalhaDeTitulo[] {
     });
   }
 
-  if (limpo.length > TETO_DO_TITULO) {
+  /*
+   * Medido COM a marca, que é como a página chega à busca.
+   *
+   * Media sem, até 26/08, e por isso aprovou 1.026 títulos longos demais. O erro
+   * não era o número 70: era comparar 70 com uma string que ninguém lê.
+   */
+  const renderizado = tituloRenderizado(limpo);
+  if (renderizado.length > TETO_DO_TITULO) {
     falhas.push({
       regra: "longo-demais",
       explicacao:
-        `${limpo.length} caracteres, e o Google exibe uns ${CARACTERES_EXIBIDOS}. ` +
-        `Corte para ${TETO_DO_TITULO} ou menos, e confira se a resposta cabe antes do corte.`,
+        `${renderizado.length} caracteres com "${SUFIXO_DA_MARCA.trim()}" que o layout acrescenta ` +
+        `(${limpo.length} sem), e o Google exibe uns ${CARACTERES_EXIBIDOS}. ` +
+        `O título cru cabe em ${ORCAMENTO_DO_TITULO} caracteres, e este tem ${limpo.length}.`,
     });
   }
 

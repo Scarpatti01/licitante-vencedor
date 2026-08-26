@@ -4,7 +4,7 @@ import { P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 
-const TITULO = "Metodologia: de onde vêm os dados e o que eles não cobrem";
+const TITULO = "Metodologia: de onde vêm os dados";
 const DESCRICAO =
   "De onde vêm os dados do PNCP, com que frequência coletamos, como normalizamos, o que a revisão automática barra e o que a coleta não alcança.";
 const ATUALIZADO = "2026-08-21";

@@ -1,3 +1,4 @@
+import { ORCAMENTO_DO_TITULO } from "../seo/resultado-de-busca.ts";
 import type { MunicipioAgregado } from "../pncp/agregarPorMunicipio.ts";
 
 /**
@@ -69,11 +70,34 @@ function orgaos(n: number): string {
  * fora da faixa visível em troca de nada.
  */
 export function tituloDoMunicipio(m: MunicipioAgregado): string {
-  const valor = valorResumido(m.valor);
-  const cabeca = `Licitações em ${m.municipio} (${m.uf}): ${contratacoes(m.editais)}`;
-  // Vírgula em vez de "e R$ … em compras": a versão longa passava de 62
-  // caracteres e o Google cortava justamente o valor, que é o argumento.
-  return valor ? `${cabeca}, ${valor}` : `${cabeca} de ${orgaos(m.orgaos)}`;
+  /*
+   * ## O título encolheu em 26/08, e os números saíram dele
+   *
+   * Ele era `Licitações em Canoinhas (SC): 8 contratações, R$ 4,9 mi`, com o
+   * comentário de que a vírgula existia porque "a versão longa passava de 62
+   * caracteres e o Google cortava justamente o valor". O diagnóstico estava
+   * certo e a conta estava errada: eu media o título CRU, e o layout acrescenta
+   * ` | Licitante Vencedor` depois. Aqueles 55 caracteres chegavam à busca com
+   * 76, e o valor era cortado do mesmo jeito.
+   *
+   * O relatório do Ahrefs de 26/08 mostrou o tamanho disso: 912 páginas de
+   * município com título longo demais, de 1.071 URLs analisadas no site inteiro.
+   *
+   * Os números saíram do título e continuam na DESCRIÇÃO e na página, que é onde
+   * eles são lidos de verdade. O que sobra é a forma que o concorrente usa para
+   * ganhar essa mesma busca, e ela cabe: 46 caracteres no pior caso comum.
+   */
+  const natural = `Licitações em ${m.municipio} (${m.uf})`;
+  if (natural.length <= ORCAMENTO_DO_TITULO) return natural;
+
+  /*
+   * Dois municípios em 3.805 estouram o orçamento, e por um ou dois caracteres:
+   * Vila Bela da Santíssima Trindade (MT) e São Francisco de Assis do Piauí (PI).
+   *
+   * Para eles, a cidade vem primeiro. Cortar o nome seria pior de longe: é o
+   * token mais distintivo da página, e é exatamente o que a pessoa digitou.
+   */
+  return `${m.municipio} (${m.uf}): licitações`;
 }
 
 /**

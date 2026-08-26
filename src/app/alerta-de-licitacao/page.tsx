@@ -7,7 +7,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { DIAS_DE_TESTE } from "@/lib/assinatura/teste";
 
-const TITULO = "Alerta de licitação: os editais da sua cidade no seu e-mail";
+const TITULO = "Alerta de licitação: editais no seu e-mail";
 const DESCRICAO =
   "Nos dias úteis, os editais abertos que combinam com o que a sua empresa vende. Sem abrir dezenas de portais. Teste 14 dias, sem cartão.";
 const ATUALIZADO = "2026-08-25";

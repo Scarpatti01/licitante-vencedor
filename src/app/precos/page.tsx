@@ -18,7 +18,7 @@ import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 
-const TITULO = "Preços: o que muda entre saber do edital e saber o que ele exige";
+const TITULO = "Preços: da lista do edital ao documento lido";
 /*
  * A descrição DERIVA dos planos, e não os repete.
  *

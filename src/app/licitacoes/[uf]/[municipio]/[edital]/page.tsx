@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ORCAMENTO_DO_TITULO } from "@/lib/seo/resultado-de-busca";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
@@ -78,12 +79,53 @@ export function generateStaticParams(): Parametros[] {
 const real = (valor: number) =>
   valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 
-/** O título curto: o objeto sem o carimbo do portal, cortado no fim de palavra. */
+/** Corta no fim da palavra, e só põe reticências se cortou de verdade. */
+function cortarEmPalavra(texto: string, teto: number): string {
+  if (texto.length <= teto) return texto;
+  const corte = texto.slice(0, teto - 1);
+  const espaco = corte.lastIndexOf(" ");
+  return (espaco > 0 ? corte.slice(0, espaco) : corte) + "…";
+}
+
+/** O título curto para o H1: o objeto sem o carimbo do portal. */
 function titulo(post: PostDeEdital): string {
-  const limpo = semCarimboDoPortal(post.objeto);
-  if (limpo.length <= 90) return limpo;
-  const corte = limpo.slice(0, 90);
-  return corte.slice(0, corte.lastIndexOf(" ")) + "…";
+  return cortarEmPalavra(semCarimboDoPortal(post.objeto), 90);
+}
+
+/**
+ * O título que vai para a BUSCA, que é outro problema.
+ *
+ * ## Por que ele não é o mesmo do H1
+ *
+ * No H1 cabem 90 caracteres, porque quem já está na página lê a linha inteira.
+ * Na busca cabem 49, porque o layout gruda ` | Licitante Vencedor` depois e o
+ * Google exibe uns 60 no total.
+ *
+ * Era `${modalidade} em ${municipio}/${uf}: ${objeto}` cortado em 70, e chegava
+ * ao Google com 91 caracteres partidos no meio de uma palavra. O relatório do
+ * Ahrefs de 26/08 contou os 97 posts entre as 1.028 páginas com título longo.
+ *
+ * ## O que ficou de fora, e por quê
+ *
+ * A modalidade saiu. "Concorrência - Eletrônica" gastava 24 dos 49 caracteres
+ * para dizer o formato do certame, que não é o que ninguém procura e que a
+ * página informa três linhas abaixo. O que decide o clique é O QUE está sendo
+ * comprado e ONDE.
+ */
+function tituloDaBusca(post: PostDeEdital): string {
+  const lugar = ` em ${post.municipio}/${post.uf}`;
+  const objeto = semCarimboDoPortal(post.objeto);
+  const sobra = ORCAMENTO_DO_TITULO - lugar.length;
+
+  /*
+   * Cidade de nome comprido come o orçamento inteiro. Quando sobra menos que
+   * isso para o objeto, o lugar sai: a URL e o H1 já dizem onde é, e um título
+   * que só diz a cidade não distingue um edital do outro dela.
+   */
+  const MINIMO_PARA_O_OBJETO = 20;
+  if (sobra < MINIMO_PARA_O_OBJETO) return cortarEmPalavra(objeto, ORCAMENTO_DO_TITULO);
+
+  return cortarEmPalavra(objeto, sobra) + lugar;
 }
 
 export async function generateMetadata({
@@ -96,7 +138,7 @@ export async function generateMetadata({
   if (!post) return {};
 
   const fechou = encerrado(post);
-  const cabeca = `${post.modalidade} em ${post.municipio}/${post.uf}: ${titulo(post)}`;
+  const cabeca = tituloDaBusca(post);
   const descricao =
     `${fechou ? "ENCERRADO. " : ""}${post.orgao} publicou no PNCP em ` +
     `${post.publicadoEm ? dataDeBrasilia(post.publicadoEm) : "data não informada"}, ` +
@@ -104,7 +146,7 @@ export async function generateMetadata({
     `${dataDeBrasilia(post.encerramentoProposta)}.`;
 
   return {
-    title: cabeca.slice(0, 70),
+    title: cabeca,
     description: descricao.slice(0, 160),
     alternates: { canonical: caminhoDoPost(post) },
     openGraph: {

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { postsDoMunicipio } from "./posts/acervo";
 import {
   estadoDaUf,
   ufFoiCompleta,
@@ -89,8 +90,16 @@ describe("municipiosPublicaveis", () => {
    * encontrado. Ver o comentário completo em `pncp/registroDePublicacao.ts`.
    */
   it("quem sai sem lastro hoje ainda respeita o piso sticky, e o caso real que motivou isto segue no registro", () => {
-    const semLastroHoje = municipiosPublicaveis().filter((m) => !temLastro(m));
-    for (const m of semLastroHoje) {
+    /*
+     * Desde 26/08 há dois caminhos para sair sem lastro: o piso sticky e o post
+     * publicado. Este teste cobra o piso de quem entrou pelo PRIMEIRO — incluir
+     * os de post faria a asserção medir a regra errada e reprovar o conserto das
+     * páginas órfãs.
+     */
+    const porStickyApenas = municipiosPublicaveis().filter(
+      (m) => !temLastro(m) && postsDoMunicipio(m.uf, m.slug).length === 0,
+    );
+    for (const m of porStickyApenas) {
       expect(m.editais, `${m.municipio}/${m.uf}`).toBeGreaterThanOrEqual(PISO_STICKY_EM_EDITAIS);
     }
 
@@ -98,10 +107,36 @@ describe("municipiosPublicaveis", () => {
     expect(publicavel({ uf: "PE", slug: "feira-nova", editais: 1, orgaos: 1 } as MunicipioAgregado)).toBe(true);
   });
 
-  it("no piso sticky, zero editais não basta — 404 continua mais honesto que página vazia", () => {
+  it("no piso sticky, zero editais não basta: 404 continua mais honesto que página vazia", () => {
+    /*
+     * O município deste caso mudou em 26/08, e a lição não.
+     *
+     * Era Russas/CE, e Russas passou a ter post publicado — o terceiro portão
+     * abriu para ela com razão, porque a página dela deixou de ser vazia. Manter
+     * Russas aqui testaria a regra contra um caso que já não a exercita.
+     *
+     * O que continua valendo, e é o que este teste guarda: sem lastro, sem post
+     * e sem editais, a página não nasce. 404 é mais honesto que página em branco.
+     */
     expect(
-      publicavel({ uf: "CE", slug: "russas", editais: 0, orgaos: 0 } as MunicipioAgregado),
+      publicavel({ uf: "ZZ", slug: "sem-nada", editais: 0, orgaos: 0 } as MunicipioAgregado),
     ).toBe(false);
+  });
+
+  it("município sem lastro GANHA página quando tem post publicado", () => {
+    /*
+     * O terceiro portão, e o motivo de ele existir: o Ahrefs acusou 57 páginas
+     * órfãs em 26/08, todas posts de edital cujo município não tinha página. O
+     * post ficava sem um único link interno de entrada.
+     *
+     * O portão original existe para não criar página VAZIA. Um município com
+     * post publicado tem conteúdo, e cidade pequena é justamente o nicho que o
+     * concorrente não cobre.
+     */
+    const comPost = municipiosPublicaveis().filter(
+      (m) => !temLastro(m) && postsDoMunicipio(m.uf, m.slug).length > 0,
+    );
+    expect(comPost.length).toBeGreaterThan(0);
   });
 
   it("município que nunca teve lastro não é publicável só por ter 1 edital hoje", () => {

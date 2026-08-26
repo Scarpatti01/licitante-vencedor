@@ -7,6 +7,9 @@ import {
   limitarDescricao,
   TETO_DA_DESCRICAO,
   TETO_DO_TITULO,
+  ORCAMENTO_DO_TITULO,
+  SUFIXO_DA_MARCA,
+  tituloRenderizado,
 } from "./resultado-de-busca.ts";
 
 const regras = (falhas: { regra: string }[]) => falhas.map((f) => f.regra);
@@ -32,9 +35,18 @@ describe("promessaDoTitulo", () => {
 });
 
 describe("conferirTitulo", () => {
+  /*
+   * As amostras deste arquivo encolheram em 26/08, junto com os títulos reais.
+   *
+   * A régua passou a medir o título COM a marca que o layout acrescenta, e o
+   * orçamento do título cru caiu de 70 para 49. Estas duas amostras eram cópias
+   * de títulos de páginas de verdade, e as páginas foram encurtadas na mesma
+   * mudança: manter aqui a versão longa seria testar contra um site que não
+   * existe mais.
+   */
   it("aprova um título que responde", () => {
     expect(
-      conferirTitulo("Contrato administrativo: prazo, aditivo de 25%, reajuste e sanções"),
+      conferirTitulo("Contrato administrativo: prazo, aditivo e sanções"),
     ).toEqual([]);
   });
 
@@ -57,7 +69,7 @@ describe("conferirTitulo", () => {
     expect(conferirTitulo("Guias e artigos sobre licitações públicas")).toEqual([]);
     // E "guia" no meio da promessa também não é o defeito: o defeito é ela
     // ABRIR com formato.
-    expect(conferirTitulo("Portais de licitação: onde o edital sai e onde a disputa acontece")).toEqual(
+    expect(conferirTitulo("Portais de licitação: onde o edital sai")).toEqual(
       [],
     );
   });
@@ -158,5 +170,52 @@ describe("limitarDescricao", () => {
     for (const bruto of ["curta", "y ".repeat(500), "z".repeat(400), " espaços   demais  "]) {
       expect(limitarDescricao(bruto).length).toBeLessThanOrEqual(TETO_DA_DESCRICAO);
     }
+  });
+});
+
+describe("a régua mede o título COM a marca, que é como ele chega à busca", () => {
+  /*
+   * A guarda que existe por causa de 1.026 páginas.
+   *
+   * Esta régua nasceu comparando 70 com o título CRU. O layout acrescenta
+   * ` | Licitante Vencedor` depois, e ninguém tinha descontado: um título de 55
+   * passava e chegava ao Google com 76. O relatório do Ahrefs de 26/08 contou
+   * 1.028 páginas com título longo, de 1.071 analisadas. Nenhum teste tinha
+   * reclamado, porque todos mediam a string errada.
+   *
+   * Se alguém voltar a medir o cru, o site inteiro volta a estourar em silêncio.
+   */
+  it("o orçamento do cru é o teto menos a marca", () => {
+    expect(ORCAMENTO_DO_TITULO).toBe(TETO_DO_TITULO - SUFIXO_DA_MARCA.length);
+    expect(ORCAMENTO_DO_TITULO).toBe(49);
+  });
+
+  it("reprova o título que só estoura DEPOIS da marca", () => {
+    /*
+     * O caso exato que passava antes: 59 caracteres crus, 80 renderizados. É o
+     * título que `/alerta-de-licitacao/` tinha até 26/08.
+     */
+    const cru = "Alerta de licitação: os editais da sua cidade no seu e-mail";
+    expect(cru.length).toBeLessThanOrEqual(TETO_DO_TITULO);
+    expect(cru.length).toBeGreaterThan(ORCAMENTO_DO_TITULO);
+
+    const falhas = conferirTitulo(cru);
+    expect(falhas.map((f) => f.regra)).toContain("longo-demais");
+  });
+
+  it("a explicação diz os dois números, para o conserto ser óbvio", () => {
+    // "80 caracteres" sozinho manda cortar 10; o que precisa cortar são 10 do
+    // CRU, e o autor não vê a marca em lugar nenhum do arquivo dele.
+    const [falha] = conferirTitulo("Alerta de licitação: os editais da sua cidade no seu e-mail");
+    expect(falha.explicacao).toContain("80");
+    expect(falha.explicacao).toContain("59");
+    expect(falha.explicacao).toContain(String(ORCAMENTO_DO_TITULO));
+  });
+
+  it("quem já traz a marca não ganha outra na conta", () => {
+    // Senão a mensagem acusaria um tamanho que não corresponde a página nenhuma,
+    // e a falha de marca duplicada já é reportada à parte.
+    const comMarca = "Página qualquer | Licitante Vencedor";
+    expect(tituloRenderizado(comMarca)).toBe(comMarca);
   });
 });

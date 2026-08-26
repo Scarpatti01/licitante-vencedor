@@ -14,7 +14,7 @@ import {
   vigenciaPorExtenso,
 } from "@/lib/dominio/limites-legais";
 
-const TITULO = "Lei 14.133/2021: o que mudou para quem vende ao governo";
+const TITULO = "Lei 14.133/2021: dispensa, prazos e sanções";
 const DESCRICAO =
   "O que mudou da 8.666 para a Lei 14.133 na prática: modalidades, critérios de julgamento, dispensa, prazos e os erros que mais desclassificam.";
 const ATUALIZADO = "2026-08-26";

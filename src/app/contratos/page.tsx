@@ -7,7 +7,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO = "Contrato administrativo: prazo, aditivo de 25%, reajuste e sanções";
+const TITULO = "Contrato administrativo: prazo, aditivo e sanções";
 const DESCRICAO =
   "Prazo e prorrogação, aditivo de 25%, reajuste, repactuação, reequilíbrio, garantia, pagamento em ordem cronológica e sanções na Lei 14.133.";
 const ATUALIZADO = "2026-08-11";
