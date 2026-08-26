@@ -43,7 +43,28 @@ export type BlocoDeConteudo =
 
 export type Artigo = {
   slug: string;
+  /**
+   * O título que o leitor vê na página, no `<h1>` e no cartão de
+   * compartilhamento. Escreva para quem já chegou: aqui cabe a frase inteira.
+   */
   titulo: string;
+  /**
+   * O título curto, para o resultado de busca. Opcional.
+   *
+   * Existe porque as duas vitrines têm réguas diferentes e servem a momentos
+   * diferentes. O `<h1>` conversa com quem já abriu a página e pode ter 78
+   * caracteres; o resultado de busca disputa a atenção de quem ainda não
+   * clicou, e o Google corta perto dos 70 — dos quais 21 já são a marca que o
+   * layout acrescenta. Sobram `ORCAMENTO_DO_TITULO`, hoje 49.
+   *
+   * Sem este campo os cinco artigos publicados chegavam à busca com 78 a 100
+   * caracteres, e o corte comia justamente o fim, que é onde mora a promessa.
+   * A saída não é encurtar o `<h1>` — a frase longa é boa onde ela é lida.
+   *
+   * Escreva mantendo o `termoPrincipal` inteiro e no começo. É a única parte
+   * que sobrevive a qualquer corte.
+   */
+  tituloDaBusca?: string;
   /** Até ~155 caracteres. É o que aparece no resultado de busca. */
   descricao: string;
   /** A primeira coisa que o leitor lê. Responde a busca dele em duas frases. */

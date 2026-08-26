@@ -4,6 +4,7 @@ import { ARTIGOS, ARTIGOS_PUBLICADOS, artigoPorSlug, artigosDoGuia, artigosRelac
 import { validarArtigo, contarPalavras, textoDoArtigo } from "./tipos";
 import { GUIAS_PUBLICADOS } from "../guias";
 import sitemap from "../../app/sitemap";
+import { conferirTitulo } from "../seo/resultado-de-busca.ts";
 
 /**
  * As regras do canal de aquisição, presas em teste.
@@ -170,6 +171,72 @@ describe("posicionamento — vale para todo o conteúdo publicado", () => {
       for (const proibida of proibidas) {
         expect(fonte, `${guia.href} contém ${proibida}`).not.toMatch(proibida);
       }
+    }
+  });
+});
+
+describe("o título que cada artigo leva para a busca", () => {
+  /**
+   * A guarda que `resultado-de-busca.guarda.test.ts` dizia existir, e não existia.
+   *
+   * O comentário dela recorta as rotas estáticas e manda o leitor para cá:
+   * "as dinâmicas têm cada uma o próprio teste com a própria régua
+   * (`blog/tipos.ts` para artigo)". A régua estava escrita no tipo; o teste que
+   * a cobrava, não. Foi por isso que cinco dos seis artigos publicados chegaram
+   * à busca com 78 a 100 caracteres sem nada reclamar.
+   *
+   * Guarda que aponta para uma guarda inexistente é pior do que guarda nenhuma:
+   * ela convence quem lê de que o caso está coberto.
+   */
+  it("cabe no corte, medido como o Google vê — com a marca do layout", () => {
+    for (const artigo of ARTIGOS_PUBLICADOS) {
+      const daBusca = artigo.tituloDaBusca ?? artigo.titulo;
+      const falhas = conferirTitulo(daBusca);
+
+      expect(
+        falhas,
+        `/blog/${artigo.slug}/ · "${daBusca}"\n` +
+          falhas.map((f) => `  · ${f.explicacao}`).join("\n") +
+          "\n\nSe o título longo é bom onde ele é lido, não o encurte: escreva um " +
+          "`tituloDaBusca` curto ao lado dele.",
+      ).toEqual([]);
+    }
+  });
+
+  it("o título curto mantém o termo que o artigo persegue", () => {
+    /*
+     * Encurtar cortando o termo trocaria um problema por outro pior: o título
+     * caberia na tela e deixaria de responder à busca que trouxe a pessoa.
+     */
+    for (const artigo of ARTIGOS_PUBLICADOS) {
+      if (!artigo.tituloDaBusca) continue;
+
+      const semAcento = (t: string) =>
+        t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+      // O termo inteiro nem sempre cabe em 49; a primeira metade dele, sim, e é
+      // ela que o Google casa com a busca.
+      const termo = semAcento(artigo.termoPrincipal).split(" ");
+      const inicio = termo.slice(0, Math.max(2, Math.ceil(termo.length / 2))).join(" ");
+
+      expect(
+        semAcento(artigo.tituloDaBusca),
+        `/blog/${artigo.slug}/ persegue "${artigo.termoPrincipal}", e o título curto ` +
+          `"${artigo.tituloDaBusca}" não começa por ele. Cortar o termo é pior do que ` +
+          "estourar o tamanho: o título passa a caber na tela e a não responder à busca.",
+      ).toContain(inicio);
+    }
+  });
+
+  it("o título curto é mesmo mais curto que o longo", () => {
+    // Um `tituloDaBusca` igual ou maior que o `titulo` é campo preenchido por
+    // engano: não resolve nada e cria duas frases para manter no lugar de uma.
+    for (const artigo of ARTIGOS_PUBLICADOS) {
+      if (!artigo.tituloDaBusca) continue;
+      expect(
+        artigo.tituloDaBusca.length,
+        `/blog/${artigo.slug}/ tem \`tituloDaBusca\` que não encurta nada.`,
+      ).toBeLessThan(artigo.titulo.length);
     }
   });
 });

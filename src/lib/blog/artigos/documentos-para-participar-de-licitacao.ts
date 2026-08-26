@@ -10,6 +10,7 @@ import type { Artigo } from "../tipos";
  */
 export const DOCUMENTOS_PARA_PARTICIPAR: Artigo = {
   slug: "documentos-para-participar-de-licitacao",
+  tituloDaBusca: "Documentos para participar de licitação",
   titulo: "Documentos para participar de licitação: a lista por fase",
   descricao:
     "A documentação exigida em cada fase da licitação, o que mais desclassifica fornecedor e por que ter o documento não é o mesmo que estar habilitado.",

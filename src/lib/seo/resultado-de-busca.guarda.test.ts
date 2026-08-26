@@ -38,7 +38,27 @@ const PAGINAS = readdirSync(join("src", "app"), { withFileTypes: true })
       return false;
     }
   })
-  .map(([rota, caminho]) => [rota, readFileSync(caminho, "utf8")] as const);
+  .map(([rota, caminho]) => [rota, semComentarios(readFileSync(caminho, "utf8"))] as const);
+
+/**
+ * O fonte sem comentário, porque os extratores abaixo casam por texto.
+ *
+ * Descoberto ao provar a guarda nova: escrevi em `/editais-abertos/` um
+ * comentário explicando a convenção, com a frase `const TITULO = "..."` dentro
+ * dele. `tituloDeclarado` casou com o COMENTÁRIO e devolveu `"..."` — três
+ * caracteres, que cabem folgado em qualquer teto. A página passou a ser
+ * aprovada por um título que não existe.
+ *
+ * É o mesmo cuidado de `ancora-de-praca.test.ts`, e pela mesma razão: guarda
+ * que lê fonte tem que ler o CÓDIGO, senão o comentário que explica a regra
+ * vira o jeito de burlá-la.
+ */
+function semComentarios(fonte: string): string {
+  return fonte
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/\{\/\*[\s\S]*?\*\/\}/g, " ")
+    .replace(/^\s*\/\/.*$/gm, " ");
+}
 
 /** O `const TITULO = "..."` da página, quando ela declara um. */
 function tituloDeclarado(fonte: string): string | null {
@@ -89,6 +109,35 @@ describe("o título que vai para a busca", () => {
         falhas,
         `/${rota}/ · "${titulo}"\n` + falhas.map((f) => `  · ${f.explicacao}`).join("\n"),
       ).toEqual([]);
+    }
+  });
+});
+
+describe("a página que a guarda não consegue ler", () => {
+  /**
+   * Guarda que pula em silêncio o que não entende é guarda que mente.
+   *
+   * Os dois extratores acima leem `const TITULO = "..."` e `title: "literal"`.
+   * `/editais-abertos/` escrevia `const titulo` em minúsculas e passava a
+   * variável para `metadata.title`: os dois devolviam `null`, o `continue`
+   * disparava, e a página saía da conferência sem que nada dissesse isso. Era a
+   * única do site nessa forma, e foi a única estática que chegou à busca com 90
+   * caracteres.
+   *
+   * O defeito não estava no título — estava no `continue`. Um recorte que se
+   * decide pela FORMA de escrever pula justamente quem escreveu diferente, que é
+   * o mais provável de estar errado. Agora quem não é legível reprova.
+   */
+  it("toda página com título na busca tem um título que a guarda consegue medir", () => {
+    for (const [rota, fonte] of PAGINAS) {
+      if (!/^\s*title:/mu.test(fonte)) continue;
+      if (tituloDeclarado(fonte) !== null || tituloDaBusca(fonte) !== null) continue;
+
+      expect.fail(
+        `/${rota}/ tem título na busca, e esta guarda não consegue lê-lo no fonte — ` +
+          "então ela estava pulando a página inteira sem avisar. Declare " +
+          '`const TITULO = "..."` e passe `title: TITULO`.',
+      );
     }
   });
 });

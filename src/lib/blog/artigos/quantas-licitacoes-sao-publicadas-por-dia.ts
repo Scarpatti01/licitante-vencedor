@@ -28,6 +28,7 @@ import type { Artigo } from "../tipos";
  */
 export const QUANTAS_LICITACOES_POR_DIA: Artigo = {
   slug: "quantas-licitacoes-sao-publicadas-por-dia",
+  tituloDaBusca: "Quantas licitações são publicadas por dia",
   titulo: "Quantas licitações são publicadas por dia no Brasil? Medimos uma semana inteira",
   descricao:
     "Em uma semana de agosto de 2026 foram 13.397 editais no PNCP. Onde ficam, quanto valem e quanto tempo a sua empresa tem para responder.",
