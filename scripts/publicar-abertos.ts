@@ -30,6 +30,7 @@ import {
   type RetratoDeAbertos,
   type UfAberta,
 } from "../src/lib/abertos/tipos.ts";
+import { perfilDaUf } from "../src/lib/abertos/perfilDaUf.ts";
 
 const SEM_CONFIGURACAO = 78;
 const UM_DIA_MS = 24 * 60 * 60 * 1000;
@@ -125,6 +126,14 @@ async function main() {
       abertos: lista.length,
       novos: lista.filter((a) => ehNovo(a.edital)).length,
       encerramEm24h: lista.filter((a) => encerraLogo(a.edital)).length,
+      /*
+       * Sobre `lista`, que é TUDO que está aberto na UF, e não sobre a amostra
+       * de 40 que desce para `editais`. É esta linha que faz "o que Pernambuco
+       * compra" ser um número e não uma impressão. Ver `perfilDaUf.ts`.
+       */
+      perfil: perfilDaUf(
+        lista.map((a) => ({ objeto: a.edital.objeto, modalidade: a.edital.modalidade })),
+      ),
       editais: lista
         .filter((a) =>
           sobreviveAoRetrato({ encerramentoProposta: a.edital.encerramentoProposta as string }, agora),

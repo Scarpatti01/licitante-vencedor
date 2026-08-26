@@ -1,5 +1,6 @@
 import retrato from "../../../dados/abertos.json" with { type: "json" };
 import type { RetratoDeAbertos, UfAberta } from "./tipos.ts";
+import type { PerfilDaUf } from "./perfilDaUf.ts";
 
 /**
  * A leitura do retrato versionado.
@@ -25,6 +26,36 @@ export function ufAberta(sigla: string): UfAberta | null {
 
 export function abertosNoBrasil() {
   return dados.abertos;
+}
+
+/**
+ * O perfil de compras da praça, ou `null` quando o retrato é antigo demais.
+ *
+ * ## Por que `null` e não um objeto vazio
+ *
+ * `perfil` passou a existir em 26/08. O `abertos.json` que está no repositório
+ * neste instante foi gravado pela coleta da manhã daquele dia, antes da
+ * mudança — ou seja, o campo não existe nele, e só passa a existir na coleta
+ * seguinte.
+ *
+ * O tipo diz que ele é obrigatório, e diz certo: é o que a coleta grava DAQUI
+ * PARA A FRENTE, e deixá-lo opcional convidaria a omiti-lo em silêncio. Quem
+ * precisa tolerar a janela de um dia é a leitura, e é aqui que ela mora, uma vez
+ * só, em vez de virar `?.` espalhado pelo JSX.
+ *
+ * `null` e não `{ porCategoria: [], porModalidade: [] }` porque as duas coisas
+ * são diferentes e a página trata cada uma do seu jeito: vazio é "esta praça
+ * não tem editais abertos", e ausente é "ainda não medimos". A segunda esconde
+ * a seção; a primeira mostraria uma tabela em branco afirmando que o estado não
+ * compra nada.
+ */
+export function perfilDaPraca(sigla: string): PerfilDaUf | null {
+  const u = ufAberta(sigla);
+  if (!u) return null;
+
+  const perfil = (u as Partial<UfAberta>).perfil;
+  if (!perfil || !Array.isArray(perfil.porCategoria)) return null;
+  return perfil;
 }
 
 /**

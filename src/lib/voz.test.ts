@@ -50,6 +50,13 @@ const VIGIADOS = [
   "app/jurisprudencia/page.tsx",
   "app/lei-14133/page.tsx",
   "app/portais-de-licitacao/page.tsx",
+  /*
+   * Entrou em 26/08, quando a página de UF deixou de ser uma lista com título e
+   * virou a âncora de praça: passo a passo, tabelas de perfil, vantagens de ME e
+   * EPP e FAQ. Ela passou a ser texto de venda como qualquer guia, então passa a
+   * responder pela mesma régua.
+   */
+  "app/editais-abertos/[uf]/page.tsx",
 ];
 
 /**
@@ -103,7 +110,7 @@ describe("a guarda vigia o que foi limpo", () => {
     // da lista, e a guarda passa a proteger um conjunto vazio sem ficar
     // vermelha nunca mais.
     expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(6);
-    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(8);
+    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(9);
     expect(VIGIADOS).toContain("lib/resumo/plano.ts");
   });
 });

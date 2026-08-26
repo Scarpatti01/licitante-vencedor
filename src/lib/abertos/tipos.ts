@@ -25,6 +25,8 @@
  */
 
 /** Um edital na listagem. Recorte do `Edital`, só o que a página mostra. */
+import type { PerfilDaUf } from "./perfilDaUf.ts";
+
 export type EditalAberto = {
   id: string;
   objeto: string;
@@ -51,6 +53,15 @@ export type ContagemDeAbertos = {
 
 export type UfAberta = ContagemDeAbertos & {
   uf: string;
+  /**
+   * O que a praça compra e como, calculado sobre TODOS os abertos dela.
+   *
+   * Fica no arquivo, e não é derivado de `editais` na hora de renderizar, por
+   * uma razão de honestidade: `editais` é uma AMOSTRA de 40, e a UF tem
+   * centenas. Distribuição de 40 apresentada como o perfil do estado é overclaim
+   * que o leitor não tem como detectar. Ver `perfilDaUf.ts`.
+   */
+  perfil: PerfilDaUf;
   /** Uma amostra ordenada por encerramento mais próximo, não a lista inteira. */
   editais: EditalAberto[];
 };
