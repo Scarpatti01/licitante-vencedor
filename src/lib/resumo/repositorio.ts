@@ -74,7 +74,27 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
     if (!resposta.ok) {
       throw new Error(`${caminho.split("?")[0]}: supabase respondeu ${resposta.status} ${await resposta.text()}`);
     }
-    return resposta.status === 204 ? null : await resposta.json();
+
+    /*
+     * Corpo vazio é resposta legítima, e não JSON quebrado.
+     *
+     * Esta linha conferia `status === 204` e chamava `.json()` no resto. Só que
+     * o PostgREST responde a um POST com `return=minimal` com **201 e corpo
+     * vazio** — 204 é para DELETE e PATCH. `JSON.parse("")` lança "Unexpected
+     * end of JSON input", que foi o que derrubou o resumo diário de 26/08.
+     *
+     * O modo como falhou é o que importa: o e-mail JÁ tinha saído e a gravação
+     * JÁ tinha entrado no banco quando a leitura da resposta estourou. Com uma
+     * cliente cadastrada, o estrago foi um workflow vermelho. Com duas, o `for`
+     * teria morrido na primeira e a segunda não receberia nada — sem erro que
+     * dissesse isso, porque o log final também não chega a ser impresso.
+     *
+     * Ler o texto e só então decidir cobre os três casos de uma vez: 204 sem
+     * corpo, 201 sem corpo e 200 com corpo. Vale mais que listar os códigos que
+     * não têm corpo, que é a lista que já estava errada uma vez.
+     */
+    const corpo = (await resposta.text()).trim();
+    return corpo ? JSON.parse(corpo) : null;
   }
 
   /*
