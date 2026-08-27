@@ -17,7 +17,7 @@ import { usePathname } from "next/navigation";
 
 const ABAS = [
   { href: "/painel/", rotulo: "Painel" },
-  { href: "/jornada/", rotulo: "Jornada" },
+  { href: "/minha-jornada/", rotulo: "Minha jornada" },
   { href: "/oportunidades/", rotulo: "Oportunidades" },
   { href: "/historico/", rotulo: "Histórico" },
   { href: "/perfil/", rotulo: "Perfil" },

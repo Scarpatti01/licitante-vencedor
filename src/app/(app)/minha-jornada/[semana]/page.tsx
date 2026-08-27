@@ -82,16 +82,16 @@ export default async function PaginaDaSemana({ params }: Parametros) {
 
         <nav className="flex flex-wrap justify-between gap-4 border-t pt-5 text-sm">
           {anterior ? (
-            <Link className="underline underline-offset-4" href={`/jornada/${anterior.semana}/`}>
+            <Link className="underline underline-offset-4" href={`/minha-jornada/${anterior.semana}/`}>
               Semana {anterior.semana}: {anterior.titulo}
             </Link>
           ) : (
-            <Link className="underline underline-offset-4" href="/jornada/">
+            <Link className="underline underline-offset-4" href="/minha-jornada/">
               Voltar para a jornada
             </Link>
           )}
           {seguinte ? (
-            <Link className="underline underline-offset-4" href={`/jornada/${seguinte.semana}/`}>
+            <Link className="underline underline-offset-4" href={`/minha-jornada/${seguinte.semana}/`}>
               Semana {seguinte.semana}: {seguinte.titulo}
             </Link>
           ) : null}

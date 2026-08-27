@@ -37,6 +37,18 @@ const SEM_RODAPE: Record<string, string> = {
     "Aterrissagem de link de e-mail, com uma mensagem só.",
   "descadastrar":
     "Aterrissagem de descadastro: quem chega aqui quer sair, não navegar.",
+  /*
+   * A página de venda tem rodapé próprio, e não o do site.
+   *
+   * Ela carrega a identidade visual do produto (a do Workbook, em creme e
+   * dourado), e o rodapé padrão em azul institucional quebraria a página no
+   * último terço, que é justamente onde a decisão de compra acontece. O rodapé
+   * dela leva a privacidade, termos, aviso legal e contato, que é o que esta
+   * guarda existe para garantir, mais o disclaimer comercial que só faz sentido
+   * numa página de venda.
+   */
+  "jornada":
+    "Rodapé próprio, com a identidade do produto. Leva a privacidade, termos, aviso legal e contato, mais o disclaimer comercial.",
 };
 
 function paginasPublicas(): { rota: string; arquivo: string }[] {

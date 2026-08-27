@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { salvarEtapa, type EstadoDaEtapa } from "@/app/(app)/jornada/acoes";
+import { salvarEtapa, type EstadoDaEtapa } from "@/app/(app)/minha-jornada/acoes";
 import type { EtapaDaJornada } from "@/lib/jornada/conteudo";
 
 const INICIAL: EstadoDaEtapa = { status: "vazio", mensagem: null };
