@@ -73,11 +73,29 @@ jobs:
         run: |
           set -uo pipefail
 
+          # `--status=completed` e NÃO `--status=success`, e a diferença é o
+          # recurso inteiro.
+          #
+          # A coleta termina em "failure" sempre que UMA das 27 UFs cai, e o
+          # PNCP derruba alguma quase todo dia: em 27/08 foram seis (AP, BA,
+          # DF, GO, MA, SE) com erro 500 da fonte. Só que o job `juntar` roda
+          # com `if: always()` e publica o `snapshot-pncp` do mesmo jeito.
+          #
+          # Filtrando por `success`, este passo pulava justamente as rodadas em
+          # que houve praça faltante, e ia buscar a classificação da última
+          # coleta perfeita — em 27/08, a de 24/08, com `ufsAusentes` vazio.
+          # Ou seja: o aviso que existe para dizer ao cliente que a praça dele
+          # ficou de fora só era lido nos dias em que nenhuma praça ficou de
+          # fora. Ele nasceu inerte em 22/08 e ninguém tinha como notar, porque
+          # o resumo sai igual e o campo vazio parece "não havia o que avisar".
+          #
+          # A presença do artefato é o critério certo, e o `for` abaixo já
+          # confere isso. O status da rodada nunca foi a pergunta.
           candidatas=$(
             {
-              gh run list --workflow=coletar-pncp-paralelo.yml --status=success \
+              gh run list --workflow=coletar-pncp-paralelo.yml --status=completed \
                 --limit=10 --json databaseId,createdAt --jq '.[] | [.createdAt, .databaseId] | @tsv'
-              gh run list --workflow=coletar-pncp.yml --status=success \
+              gh run list --workflow=coletar-pncp.yml --status=completed \
                 --limit=10 --json databaseId,createdAt --jq '.[] | [.createdAt, .databaseId] | @tsv'
             } | sort -r | cut -f2
           )
