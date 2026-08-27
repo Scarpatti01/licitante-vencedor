@@ -57,3 +57,10 @@ saida-*.txt
 
 # Saída dos scripts de publicação — diagnóstico local, não artefato.
 saida-posts.txt
+
+# O livro: o PDF é artefato de saída, e o node_modules é a ferramenta de quem
+# o gera. Nenhum dos dois é fonte.
+livro/node_modules/
+livro/*.pdf
+livro/passo1.pdf
+livro/passo2.pdf
