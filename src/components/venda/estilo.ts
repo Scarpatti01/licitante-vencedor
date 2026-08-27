@@ -35,7 +35,9 @@ export const ESTILO_PREMIUM = `
   line-height:1.12;
   color:var(--carvao);
   text-wrap:balance;
-  margin:0;
+  /* só o eixo vertical: o atalho margin:0 tem especificidade maior que a
+     utilidade mx-auto e encostava à esquerda todo bloco .serifa centralizado */
+  margin-block:0;
 }
 .premium strong { font-weight:700; color:var(--carvao); }
 .premium .etiqueta {
