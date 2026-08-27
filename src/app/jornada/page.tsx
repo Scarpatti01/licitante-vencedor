@@ -82,6 +82,37 @@ const schema = {
 const MICROCOPY_ABERTO = `Acesso imediato. ${OFERTA.diasDeGarantia} dias de garantia. Pagamento seguro.`;
 const MICROCOPY_FECHADO = "Sem compromisso. Só um aviso no dia em que a compra abrir.";
 
+const ABERTO = checkoutAberto();
+
+/**
+ * O botão de ação.
+ *
+ * Mora fora do componente da página de propósito. A primeira versão estava
+ * declarada dentro do render, e o lint reprovou com razão: componente criado
+ * durante a renderização é remontado a cada passagem, perdendo estado e
+ * refazendo trabalho. Aqui ele é estático, e o que ele precisa saber sai de
+ * `OFERTA`, que é constante de módulo.
+ *
+ * Enquanto o checkout não existe, ele NÃO vira um retângulo morto: leva à lista
+ * de espera. Uma página de venda com o botão principal inerte gasta o clique
+ * pago e não devolve nada, e quem chegou até ali já demonstrou o interesse mais
+ * caro de conseguir.
+ */
+function Cta({ children, id }: { children: React.ReactNode; id?: string }) {
+  if (ABERTO) {
+    return (
+      <a id={id} className="cta" href={OFERTA.CHECKOUT} target="_blank" rel="noopener noreferrer">
+        {children}
+      </a>
+    );
+  }
+  return (
+    <a id={id} className="cta" href="#avise-me">
+      Quero saber quando abrir
+    </a>
+  );
+}
+
 /**
  * A página de venda da Jornada.
  *
@@ -101,26 +132,8 @@ const MICROCOPY_FECHADO = "Sem compromisso. Só um aviso no dia em que a compra 
  * única coisa capaz de estragar a reputação que o resto do domínio construiu.
  */
 export default function PaginaDeVendaDaJornada() {
-  const aberto = checkoutAberto();
   const ano = new Date().getFullYear();
-  const MICROCOPY = aberto ? MICROCOPY_ABERTO : MICROCOPY_FECHADO;
-
-  /*
-   * Enquanto o checkout não existe, o botão NÃO vira um retângulo morto: ele
-   * leva à lista de espera logo abaixo. Uma página de venda com o botão
-   * principal inerte gasta o clique pago e não devolve nada, e o visitante que
-   * chegou até aqui já demonstrou o interesse mais caro de conseguir.
-   */
-  const Cta = ({ children, id }: { children: React.ReactNode; id?: string }) =>
-    aberto ? (
-      <a id={id} className="cta" href={OFERTA.CHECKOUT} target="_blank" rel="noopener noreferrer">
-        {children}
-      </a>
-    ) : (
-      <a id={id} className="cta" href="#avise-me">
-        Quero saber quando abrir
-      </a>
-    );
+  const MICROCOPY = ABERTO ? MICROCOPY_ABERTO : MICROCOPY_FECHADO;
 
   return (
     <div className={`${display.variable} ${corpo.variable} ${CLASSE_RAIZ}`}>
@@ -498,7 +511,7 @@ export default function PaginaDeVendaDaJornada() {
       </section>
 
       {/* ---------- Lista de espera, enquanto a compra não abre ---------- */}
-      {!aberto ? (
+      {!ABERTO ? (
         <section id="avise-me" className="px-6 py-16" style={{ background: "var(--champagne-claro)" }}>
           <div className="mx-auto max-w-2xl">
             <CapturaAlerta
