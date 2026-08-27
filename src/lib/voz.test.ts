@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -63,6 +63,18 @@ const VIGIADOS = [
    * responder pela mesma régua.
    */
   "app/editais-abertos/[uf]/page.tsx",
+  /*
+   * A jornada, em 27/08. É a área com mais texto de venda por tela do produto:
+   * ela explica o método, promete um resultado por semana e pede que a pessoa
+   * escreva sobre o próprio negócio. Nasce vigiada, e não limpa depois.
+   */
+  "lib/jornada/conteudo.ts",
+  "lib/jornada/repositorio.ts",
+  "components/jornada/SemAcessoAJornada.tsx",
+  "components/jornada/FormularioDaEtapa.tsx",
+  "app/(app)/jornada/page.tsx",
+  "app/(app)/jornada/[semana]/page.tsx",
+  "app/(app)/jornada/acoes.ts",
 ];
 
 /**
@@ -73,6 +85,17 @@ const VIGIADOS = [
  * comentário, e isso é aceitável — o erro possível é reprovar de mais, nunca
  * de menos, e reprovar de mais só custa uma reescrita.
  */
+/** Todo arquivo de uma pasta, recursivamente, em caminho relativo à raiz. */
+function listarArquivos(pasta: string): string[] {
+  const achados: string[] = [];
+  for (const item of readdirSync(join(RAIZ, "..", pasta), { withFileTypes: true })) {
+    const caminho = `${pasta}/${item.name}`;
+    if (item.isDirectory()) achados.push(...listarArquivos(caminho));
+    else achados.push(caminho);
+  }
+  return achados;
+}
+
 function linhasDeTexto(caminho: string): { numero: number; texto: string }[] {
   const fora: { numero: number; texto: string }[] = [];
   let dentroDeBloco = false;
@@ -111,12 +134,30 @@ describe("o texto que o cliente lê não usa travessão", () => {
 });
 
 describe("a guarda vigia o que foi limpo", () => {
-  it("cobre os seis artigos, os oito guias e o e-mail do resumo", () => {
+  it("cobre os seis artigos, os guias, o e-mail do resumo e a jornada inteira", () => {
     // Sem esta contagem, alguém "conserta" um teste vermelho removendo a linha
     // da lista, e a guarda passa a proteger um conjunto vazio sem ficar
     // vermelha nunca mais.
     expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(6);
-    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(9);
+    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(12);
     expect(VIGIADOS).toContain("lib/resumo/plano.ts");
+
+    /*
+     * A jornada é conferida por evidência positiva, e não por número: todo
+     * arquivo que existe na área precisa estar na lista. Uma contagem fixa
+     * continuaria verde no dia em que uma tela nova entrasse sem ser vigiada,
+     * que é exatamente o caso que a guarda deveria pegar.
+     */
+    const daJornada = [
+      ...listarArquivos("src/app/(app)/jornada"),
+      ...listarArquivos("src/components/jornada"),
+      ...listarArquivos("src/lib/jornada"),
+    ].filter((c) => !c.endsWith(".test.ts"));
+
+    for (const arquivo of daJornada) {
+      expect(VIGIADOS, `${arquivo} não está vigiado pela regra de voz`).toContain(
+        arquivo.replace(/^src\//, ""),
+      );
+    }
   });
 });
