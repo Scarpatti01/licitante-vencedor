@@ -258,6 +258,13 @@ export default function Privacidade() {
 
           <Secao id="terceiros" titulo="Com quem os dados trafegam">
             <P>
+              <strong>A plataforma de pagamento</strong>, quando você compra a
+              Jornada de 12 Semanas. Os dados do cartão são digitados lá e nunca
+              passam por este site: o que volta para cá é a confirmação da
+              compra e o identificador da transação, o suficiente para liberar o
+              seu acesso e conciliar um eventual estorno.
+            </P>
+            <P>
               Não vendemos, não alugamos e não cedemos dados. Os terceiros abaixo
               são fornecedores de infraestrutura — operadores, no vocabulário da
               LGPD — e cada um recebe só o necessário para a função dele.

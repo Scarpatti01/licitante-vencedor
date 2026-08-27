@@ -259,6 +259,54 @@ export default function Termos() {
             </P>
           </Secao>
 
+          <Secao id="jornada" titulo="A compra avulsa da Jornada de 12 Semanas">
+            <P>
+              A Jornada de 12 Semanas é um produto separado da assinatura, e
+              pode ser comprada por quem não assina nada. Ela é{" "}
+              <strong>pagamento único</strong>: não existe renovação, não existe
+              mensalidade e não há nada para cancelar depois.
+            </P>
+            <P>
+              <strong>O acesso não expira.</strong> Uma vez liberado, ele
+              continua valendo enquanto este produto existir. Se um dia
+              decidirmos descontinuá-lo, avisaremos com antecedência e o
+              material já pago continuará disponível para download.
+            </P>
+            <P>
+              <strong>A entrega é imediata e digital.</strong> Assim que o
+              pagamento é confirmado pela plataforma, o acesso aparece na sua
+              conta aqui no site, com as doze semanas e o livro completo em PDF.
+              Não há envio físico.
+            </P>
+            <P>
+              <strong>A garantia é de 7 dias, incondicional.</strong> É o direito
+              de arrependimento do Código de Defesa do Consumidor, contado da
+              confirmação da compra, e para exercê-lo não é preciso justificar
+              nada. Devolvemos o valor integral, e o acesso é encerrado.
+            </P>
+            <P>
+              <strong>O pagamento é processado por plataforma externa.</strong> Os
+              dados do cartão são digitados lá e nunca passam por este site nem
+              ficam guardados aqui. O que recebemos de volta é a confirmação de
+              que a compra ocorreu, com o identificador da transação, para
+              liberar o seu acesso e para conseguir conciliar um eventual
+              estorno.
+            </P>
+            <P>
+              <strong>O material é para uso da sua empresa.</strong> Você pode
+              imprimir, preencher e compartilhar internamente com a sua equipe.
+              Não pode revender, redistribuir publicamente nem publicar o
+              conteúdo como se fosse seu, o que vale para o PDF e para as folhas
+              de trabalho.
+            </P>
+            <P>
+              <strong>Não há promessa de resultado.</strong> A Jornada ensina
+              processo, e licitação é disputa aberta: um concorrente com custo
+              menor pode ganhar de você em qualquer certame. Nada aqui garante
+              vitória, faturamento ou contrato.
+            </P>
+          </Secao>
+
           <Secao id="uso" titulo="O que não pode">
             <P>
               O conteúdo dos guias e as análises produzidas são nossos e ficam

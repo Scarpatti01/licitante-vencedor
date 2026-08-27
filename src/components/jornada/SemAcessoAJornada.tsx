@@ -42,11 +42,13 @@ export function SemAcessoAJornada() {
           <div className="rounded-xl border p-5">
             <h2 className="text-sm font-semibold">Ou compre só a jornada</h2>
             <p className="mt-2 text-sm text-[var(--muted)]">
-              Compra única, acesso sem prazo, sem assinar nada. Inclui o livro em
-              PDF e as folhas de trabalho.
+              Pagamento único de R$ 47, acesso sem prazo, sem assinar nada.
+              Inclui o livro em PDF e as folhas de trabalho.
             </p>
-            <p className="mt-4 text-sm text-[var(--muted)]">
-              A venda avulsa abre junto com o pagamento no site.
+            <p className="mt-4 text-sm">
+              <Link className="font-medium underline underline-offset-4" href="/jornada/">
+                Ver a jornada
+              </Link>
             </p>
           </div>
         </div>

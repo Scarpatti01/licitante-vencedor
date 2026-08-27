@@ -68,7 +68,7 @@ export default async function PaginaDaJornada() {
             <p className="mt-4 text-sm">
               <Link
                 className="font-medium underline underline-offset-4"
-                href={`/jornada/${estado.proxima.semana}/`}
+                href={`/minha-jornada/${estado.proxima.semana}/`}
               >
                 Continuar na semana {estado.proxima.semana}: {estado.proxima.titulo}
               </Link>
@@ -79,6 +79,11 @@ export default async function PaginaDaJornada() {
               livro, é o que mantém isso vivo daqui em diante.
             </p>
           )}
+          <p className="mt-3 text-sm">
+            <Link className="underline underline-offset-4" href="/minha-jornada/exportar/">
+              Ver e imprimir as suas respostas
+            </Link>
+          </p>
         </section>
 
         <ol className="grid gap-3">
@@ -90,7 +95,7 @@ export default async function PaginaDaJornada() {
             return (
               <li key={etapa.codigo}>
                 <Link
-                  href={`/jornada/${etapa.semana}/`}
+                  href={`/minha-jornada/${etapa.semana}/`}
                   className="flex gap-4 rounded-xl border p-4 transition-colors hover:bg-[var(--surface)]"
                 >
                   <span
