@@ -61,6 +61,22 @@ export const estadoDaJornada = cache(async (): Promise<EstadoDaJornada> => {
   }
   if (!acesso) return vazio;
 
+  /*
+   * Registra que esta pessoa entrou, ligando a compra à conta.
+   *
+   * Não concede nada: o acesso já veio do e-mail, e a função acima é quem
+   * decide. Isto existe para o dono conseguir distinguir, na tela de
+   * administração, quem pagou e entrou de quem pagou e sumiu, que é a lista de
+   * quem precisa de um empurrão.
+   *
+   * Falha aqui NÃO impede o uso do produto: perder o registro é chato, negar a
+   * jornada a quem pagou é grave, e entre os dois a escolha é óbvia.
+   */
+  const { error: erroDaReivindicacao } = await supabase.rpc("reivindicar_compra_da_jornada");
+  if (erroDaReivindicacao) {
+    console.error("Falha ao reivindicar a compra da jornada", erroDaReivindicacao);
+  }
+
   const { data, error } = await supabase
     .from("progresso_na_jornada")
     .select("etapa, concluida_em");
