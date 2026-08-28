@@ -332,7 +332,8 @@ export default function Home() {
         jurídica, mas era o único do site: as outras 26 páginas públicas
         terminavam sem aviso legal, sem contato e sem saída.
       */}
-      <RodapeSite />
+      {/* Sem a oferta do Workbook: a home já tem a sua própria seção do Workbook, maior que este bloco. */}
+      <RodapeSite oferta={false} />
     </div>
   );
 }

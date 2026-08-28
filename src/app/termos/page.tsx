@@ -384,7 +384,8 @@ export default function Termos() {
         </div>
       </main>
 
-      <RodapeSite />
+      {/* Sem a oferta do Workbook: página legal, mesmo motivo. */}
+      <RodapeSite oferta={false} />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>

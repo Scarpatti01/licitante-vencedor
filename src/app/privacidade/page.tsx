@@ -376,7 +376,8 @@ export default function Privacidade() {
         </div>
       </main>
 
-      <RodapeSite />
+      {/* Sem a oferta do Workbook: página legal: venda no meio de política de privacidade confunde aviso com anúncio. */}
+      <RodapeSite oferta={false} />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>

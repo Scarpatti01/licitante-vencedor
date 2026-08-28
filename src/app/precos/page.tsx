@@ -330,7 +330,8 @@ export default function Precos() {
         </p>
       </main>
 
-      <RodapeSite />
+      {/* Sem a oferta do Workbook: já é a página de preços, com a oferta inteira aberta. */}
+      <RodapeSite oferta={false} />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
     </div>
