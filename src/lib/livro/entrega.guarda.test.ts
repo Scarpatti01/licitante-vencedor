@@ -139,7 +139,13 @@ describe("o que gera o livro roda em qualquer máquina", () => {
    * Caminho absoluto de máquina dentro do script é a classe do erro, e não o
    * caminho específico. A guarda procura a classe.
    */
-  const SCRIPTS = ["livro/gerar-pdf.mjs", "livro/montar.py", "livro/gerar-epub.py"];
+  const SCRIPTS = [
+    "livro/gerar-pdf.mjs",
+    "livro/montar.py",
+    "livro/gerar-epub.py",
+    "livro/conferir-pdf.py",
+    "livro/conferir-epub.py",
+  ];
 
   it("acha os scripts para medir", () => {
     for (const caminho of SCRIPTS) {

@@ -46,35 +46,10 @@ jobs:
         run: cd livro && python3 conferir-epub.py
 
       - name: Conferir o PDF antes de publicar
-        run: |
-          cd livro
-          python3 - <<'PY'
-          import sys
-          import pymupdf
-
-          d = pymupdf.open("workbook-do-licitante.pdf")
-          problemas = []
-          if d.page_count < 120:
-              problemas.append(f"só {d.page_count} páginas; o livro tem 126")
-          if len(d.get_toc()) < 10:
-              problemas.append(f"só {len(d.get_toc())} marcadores de navegação")
-          texto = "".join(d[n].get_text() for n in range(min(8, d.page_count)))
-          if "Workbook do Licitante" not in texto:
-              problemas.append("não achei o título nas primeiras páginas")
-          # A faixa do carimbo precisa continuar livre: o servidor escreve em
-          # y=800, e o dia em que a diagramação descer até lá o carimbo passa a
-          # sair por cima do texto, sem ninguém perceber.
-          for n in (12, 40, 80, 120):
-              if n >= d.page_count:
-                  continue
-              blocos = [b for b in d[n].get_text("blocks") if b[4].strip()]
-              corpo = [b for b in blocos if b[3] < 810]
-              if corpo and max(b[3] for b in corpo) > 792:
-                  problemas.append(f"página {n + 1}: o texto desce até y={max(b[3] for b in corpo):.0f} e invade a faixa do carimbo")
-          if problemas:
-              sys.exit("PDF reprovado: " + "; ".join(problemas))
-          print(f"PDF aprovado: {d.page_count} páginas, {len(d.get_toc())} marcadores")
-          PY
+        # Portão, e não relatório: reprovar aqui deixa no balde o mestre
+        # anterior, que já estava bom, em vez de publicar um livro quebrado
+        # por cima dele.
+        run: cd livro && python3 conferir-pdf.py
 
       - name: Enviar os mestres para o balde privado
         env:
