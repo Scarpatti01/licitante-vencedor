@@ -1,0 +1,147 @@
+/* ============================================================
+   Diagramação para papel: A4, estilo Minimalista Premium.
+   A tela mostra a folha branca sobre o creme. No papel, a folha
+   é a própria página, então o creme sai e o dourado fica.
+   ============================================================ */
+
+@page { size:A4; margin:22mm 20mm 20mm 20mm; }
+
+body {
+  background:#FFFFFF !important; color:#38342E !important;
+  font-size:10.5pt; line-height:1.62;
+}
+
+.pagina {
+  max-width:none !important; margin:0 !important; padding:0 !important;
+  background:#FFFFFF !important; border-top:none !important; box-shadow:none !important;
+}
+
+/* ---------- Capa: página inteira, centrada, filete dourado no alto ---------- */
+.capa {
+  min-height:251mm; justify-content:center; break-after:page;
+  padding:0 !important; position:relative;
+}
+.capa::before {
+  content:""; position:absolute; top:0; left:0; right:0;
+  height:2.5pt; background:#C9A961;
+}
+.capa .monograma { width:24mm; height:24mm; font-size:19pt; }
+.capa h1 { font-size:40pt; line-height:1.08; }
+.capa .sub { font-size:15pt; max-width:30ch; }
+.capa .selo { font-size:7.5pt; }
+
+/* ---------- Declaração de interesse: página só dela ---------- */
+.folha-declaracao {
+  break-after:page; min-height:251mm; display:flex; flex-direction:column; justify-content:center;
+}
+.folha-declaracao .declaracao { margin-top:0 !important; }
+
+/* ---------- Sumário: página só dele, com guia de pontos ---------- */
+.sumario { break-before:page; break-after:page; break-inside:avoid;
+           margin-top:0 !important; padding-top:8mm; }
+.sumario h2 { font-size:22pt; }
+.sumario h2 + ol { margin-top:2mm; }
+.sumario .d { font-size:8pt; line-height:1.35; }
+.sumario li { padding:2.2mm 0; grid-template-columns:12mm 1fr 10mm; break-inside:avoid; }
+
+.sumario .t { font-size:11.5pt; line-height:1.25; }
+.sumario .pag { text-align:right; font-size:11pt; }
+
+/* ---------- Abertura de parte: página inteira, o título sozinho ---------- */
+.parte { break-before:page; margin-top:0 !important; }
+.parte > .cabeca {
+  min-height:251mm; justify-content:center; break-after:page;
+  border-top:none !important; padding-top:0 !important;
+}
+.parte h2 { font-size:32pt; }
+.parte .intro { font-size:13.5pt; max-width:40ch; }
+.parte > .cabeca .promessa { max-width:118mm; }
+
+/* A primeira seção depois da abertura começa no alto da folha nova. */
+.parte > .cabeca + .secao { margin-top:0 !important; }
+
+/* ---------- Ritmo do miolo ---------- */
+.secao { margin-top:11mm; }
+.exercicio { margin-top:9mm !important; }
+.dado, .aviso { padding:7mm 8mm; }
+.linhas { gap:6mm !important; }
+.secao > h3 { font-size:16pt; }
+.secao h4 { font-size:11.5pt; }
+h1,h2,h3,h4 { break-after:avoid; }
+p { orphans:3; widows:3; }
+
+/* Nada de quadro partido na virada: um campo de preencher cortado ao meio
+   é um campo que ninguém preenche. */
+.dado, .aviso, .saida, .promessa, .campo { break-inside:avoid; }
+table { break-inside:auto; }
+thead { display:table-header-group; }
+tr { break-inside:avoid; }
+caption { break-after:avoid; }
+
+/* O exercício pode virar a página: proibir isso deixava meia folha em branco
+   antes de cada quadro grande. O que não pode é o cabeçalho ficar sozinho no
+   pé, nem um campo de preencher ser cortado ao meio. */
+.exercicio { break-inside:auto; }
+.exercicio > header { break-after:avoid; }
+.exercicio > .corpo > p:first-child { break-before:avoid; }
+
+.grande { font-size:26pt; }
+
+/* ---------- Pautas com espaço de caneta, não de tela ---------- */
+.campo i { height:8mm !important; border-bottom:0.4pt solid #B9AE99 !important; }
+.campo i + i { margin-top:8mm !important; }
+.vazia td { height:9mm !important; }
+
+/* ---------- Links viram texto: num PDF impresso, "clique aqui" não clica ---------- */
+a { color:#A8863F !important; text-decoration:none; }
+a[href^="http"]::after { content:" (" attr(href) ")"; font-size:8pt; color:#7C7469; }
+
+/* ---------- Filetes finos de verdade no papel ---------- */
+th, td { border-bottom:0.4pt solid #D9D5CE; }
+thead th { border-top:0.8pt solid #22201D; }
+.ornamento { margin:7mm 0; }
+.rodape { break-before:page; padding-top:0; border-top:none; margin-top:0; }
+.rodape::before {
+  content:"Colofão"; display:block; font-family:"Lato",sans-serif; font-size:7.5pt;
+  font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:#B8934E;
+  padding-bottom:6mm;
+}
+
+/* ---------- Sobre o autor: folha inteira, centrada ---------- */
+.autor {
+  break-before:page; min-height:251mm; justify-content:center;
+  margin-top:0 !important; padding-top:0 !important; border-top:none !important;
+}
+.autor .retrato { width:38mm; height:38mm; }
+.autor h2 { font-size:26pt; }
+.autor .cargo { font-size:12pt; }
+.autor .bio { font-size:10.5pt; }
+
+/* A folha "Como usar este livro" fica entre a declaração e o sumário. */
+.folha-uso {
+  break-before:page; break-after:page; break-inside:avoid; min-height:0;
+  margin-top:0 !important; padding-top:7mm !important; border-top:none !important;
+}
+.folha-uso h2 { font-size:22pt; }
+.folha-uso h4 { margin-top:4mm; }
+.folha-uso .ornamento { margin:4mm 0; }
+
+/* O posfácio abre folha nova, como as partes. */
+.posfacio {
+  break-before:page; margin-top:0 !important; padding-top:14mm !important;
+  border-top:none !important;
+}
+.posfacio h2 { font-size:26pt; }
+
+/* ---------- Glossário: duas colunas, como em livro ---------- */
+.glossario {
+  column-count:2; column-gap:9mm; column-rule:0.4pt solid #EFE8DA;
+}
+.glossario .verbete { break-inside:avoid; margin-bottom:3.2mm; }
+.glossario .letra {
+  break-after:avoid; break-inside:avoid; font-size:15pt;
+  margin:6mm 0 2.5mm; padding-bottom:1.2mm;
+}
+.glossario .letra:first-child { margin-top:0; }
+.glossario dt { font-size:10pt; }
+.glossario dd { font-size:8.8pt; line-height:1.42; }
