@@ -8,7 +8,8 @@ import {
 } from "@/lib/jornada/oferta";
 import {
   ANTES_E_DEPOIS, AUTOR, CONTEUDO, DECLARACAO, DESBLOQUEIA, DISCLAIMER,
-  DOR, FAQ, HERO, NAO_E_PARA, POR_DENTRO, TRANSFORMACAO, ULTIMO_CTA, VERDADES,
+  DOR, FAQ, HERO, NAO_E_PARA, O_LIVRO, POR_DENTRO, TRANSFORMACAO, ULTIMO_CTA,
+  VERDADES,
 } from "@/components/venda/copy-da-jornada";
 import { CLASSE_RAIZ, ESTILO_PREMIUM } from "@/components/venda/estilo";
 import { Icone } from "@/components/venda/Icone";
@@ -233,6 +234,36 @@ export default function PaginaDeVendaDaJornada() {
               </div>
             ))}
           </dl>
+        </div>
+      </section>
+
+      {/* ---------- BLOCO 1C: o Workbook ---------- */}
+      <section className="px-6 py-16" style={{ background: "var(--champagne-claro)" }}>
+        <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
+          <Image
+            src="/workbook-do-licitante-produto.webp"
+            alt={O_LIVRO.alt}
+            width={1200}
+            height={1200}
+            sizes="(max-width: 767px) 88vw, 480px"
+            className="surge mx-auto h-auto w-[88%] max-w-md rounded-2xl md:w-full"
+            priority={false}
+          />
+
+          <div className="text-center md:text-left">
+            <p className="etiqueta">{O_LIVRO.etiqueta}</p>
+
+            <h2 className="mt-5" style={{ fontSize: "clamp(1.8rem, 3.6vw, 2.5rem)" }}>
+              {O_LIVRO.titulo}
+            </h2>
+
+            <p
+              className="mt-5 text-[1.02rem]"
+              style={{ lineHeight: 1.7, color: "var(--tinta-fraca)" }}
+            >
+              {O_LIVRO.texto}
+            </p>
+          </div>
         </div>
       </section>
 
