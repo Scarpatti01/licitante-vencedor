@@ -129,6 +129,40 @@ describe("o carimbo diz de quem é o exemplar", () => {
   });
 });
 
+describe("o que gera o livro roda em qualquer máquina", () => {
+  /*
+   * `gerar-pdf.mjs` trazia o caminho do Chromium do contêiner de
+   * desenvolvimento escrito dentro dele. Funcionava aqui e só aqui: a primeira
+   * execução de `publicar-livro.yml` morreu em 72 segundos com "executable
+   * doesn't exist", e o livro não chegou ao balde.
+   *
+   * Caminho absoluto de máquina dentro do script é a classe do erro, e não o
+   * caminho específico. A guarda procura a classe.
+   */
+  const SCRIPTS = ["livro/gerar-pdf.mjs", "livro/montar.py", "livro/gerar-epub.py"];
+
+  it("acha os scripts para medir", () => {
+    for (const caminho of SCRIPTS) {
+      expect(readFileSync(caminho, "utf8").length, `${caminho} sumiu`).toBeGreaterThan(100);
+    }
+  });
+
+  it.each(SCRIPTS)("%s não fixa caminho de máquina", (caminho) => {
+    const fonte = readFileSync(caminho, "utf8")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^\s*(\/\/|#).*$/gm, "");
+    // Diretórios que só existem numa máquina específica. `/tmp` entra porque
+    // artefato em diretório temporário foi o que quase custou a fonte do livro.
+    const suspeitos = fonte.match(/["'`](\/(opt|home|Users|root|tmp)\/[^"'`\s]*)["'`]/g) ?? [];
+    expect(
+      suspeitos,
+      `${caminho} traz caminho absoluto de máquina: ${suspeitos.join(", ")}. ` +
+        `Use variável de ambiente ou caminho relativo, senão o script roda só ` +
+        `onde foi escrito e a publicação falha no runner.`,
+    ).toEqual([]);
+  });
+});
+
 describe("o balde do livro é fechado", () => {
   const migracao = readFileSync("supabase/migrations/20260828120000_o_balde_do_livro.sql", "utf8");
 

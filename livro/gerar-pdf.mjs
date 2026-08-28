@@ -4,7 +4,20 @@ import { pathToFileURL } from 'node:url';
 
 const saida = process.argv[2] ?? 'workbook-do-licitante.pdf';
 
-const navegador = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' });
+/*
+ * Onde está o Chromium.
+ *
+ * Sem variável, deixa o Playwright achar o navegador que ele mesmo instalou,
+ * que é o caso do runner do GitHub depois de `npx playwright install chromium`.
+ * A variável existe para a máquina onde o navegador mora fora do lugar padrão.
+ *
+ * O caminho estava fixo aqui, apontando para o contêiner de desenvolvimento, e
+ * por isso a primeira publicação do livro falhou em 72 segundos com
+ * "executable doesn't exist". Caminho de máquina não pertence ao código.
+ */
+const executablePath = process.env.CHROMIUM_EXECUTAVEL || undefined;
+
+const navegador = await chromium.launch({ executablePath });
 const pagina = await navegador.newPage();
 await pagina.goto(pathToFileURL('completo.html').href, { waitUntil: 'networkidle' });
 await pagina.addStyleTag({ content: readFileSync('impressao.css', 'utf8') });
