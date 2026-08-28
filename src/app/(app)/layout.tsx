@@ -8,6 +8,7 @@ import { AvisoDeDemonstracao } from "@/components/app/AvisoDeDemonstracao";
 import { NavegacaoDoApp } from "@/components/app/NavegacaoDoApp";
 import { SeletorDeEmpresa } from "@/components/app/SeletorDeEmpresa";
 import { Etiqueta } from "@/components/app/ui";
+import { ConviteDeInstalacao } from "@/components/ConviteDeInstalacao";
 import { diagnosticarPerfil, resumoDoPerfil } from "@/components/perfil/diagnostico";
 import { formatarCnpj, NOME_DO_PORTE } from "@/components/perfil/validacao";
 
@@ -133,6 +134,10 @@ export default async function LayoutDoProduto({
       <main id="conteudo" className="flex-1">
         {children}
       </main>
+
+      {/* Só na área logada: quem ainda está lendo um guia não tem por que ser
+          convidado a instalar nada. */}
+      <ConviteDeInstalacao />
 
       <footer className="border-t bg-[var(--background)]">
         <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-6 text-xs text-[var(--muted)] sm:flex-row sm:items-center sm:justify-between sm:px-8">

@@ -4,6 +4,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { AUTHOR, KNOWS_ABOUT, SITE, TITULO_DO_SITE } from "@/lib/site";
+import { RegistrarServiceWorker } from "@/components/RegistrarServiceWorker";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
@@ -99,6 +100,7 @@ export default function RootLayout({
     <html lang={SITE.locale}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         {children}
+        <RegistrarServiceWorker />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(entityGraph) }}
