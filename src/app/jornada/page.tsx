@@ -8,7 +8,7 @@ import {
 } from "@/lib/jornada/oferta";
 import {
   ANTES_E_DEPOIS, AUTOR, CONTEUDO, DECLARACAO, DESBLOQUEIA, DISCLAIMER,
-  DOR, FAQ, HERO, NAO_E_PARA, TRANSFORMACAO, ULTIMO_CTA, VERDADES,
+  DOR, FAQ, HERO, NAO_E_PARA, POR_DENTRO, TRANSFORMACAO, ULTIMO_CTA, VERDADES,
 } from "@/components/venda/copy-da-jornada";
 import { CLASSE_RAIZ, ESTILO_PREMIUM } from "@/components/venda/estilo";
 import { Icone } from "@/components/venda/Icone";
@@ -180,6 +180,61 @@ export default function PaginaDeVendaDaJornada() {
           <div className="ornamento mt-12"><span>&#9670;</span></div>
         </div>
       </header>
+
+      {/* ---------- BLOCO 1B: o produto por dentro ---------- */}
+      <section className="overflow-hidden px-6 pb-16 pt-4" style={{ background: "var(--creme)" }}>
+        <div className="mx-auto max-w-6xl">
+          <p className="etiqueta text-center">{POR_DENTRO.etiqueta}</p>
+
+          <h2 className="mt-5 text-center" style={{ fontSize: "clamp(1.9rem, 4vw, 2.7rem)" }}>
+            {POR_DENTRO.titulo}
+          </h2>
+
+          <p
+            className="serifa mx-auto mt-4 max-w-2xl text-center italic"
+            style={{ fontSize: "clamp(1.02rem, 2vw, 1.2rem)", lineHeight: 1.6, color: "var(--tinta-fraca)" }}
+          >
+            {POR_DENTRO.subtitulo}
+          </p>
+
+          {/* no celular a composição de três aparelhos fica ilegível, então mostramos só a tela do telefone */}
+          <Image
+            src="/jornada-por-dentro-celular.webp"
+            alt={POR_DENTRO.altCelular}
+            width={900}
+            height={1510}
+            sizes="(max-width: 639px) 88vw, 1px"
+            className="surge mx-auto mt-10 h-auto w-[88%] max-w-xs sm:hidden"
+            priority={false}
+          />
+
+          <Image
+            src="/jornada-por-dentro.webp"
+            alt={POR_DENTRO.alt}
+            width={2200}
+            height={965}
+            sizes="(max-width: 639px) 1px, (max-width: 1152px) 100vw, 1152px"
+            className="surge mt-10 hidden h-auto w-full sm:block"
+            priority={false}
+          />
+
+          <dl className="mt-10 grid grid-cols-2 gap-y-8 border-t pt-10 sm:grid-cols-4" style={{ borderColor: "var(--champagne)" }}>
+            {POR_DENTRO.numeros.map((item) => (
+              <div key={item.rotulo} className="text-center">
+                <dt className="serifa" style={{ fontSize: "clamp(2rem, 4.5vw, 2.8rem)", color: "var(--dourado)", lineHeight: 1 }}>
+                  {item.numero}
+                </dt>
+                <dd
+                  className="mt-2 text-[0.78rem] uppercase"
+                  style={{ letterSpacing: "0.14em", color: "var(--tinta-fraca)" }}
+                >
+                  {item.rotulo}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
 
       {/* ---------- BLOCO 2: o que você desbloqueia ---------- */}
       <section className="px-6 py-16" style={{ background: "var(--papel)" }}>

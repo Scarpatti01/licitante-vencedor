@@ -223,6 +223,22 @@ export const AUTOR = {
   ],
 };
 
+export const POR_DENTRO = {
+  etiqueta: "Por dentro",
+  titulo: "É assim que a jornada aparece para você",
+  subtitulo: "Telas reais do sistema. O seu progresso fica salvo, e você continua de onde parou, no computador ou no celular.",
+  alt:
+    "Três telas reais da Jornada de 12 semanas: no notebook, a lista das doze semanas com a barra de progresso em seis concluídas; no tablet, a semana 7 aberta com o exercício preenchido; no celular, a mesma lista adaptada à tela pequena.",
+  altCelular:
+    "A Jornada de 12 semanas no celular: a lista das semanas, a barra de progresso em seis de doze concluídas e o link para continuar na semana 7.",
+  numeros: [
+    { numero: "12", rotulo: "semanas guiadas" },
+    { numero: "126", rotulo: "páginas de livro" },
+    { numero: "8", rotulo: "folhas de trabalho" },
+    { numero: "89", rotulo: "termos no glossário" },
+  ],
+};
+
 export const CONTEUDO = {
   titulo: "O que você está levando hoje",
   itens: [
