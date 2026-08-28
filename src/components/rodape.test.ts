@@ -37,6 +37,9 @@ const SEM_RODAPE: Record<string, string> = {
     "Aterrissagem de link de e-mail, com uma mensagem só.",
   "descadastrar":
     "Aterrissagem de descadastro: quem chega aqui quer sair, não navegar.",
+  "sem-conexao":
+    "Tela que o app instalado mostra sem internet. Um rodapé de links seria um " +
+    "menu de becos sem saída: nenhuma daquelas páginas carrega offline.",
   /*
    * A página de venda tem rodapé próprio, e não o do site.
    *
