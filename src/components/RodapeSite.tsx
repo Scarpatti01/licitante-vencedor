@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CONTATO, SITE } from "@/lib/site";
 import { SelosDeConfianca } from "./SelosDeConfianca";
+import { OfertaDoWorkbook } from "./venda/OfertaDoWorkbook";
 
 /**
  * O rodapé de todas as páginas públicas.
@@ -68,7 +69,9 @@ function Coluna({
 }) {
   return (
     <div>
-      <h2 className="text-xs font-semibold tracking-wide uppercase">{titulo}</h2>
+      <h2 className="text-xs font-semibold tracking-wide uppercase">
+        {titulo}
+      </h2>
       <ul className="mt-3 space-y-2">
         {itens.map((item) => (
           <li key={item.href}>
@@ -86,55 +89,80 @@ function Coluna({
   );
 }
 
-export function RodapeSite() {
+/**
+ * ## Por que a oferta do Workbook nasce ligada aqui
+ *
+ * O pedido foi que ela aparecesse em toda página aberta ao público, e que
+ * página nova já nascesse com ela. Posta uma a uma, isso dura até o próximo
+ * guia: alguém cria a página, esquece o bloco, e ninguém percebe, porque não
+ * quebra nada.
+ *
+ * O rodapé já é exatamente a fronteira que se queria. Ele está nas 24 páginas
+ * abertas ao público e em nenhuma outra: a área logada, a administração, as
+ * telas de entrar e cadastrar e a própria página de venda não o usam. Então
+ * quem herda o rodapé herda a oferta, e o padrão é vir ligada.
+ *
+ * `oferta={false}` é a saída para as poucas em que o bloco atrapalha, e cada
+ * uma delas está nomeada com o motivo na guarda deste componente. Vale a
+ * inversão: esquecer de LIGAR é silencioso, esquecer de DESLIGAR aparece na
+ * hora, porque o bloco surge onde não devia.
+ */
+export function RodapeSite({ oferta = true }: { oferta?: boolean } = {}) {
   return (
-    <footer className="mt-16 border-t">
-      <div className="mx-auto max-w-5xl px-6 py-12 text-sm text-[var(--muted)]">
-        <div className="grid gap-8 sm:grid-cols-3">
-          <Coluna titulo="Transparência" itens={LEGAL} />
-          <Coluna titulo="Produto" itens={PRODUTO} />
-          <Coluna titulo="Conteúdo" itens={CONTEUDO} />
-        </div>
+    // A oferta fica FORA do `<footer>`, e logo acima dele: um convite de venda
+    // não é informação de rodapé, e leitor de tela anuncia `footer` como
+    // "informações do site".
+    <>
+      {oferta ? <OfertaDoWorkbook /> : null}
 
-        <SelosDeConfianca />
+      <footer className="mt-16 border-t">
+        <div className="mx-auto max-w-5xl px-6 py-12 text-sm text-[var(--muted)]">
+          <div className="grid gap-8 sm:grid-cols-3">
+            <Coluna titulo="Transparência" itens={LEGAL} />
+            <Coluna titulo="Produto" itens={PRODUTO} />
+            <Coluna titulo="Conteúdo" itens={CONTEUDO} />
+          </div>
 
-        <div className="mt-10 border-t pt-8">
-          <p className="font-medium text-[var(--foreground)]">{SITE.name}</p>
+          <SelosDeConfianca />
 
-          <p className="mt-2 max-w-2xl leading-relaxed">
-            Conteúdo informativo e triagem operacional de editais.{" "}
-            <strong className="font-medium text-[var(--foreground)]">
-              Não constitui parecer jurídico
-            </strong>{" "}
-            e não substitui advogado — a decisão de participar de um certame é
-            sempre da empresa licitante, e nenhum resultado é prometido.
-          </p>
+          <div className="mt-10 border-t pt-8">
+            <p className="font-medium text-[var(--foreground)]">{SITE.name}</p>
 
-          <p className="mt-4">
-            Dados públicos do{" "}
-            <a href="https://www.pncp.gov.br/" rel="noopener">
-              Portal Nacional de Contratações Públicas
-            </a>
-            . Fale com a gente:{" "}
-            <a
-              href={`mailto:${CONTATO.email}`}
-              className="underline underline-offset-4"
-            >
-              {CONTATO.email}
-            </a>
-          </p>
+            <p className="mt-2 max-w-2xl leading-relaxed">
+              Conteúdo informativo e triagem operacional de editais.{" "}
+              <strong className="font-medium text-[var(--foreground)]">
+                Não constitui parecer jurídico
+              </strong>{" "}
+              e não substitui advogado — a decisão de participar de um certame é
+              sempre da empresa licitante, e nenhum resultado é prometido.
+            </p>
 
-          {/*
+            <p className="mt-4">
+              Dados públicos do{" "}
+              <a href="https://www.pncp.gov.br/" rel="noopener">
+                Portal Nacional de Contratações Públicas
+              </a>
+              . Fale com a gente:{" "}
+              <a
+                href={`mailto:${CONTATO.email}`}
+                className="underline underline-offset-4"
+              >
+                {CONTATO.email}
+              </a>
+            </p>
+
+            {/*
             O ano sai de `new Date()` no servidor a cada render. Não é
             decoração: um "© 2026" chumbado no código vira "© 2026" em 2028, e
             rodapé desatualizado é o sinal mais barato de site abandonado.
           */}
-          <p className="mt-4">
-            © {new Date().getFullYear()} {SITE.name} · Publicando sobre
-            licitações desde {SITE.foundingYear}
-          </p>
+            <p className="mt-4">
+              © {new Date().getFullYear()} {SITE.name} · Publicando sobre
+              licitações desde {SITE.foundingYear}
+            </p>
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
+    </>
   );
 }

@@ -92,6 +92,12 @@ const VIGIADOS = [
   "components/venda/copy-da-jornada.ts",
   "components/venda/estilo.ts",
   "components/venda/Icone.tsx",
+  /*
+   * O convite ao Workbook, que se repete em todas as páginas abertas ao
+   * público. É o texto de venda que mais gente lê no site, porque aparece no
+   * fim de cada guia.
+   */
+  "components/venda/OfertaDoWorkbook.tsx",
   "app/jornada/page.tsx",
   "components/jornada/SemAcessoAJornada.tsx",
   "components/jornada/FormularioDaEtapa.tsx",

@@ -101,7 +101,11 @@ describe("rodapé em toda página pública", () => {
       }
 
       expect(
-        fonte.includes("<RodapeSite />"),
+        // Casa com `<RodapeSite />` e com `<RodapeSite oferta={false} />`: o que
+        // esta guarda cobra é a PRESENÇA do rodapé, e ele passou a aceitar
+        // parâmetro. Exigir a grafia exata reprovava cinco páginas que tinham
+        // rodapé, só porque desligavam a oferta do Workbook.
+        /<RodapeSite(\s[^>]*)?\/>/.test(fonte),
         `${rota} não tem rodapé. Toda página pública precisa de um: é por ele ` +
           `que se chega a privacidade, termos, aviso legal e contato. Se a ` +
           `ausência for deliberada, declare em SEM_RODAPE com o motivo.`,
