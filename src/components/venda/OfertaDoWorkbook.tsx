@@ -18,10 +18,11 @@ import { OFERTA } from "@/lib/jornada/oferta";
  *
  * O QUE O TEXTO PODE AFIRMAR
  *
- * Só o que está no livro e no sistema: as 126 páginas, as 12 semanas, as 8
- * folhas de trabalho e os 89 termos do glossário. Nenhuma promessa de
- * resultado, porque licitação é disputa aberta e quem promete contrato promete
- * o que não depende dele.
+ * Só o que está no livro e no sistema, e conferido contra o livro pela guarda
+ * `numeros-do-livro.guarda.test.ts`: as 126 páginas, as 12 semanas, os 25
+ * exercícios, as 7 folhas de trabalho e os 89 termos do glossário. Nenhuma
+ * promessa de resultado, porque licitação é disputa aberta e quem promete
+ * contrato promete o que não depende dele.
  */
 
 /**
@@ -37,7 +38,7 @@ const ARTE = {
   alt:
     "O Workbook do Licitante: o livro em pé sobre uma mesa de madeira, ao lado de um " +
     "celular que mostra a mesma capa. Na base da capa, três selos: 12 semanas guiadas, " +
-    "8 folhas de trabalho e glossário de 89 termos.",
+    "as folhas de trabalho e o glossário de 89 termos.",
 };
 
 /** O valor com que o Workbook já era ancorado na página de venda. */
@@ -53,7 +54,7 @@ const VALOR_ANCORADO = OFERTA.ancoragem[0].valor;
  */
 const ENTREGAS = [
   "Acesso à Jornada de 12 Semanas dentro do sistema, com o seu progresso salvo",
-  "8 folhas de trabalho para preencher e reusar a cada edital",
+  "7 folhas de trabalho para preencher e reusar a cada edital",
   "Exportação das suas respostas em PDF",
   "Glossário de 89 termos, para a leitura não travar na primeira palavra",
 ];
@@ -94,9 +95,10 @@ export function OfertaDoWorkbook() {
             </h2>
 
             <p className="mt-4 text-sm leading-relaxed text-[#C7D0DE]">
-              126 páginas para preencher, e não para ler, mais o acesso à{" "}
-              {OFERTA.nome} dentro do sistema. O caminho inteiro, do primeiro
-              cadastro ao contrato assinado, sem depender da sua memória.
+              126 páginas de livro, com 25 exercícios e 7 folhas de trabalho
+              para preencher, mais o acesso à {OFERTA.nome} dentro do sistema.
+              Do primeiro cadastro ao contrato assinado, sem depender da sua
+              memória.
             </p>
 
             <ul className="mt-5 space-y-2.5 text-sm leading-relaxed text-[#C7D0DE]">
