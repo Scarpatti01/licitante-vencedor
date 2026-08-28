@@ -31,12 +31,13 @@ import { OFERTA } from "@/lib/jornada/oferta";
  * exigir procurar `<Image>` no meio do JSX.
  */
 const ARTE = {
-  src: "/workbook-do-licitante.webp",
-  largura: 2000,
-  altura: 1250,
+  src: "/workbook-do-licitante-produto.webp",
+  largura: 1200,
+  altura: 1200,
   alt:
-    "Três páginas do Workbook do Licitante: a capa, a folha de habilitação com a lista " +
-    "de documentos para conferir antes de cada envio, e duas colunas do glossário.",
+    "O Workbook do Licitante: o livro em pé sobre uma mesa de madeira, ao lado de um " +
+    "celular que mostra a mesma capa. Na base da capa, três selos: 12 semanas guiadas, " +
+    "8 folhas de trabalho e glossário de 89 termos.",
 };
 
 /** O valor com que o Workbook já era ancorado na página de venda. */
