@@ -25,10 +25,44 @@ await pagina.emulateMedia({ media: 'print' });
 await pagina.evaluate(() => document.fonts.ready);
 await pagina.waitForTimeout(800);
 
+/*
+ * A fonte do fólio vai embutida no próprio rodapé, e o motivo não é estético.
+ *
+ * O Chromium renderiza `footerTemplate` num contexto isolado, que não enxerga
+ * o CSS nem as `@font-face` da página. O rodapé pedia `Georgia, serif`, e como
+ * Georgia não existe em Linux o número da página caía no serif genérico da
+ * máquina: DejaVu Serif aqui, e o que estivesse instalado em outra. O livro
+ * saía com o fólio numa tipografia decidida pelo computador que o gerou.
+ *
+ * Reaproveita a mesma Playfair já embutida na fonte versionada, em vez de uma
+ * segunda cópia: se um dia a face mudar lá, o fólio muda junto.
+ */
+const fonteDoLivro = readFileSync('completo.html', 'utf8');
+const faceLatina = fonteDoLivro
+  .match(/@font-face\s*\{[^}]*\}/g)
+  ?.find(
+    (bloco) =>
+      bloco.includes("'Playfair Display'") &&
+      /font-weight:\s*400/.test(bloco) &&
+      /font-style:\s*normal/.test(bloco) &&
+      bloco.includes('U+0000-00FF'),
+  );
+if (!faceLatina) {
+  throw new Error(
+    'nao achei a Playfair latina 400 em completo.html: sem ela o folio sai ' +
+      'na fonte que a maquina escolher, e o livro deixa de ser o mesmo em ' +
+      'toda maquina que o gera',
+  );
+}
+// Sem `unicode-range`: no rodapé só entram algarismos, e a regra de faixa
+// existe para escolher entre subconjuntos que aqui não existem.
+const faceDoRodape = faceLatina.replace(/unicode-range:[^;}]*;?/, '');
+
 // O fólio é dourado e centrado, como o rodapé da referência. A capa e as
 // aberturas de parte perdem o fólio depois, na costura em PDF.
 const rodape = `
-  <div style="width:100%;padding:0 20mm;font-family:Georgia,serif;font-size:8pt;color:#B8934E;
+  <style>${faceDoRodape}</style>
+  <div style="width:100%;padding:0 20mm;font-family:'Playfair Display',serif;font-size:8pt;color:#B8934E;
               display:flex;align-items:center;justify-content:center;gap:8pt">
     <span style="display:inline-block;width:10mm;height:1px;background:#E7DAC1"></span>
     <span class="pageNumber"></span>
