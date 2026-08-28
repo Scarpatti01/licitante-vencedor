@@ -72,6 +72,10 @@ const VIGIADOS = [
   "lib/jornada/repositorio.ts",
   "lib/jornada/oferta.ts",
   "lib/jornada/exportacao.ts",
+  "lib/jornada/compras.ts",
+  "components/jornada/FormularioDeLiberacao.tsx",
+  "app/administracao/jornada/page.tsx",
+  "app/administracao/jornada/acoes.ts",
   "components/jornada/BotaoDeImprimir.tsx",
   "app/(app)/minha-jornada/exportar/page.tsx",
   /*
@@ -151,7 +155,7 @@ describe("a guarda vigia o que foi limpo", () => {
     // da lista, e a guarda passa a proteger um conjunto vazio sem ficar
     // vermelha nunca mais.
     expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(6);
-    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(14);
+    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(16);
     expect(VIGIADOS).toContain("lib/resumo/plano.ts");
 
     /*
