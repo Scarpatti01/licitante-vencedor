@@ -50,9 +50,28 @@ const ONDE_O_SITE_AFIRMA = [
   "src/app/page.tsx",
 ];
 
+/**
+ * Cola o número ao rótulo quando os dois moram em campos separados.
+ *
+ * O primeiro desenho desta guarda mediu só texto contínuo, e por isso deixou
+ * passar `{ numero: "8", rotulo: "folhas de trabalho" }` no bloco de números
+ * da página de venda: ali o algarismo e o rótulo nunca aparecem juntos no
+ * fonte, embora apareçam juntos na tela. Quem pegou foi o dono, olhando a
+ * página publicada, um dia depois de eu declarar o assunto resolvido.
+ *
+ * Normalizar antes de medir fecha a classe do erro, e não só o caso: qualquer
+ * bloco novo que separe algarismo de rótulo passa a ser conferido sozinho.
+ */
+function comNumerosColados(fonte: string): string {
+  return fonte.replace(
+    /\{\s*numero:\s*"([^"]+)"\s*,\s*(?:rotulo|titulo):\s*"([^"]+)"/g,
+    (inteiro, numero: string, rotulo: string) => `${inteiro} /* ${numero} ${rotulo} */`,
+  );
+}
+
 const TEXTO_DO_SITE = ONDE_O_SITE_AFIRMA.map((caminho) => ({
   caminho,
-  texto: readFileSync(caminho, "utf8"),
+  texto: comNumerosColados(readFileSync(caminho, "utf8")),
 }));
 
 describe("os números do livro batem com o livro", () => {
