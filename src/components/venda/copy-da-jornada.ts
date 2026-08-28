@@ -239,6 +239,31 @@ export const POR_DENTRO = {
   ],
 };
 
+/**
+ * O Workbook, na página de venda da própria Jornada.
+ *
+ * Enxuto de propósito: quem chega aqui já leu a promessa no herói e viu as
+ * telas do sistema logo acima. Este bloco existe para dar ROSTO ao produto,
+ * porque livro é a única parte da oferta que a pessoa consegue imaginar na
+ * mão, e um parágrafo basta para isso.
+ *
+ * A promessa fala de memória, e não de vitória. Licitação é disputa aberta:
+ * prometer contrato seria prometer o que não depende de nós, e é o que faz
+ * este mercado ter tanto infoproduto ruim.
+ */
+export const O_LIVRO = {
+  etiqueta: "O Workbook",
+  titulo: "O que a sua empresa esquece, o Workbook não esquece",
+  texto:
+    "126 páginas para preencher, e não para ler. Cada semana tem a sua folha, " +
+    "você preenche uma vez e reusa em todo edital que aparecer. Vem junto da " +
+    "Jornada, sem custo à parte.",
+  alt:
+    "O Workbook do Licitante: o livro em pé sobre uma mesa de madeira, ao lado " +
+    "de um celular que mostra a mesma capa. Na base da capa, três selos: 12 " +
+    "semanas guiadas, 8 folhas de trabalho e glossário de 89 termos.",
+};
+
 export const CONTEUDO = {
   titulo: "O que você está levando hoje",
   itens: [
