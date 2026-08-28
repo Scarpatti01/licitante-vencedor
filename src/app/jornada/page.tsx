@@ -246,9 +246,9 @@ export default function PaginaDeVendaDaJornada() {
             {DESBLOQUEIA.intro}
           </p>
 
-          <ul className="mt-10 grid gap-5 sm:grid-cols-2">
+          <ul className="mt-10 grid gap-6 sm:grid-cols-2">
             {DESBLOQUEIA.cards.map((card) => (
-              <li key={card.titulo} className="surge cartao flex gap-4 p-5">
+              <li key={card.titulo} className="surge cartao flex gap-4 p-6">
                 <span style={{ color: "var(--dourado)" }} className="mt-0.5 shrink-0">
                   <Icone nome={card.icone} tamanho={26} />
                 </span>
@@ -269,21 +269,21 @@ export default function PaginaDeVendaDaJornada() {
         <div className="mx-auto max-w-3xl">
           <h2 style={{ fontSize: "clamp(1.9rem, 4vw, 2.7rem)" }}>{DOR.titulo}</h2>
 
-          <div className="mt-8 grid gap-5 sm:grid-cols-2">
+          <div className="mt-8 grid gap-6 sm:grid-cols-2">
             {DOR.casos.map((caso) => (
-              <div key={caso.titulo} className="surge cartao p-5">
+              <div key={caso.titulo} className="surge cartao p-6">
                 <p className="serifa text-[1.12rem] font-semibold">{caso.titulo}</p>
-                <p className="mt-2 text-[0.95rem]" style={{ color: "var(--tinta-fraca)" }}>{caso.texto}</p>
+                <p className="mt-2.5 text-[0.95rem]" style={{ color: "var(--tinta-fraca)" }}>{caso.texto}</p>
               </div>
             ))}
           </div>
 
           <h3 className="mt-12 text-[1.35rem]">{DOR.armadilhas.titulo}</h3>
-          <ul className="mt-5 space-y-5">
+          <ul className="mt-6 space-y-7">
             {DOR.armadilhas.itens.map((a) => (
               <li key={a.titulo} className="surge border-l-2 pl-5" style={{ borderColor: "var(--dourado)" }}>
                 <p className="font-bold" style={{ color: "var(--carvao)" }}>{a.titulo}</p>
-                <p className="mt-1 text-[0.95rem]" style={{ color: "var(--tinta-fraca)" }}>{a.texto}</p>
+                <p className="mt-1.5 text-[0.95rem]" style={{ color: "var(--tinta-fraca)" }}>{a.texto}</p>
               </li>
             ))}
           </ul>
