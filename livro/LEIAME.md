@@ -40,8 +40,16 @@ chama `gerar-pdf.mjs`, que faz `import { chromium } from "playwright"`, o pacote
 precisa ser resolvível a partir desta pasta. Um `npm install playwright` aqui
 dentro resolve, e o `.gitignore` já ignora o `node_modules/` que isso cria.
 
-Se o Chromium estiver fora do lugar padrão, ajuste `executablePath` em
-`gerar-pdf.mjs`.
+Se o Chromium estiver fora do lugar padrão, aponte a variável em vez de editar
+o arquivo:
+
+```
+CHROMIUM_EXECUTAVEL=/opt/pw-browsers/chromium python3 montar.py
+```
+
+Sem a variável, o Playwright usa o navegador que ele mesmo instalou, que é o
+caso do runner do GitHub. O caminho já esteve fixo dentro de `gerar-pdf.mjs`, e
+a primeira publicação do livro falhou por causa disso.
 
 ### Conferido
 
