@@ -19,6 +19,7 @@ import os
 import re
 import sys
 import zipfile
+from html.entities import html5
 from xml.etree import ElementTree
 
 AQUI = os.path.dirname(os.path.abspath(__file__))
@@ -185,24 +186,49 @@ h2 { page-break-before:always; break-before:page; }
 
 # --------------------------------------------------------------- o corpo
 
-ENTIDADES = {'&nbsp;': '&#160;', '&sect;': '&#167;', '&middot;': '&#183;',
-             '&ndash;': '&#8211;', '&mdash;': '&#8212;', '&hellip;': '&#8230;',
-             '&aacute;': '&#225;', '&eacute;': '&#233;', '&ccedil;': '&#231;'}
+# As cinco que o XML conhece de nascença. Todas as outras precisam virar
+# referência numérica antes de o documento ser lido como XML.
+DO_XML = {'amp', 'lt', 'gt', 'quot', 'apos'}
+
+
+def numerica(nome):
+    """`&atilde;` vira `&#227;`, para qualquer entidade nomeada do HTML.
+
+    Antes isto era uma tabela escrita à mão, e ela cobria só as entidades que o
+    livro usava no dia em que foi escrita. Bastou trocar o selo da capa para
+    "Primeira edi&ccedil;&atilde;o" e a publicação parar: `&ccedil;` estava na
+    tabela, `&atilde;` não. O portão acusou certo, mas o defeito não devia ser
+    possível.
+
+    Agora a tradução sai da tabela do próprio HTML5, que o Python traz pronta.
+    Entidade nova no livro não exige tocar aqui.
+    """
+    char = html5.get(nome + ';') or html5.get(nome)
+    if char is None:
+        return None
+    return ''.join('&#%d;' % ord(c) for c in char)
 
 
 def xhtmlizar(html):
     """HTML solto vira XHTML bem formado, que é o que o EPUB exige."""
     html = re.sub(r'<!--.*?-->', '', html, flags=re.S)
-    for nomeada, numerica in ENTIDADES.items():
-        html = html.replace(nomeada, numerica)
+
+    def trocar(m):
+        nome = m.group(1)
+        if nome in DO_XML:
+            return m.group(0)
+        convertida = numerica(nome)
+        return convertida if convertida is not None else m.group(0)
+
+    html = re.sub(r'&([a-zA-Z][a-zA-Z0-9]*);', trocar, html)
     # Tags vazias precisam se fechar.
     html = re.sub(r'<(br|hr|img|col|source)\b([^>]*?)\s*/?>', r'<\1\2 />', html)
     # Qualquer entidade nomeada que tenha escapado viraria XML inválido.
-    sobrando = set(re.findall(r'&([a-zA-Z][a-zA-Z0-9]*);', html))
-    conhecidas = {'amp', 'lt', 'gt', 'quot', 'apos'}
-    if sobrando - conhecidas:
-        falhar('entidades que o XML não conhece: %s. Acrescente em ENTIDADES.'
-               % ', '.join(sorted(sobrando - conhecidas)))
+    sobrando = set(re.findall(r'&([a-zA-Z][a-zA-Z0-9]*);', html)) - DO_XML
+    if sobrando:
+        falhar('entidades que nem o XML nem o HTML5 conhecem: %s. '
+               'Confira se não é erro de digitação no livro.'
+               % ', '.join(sorted(sobrando)))
     return html
 
 

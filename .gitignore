@@ -65,3 +65,7 @@ livro/*.pdf
 livro/*.epub
 livro/passo1.pdf
 livro/passo2.pdf
+
+# Cache do Python, criado ao importar os geradores do livro.
+livro/__pycache__/
+__pycache__/
