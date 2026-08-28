@@ -255,13 +255,13 @@ export const O_LIVRO = {
   etiqueta: "O Workbook",
   titulo: "O que a sua empresa esquece, o Workbook não esquece",
   texto:
-    "126 páginas para preencher, e não para ler. Cada semana tem a sua folha, " +
-    "você preenche uma vez e reusa em todo edital que aparecer. Vem junto da " +
-    "Jornada, sem custo à parte.",
+    "126 páginas de livro, com 25 exercícios e 7 folhas de trabalho para " +
+    "preencher. As folhas você preenche uma vez e reusa em todo edital que " +
+    "aparecer. Vem junto da Jornada, sem custo à parte.",
   alt:
     "O Workbook do Licitante: o livro em pé sobre uma mesa de madeira, ao lado " +
     "de um celular que mostra a mesma capa. Na base da capa, três selos: 12 " +
-    "semanas guiadas, 8 folhas de trabalho e glossário de 89 termos.",
+    "semanas guiadas, as folhas de trabalho e o glossário de 89 termos.",
 };
 
 export const CONTEUDO = {
@@ -276,7 +276,7 @@ export const CONTEUDO = {
       texto: "126 páginas em PDF, do diagnóstico honesto ao contrato assinado, incluindo obras e serviços de engenharia.",
     },
     {
-      titulo: "8 folhas de trabalho para preencher e reusar",
+      titulo: "7 folhas de trabalho para preencher e reusar",
       texto: "Habilitação, leitura de edital, contrato, registro de disputas, obra, e a conferência de dois minutos antes de enviar qualquer proposta.",
     },
     {

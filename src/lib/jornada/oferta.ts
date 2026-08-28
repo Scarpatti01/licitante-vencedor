@@ -42,7 +42,7 @@ export const OFERTA = {
   ancoragem: [
     { item: "O Workbook do Licitante completo, 126 páginas", valor: 97 },
     { item: "As 12 semanas guiadas dentro do sistema", valor: 197 },
-    { item: "As 8 folhas de trabalho para preencher e reusar", valor: 67 },
+    { item: "As 7 folhas de trabalho para preencher e reusar", valor: 67 },
     { item: "Exportação das suas respostas em PDF", valor: 47 },
     { item: "Glossário de 89 termos do edital", valor: 37 },
   ],

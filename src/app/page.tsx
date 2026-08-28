@@ -20,7 +20,7 @@ import { Logo } from "@/components/Logo";
  */
 const LIVRO_ENTREGA = [
   "As doze semanas guiadas, na ordem em que uma coisa depende da outra",
-  "8 folhas de trabalho para preencher e reusar: habilitação, leitura de edital, contrato e a conferência de dois minutos antes de enviar qualquer proposta",
+  "7 folhas de trabalho para preencher e reusar: habilitação, leitura de edital, acompanhamento de contrato e o registro das disputas de que você participou",
   "Um glossário de 89 termos do edital, para a leitura não travar na primeira palavra que ninguém explicou",
 ];
 
