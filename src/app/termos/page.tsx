@@ -275,8 +275,19 @@ export default function Termos() {
             <P>
               <strong>A entrega é imediata e digital.</strong> Assim que o
               pagamento é confirmado pela plataforma, o acesso aparece na sua
-              conta aqui no site, com as doze semanas e o livro completo em PDF.
-              Não há envio físico.
+              conta aqui no site, com as doze semanas e o livro completo em PDF
+              e em EPUB. Não há envio físico.
+            </P>
+            <P>
+              <strong>O seu exemplar do livro é nominal.</strong> O arquivo que
+              você baixa sai com o seu nome e o seu e-mail no rodapé de cada
+              página, junto do aviso de que ele é pessoal e intransferível e de
+              que a reprodução é proibida. Isso vale para o PDF e, na folha de
+              abertura, também para o EPUB. Não é uma trava: você lê o arquivo
+              em qualquer aparelho, quantas vezes quiser, e pode imprimir. É
+              identificação, e ela existe para que um exemplar que apareça
+              circulando fora da sua empresa possa ser rastreado até a compra
+              que o originou.
             </P>
             <P>
               <strong>A garantia é de 7 dias, incondicional.</strong> É o direito
@@ -296,8 +307,8 @@ export default function Termos() {
               <strong>O material é para uso da sua empresa.</strong> Você pode
               imprimir, preencher e compartilhar internamente com a sua equipe.
               Não pode revender, redistribuir publicamente nem publicar o
-              conteúdo como se fosse seu, o que vale para o PDF e para as folhas
-              de trabalho.
+              conteúdo como se fosse seu, o que vale para o PDF, para o EPUB e
+              para as folhas de trabalho.
             </P>
             <P>
               <strong>Não há promessa de resultado.</strong> A Jornada ensina

@@ -43,6 +43,13 @@ const VIGIADOS = [
   "lib/leads-emails.ts",
   "components/CardAssinatura.tsx",
   /*
+   * O carimbo do livro. É a linha que o comprador lê no rodapé de todas as 126
+   * páginas do exemplar dele, e por isso é texto de cliente como qualquer
+   * outro. Entrou junto com a entrega do livro.
+   */
+  "lib/livro/carimbo.ts",
+  "app/(app)/minha-jornada/livro/[formato]/route.ts",
+  /*
    * Entrou em 26/08 com a faixa de procedência. É texto de venda como qualquer
    * outro: fala de fonte, de lei e de privacidade para quem ainda decide se
    * confia.
@@ -155,7 +162,8 @@ describe("a guarda vigia o que foi limpo", () => {
     // da lista, e a guarda passa a proteger um conjunto vazio sem ficar
     // vermelha nunca mais.
     expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(6);
-    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(16);
+    // 17 desde 28/08, com a rota que entrega o livro carimbado.
+    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(17);
     expect(VIGIADOS).toContain("lib/resumo/plano.ts");
 
     /*
