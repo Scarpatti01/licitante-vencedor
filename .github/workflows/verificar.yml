@@ -75,6 +75,20 @@ jobs:
       - name: Testes
         run: npm test
 
+      # O EPUB é gerado aqui porque ele NÃO precisa de navegador, e porque a
+      # fonte do livro é editada como qualquer outro arquivo do repositório.
+      #
+      # Existe por um defeito real: trocar o selo da capa de "Rascunho completo"
+      # para "Primeira edição" introduziu a entidade `&atilde;`, o PDF foi
+      # regerado e o EPUB não. A publicação para o balde só reprovou depois do
+      # merge, com o produto já prometido na home. Quinze segundos de CI evitam
+      # isso, e `conferir-epub.py` ainda mede links, seções e texto faltando.
+      - name: O livro continua gerando
+        run: |
+          cd livro
+          python3 gerar-epub.py
+          python3 conferir-epub.py
+
       # O build entra porque três defeitos desta base só apareceram nele:
       # `import.meta.glob` que o Turbopack não tem, `Date.now()` impuro durante
       # a renderização, e `generateStaticParams` exigindo leitura síncrona.
