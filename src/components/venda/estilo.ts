@@ -35,9 +35,12 @@ export const ESTILO_PREMIUM = `
   line-height:1.12;
   color:var(--carvao);
   text-wrap:balance;
-  /* só o eixo vertical: o atalho margin:0 tem especificidade maior que a
-     utilidade mx-auto e encostava à esquerda todo bloco .serifa centralizado */
-  margin-block:0;
+  /* Sem declaração de margem aqui, de propósito.
+     O seletor .premium h2 tem duas classes de especificidade e vencia toda
+     utilidade mt-* do Tailwind, que tem uma. O resultado era a página inteira
+     pedindo espaçamento e recebendo zero: 17 elementos, medidos no navegador.
+     A declaração também era redundante: o preflight do Tailwind já zera a
+     margem de tudo, com especificidade menor que a das utilidades. */
 }
 .premium strong { font-weight:700; color:var(--carvao); }
 .premium .etiqueta {
