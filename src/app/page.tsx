@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SITE } from "@/lib/site";
 import { GUIAS_PUBLICADOS } from "@/lib/guias";
@@ -8,6 +9,20 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { ChuvaDeDados } from "@/components/ChuvaDeDados";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
 import { Logo } from "@/components/Logo";
+
+/**
+ * O que o livro entrega, em coisas que existem dentro dele.
+ *
+ * Cada linha é conferível abrindo o PDF: as doze semanas são a Folha D, as
+ * folhas de trabalho são os Anexos, e o glossário tem os 89 verbetes contados.
+ * Promessa de resultado não entra aqui, porque licitação é disputa aberta e o
+ * livro ensina processo, não vitória.
+ */
+const LIVRO_ENTREGA = [
+  "As doze semanas guiadas, na ordem em que uma coisa depende da outra",
+  "8 folhas de trabalho para preencher e reusar: habilitação, leitura de edital, contrato e a conferência de dois minutos antes de enviar qualquer proposta",
+  "Um glossário de 89 termos do edital, para a leitura não travar na primeira palavra que ninguém explicou",
+];
 
 const PILARES = [
   {
@@ -247,6 +262,62 @@ export default function Home() {
               Ver todos os guias
             </Link>
           </p>
+        </section>
+
+        {/*
+          O livro entra depois dos pilares e antes do autor, que é onde a
+          pessoa já entendeu o que o produto faz e ainda não sabe o que leva
+          junto. A imagem é composta de páginas reais do PDF, e não de uma
+          ilustração: o que aparece legível ali existe no livro.
+        */}
+        <section className="border-t bg-[#030814]">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:gap-14 lg:py-20">
+            <div>
+              <p className="text-xs font-semibold tracking-[0.2em] text-[#D9B65F] uppercase">
+                Incluído na assinatura
+              </p>
+              <h2 className="mt-4 text-3xl font-semibold tracking-tight text-balance text-white sm:text-4xl">
+                Do primeiro cadastro ao contrato assinado, sem depender da sua
+                memória
+              </h2>
+              <p className="mt-5 text-lg leading-relaxed text-[#C7D0DE]">
+                O <strong className="font-semibold text-white">Workbook do Licitante</strong>{" "}
+                é o caminho inteiro em 126 páginas, escrito para quem nunca
+                disputou e ainda serve a quem já disputa. Ele vai junto com a
+                assinatura, sem custo à parte.
+              </p>
+
+              <ul className="mt-7 space-y-3 text-[#C7D0DE]">
+                {LIVRO_ENTREGA.map((item) => (
+                  <li key={item} className="flex gap-3">
+                    <span aria-hidden className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#D9B65F]" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <Link
+                  href="/precos/"
+                  className="rounded-lg bg-[#D9B65F] px-5 py-3 font-semibold text-[#0C1B33]"
+                >
+                  Ver os planos
+                </Link>
+                <Link href="/jornada/" className="text-sm text-[#C7D0DE] underline underline-offset-4">
+                  Ou comprar só o livro e a jornada
+                </Link>
+              </div>
+            </div>
+
+            <Image
+              src="/workbook-do-licitante.webp"
+              alt="Três páginas do Workbook do Licitante: a capa, a folha de habilitação com a lista de documentos para conferir antes de cada envio, e duas colunas do glossário."
+              width={2000}
+              height={1250}
+              sizes="(max-width: 1024px) 100vw, 620px"
+              className="h-auto w-full rounded-xl"
+            />
+          </div>
         </section>
 
         <section className="border-t">
