@@ -234,7 +234,7 @@ export const POR_DENTRO = {
   numeros: [
     { numero: "12", rotulo: "semanas guiadas" },
     { numero: "126", rotulo: "páginas de livro" },
-    { numero: "8", rotulo: "folhas de trabalho" },
+    { numero: "7", rotulo: "folhas de trabalho" },
     { numero: "89", rotulo: "termos no glossário" },
   ],
 };
