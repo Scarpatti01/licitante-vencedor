@@ -369,11 +369,16 @@ describe("o resumo de quem não paga pela leitura", () => {
   });
 
   it("o e-mail inteiro de um plano de lista não promete leitura em lugar nenhum", () => {
+    // `AGORA` é obrigatório aqui, como nas outras 19 chamadas deste arquivo.
+    // Sem ele o plano usa o relógio de verdade, e a oportunidade da fixture
+    // encerra em 30/08: o teste passou até aquele dia e virou vermelho sozinho
+    // em 31/08, sem ninguém ter tocado no código que ele mede.
     const plano = planejarResumoDiario(
       dados({
         leituraInclusaNoPlano: false,
         oportunidades: [oportunidade({ leuTexto: false })],
       }),
+      AGORA,
     );
     expect(plano.tipo).toBe("enviar");
     if (plano.tipo !== "enviar") return;

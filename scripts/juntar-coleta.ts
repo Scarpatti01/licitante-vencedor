@@ -66,6 +66,10 @@ import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
 import { agregarPorMunicipio } from "../src/lib/pncp/agregarPorMunicipio.ts";
 import { atualizarRegistro, normalizarRegistro } from "../src/lib/pncp/registroDePublicacao.ts";
+import {
+  municipiosCarregados,
+  type AgregadoAnterior,
+} from "../src/lib/pncp/carregarUfAusente.ts";
 import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao.ts";
 import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
 import { fontePncp } from "../src/lib/fontes/pncp.ts";
@@ -106,12 +110,18 @@ type Parcial = {
   editais?: Edital[];
 };
 
-/** Lê o agregado anterior. Ausência não é erro: a primeira coleta não tem. */
-async function lerAgregado(caminho: string) {
+/**
+ * Lê o agregado anterior. Ausência não é erro: a primeira coleta não tem.
+ *
+ * O tipo era mínimo, com o que a classificação da coleta precisava. Agora o
+ * mesmo arquivo alimenta o carregamento das UFs ausentes, que copia a linha
+ * INTEIRA do município, então ele é lido como `AgregadoAnterior`. Um tipo
+ * estreito aqui obrigaria a um `as` no outro uso, e seria o compilador
+ * deixando de conferir justamente a cópia.
+ */
+async function lerAgregado(caminho: string): Promise<AgregadoAnterior | null> {
   try {
-    return JSON.parse(await readFile(caminho, "utf8")) as {
-      municipios?: { uf?: string; editais?: number }[];
-    };
+    return JSON.parse(await readFile(caminho, "utf8")) as AgregadoAnterior;
   } catch {
     return null;
   }
@@ -238,18 +248,47 @@ async function main() {
   const { marcados, corte } = marcarValoresSuspeitos(editais);
   const auditoria = auditar(editais, coletadoEm);
 
+  /*
+   * O agregado precisa do anterior ANTES de ser montado.
+   *
+   * Ele já era lido mais abaixo, para a classificação da coleta. Subiu porque
+   * agora também alimenta o carregamento das UFs ausentes, e ler o mesmo
+   * arquivo duas vezes convidaria as duas leituras a divergirem.
+   */
+  const anterior = await lerAgregado(caminhoAgregado);
+
+  /*
+   * UF que não foi coletada não apaga as páginas dela.
+   *
+   * Sem isto, cada UF ausente derruba de uma vez todas as páginas de município
+   * daquele estado, e `dynamicParams = false` transforma cada uma em 404
+   * permanente para quem já as tinha encontrado na busca. Ver
+   * `src/lib/pncp/carregarUfAusente.ts` para o porquê e para o prazo.
+   */
+  const medidosHoje = agregarPorMunicipio(editais);
+  const carregados = municipiosCarregados({
+    municipiosDeHoje: medidosHoje,
+    anterior,
+    ufsAusentes: ausentes,
+    agora: new Date(coletadoEm),
+  });
+  if (carregados.length > 0) {
+    console.error(
+      `  ${carregados.length} município(s) de UF ausente mantidos com a medição anterior`,
+    );
+  }
+
   const agregados = {
     coletadoEm,
     fonte: fontePncp.nome,
     cobertura,
-    municipios: agregarPorMunicipio(editais),
+    municipios: [...medidosHoje, ...carregados],
   };
 
   const relatorio = relatorioEmTexto(auditoria, cobertura);
 
   // A MESMA guarda da coleta sequencial. Paralelizar não pode enfraquecer a
   // regra que impede um dia ruim de apagar um dia bom.
-  const anterior = await lerAgregado(caminhoAgregado);
   const classificacao = classificarColeta({
     cobertura,
     atual: resumirAgregado(agregados),
