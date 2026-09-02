@@ -28,6 +28,15 @@ export type MunicipioAgregado = {
    * coincidem no rótulo.
    */
   compradores: Record<string, { nome: string; editais: number }>;
+  /**
+   * Quando ESTA linha foi medida, quando não foi na coleta que a acompanha.
+   *
+   * Ausente é o caso normal: a linha vem da coleta atual e vale a data dela.
+   * Preenchido quer dizer que a UF não foi coletada nesta rodada e a medição
+   * anterior foi carregada adiante, com a data em que de fato foi feita. Ver
+   * `carregarUfAusente.ts`.
+   */
+  medidoEm?: string;
 };
 
 /**

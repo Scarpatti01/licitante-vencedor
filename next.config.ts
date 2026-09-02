@@ -11,6 +11,30 @@ const nextConfig: NextConfig = {
   async redirects() {
     return redirecionamentosAtivos();
   },
+
+  /**
+   * Fora de produção, nada é indexável.
+   *
+   * O `robots.ts` já proíbe rastrear as cópias de preview, mas robots.txt pede
+   * para não RASTREAR: um endereço descoberto por link de fora pode entrar no
+   * índice mesmo sem ser rastreado, e aí a página aparece na busca sem título
+   * nem descrição. `X-Robots-Tag: noindex` é o que proíbe INDEXAR, e vale para
+   * todo endereço, inclusive imagem e PDF, que o robots.txt não alcança bem.
+   *
+   * A ausência da variável conta como produção de propósito: mandar `noindex`
+   * por engano no domínio real tira o site do Google, que é incomparavelmente
+   * pior que o conteúdo duplicado que estamos consertando.
+   */
+  async headers() {
+    const producao = !process.env.VERCEL_ENV || process.env.VERCEL_ENV === "production";
+    if (producao) return [];
+    return [
+      {
+        source: "/:caminho*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }],
+      },
+    ];
+  },
 };
 
 export default nextConfig;

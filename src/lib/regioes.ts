@@ -216,6 +216,18 @@ export function municipiosPublicaveis(): MunicipioAgregado[] {
   );
 }
 
+/**
+ * Quando ESTE município foi medido.
+ *
+ * Quase sempre é a data da coleta. Difere quando a UF não foi coletada na
+ * rodada e a medição anterior foi carregada adiante: aí a página cita a data
+ * em que o número foi de fato apurado, e não a de hoje. Ver
+ * `pncp/carregarUfAusente.ts`.
+ */
+export function medidoEmDoMunicipio(m: Pick<MunicipioAgregado, "medidoEm">): string {
+  return m.medidoEm ?? MEDIDO_EM;
+}
+
 export function municipioPorSlug(uf: string, slug: string): MunicipioAgregado | null {
   const alvoUf = uf.toUpperCase();
   return (

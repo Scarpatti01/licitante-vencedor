@@ -11,7 +11,7 @@ import {
   caminhoDoMunicipio,
   fraseSobreCompradores,
   fraseSobreModalidades,
-  MEDIDO_EM,
+  medidoEmDoMunicipio,
   modalidadesOrdenadas,
   municipioPorSlug,
   municipiosPublicaveis,
@@ -77,7 +77,7 @@ export async function generateMetadata({
   // Título e descrição moram em `regioes/serp.ts`, com o motivo medido e as
   // guardas — inclusive a que impede prometer "edital aberto agora" aqui.
   const titulo = tituloDoMunicipio(m);
-  const descricao = descricaoDoMunicipio(m, dataDeBrasilia(MEDIDO_EM));
+  const descricao = descricaoDoMunicipio(m, dataDeBrasilia(medidoEmDoMunicipio(m)));
 
   return {
     title: titulo,
@@ -109,7 +109,9 @@ export default async function PaginaDoMunicipio({
   // página com dado que já não existe.
   if (!m) notFound();
 
-  const medido = dataDeBrasilia(MEDIDO_EM);
+  // A data do MUNICÍPIO, e não a da coleta: quando a UF não foi coletada, a
+  // medição carregada vale a data em que foi feita.
+  const medido = dataDeBrasilia(medidoEmDoMunicipio(m));
   const completa = ufFoiCompleta(m.uf);
   const postsDaqui = postsDoMunicipio(m.uf, m.slug);
   // Um relógio só para a página: `encerrado` chamado por item leria instantes

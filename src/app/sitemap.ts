@@ -2,7 +2,12 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/site";
 import { GUIAS_PUBLICADOS, PAGINAS_INSTITUCIONAIS, PAGINAS_PRODUTO } from "@/lib/guias";
 import { ARTIGOS_PUBLICADOS } from "@/lib/blog";
-import { caminhoDoMunicipio, MEDIDO_EM, municipiosPublicaveis } from "@/lib/regioes";
+import {
+  caminhoDoMunicipio,
+  MEDIDO_EM,
+  medidoEmDoMunicipio,
+  municipiosPublicaveis,
+} from "@/lib/regioes";
 import { caminhoDoPost, todosOsPosts } from "@/lib/posts/acervo";
 import { COLETADO_EM, ufsComAbertos } from "@/lib/abertos/acervo";
 import { temPaginaDeUf } from "@/lib/abertos/paginas";
@@ -67,7 +72,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
      */
     ...municipiosPublicaveis().map((m) => ({
       url: `${SITE.url}${caminhoDoMunicipio(m)}`,
-      lastModified: new Date(MEDIDO_EM),
+      // A data do município, e não a da coleta: uma página cuja UF não foi
+      // coletada não mudou, e anunciar que mudou ensina o rastreador a
+      // desconfiar do campo em todas as outras.
+      lastModified: new Date(medidoEmDoMunicipio(m)),
       changeFrequency: "weekly" as const,
       priority: 0.6,
     })),
