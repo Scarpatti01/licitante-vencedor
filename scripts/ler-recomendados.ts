@@ -137,6 +137,7 @@ async function main() {
   let jaEmCache = 0;
   let lidosAgora = 0;
   let semDocumento = 0;
+  let fonteIndisponivel = 0;
   let recusadosPeloModelo = 0;
   let comErro = 0;
 
@@ -204,6 +205,8 @@ async function main() {
       );
     } else if (motivo === "sem_documento") {
       semDocumento++;
+    } else if (motivo === "fonte_indisponivel") {
+      fonteIndisponivel++;
     } else if (motivo === "recusado_pelo_modelo") {
       recusadosPeloModelo++;
     } else {
@@ -213,7 +216,7 @@ async function main() {
 
   await Promise.allSettled(gravacoesPendentes);
 
-  const contagem = { lidos: lidosAgora, semDocumento, recusadosPeloModelo, comErro };
+  const contagem = { lidos: lidosAgora, semDocumento, fonteIndisponivel, recusadosPeloModelo, comErro };
   console.log(`\nleitura: ${resumoDaLeitura({ ...contagem, jaEmCache })}`);
 
   /*

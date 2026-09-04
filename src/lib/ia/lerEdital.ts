@@ -6,8 +6,19 @@ import type { ExecucaoDeIA } from "./custo.ts";
 export type MotivoDaLeitura =
   /** Análise real, com `analisadoEm`. */
   | "lido"
-  /** Sem anexo, lista do PNCP indisponível, ou PDF sem texto extraível. */
+  /** Sem anexo publicado, ou PDF sem texto extraível. Fato sobre o EDITAL. */
   | "sem_documento"
+  /**
+   * A fonte não devolveu a lista de documentos.
+   *
+   * Separado de `sem_documento` porque não é fato sobre o edital: é a nossa
+   * requisição ou o PNCP que falhou, e amanhã o mesmo edital pode responder.
+   * Achatar os dois foi o que deixou 03/09 publicar cinco páginas sem leitura
+   * com a execução verde: cinco `lista-indisponivel` seguidos viraram cinco
+   * "editais sem documento", e a guarda de falha sistêmica não viu tentativa
+   * nenhuma para contar. Ver `falhaSistemica.ts`.
+   */
+  | "fonte_indisponivel"
   /** Texto extraído e mandado ao modelo, que recusou (quota, credencial, schema). */
   | "recusado_pelo_modelo"
   /** Download ou extração lançou. */
@@ -52,7 +63,10 @@ export type ResultadoDaLeitura = {
  */
 export type TextoDoEdital =
   | { ok: true; texto: string; documentos: number }
-  | { ok: false; motivo: Extract<MotivoDaLeitura, "sem_documento" | "erro"> };
+  | {
+      ok: false;
+      motivo: Extract<MotivoDaLeitura, "sem_documento" | "fonte_indisponivel" | "erro">;
+    };
 
 export async function extrairTextoDoEdital(edital: Edital): Promise<TextoDoEdital> {
   try {
@@ -81,8 +95,15 @@ export async function extrairTextoDoEdital(edital: Edital): Promise<TextoDoEdita
     );
 
     if (!resultado.processado) {
+      /*
+       * `processarEdital` já separa "a fonte não respondeu" de "o edital não
+       * tem anexo" — o comentário dele diz isso com todas as letras. Quem
+       * achatava os dois era esta linha, que imprimia o motivo real no log e
+       * devolvia `sem_documento` para todos.
+       */
+      const motivo = resultado.motivo === "lista-indisponivel" ? "fonte_indisponivel" : "sem_documento";
       console.log(`  sem documento (${resultado.motivo}) · ${edital.local.municipio}`);
-      return { ok: false, motivo: "sem_documento" };
+      return { ok: false, motivo };
     }
 
     const texto = textoParaAnalise(resultado.documentos);
