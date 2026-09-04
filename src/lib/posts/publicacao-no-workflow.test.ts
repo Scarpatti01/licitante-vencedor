@@ -201,7 +201,27 @@ describe("leva sem nenhuma leitura não é publicada", () => {
         "`erro` no mesmo balde. Um dia de editais digitalizados volta a derrubar " +
         "a execução inteira, como em 24/08.",
     ).toBe(true);
-    expect(FALHA_SISTEMICA).toMatch(/const tentativasReais = recusadosPeloModelo \+ comErro;/);
+    /*
+     * Medido pelo que a expressão SOMA, e não pelo texto exato dela.
+     *
+     * A primeira versão desta linha fixava `recusadosPeloModelo + comErro`
+     * literalmente, e por isso reprovou o conserto de 04/09 — que acrescentou
+     * uma terceira parcela legítima — em vez de reprovar o defeito que ela
+     * existe para pegar. O que precisa continuar verdadeiro é uma coisa só:
+     * `semDocumento` fora da conta.
+     */
+    const soma = FALHA_SISTEMICA.match(/const tentativasReais =([^;]+);/)?.[1];
+    expect(soma, "a conta de tentativas reais sumiu de falhaSistemica.ts").toBeTruthy();
+    expect(
+      soma,
+      "`semDocumento` voltou para a conta de tentativas: um dia de editais " +
+        "digitalizados derruba a execução inteira de novo, como em 24/08.",
+    ).not.toContain("semDocumento");
+    expect(
+      soma,
+      "`fonteIndisponivel` saiu da conta: a fonte muda volta a passar por " +
+        "edital sem anexo, e a leva de 03/09 seria gravada de novo sem leitura.",
+    ).toContain("fonteIndisponivel");
   });
 });
 

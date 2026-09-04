@@ -240,6 +240,7 @@ async function main() {
   const posts: PostDeEdital[] = [];
   let comLeitura = 0;
   let semDocumento = 0;
+  let fonteIndisponivel = 0;
   let recusadosPeloModelo = 0;
   let comErro = 0;
 
@@ -252,6 +253,7 @@ async function main() {
       post.documentosLidos = documentos;
       if (analise?.analisadoEm) comLeitura++;
       else if (motivo === "sem_documento") semDocumento++;
+      else if (motivo === "fonte_indisponivel") fonteIndisponivel++;
       else if (motivo === "recusado_pelo_modelo") recusadosPeloModelo++;
       else comErro++;
 
@@ -271,7 +273,13 @@ async function main() {
   const leva: LevaDoDia = { dia, consideradosNoDia: editais.length, posts };
 
   if (temChave) {
-    const contagem = { lidos: comLeitura, semDocumento, recusadosPeloModelo, comErro };
+    const contagem = {
+      lidos: comLeitura,
+      semDocumento,
+      fonteIndisponivel,
+      recusadosPeloModelo,
+      comErro,
+    };
     console.log(`\ncom leitura: ${comLeitura} de ${posts.length} · ${resumoDaLeitura(contagem)}`);
 
     /*

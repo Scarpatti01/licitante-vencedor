@@ -199,6 +199,7 @@ async function main() {
 
   let jaEmCache = 0;
   let semDocumento = 0;
+  let fonteIndisponivel = 0;
   let comErro = 0;
 
   console.log("\nbaixando e extraindo os documentos...");
@@ -226,6 +227,7 @@ async function main() {
     const extraido = await extrairTextoDoEdital(edital);
     if (!extraido.ok) {
       if (extraido.motivo === "sem_documento") semDocumento++;
+      else if (extraido.motivo === "fonte_indisponivel") fonteIndisponivel++;
       else comErro++;
       console.log(`  ${posicao} sem texto · ${edital.local.municipio}/${edital.local.uf}`);
       continue;
@@ -415,7 +417,7 @@ async function main() {
 
   await Promise.allSettled(gravacoesPendentes);
 
-  const contagem = { lidos, semDocumento, recusadosPeloModelo, comErro };
+  const contagem = { lidos, semDocumento, fonteIndisponivel, recusadosPeloModelo, comErro };
   console.log(`\nleitura em lote: ${resumoDaLeitura({ ...contagem, jaEmCache })}`);
   if (semEvidencia > 0) {
     console.log(`${semEvidencia} edital(is) sem evidência suficiente ficaram para a leitura avulsa`);
