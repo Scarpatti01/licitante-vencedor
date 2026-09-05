@@ -38,7 +38,7 @@ const ARTE = {
   alt:
     "O Workbook do Licitante: o livro em pé sobre uma mesa de madeira, ao lado de um " +
     "celular que mostra a mesma capa. Na base da capa, três selos: 12 semanas guiadas, " +
-    "as folhas de trabalho e o glossário de 89 termos.",
+    "7 folhas de trabalho e o glossário de 89 termos.",
 };
 
 /** O valor com que o Workbook já era ancorado na página de venda. */

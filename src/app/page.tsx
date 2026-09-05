@@ -267,8 +267,38 @@ export default function Home() {
         {/*
           O livro entra depois dos pilares e antes do autor, que é onde a
           pessoa já entendeu o que o produto faz e ainda não sabe o que leva
-          junto. A imagem é composta de páginas reais do PDF, e não de uma
-          ilustração: o que aparece legível ali existe no livro.
+          junto.
+
+          A ARTE, E O QUE ELA É
+
+          Até 05/09 aqui vinha `workbook-do-licitante.webp`, uma composição de
+          páginas reais do PDF. Trocada a pedido do dono pela mesma arte de
+          produto que o site já usa em `/jornada/` e no bloco de oferta de
+          todas as páginas públicas, para a home parar de ser a única com uma
+          imagem diferente do resto.
+
+          Esta é uma ilustração gerada, não uma foto e não um recorte do
+          livro: o livro é digital e nunca teve capa dura. Os números que
+          valem estão no texto ao lado, conferidos contra o `completo.html`
+          por `numeros-do-livro.guarda.test.ts`.
+
+          A PRIMEIRA VERSÃO DESTA ARTE MENTIA, E A GUARDA NÃO ALCANÇAVA
+
+          A tarja anunciava uma folha de trabalho a mais do que o livro tem,
+          e a arte esteve assim em `/jornada/` e no bloco de oferta de todas as
+          páginas públicas. Nenhum teste pegou, porque a guarda lê o fonte e
+          não enxerga pixel. Regerada em 05/09 com o número certo.
+
+          (O número errado não vai escrito aqui de propósito: a guarda casa
+          qualquer "N folhas de trabalho" no arquivo, comentário incluído, e
+          está certa em não tentar adivinhar o que é código e o que é prosa.
+          Foi ela mesma que reprovou a primeira versão deste comentário.)
+
+          O que sobrou disso: o `alt` de cada uso desta imagem passou a
+          declarar "7 folhas de trabalho" por escrito. Não é só descrição para
+          quem usa leitor de tela — é o número da arte entrando no texto que a
+          guarda confere, que é o mais perto de cobrir a imagem que dá para
+          chegar sem ler pixel.
         */}
         <section className="border-t bg-[#030814]">
           <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:gap-14 lg:py-20">
@@ -310,12 +340,12 @@ export default function Home() {
             </div>
 
             <Image
-              src="/workbook-do-licitante.webp"
-              alt="Três páginas do Workbook do Licitante: a capa, a folha de habilitação com a lista de documentos para conferir antes de cada envio, e duas colunas do glossário."
-              width={2000}
-              height={1250}
-              sizes="(max-width: 1024px) 100vw, 620px"
-              className="h-auto w-full rounded-xl"
+              src="/workbook-do-licitante-produto.webp"
+              alt="O Workbook do Licitante: o livro em pé sobre uma mesa de madeira, ao lado de um celular que mostra a mesma capa. Na base da capa, três selos: 12 semanas guiadas, 7 folhas de trabalho e o glossário de 89 termos."
+              width={1200}
+              height={1200}
+              sizes="(max-width: 1024px) 100vw, 560px"
+              className="mx-auto h-auto w-full max-w-lg rounded-xl"
             />
           </div>
         </section>
