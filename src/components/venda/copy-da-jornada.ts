@@ -261,7 +261,7 @@ export const O_LIVRO = {
   alt:
     "O Workbook do Licitante: o livro em pé sobre uma mesa de madeira, ao lado " +
     "de um celular que mostra a mesma capa. Na base da capa, três selos: 12 " +
-    "semanas guiadas, as folhas de trabalho e o glossário de 89 termos.",
+    "semanas guiadas, 7 folhas de trabalho e o glossário de 89 termos.",
 };
 
 export const CONTEUDO = {
