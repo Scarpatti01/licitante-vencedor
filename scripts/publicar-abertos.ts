@@ -31,6 +31,7 @@ import {
   type UfAberta,
 } from "../src/lib/abertos/tipos.ts";
 import { perfilDaUf } from "../src/lib/abertos/perfilDaUf.ts";
+import { contarPorMunicipio } from "../src/lib/abertos/porMunicipio.ts";
 
 const SEM_CONFIGURACAO = 78;
 const UM_DIA_MS = 24 * 60 * 60 * 1000;
@@ -106,6 +107,17 @@ async function main() {
     porUf.set(a.edital.local.uf, lista);
   }
 
+  /*
+   * As cidades, com as MESMAS réguas da UF: `ehNovo` e `encerraLogo`, sobre
+   * tudo que está aberto ali. Só contagem, sem lista — o porquê está em
+   * `MunicipioAberto`, e o resumo é que a lista custaria uns 3 MB por dia no
+   * repositório para responder a mesma pergunta que três números respondem.
+   */
+  const municipios = contarPorMunicipio(
+    comPrazo.map((a) => a.edital),
+    { ehNovo, encerraLogo },
+  );
+
   const maisUrgentesPrimeiro = (a: (typeof comPrazo)[number], b: (typeof comPrazo)[number]) =>
     new Date(a.edital.encerramentoProposta as string).getTime() -
     new Date(b.edital.encerramentoProposta as string).getTime();
@@ -152,6 +164,7 @@ async function main() {
       encerramEm24h: comPrazo.filter((a) => encerraLogo(a.edital)).length,
     },
     ufs,
+    municipios,
     abertos: [...paraListar]
       .sort(maisUrgentesPrimeiro)
       .slice(0, EDITAIS_NO_BRASIL)
@@ -161,6 +174,7 @@ async function main() {
   console.log(
     `${retrato.totais.abertos} aberto(s) · ${retrato.totais.novos} novo(s) nas últimas 24h · ` +
       `${retrato.totais.encerramEm24h} encerra(m) nas próximas 24h · ${ufs.length} UF(s) · ` +
+      `${municipios.length} cidade(s) com aberto · ` +
       `${retrato.abertos.length} na listagem nacional (só os que sobrevivem a este retrato)` +
       (semPrazo > 0 ? ` · ${semPrazo} sem prazo publicado, fora da listagem` : ""),
   );

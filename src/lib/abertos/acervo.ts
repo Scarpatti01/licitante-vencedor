@@ -1,5 +1,5 @@
 import retrato from "../../../dados/abertos.json" with { type: "json" };
-import type { RetratoDeAbertos, UfAberta } from "./tipos.ts";
+import type { MunicipioAberto, RetratoDeAbertos, UfAberta } from "./tipos.ts";
 import type { PerfilDaUf } from "./perfilDaUf.ts";
 
 /**
@@ -26,6 +26,31 @@ export function ufAberta(sigla: string): UfAberta | null {
 
 export function abertosNoBrasil() {
   return dados.abertos;
+}
+
+/**
+ * As contagens de abertos de uma cidade, ou `null` quando não há o que dizer.
+ *
+ * ## Os dois `null`, que são o mesmo `null` de propósito
+ *
+ * `null` quando o retrato ainda não traz `municipios` (o arquivo versionado
+ * hoje foi gravado antes deste campo existir, e só a coleta seguinte o
+ * preenche — mesma janela de um dia que `perfilDaPraca` já trata aqui), e
+ * `null` quando a cidade simplesmente não tem edital aberto agora.
+ *
+ * Achatar os dois é deliberado, e é o oposto do que `carregarUfAusente.ts`
+ * decidiu, porque a pergunta é outra. Lá o número ia para a tela e a distinção
+ * mudava o que se afirmava. Aqui as duas respostas produzem a MESMA tela: sem
+ * bloco. Uma cidade sem edital aberto não ganha um "0 editais abertos", que
+ * seria verdade hoje e mentira em duas horas, e é justamente o tipo de zero
+ * que faz o visitante concluir que o site não tem dado.
+ */
+export function abertosNoMunicipio(uf: string, slug: string): MunicipioAberto | null {
+  const lista = dados.municipios;
+  if (!lista) return null;
+
+  const alvo = uf.toUpperCase();
+  return lista.find((m) => m.uf === alvo && m.slug === slug) ?? null;
 }
 
 /**

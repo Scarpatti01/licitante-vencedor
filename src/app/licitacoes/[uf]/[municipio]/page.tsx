@@ -23,6 +23,9 @@ import { dataDeBrasilia } from "@/lib/dominio/datas";
 import { descricaoDoMunicipio, tituloDoMunicipio } from "@/lib/regioes/serp";
 import { caminhoDoPost, postsDoMunicipio } from "@/lib/posts/acervo";
 import { encerrado, instanteDaPagina } from "@/lib/posts/tipos";
+import { AbertosNaCidade } from "@/components/abertos/AbertosNaCidade";
+import { COLETADO_EM, abertosNoMunicipio, ufAberta } from "@/lib/abertos/acervo";
+import { temPaginaDeUf } from "@/lib/abertos/paginas";
 
 /**
  * A página de mercado de um município.
@@ -112,6 +115,17 @@ export default async function PaginaDoMunicipio({
   // A data do MUNICÍPIO, e não a da coleta: quando a UF não foi coletada, a
   // medição carregada vale a data em que foi feita.
   const medido = dataDeBrasilia(medidoEmDoMunicipio(m));
+
+  /*
+   * As contagens de abertos vêm do OUTRO retrato (`abertos.json`), com data
+   * própria e mais nova que a do agregado. São dois relógios diferentes na
+   * mesma página, e por isso cada bloco carrega o seu: o de cima diz a hora da
+   * coleta de abertos, o resto diz a data da medição do município.
+   */
+  const abertosAgora = abertosNoMunicipio(m.uf, m.slug);
+  const daUf = ufAberta(m.uf);
+  const caminhoDaUfAberta =
+    daUf && temPaginaDeUf(daUf) ? `/editais-abertos/${m.uf.toLowerCase()}/` : null;
   const completa = ufFoiCompleta(m.uf);
   const postsDaqui = postsDoMunicipio(m.uf, m.slug);
   // Um relógio só para a página: `encerrado` chamado por item leria instantes
@@ -131,12 +145,27 @@ export default async function PaginaDoMunicipio({
           Licitações em {m.municipio} ({m.uf}): o que os órgãos compram
         </h1>
 
+        {/*
+          O bloco de abertos vem ANTES da resposta direta porque é a pergunta
+          que a busca traz. Ver `AbertosNaCidade` para a medição que motivou
+          isso; o resumo é que as buscas por "licitação <cidade>" traziam
+          impressão e zero clique, porque a página respondia outra pergunta.
+        */}
+        {abertosAgora ? (
+          <AbertosNaCidade
+            contagem={abertosAgora}
+            municipio={m.municipio}
+            coletadoEm={COLETADO_EM}
+            caminhoDaUf={caminhoDaUfAberta}
+          />
+        ) : null}
+
         <RespostaDireta>
           Na última medição, {m.municipio} teve <strong>{m.editais} contratações</strong>{" "}
           publicadas no PNCP, movimentando <strong>{real(m.valor)}</strong> entre{" "}
           <strong>{m.orgaos} órgãos compradores</strong>. Os números são de{" "}
-          {medido} e descrevem o que foi publicado até ali — não o que está aberto
-          agora.
+          {medido} e descrevem o que foi publicado até ali, e não o que está
+          aberto agora{abertosAgora ? ", que é o bloco acima" : ""}.
         </RespostaDireta>
 
         <Secao id="mercado" titulo="O tamanho do mercado">

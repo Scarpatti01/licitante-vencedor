@@ -66,11 +66,45 @@ export type UfAberta = ContagemDeAbertos & {
   editais: EditalAberto[];
 };
 
+/**
+ * As contagens de uma cidade. Só números, e é essa a decisão de desenho.
+ *
+ * ## Por que não vem lista junto
+ *
+ * A página do município precisa responder "tem edital aberto aqui agora?", que
+ * é a pergunta de quem digita "licitação mogi das cruzes". Medido no Search
+ * Console em 06/09: as páginas de município somaram 5.145 impressões com 45
+ * cliques, e as buscas nomeadas eram quase todas dessa forma, com ZERO clique.
+ * A página respondia outra coisa: um retrato datado do que já foi comprado.
+ *
+ * Responder com três números resolve a pergunta. Responder com lista resolveria
+ * um pouco melhor e custaria caro no lugar errado: `abertos.json` é regravado e
+ * versionado a CADA coleta, e cinco editais em cada uma das 839 cidades
+ * publicadas somariam uns 3 MB por dia entrando no histórico do repositório.
+ * As contagens somam uns 240 KB.
+ *
+ * Quem quer a lista tem `/editais-abertos/uf/`, que já existe e já lista.
+ */
+export type MunicipioAberto = ContagemDeAbertos & {
+  uf: string;
+  /** O slug da página. É a chave de junção com o agregado de municípios. */
+  slug: string;
+};
+
 export type RetratoDeAbertos = {
   /** ISO 8601. A hora do retrato, que a página é obrigada a mostrar. */
   coletadoEm: string;
   totais: ContagemDeAbertos;
   ufs: UfAberta[];
+  /**
+   * As contagens por cidade, para a página do município.
+   *
+   * Toda cidade com ao menos um aberto entra, e não só as 839 que têm página:
+   * o portão de publicação é outro arquivo e muda sozinho, e um retrato que já
+   * traz a cidade evita que a página nasça sem o bloco no dia em que ela passa
+   * a ser publicada.
+   */
+  municipios: MunicipioAberto[];
   /**
    * A lista nacional: os que continuam abertos por toda a vida deste retrato,
    * do prazo mais próximo ao mais distante.
