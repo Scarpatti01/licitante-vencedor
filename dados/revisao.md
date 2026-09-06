@@ -1,7 +1,17 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 28242 editais coletados em 2026-09-05T11:48:42.703Z.
+Revisão dos dados — 27474 editais coletados em 2026-09-06T10:50:03.362Z.
+
+ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 24 foram coletadas por inteiro, 0 ficaram parciais e 3 não trouxeram nada.
+
+  Completas (representadas por inteiro nos números abaixo): AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RS, SC, SE, SP
+  Sem coleta (nenhum edital; NÃO estão representadas nos números abaixo):
+    MS: não coletada nesta rodada
+    RR: não coletada nesta rodada
+    TO: não coletada nesta rodada
+
+  Os 27474 editais revisados vêm de AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RS, SC, SE, SP.
 
 Encontrados 0 erro(s), 4 suspeita(s) e 152 aviso(s).
 
