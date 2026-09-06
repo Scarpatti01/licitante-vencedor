@@ -39,6 +39,91 @@ const NACIONAL = readFileSync(join("src", "app", "editais-abertos", "page.tsx"),
 const DA_UF = readFileSync(join("src", "app", "editais-abertos", "[uf]", "page.tsx"), "utf8");
 const LISTA = readFileSync(join("src", "components", "abertos", "ListaDeAbertos.tsx"), "utf8");
 const PRAZO = readFileSync(join("src", "components", "PrazoDoEdital.tsx"), "utf8");
+const NA_CIDADE = readFileSync(
+  join("src", "components", "abertos", "AbertosNaCidade.tsx"),
+  "utf8",
+);
+
+describe("o bloco de abertos na página do município", () => {
+  /*
+   * A página de município passou a afirmar presente, em 06/09, e por isso
+   * entrou nestas guardas. Ela é o caso mais arriscado dos três: as outras duas
+   * páginas existem PARA listar abertos, e quem chega nelas sabe o que está
+   * lendo. Esta é um retrato datado do passado que ganhou uma caixa de presente
+   * no topo, e são dois relógios diferentes na mesma tela.
+   *
+   * As três condições do topo deste arquivo valem aqui, menos a segunda: sem
+   * lista não há item para marcar no relógio do leitor. As outras duas não têm
+   * desconto, e são justamente as que sustentam um número sozinho na tela.
+   */
+  it("a hora do retrato aparece antes do número de abertos", () => {
+    /*
+     * `<RetratoDatado`, com o sinal de menor, e não o nome solto.
+     *
+     * A primeira versão desta linha procurava "RetratoDatado" e casava com o
+     * `import` no topo do arquivo, que está sempre antes de tudo. Ela passou
+     * com o defeito injetado de propósito — a data movida para depois do
+     * número —, e só não foi commitada porque a prova de que a guarda morde é
+     * obrigatória aqui. É a quinta vez neste repositório que uma guarda mede o
+     * lugar errado, e a segunda nesta mesma semana.
+     */
+    const datado = NA_CIDADE.indexOf("<RetratoDatado");
+    const numero = NA_CIDADE.indexOf("contagem.abertos");
+    expect(datado, "o bloco parou de datar o retrato").toBeGreaterThan(-1);
+    expect(numero, "não achei o número de abertos no bloco").toBeGreaterThan(-1);
+    expect(
+      datado,
+      "o número de abertos aparece antes da hora do retrato: quem lê recebe a " +
+        "promessa de presente antes de saber de quando ela é",
+    ).toBeLessThan(numero);
+  });
+
+  it("o bloco diz a taxa em que ele mesmo envelhece", () => {
+    /*
+     * `contagem.encerramEm24h`, o USO, e não a palavra solta: o comentário do
+     * componente explica por que o campo existe, e procurar só o nome dele
+     * casava com essa prosa. Provado: trocando o uso por `contagem.novos`, a
+     * primeira versão desta linha passou. Mesmo erro da linha de cima, no
+     * mesmo arquivo, no mesmo dia.
+     */
+    expect(
+      NA_CIDADE,
+      "sem `contagem.encerramEm24h` a caixa afirma presente sem dizer quanto " +
+        "disso morre até a próxima coleta",
+    ).toContain("contagem.encerramEm24h");
+  });
+
+  it("cidade sem abertos não ganha bloco com zero", () => {
+    // O `null` de `abertosNoMunicipio` é o que garante isto, e a página só
+    // renderiza sob condição. Um "0 editais abertos" seria verdade no instante
+    // da coleta e mentira duas horas depois.
+    const pagina = readFileSync(
+      join("src", "app", "licitacoes", "[uf]", "[municipio]", "page.tsx"),
+      "utf8",
+    );
+    expect(pagina).toMatch(/abertosAgora \?\s*\(/);
+  });
+
+  it("a resposta direta não contradiz o bloco acima dela", () => {
+    /*
+     * A frase dizia "não o que está aberto agora", escrita quando a página
+     * de fato não tinha isso. Com o bloco no topo, a mesma frase passaria a
+     * negar o que a própria página mostra duas linhas acima.
+     */
+    const pagina = readFileSync(
+      join("src", "app", "licitacoes", "[uf]", "[municipio]", "page.tsx"),
+      "utf8",
+    );
+    const bloco = pagina.indexOf("<AbertosNaCidade");
+    const frase = pagina.indexOf("não o que está");
+    if (frase > -1 && bloco > -1 && bloco < frase) {
+      expect(
+        pagina.slice(frase, frase + 400),
+        "a negação sobrevive sem apontar para o bloco que a desmente",
+      ).toContain("bloco acima");
+    }
+  });
+});
 
 describe("a hora do retrato vem antes da promessa", () => {
   it("as duas páginas mostram quando o retrato foi tirado", () => {
