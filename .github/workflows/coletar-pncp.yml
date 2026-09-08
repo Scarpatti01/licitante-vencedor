@@ -376,7 +376,24 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -f dados/agregados.json dados/revisao.md dados/posts/
+          # A lista é explícita, e por isso ela esquece em silêncio.
+          #
+          # `municipios-publicados.json` ficou de fora daqui desde que nasceu,
+          # no PR #50 de 21/08. O script o reescreve a cada coleta e o runner
+          # some levando a versão nova junto, então o registro que a build lê
+          # ficou congelado por dezessete dias.
+          #
+          # O efeito não aparece em lugar nenhum na hora: o registro é o que
+          # impede uma página já publicada de morrer por ter tido um dia
+          # fraco, e congelado ele deixa de proteger tudo que foi publicado
+          # depois dele. Com `dynamicParams = false`, cada uma dessas mortes é
+          # 404 permanente. O relatório de cobertura de 07/09 mostrou 18, e 11
+          # foram identificadas pelo nome.
+          #
+          # `dados-versionados.test.ts` passou a cobrar esta linha contra o que
+          # os scripts realmente escrevem, para o próximo arquivo novo não
+          # repetir a história.
+          git add -f dados/agregados.json dados/revisao.md dados/posts/ dados/municipios-publicados.json
           if git diff --cached --quiet; then
             echo "agregado idêntico ao do dia anterior, nada a commitar"
             exit 0
