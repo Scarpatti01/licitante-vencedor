@@ -104,8 +104,12 @@ describe("o aviso da Hotmart", () => {
   });
 
   it("reentrega da mesma transação responde 200 sem duplicar", async () => {
-    // O PostgREST devolve lista vazia quando o índice único barra a inserção.
-    vi.stubGlobal("fetch", vi.fn(async () => new Response("[]")));
+    /*
+     * 409, e não lista vazia. Este mock já disse `new Response("[]")`, que era
+     * o que eu SUPUNHA que o PostgREST fazia; ele devolve 409, observado no log
+     * dele em 08/09 às 21:53. Ver `src/lib/hotmart/repositorio.test.ts`.
+     */
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("", { status: 409 })));
     const r = await POST(aviso(COMPRA));
     expect(r.status).toBe(200);
     await expect(r.json()).resolves.toMatchObject({ efeito: "repetida" });
