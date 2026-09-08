@@ -9,7 +9,15 @@ import { aplicar } from "@/lib/hotmart/repositorio";
  *
  * Endereço a cadastrar no painel dela, em Ferramentas → Webhook:
  *
- *     https://licitantevencedor.com.br/api/hotmart/webhook
+ *     https://licitantevencedor.com.br/api/hotmart/webhook/
+ *
+ * A BARRA NO FIM É OBRIGATÓRIA, e não é preciosismo. O `trailingSlash: true` do
+ * `next.config.ts` faz o endereço sem ela responder 308 antes de chegar aqui, e
+ * a Hotmart não segue redirecionamento: ela lê "não é 2xx" e reentrega para
+ * sempre. Foi o que aconteceu na primeira tentativa, em 08/09: sete eventos de
+ * teste, sete `308 - Em retentativa`, zero chegando nesta função. O mesmo vale
+ * para `www.`, que também redireciona. `endereco-com-barra.guarda.test.ts`
+ * cobra isso de todo endereço nosso escrito no código.
  *
  * ## O CÓDIGO DE RESPOSTA É A PARTE QUE IMPORTA
  *
