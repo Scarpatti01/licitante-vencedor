@@ -24,8 +24,13 @@ export const OFERTA = {
    * venda não está no ar: com ela vazia o botão vira aviso honesto de "em
    * breve" em vez de um link quebrado, e a guarda cobra que os dois estados
    * continuem coerentes.
+   *
+   * Aberta em 08/09, na Hotmart, produto 8479984. O preço lá é R$ 47 e a
+   * garantia é de 7 dias, conferidos com o dono antes de ligar: o comentário no
+   * topo deste arquivo existe justamente porque ler um preço na página e pagar
+   * outro no checkout é a forma mais barata de perder quem já tinha decidido.
    */
-  CHECKOUT: "",
+  CHECKOUT: "https://pay.hotmart.com/G107521939Y",
 
   /** Garantia incondicional. O mínimo legal de arrependimento é 7 dias. */
   diasDeGarantia: 7,
