@@ -160,7 +160,21 @@ describe("revogar sem compra correspondente", () => {
     return {
       linhas,
       fetch: vi.fn(async (url: string, init: RequestInit) => {
-        const metodo = String(init.method);
+        const metodo = String(init?.method ?? "GET");
+
+        // A consulta de instrumentação, que só lê.
+        if (metodo === "GET") {
+          return new Response(
+            JSON.stringify(
+              linhas
+                .filter((l) => String(url).includes(String(l.referencia_externa)))
+                .map((l) => ({
+                  revogado_em: l.revogado_em ?? null,
+                  motivo_da_revogacao: l.motivo_da_revogacao ?? null,
+                })),
+            ),
+          );
+        }
 
         if (metodo === "PATCH") {
           const alvo = linhas.filter(
@@ -191,8 +205,18 @@ describe("revogar sem compra correspondente", () => {
       efeito: "revogada-antes-da-compra",
     });
 
-    // E agora a compra aprovada, atrasada.
-    await expect(aplicar(LIBERAR)).resolves.toEqual({ ok: true, efeito: "repetida" });
+    /*
+     * E agora a compra aprovada, atrasada. Ela cai sobre uma linha revogada, que
+     * é exatamente o caso que `aprovada-apos-revogacao` existe para tornar
+     * visível: aqui o efeito não é `repetida`, e o log registra a ocorrência.
+     */
+    const aviso = vi.spyOn(console, "warn").mockImplementation(() => {});
+    await expect(aplicar(LIBERAR)).resolves.toEqual({
+      ok: true,
+      efeito: "aprovada-apos-revogacao",
+    });
+    expect(aviso.mock.calls.flat().join(" ")).toContain("HP1");
+    aviso.mockRestore();
 
     expect(banco.linhas).toHaveLength(1);
     /*
@@ -236,5 +260,108 @@ describe("revogar sem compra correspondente", () => {
       "a data que interessa é a de quando o dinheiro voltou, não a da última " +
         "vez que a Hotmart avisou.",
     ).toBe(quando);
+  });
+});
+
+describe("compra aprovada sobre transação já revogada", () => {
+  /*
+   * Ela não devolve acesso, e isso é decisão. O que este bloco guarda é o
+   * AVISO: sem ele, o caso responde 200 com efeito `repetida`, igual a uma
+   * reentrega comum, e a primeira ocorrência real passaria sem rastro nenhum.
+   *
+   * A documentação da Hotmart não diz se isso chega a acontecer. Conferido em
+   * 08/09 em "Boas práticas de uso" e na página de códigos do webhook: não
+   * está lá. Então o log é o que vai responder, com um caso real.
+   */
+  function bancoComCompra(revogada: boolean) {
+    const linhas: Array<Record<string, unknown>> = [
+      {
+        email: "quem@exemplo.com",
+        origem: "compra",
+        referencia_externa: "HP1",
+        revogado_em: revogada ? "2026-09-08T21:45:54.675Z" : null,
+        motivo_da_revogacao: revogada ? "chargeback na Hotmart" : null,
+      },
+    ];
+    return vi.fn(async (url: string, init: RequestInit) => {
+      const metodo = String(init?.method ?? "GET");
+      if (metodo === "GET") {
+        return new Response(
+          JSON.stringify(
+            linhas.map((l) => ({
+              revogado_em: l.revogado_em ?? null,
+              motivo_da_revogacao: l.motivo_da_revogacao ?? null,
+            })),
+          ),
+        );
+      }
+      // A transação já está lá: o índice único barra.
+      return new Response("", { status: 409 });
+    });
+  }
+
+  it("avisa alto, com a transação e o motivo da revogação", async () => {
+    vi.stubGlobal("fetch", bancoComCompra(true));
+    const aviso = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    await expect(aplicar(LIBERAR)).resolves.toEqual({
+      ok: true,
+      efeito: "aprovada-apos-revogacao",
+    });
+
+    const dito = aviso.mock.calls.flat().join(" ");
+    expect(
+      dito,
+      "sem este aviso o caso é indistinguível de uma reentrega comum, e a " +
+        "primeira ocorrência real passa sem deixar rastro.",
+    ).toContain("HP1");
+    expect(dito).toContain("chargeback na Hotmart");
+    aviso.mockRestore();
+  });
+
+  it("não avisa numa reentrega comum, senão o aviso vira ruído", async () => {
+    vi.stubGlobal("fetch", bancoComCompra(false));
+    const aviso = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    await expect(aplicar(LIBERAR)).resolves.toEqual({ ok: true, efeito: "repetida" });
+
+    expect(
+      aviso.mock.calls,
+      "reentrega é o caso NORMAL e acontece às dezenas. Avisar nela afogaria o " +
+        "caso raro que este log existe para mostrar.",
+    ).toHaveLength(0);
+    aviso.mockRestore();
+  });
+
+  it("a consulta do log falhar não derruba a compra", async () => {
+    /*
+     * A regra inegociável: instrumentação não pode transformar sucesso em erro.
+     * Se esta consulta virasse 503, uma indisponibilidade do Supabase NA LEITURA
+     * faria a Hotmart reentregar uma compra que já estava gravada, que é o
+     * defeito do #142 voltando por uma porta nova.
+     */
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (_url: string, init: RequestInit) => {
+        const metodo = String(init?.method ?? "GET");
+        if (metodo === "GET") return new Response("caiu", { status: 500 });
+        return new Response("", { status: 409 });
+      }),
+    );
+
+    await expect(aplicar(LIBERAR)).resolves.toEqual({ ok: true, efeito: "repetida" });
+  });
+
+  it("a lápide do reembolso fora de ordem não dispara o aviso", async () => {
+    // Ela também insere e também leva 409 quando a linha já existe, mas quem
+    // chegou ali foi um REEMBOLSO, e não uma compra aprovada.
+    const banco = bancoComCompra(true);
+    vi.stubGlobal("fetch", banco);
+    const aviso = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    await aplicar(REVOGAR);
+
+    expect(aviso.mock.calls).toHaveLength(0);
+    aviso.mockRestore();
   });
 });

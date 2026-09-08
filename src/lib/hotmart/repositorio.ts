@@ -34,6 +34,9 @@ function credenciais(): { url: string; chave: string } | null {
  *
  * `nada-a-revogar` saiu: enquanto ele existia, um reembolso sem compra
  * correspondente terminava em silêncio, que era o defeito.
+ *
+ * `aprovada-apos-revogacao` existe só para deixar de ser silêncio também. Ver
+ * `gravarCompra`.
  */
 export type Resultado =
   | {
@@ -43,7 +46,8 @@ export type Resultado =
         | "repetida"
         | "revogada"
         | "revogada-antes-da-compra"
-        | "ja-revogada";
+        | "ja-revogada"
+        | "aprovada-apos-revogacao";
     }
   | { ok: false; motivo: string };
 
@@ -123,11 +127,95 @@ async function inserir(linha: Record<string, unknown>, oQue: string): Promise<Re
   return { ok: true, efeito: gravadas.length > 0 ? "gravada" : "repetida" };
 }
 
-function gravarCompra(email: string, referencia: string): Promise<Resultado> {
-  return inserir(
+/**
+ * Como está a compra desta transação, se ela existe.
+ *
+ * Só serve para instrumentação, e por isso engole todo erro devolvendo `null`:
+ * uma consulta de log que falhe não pode derrubar a gravação de uma compra.
+ */
+async function situacaoDaCompra(
+  referencia: string,
+): Promise<{ revogadaEm: string | null; motivo: string | null } | null> {
+  const cred = credenciais();
+  if (!cred) return null;
+
+  try {
+    const alvo =
+      `${cred.url}/rest/v1/compras_da_jornada` +
+      `?referencia_externa=eq.${encodeURIComponent(referencia)}` +
+      `&select=revogado_em,motivo_da_revogacao`;
+
+    const resposta = await fetch(alvo, {
+      headers: { apikey: cred.chave, authorization: `Bearer ${cred.chave}` },
+      cache: "no-store",
+    });
+    if (!resposta.ok) return null;
+
+    const linhas = (await resposta.json()) as Array<{
+      revogado_em: string | null;
+      motivo_da_revogacao: string | null;
+    }>;
+    const linha = linhas?.[0];
+    if (!linha) return null;
+
+    return { revogadaEm: linha.revogado_em, motivo: linha.motivo_da_revogacao };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Grava a compra, e avisa alto quando ela chega sobre uma transação revogada.
+ *
+ * ## POR QUE ESTE AVISO EXISTE
+ *
+ * Compra aprovada sobre uma transação já revogada NÃO devolve acesso, e isso é
+ * decisão, não esquecimento: religar automático devolveria o produto a quem deu
+ * chargeback, e esse erro é silencioso e a favor de quem não pagou, enquanto o
+ * contrário é barulhento e se conserta com um UPDATE.
+ *
+ * O problema é que a decisão foi tomada sem dado. A documentação da Hotmart, em
+ * "Boas práticas de uso", não diz se ela reenvia `PURCHASE_APPROVED` para uma
+ * transação reembolsada, estornada ou expirada. Conferido em 08/09: não está
+ * lá, nem na página de códigos de resposta do webhook.
+ *
+ * Sem este aviso, o caso é indistinguível de uma reentrega comum: os dois
+ * respondem 200 com efeito `repetida`, e a primeira ocorrência real passaria
+ * sem deixar rastro. O dono só saberia pela reclamação de quem ficou de fora.
+ *
+ * ## O QUE FAZER QUANDO ELE APARECER
+ *
+ * A saída certa não é escolher uma política no escuro, é a que a própria
+ * Hotmart recomenda naquela página: o webhook avisa que algo aconteceu, e a API
+ * dela responde como a coisa está agora. Com a ocorrência em mãos, dá para
+ * decidir se vale montar a autenticação de API para consultar o status real.
+ *
+ * ## A INSTRUMENTAÇÃO NÃO PODE QUEBRAR A COMPRA
+ *
+ * A consulta é feita DEPOIS da gravação e o seu resultado só muda o log. Se ela
+ * falhar, o efeito volta a ser `repetida` e a resposta continua 200. Log que
+ * derruba pagamento é pior que log nenhum.
+ */
+async function gravarCompra(email: string, referencia: string): Promise<Resultado> {
+  const resultado = await inserir(
     { email, origem: "compra", referencia_externa: referencia },
     "gravou a compra",
   );
+
+  // Só o 409 interessa: é ele que diz que a transação já estava registrada.
+  if (!resultado.ok || resultado.efeito !== "repetida") return resultado;
+
+  const situacao = await situacaoDaCompra(referencia);
+  if (!situacao?.revogadaEm) return resultado;
+
+  console.warn(
+    "Hotmart: COMPRA APROVADA chegou para transação JÁ REVOGADA, e o acesso",
+    "continua desligado.",
+    "transação:", referencia,
+    "revogada em:", situacao.revogadaEm,
+    "motivo:", situacao.motivo,
+  );
+  return { ok: true, efeito: "aprovada-apos-revogacao" };
 }
 
 /**
