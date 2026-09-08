@@ -34,11 +34,47 @@ export type Resultado =
 /**
  * Grava a compra, tratando reentrega como sucesso.
  *
- * `Prefer: resolution=ignore-duplicates` faz o PostgREST devolver 201 sem
- * inserir quando o índice único de `referencia_externa` já tem aquela
- * transação. É o que transforma a reentrega da Hotmart em nada, do lado certo:
- * no banco, e não numa consulta prévia que teria corrida entre duas entregas
- * simultâneas do mesmo evento.
+ * A idempotência vem do banco, e não de uma consulta prévia que teria corrida
+ * entre duas entregas simultâneas do mesmo evento. O que mudou é COMO o banco
+ * avisa que já tinha a transação.
+ *
+ * ## O QUE EU AFIRMEI ERRADO, E O QUE A PRODUÇÃO MOSTROU
+ *
+ * Este comentário dizia que `Prefer: resolution=ignore-duplicates` faria o
+ * PostgREST devolver 201 com lista vazia. Não faz. Sem `on_conflict=` na URL,
+ * o PostgREST usa a CHAVE PRIMÁRIA como alvo do conflito, e aqui a chave
+ * primária é `id`, gerado a cada tentativa. O índice único de
+ * `referencia_externa` nunca é o alvo, então a violação sobe como erro:
+ *
+ *     POST | 409 | .../rest/v1/compras_da_jornada     (log do PostgREST, 08/09 21:53)
+ *
+ * Treze reentregas da Hotmart, treze 409, treze 503 devolvidos a ela, e uma
+ * fila de retentativa que não terminaria nunca — sobre uma compra que já
+ * estava gravada desde 21:45.
+ *
+ * ## POR QUE NÃO É SÓ PÔR `on_conflict=referencia_externa`
+ *
+ * Porque o índice é PARCIAL (`WHERE referencia_externa IS NOT NULL`), e o
+ * Postgres não infere índice parcial sem o predicado junto. Testado contra o
+ * banco de produção:
+ *
+ *     ERROR: 42P10: there is no unique or exclusion constraint
+ *            matching the ON CONFLICT specification
+ *
+ * O PostgREST não tem como mandar o predicado. Então a saída não é ensinar o
+ * alvo a ele: é ler o 409 pelo que ele significa.
+ *
+ * ## POR QUE 409 AQUI SÓ PODE SER DUPLICATA
+ *
+ * O PostgREST responde 409 para violação de unicidade e para violação de chave
+ * estrangeira. Esta tabela tem uma única chave estrangeira, `usuario_id`, e
+ * esta inserção NÃO manda `usuario_id` — só `email`, `origem` e
+ * `referencia_externa`. Logo, 409 aqui é a transação já registrada, que é
+ * exatamente o sucesso que a reentrega deveria produzir.
+ *
+ * Esse raciocínio depende do corpo da inserção continuar sem coluna de chave
+ * estrangeira, e é por isso que `repositorio.test.ts` cobra as três chaves: se
+ * alguém acrescentar uma quarta, o teste reprova e obriga a revisitar isto.
  */
 async function gravarCompra(email: string, referencia: string): Promise<Resultado> {
   const cred = credenciais();
@@ -50,11 +86,19 @@ async function gravarCompra(email: string, referencia: string): Promise<Resultad
       apikey: cred.chave,
       authorization: `Bearer ${cred.chave}`,
       "content-type": "application/json",
-      prefer: "resolution=ignore-duplicates,return=representation",
+      // `resolution=ignore-duplicates` saiu daqui: ele mira a chave primária,
+      // que nunca conflita, e a sua presença sugeria uma proteção inexistente.
+      prefer: "return=representation",
     },
     body: JSON.stringify([{ email, origem: "compra", referencia_externa: referencia }]),
     cache: "no-store",
   });
+
+  // A transação já estava registrada. É reentrega, e reentrega é sucesso: 503
+  // aqui faria a Hotmart insistir para sempre numa compra que já foi gravada.
+  if (resposta.status === 409) {
+    return { ok: true, efeito: "repetida" };
+  }
 
   if (!resposta.ok) {
     const detalhe = await resposta.text().catch(() => "");
@@ -62,7 +106,6 @@ async function gravarCompra(email: string, referencia: string): Promise<Resultad
     return { ok: false, motivo: `banco-${resposta.status}` };
   }
 
-  // Lista vazia significa que o índice único barrou: a compra já estava lá.
   const gravadas = (await resposta.json().catch(() => [])) as unknown[];
   return { ok: true, efeito: gravadas.length > 0 ? "gravada" : "repetida" };
 }
