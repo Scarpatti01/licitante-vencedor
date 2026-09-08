@@ -25,6 +25,7 @@ from xml.etree import ElementTree
 AQUI = os.path.dirname(os.path.abspath(__file__))
 FONTE = os.path.join(AQUI, 'completo.html')
 SAIDA = os.path.join(AQUI, 'workbook-do-licitante.epub')
+CAPA = os.path.join(AQUI, 'capa.jpg')
 
 TITULO = 'Workbook do Licitante'
 SUBTITULO = ('Licitações públicas do iniciante ao avançado, '
@@ -35,6 +36,112 @@ IDIOMA = 'pt-BR'
 # Identificador estável: o mesmo livro reeditado continua sendo o mesmo livro
 # para o leitor, que assim mantém marcação e posição de leitura.
 URN = 'urn:uuid:6f1c0f3a-9a1e-5b7a-9c2d-4f8b71e0a3d5'
+
+# O nome da capa dentro do EPUB. Fixo, e não derivado de hash como as demais
+# imagens: a capa é referenciada por três lugares (o manifesto, a página de
+# capa e o `meta name="cover"`), e nome estável é o que permite conferi-la.
+CAPA_NO_EPUB = 'imagens/capa.jpg'
+
+# A menor capa que as lojas costumam aceitar. Kindle e Kobo pedem 1.400 no lado
+# menor; abaixo disso a arte é recusada ou sai borrada na estante.
+LADO_MENOR_MINIMO = 1400
+
+
+# --------------------------------------------------------------------- capa
+
+def medir_jpeg(dados):
+    """Largura e altura de um JPEG, lendo os marcadores SOF.
+
+    Sem Pillow de propósito: o gerador não tem dependência externa nenhuma e
+    não vale ganhar uma para ler dois inteiros. Devolve `None` quando o arquivo
+    não é um JPEG que se possa medir, e quem chama trata.
+    """
+    if not dados.startswith(b'\xff\xd8'):
+        return None
+    i = 2
+    while i + 9 < len(dados):
+        if dados[i] != 0xFF:
+            i += 1
+            continue
+        marcador = dados[i + 1]
+        # SOF0..SOF15, menos os que não carregam dimensão (DHT, JPG, DAC).
+        if 0xC0 <= marcador <= 0xCF and marcador not in (0xC4, 0xC8, 0xCC):
+            altura = int.from_bytes(dados[i + 5:i + 7], 'big')
+            largura = int.from_bytes(dados[i + 7:i + 9], 'big')
+            return largura, altura
+        if marcador in (0xD8, 0x01) or 0xD0 <= marcador <= 0xD7:
+            i += 2
+            continue
+        i += 2 + int.from_bytes(dados[i + 2:i + 4], 'big')
+    return None
+
+
+def ler_capa():
+    """A capa do livro, conferida antes de entrar.
+
+    ## O defeito que esta função existe para impedir
+
+    Até 08/09 a capa era escolhida assim:
+
+        capa = next((n for n in binarios if n.startswith('imagens/')), None)
+
+    "A primeira imagem que aparecer no livro". O livro tem exatamente uma, a
+    foto do autor na biografia, e foi ela que a Hotmart e qualquer loja
+    receberam como capa: um retrato quadrado de 400 pixels.
+
+    A regra era o defeito, não a ausência do arquivo. Agora a capa é um arquivo
+    próprio, declarado, medido, e a falta dele derruba a geração — porque livro
+    sem capa não deveria chegar a uma loja, e o modo silencioso de falhar foi
+    exatamente o que custou os meses anteriores.
+    """
+    if not os.path.exists(CAPA):
+        falhar('não achei %s. A capa é obrigatória: sem ela o EPUB sai com a '
+               'primeira imagem do texto no lugar dela, que foi o defeito de '
+               '08/09.' % CAPA)
+
+    dados = open(CAPA, 'rb').read()
+    medida = medir_jpeg(dados)
+    if medida is None:
+        falhar('%s não é um JPEG que eu consiga medir. A capa precisa ser JPEG '
+               'para o manifesto declarar image/jpeg.' % CAPA)
+
+    largura, altura = medida
+    if largura >= altura:
+        falhar('a capa é %dx%d, e capa de livro é retrato. Quadrada ou deitada '
+               'é recusada nas lojas e sai errada na estante.' % (largura, altura))
+    if min(largura, altura) < LADO_MENOR_MINIMO:
+        falhar('a capa é %dx%d, e o lado menor precisa de ao menos %d pixels. '
+               'Abaixo disso a loja recusa ou publica borrado.'
+               % (largura, altura, LADO_MENOR_MINIMO))
+
+    return dados, largura, altura
+
+
+def montar_pagina_de_capa(largura, altura):
+    """A capa como primeira página do livro.
+
+    `viewBox` em SVG, e não um `<img>` solto: é a forma que os leitores de
+    e-book entendem para "esta imagem ocupa a tela inteira, sem margem e sem
+    esticar". Um `<img>` num `<body>` normal herda a margem do CSS do livro e
+    aparece com tarja branca em volta.
+    """
+    return ('''<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" lang="%(idioma)s" xml:lang="%(idioma)s">
+<head>
+  <meta charset="utf-8" />
+  <title>Capa</title>
+  <style>body { margin: 0; padding: 0; }</style>
+</head>
+<body epub:type="cover">
+  <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+       version="1.1" viewBox="0 0 %(largura)d %(altura)d"
+       preserveAspectRatio="xMidYMid meet" style="width: 100%%; height: 100%%;">
+    <image width="%(largura)d" height="%(altura)d" xlink:href="../%(capa)s" />
+  </svg>
+</body>
+</html>
+''' % {'idioma': IDIOMA, 'largura': largura, 'altura': altura, 'capa': CAPA_NO_EPUB})
 
 
 # ---------------------------------------------------------------- utilidades
@@ -438,10 +545,13 @@ TIPOS = {'.xhtml': 'application/xhtml+xml', '.css': 'text/css', '.woff2': 'font/
          '.webp': 'image/webp', '.ncx': 'application/x-dtbncx+xml'}
 
 
-def montar_opf(capitulos, embutidos, modificado, capa):
+def montar_opf(capitulos, embutidos, modificado):
     itens = ['    <item id="nav" href="texto/nav.xhtml" media-type="application/xhtml+xml" properties="nav" />',
              '    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml" />',
-             '    <item id="css" href="estilo/livro.css" media-type="text/css" />']
+             '    <item id="css" href="estilo/livro.css" media-type="text/css" />',
+             '    <item id="capa-pagina" href="texto/capa.xhtml" media-type="application/xhtml+xml" />',
+             '    <item id="capa" href="%s" media-type="image/jpeg" properties="cover-image" />'
+             % CAPA_NO_EPUB]
     for i, (arquivo, _, _) in enumerate(capitulos):
         itens.append('    <item id="c%d" href="texto/%s" media-type="application/xhtml+xml" />' % (i, arquivo))
     for n, nome in enumerate(sorted(embutidos)):
@@ -449,10 +559,15 @@ def montar_opf(capitulos, embutidos, modificado, capa):
         tipo = TIPOS.get(extensao)
         if tipo is None:
             falhar('não sei o media-type de %s' % nome)
-        propriedades = ' properties="cover-image"' if nome == capa else ''
-        itens.append('    <item id="e%d" href="%s" media-type="%s"%s />' % (n, nome, tipo, propriedades))
+        # A capa já entrou acima, com id próprio. Sem este `continue` ela
+        # apareceria duas vezes no manifesto, e manifesto com id repetido é
+        # EPUB inválido.
+        if nome == CAPA_NO_EPUB:
+            continue
+        itens.append('    <item id="e%d" href="%s" media-type="%s" />' % (n, nome, tipo))
 
-    espinha = '\n'.join('    <itemref idref="c%d" />' % i for i in range(len(capitulos)))
+    espinha = '\n'.join(['    <itemref idref="capa-pagina" />']
+                        + ['    <itemref idref="c%d" />' % i for i in range(len(capitulos))])
     return """<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="pub-id" xml:lang="%(idioma)s">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -467,6 +582,10 @@ def montar_opf(capitulos, embutidos, modificado, capa):
     <dc:language>%(idioma)s</dc:language>
     <dc:rights>Todos os direitos reservados.</dc:rights>
     <meta property="dcterms:modified">%(modificado)s</meta>
+    <!-- Forma do EPUB 2, mantida de propósito: o padrão novo declara a capa
+         por `properties="cover-image"`, e várias lojas ainda procuram só por
+         esta linha. Ter as duas custa uma linha e evita recusa silenciosa. -->
+    <meta name="cover" content="capa" />
   </metadata>
   <manifest>
 %(itens)s
@@ -564,8 +683,15 @@ def main():
     conferir_xml('toc.ncx', ncx)
     pecas['OEBPS/toc.ncx'] = ncx
 
-    capa = next((n for n in binarios if n.startswith('imagens/')), None)
-    opf = montar_opf(todos, binarios, modificado, capa)
+    # A capa entra como arquivo próprio, com nome fixo, ANTES do OPF ser
+    # montado: `montar_opf` conta com ela no manifesto e na espinha.
+    dados_da_capa, largura, altura = ler_capa()
+    binarios[CAPA_NO_EPUB] = dados_da_capa
+    pagina_de_capa = montar_pagina_de_capa(largura, altura)
+    conferir_xml('capa.xhtml', pagina_de_capa)
+    pecas['OEBPS/texto/capa.xhtml'] = pagina_de_capa
+
+    opf = montar_opf(todos, binarios, modificado)
     conferir_xml('content.opf', opf)
     pecas['OEBPS/content.opf'] = opf
     pecas['OEBPS/estilo/livro.css'] = css
@@ -576,7 +702,8 @@ def main():
     print('%s' % os.path.basename(SAIDA))
     print('  %d documentos, %d seções indexadas, %d remissões ligadas, '
           '%d arquivos embutidos, %.0f KB'
-          % (len(todos), len(secoes), ligadas, len(binarios), tamanho))
+          % (len(todos) + 1, len(secoes), ligadas, len(binarios), tamanho))
+    print('  capa %dx%d' % (largura, altura))
 
 
 if __name__ == '__main__':

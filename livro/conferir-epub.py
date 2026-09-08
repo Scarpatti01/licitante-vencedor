@@ -27,6 +27,39 @@ falhas = []
 notas = []
 
 
+def medir_jpeg(dados):
+    """Largura e altura de um JPEG, lendo os marcadores SOF.
+
+    ## Por que isto é uma segunda implementação, de propósito
+
+    `gerar-epub.py` tem a sua. Importar aquela aqui seria o instinto certo em
+    quase todo lugar deste repositório, e é errado neste: o cabeçalho deste
+    arquivo diz que ele mede o ARQUIVO PRONTO em vez de confiar no gerador que
+    acabou de escrevê-lo. Um conferidor que usa a régua do medido aprova o erro
+    da régua junto com o resto.
+
+    São vinte linhas de leitura de cabeçalho, sem estado e sem configuração. O
+    risco de divergirem é baixo, e a divergência apareceria como reprovação, que
+    é a direção segura.
+    """
+    if not dados.startswith(b'\xff\xd8'):
+        return None
+    i = 2
+    while i + 9 < len(dados):
+        if dados[i] != 0xFF:
+            i += 1
+            continue
+        marcador = dados[i + 1]
+        if 0xC0 <= marcador <= 0xCF and marcador not in (0xC4, 0xC8, 0xCC):
+            return (int.from_bytes(dados[i + 7:i + 9], 'big'),
+                    int.from_bytes(dados[i + 5:i + 7], 'big'))
+        if marcador in (0xD8, 0x01) or 0xD0 <= marcador <= 0xD7:
+            i += 2
+            continue
+        i += 2 + int.from_bytes(dados[i + 2:i + 4], 'big')
+    return None
+
+
 def exigir(condicao, queixa):
     if condicao:
         return True
@@ -166,6 +199,65 @@ def main():
         exigir('.sumario .pag { display:none; }' in css or 'display:none' in css,
                'o número de página do sumário continua visível')
 
+    # ---- 10. a capa é a capa ------------------------------------------
+    #
+    # O DEFEITO QUE ESTA CONFERÊNCIA EXISTE PARA IMPEDIR
+    #
+    # Até 08/09 o gerador escolhia a capa assim:
+    #
+    #     capa = next((n for n in binarios if n.startswith('imagens/')), None)
+    #
+    # "A primeira imagem que aparecer no livro". O livro tem exatamente uma, a
+    # foto do autor na biografia, e foi ela que saiu como capa em todo EPUB
+    # publicado: um retrato quadrado de 400 pixels. Ninguém viu porque nenhuma
+    # conferência aqui olhava a capa, e o arquivo abre normalmente sem ela.
+    #
+    # As três linhas abaixo medem coisas diferentes de propósito. A capa
+    # declarada, a capa que é a primeira página, e a capa que NÃO é uma imagem
+    # do texto: as três precisam valer juntas para o livro chegar certo à loja.
+    opf = z.read('OEBPS/content.opf').decode()
+
+    declaradas = re.findall(r'<item[^>]*properties="[^"]*cover-image[^"]*"[^>]*href="([^"]+)"', opf)
+    declaradas += re.findall(r'<item[^>]*href="([^"]+)"[^>]*properties="[^"]*cover-image[^"]*"', opf)
+    declaradas = sorted(set(declaradas))
+    exigir(len(declaradas) == 1,
+           'o EPUB declara %d imagens como capa, e precisa declarar exatamente uma: %s'
+           % (len(declaradas), declaradas))
+
+    if declaradas:
+        capa = declaradas[0]
+        # A capa não pode ser uma imagem que o texto usa. Foi exatamente esse o
+        # defeito: a foto da biografia ocupando o lugar da capa.
+        usadas_no_texto = set()
+        for nome in z.namelist():
+            if nome.startswith('OEBPS/texto/') and nome.endswith('.xhtml') and 'capa' not in nome:
+                for ref in re.findall(r'(?:src|xlink:href)="\.\./([^"]+)"', z.read(nome).decode()):
+                    usadas_no_texto.add(ref)
+        exigir(capa not in usadas_no_texto,
+               'a capa declarada (%s) é uma imagem usada no meio do texto. '
+               'Foi assim que a foto do autor virou capa do livro.' % capa)
+
+        dados = z.read('OEBPS/' + capa)
+        largura, altura = medir_jpeg(dados)
+        exigir(altura > largura,
+               'a capa é %dx%d, e capa de livro é retrato' % (largura, altura))
+        exigir(min(largura, altura) >= 1400,
+               'a capa é %dx%d: o lado menor precisa de ao menos 1400 pixels '
+               'ou a loja recusa' % (largura, altura))
+        contar('capa', '%dx%d, %.0f KB' % (largura, altura, len(dados) / 1024))
+
+    # A primeira coisa que o leitor abre precisa ser a capa.
+    espinha = re.search(r'<spine[^>]*>(.*?)</spine>', opf, re.S)
+    primeiro = re.search(r'idref="([^"]+)"', espinha.group(1)).group(1) if espinha else ''
+    exigir(primeiro == 'capa-pagina',
+           'o primeiro item da espinha é "%s", e não a página de capa: o livro '
+           'abre no texto e a capa nunca aparece' % primeiro)
+
+    # A forma antiga de declarar capa, que várias lojas ainda procuram.
+    exigir('name="cover"' in opf,
+           'faltou o <meta name="cover">: lojas que só leem o formato antigo '
+           'não acham a capa')
+
     # ---- relatório -----------------------------------------------------
     print('%s  (%.0f KB)' % (os.path.basename(EPUB), os.path.getsize(EPUB) / 1024))
     for n in notas:
@@ -175,7 +267,7 @@ def main():
         for f in falhas:
             print('  * %s' % f)
         sys.exit(1)
-    print('\naprovado em %d conferências' % (len(notas) + 9))
+    print('\naprovado em %d conferências' % (len(notas) + 14))
 
 
 if __name__ == '__main__':
