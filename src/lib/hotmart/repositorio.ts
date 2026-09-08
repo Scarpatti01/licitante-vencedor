@@ -27,8 +27,24 @@ function credenciais(): { url: string; chave: string } | null {
   return url && chave ? { url, chave } : null;
 }
 
+/**
+ * `efeito` é o que a rota registra no log, e o vocabulário é deliberado:
+ * `revogada-antes-da-compra` é a lápide, o caso do aviso fora de ordem, e ele
+ * aparece separado justamente para ser possível notar que aconteceu.
+ *
+ * `nada-a-revogar` saiu: enquanto ele existia, um reembolso sem compra
+ * correspondente terminava em silêncio, que era o defeito.
+ */
 export type Resultado =
-  | { ok: true; efeito: "gravada" | "repetida" | "revogada" | "nada-a-revogar" }
+  | {
+      ok: true;
+      efeito:
+        | "gravada"
+        | "repetida"
+        | "revogada"
+        | "revogada-antes-da-compra"
+        | "ja-revogada";
+    }
   | { ok: false; motivo: string };
 
 /**
@@ -68,15 +84,14 @@ export type Resultado =
  *
  * O PostgREST responde 409 para violação de unicidade e para violação de chave
  * estrangeira. Esta tabela tem uma única chave estrangeira, `usuario_id`, e
- * esta inserção NÃO manda `usuario_id` — só `email`, `origem` e
- * `referencia_externa`. Logo, 409 aqui é a transação já registrada, que é
- * exatamente o sucesso que a reentrega deveria produzir.
+ * NENHUMA inserção daqui manda `usuario_id`. Logo, 409 aqui é a transação já
+ * registrada, que é exatamente o sucesso que a reentrega deveria produzir.
  *
- * Esse raciocínio depende do corpo da inserção continuar sem coluna de chave
- * estrangeira, e é por isso que `repositorio.test.ts` cobra as três chaves: se
- * alguém acrescentar uma quarta, o teste reprova e obriga a revisitar isto.
+ * Esse raciocínio depende de continuar assim, e é por isso que
+ * `repositorio.test.ts` cobra `usuario_id` fora de TODA inserção: quem
+ * acrescentar a coluna reprova, e a mensagem manda revisitar o 409 junto.
  */
-async function gravarCompra(email: string, referencia: string): Promise<Resultado> {
+async function inserir(linha: Record<string, unknown>, oQue: string): Promise<Resultado> {
   const cred = credenciais();
   if (!cred) return { ok: false, motivo: "sem-credencial" };
 
@@ -90,24 +105,29 @@ async function gravarCompra(email: string, referencia: string): Promise<Resultad
       // que nunca conflita, e a sua presença sugeria uma proteção inexistente.
       prefer: "return=representation",
     },
-    body: JSON.stringify([{ email, origem: "compra", referencia_externa: referencia }]),
+    body: JSON.stringify([linha]),
     cache: "no-store",
   });
 
   // A transação já estava registrada. É reentrega, e reentrega é sucesso: 503
   // aqui faria a Hotmart insistir para sempre numa compra que já foi gravada.
-  if (resposta.status === 409) {
-    return { ok: true, efeito: "repetida" };
-  }
+  if (resposta.status === 409) return { ok: true, efeito: "repetida" };
 
   if (!resposta.ok) {
     const detalhe = await resposta.text().catch(() => "");
-    console.error("Hotmart: não gravou a compra", resposta.status, detalhe);
+    console.error(`Hotmart: não ${oQue}`, resposta.status, detalhe);
     return { ok: false, motivo: `banco-${resposta.status}` };
   }
 
   const gravadas = (await resposta.json().catch(() => [])) as unknown[];
   return { ok: true, efeito: gravadas.length > 0 ? "gravada" : "repetida" };
+}
+
+function gravarCompra(email: string, referencia: string): Promise<Resultado> {
+  return inserir(
+    { email, origem: "compra", referencia_externa: referencia },
+    "gravou a compra",
+  );
 }
 
 /**
@@ -116,14 +136,43 @@ async function gravarCompra(email: string, referencia: string): Promise<Resultad
  * Filtra por `revogado_em is null` para a segunda entrega do mesmo reembolso
  * não sobrescrever a data da primeira: a data que interessa é a de quando o
  * dinheiro voltou, não a da última vez que a Hotmart avisou.
+ *
+ * ## QUANDO NÃO HÁ O QUE REVOGAR, A REVOGAÇÃO É GRAVADA MESMO ASSIM
+ *
+ * Webhook chega fora de ordem, porque o que falha é reentregue depois. Se o
+ * reembolso chegar ANTES da compra aprovada da mesma transação, a versão
+ * anterior deste código fazia isto:
+ *
+ *   1. o reembolso não achava linha para revogar, e respondia 200;
+ *   2. a Hotmart considerava entregue e parava de reentregar;
+ *   3. a compra aprovada chegava depois e criava a linha DO ZERO, sem
+ *      revogação nenhuma.
+ *
+ * Acesso liberado numa compra reembolsada, para sempre, e sem nada em lugar
+ * nenhum indicando isso. É o erro caro: silencioso e a favor de quem não pagou.
+ *
+ * A saída é gravar a revogação como uma linha já revogada. A compra aprovada
+ * atrasada esbarra no índice único de `referencia_externa`, vira 200 sem
+ * efeito, e o acesso nunca liga. `tem_acesso_a_jornada` só olha se
+ * `revogado_em` é nulo, então a linha existir não dá acesso a ninguém.
+ *
+ * A ordem importa e é esta: PATCH primeiro, inserção só se ele não achou nada.
+ * O contrário criaria a linha e depois a revogaria, com uma janela entre as
+ * duas em que o acesso estaria valendo.
  */
-async function revogarCompra(referencia: string, motivo: string): Promise<Resultado> {
+async function revogarCompra(
+  email: string,
+  referencia: string,
+  motivo: string,
+): Promise<Resultado> {
   const cred = credenciais();
   if (!cred) return { ok: false, motivo: "sem-credencial" };
 
   const alvo =
     `${cred.url}/rest/v1/compras_da_jornada` +
     `?referencia_externa=eq.${encodeURIComponent(referencia)}&revogado_em=is.null`;
+
+  const agora = new Date().toISOString();
 
   const resposta = await fetch(alvo, {
     method: "PATCH",
@@ -133,7 +182,7 @@ async function revogarCompra(referencia: string, motivo: string): Promise<Result
       "content-type": "application/json",
       prefer: "return=representation",
     },
-    body: JSON.stringify({ revogado_em: new Date().toISOString(), motivo_da_revogacao: motivo }),
+    body: JSON.stringify({ revogado_em: agora, motivo_da_revogacao: motivo }),
     cache: "no-store",
   });
 
@@ -144,11 +193,30 @@ async function revogarCompra(referencia: string, motivo: string): Promise<Result
   }
 
   const mexidas = (await resposta.json().catch(() => [])) as unknown[];
-  return { ok: true, efeito: mexidas.length > 0 ? "revogada" : "nada-a-revogar" };
+  if (mexidas.length > 0) return { ok: true, efeito: "revogada" };
+
+  /*
+   * Zero linhas quer dizer uma de duas coisas, e as duas terminam bem aqui: ou
+   * a linha já estava revogada, e a inserção bate no índice único e vira 200
+   * sem efeito; ou ela ainda não existe, e a lápide impede que a compra
+   * aprovada atrasada libere acesso.
+   */
+  const lapide = await inserir(
+    {
+      email,
+      origem: "compra",
+      referencia_externa: referencia,
+      revogado_em: agora,
+      motivo_da_revogacao: motivo,
+    },
+    "gravou a revogação sem compra",
+  );
+  if (!lapide.ok) return lapide;
+  return { ok: true, efeito: lapide.efeito === "gravada" ? "revogada-antes-da-compra" : "ja-revogada" };
 }
 
 export async function aplicar(decisao: Decisao): Promise<Resultado> {
   if (decisao.fazer === "ignorar") return { ok: true, efeito: "repetida" };
   if (decisao.fazer === "liberar") return gravarCompra(decisao.email, decisao.referencia);
-  return revogarCompra(decisao.referencia, decisao.motivo);
+  return revogarCompra(decisao.email, decisao.referencia, decisao.motivo);
 }
