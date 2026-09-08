@@ -21,7 +21,7 @@ const TOKEN = "token-de-teste-32-caracteres-aqui";
 const ambienteOriginal = { ...process.env };
 
 function aviso(corpo: unknown, token: string | null = TOKEN) {
-  return new Request("https://licitantevencedor.com.br/api/hotmart/webhook", {
+  return new Request("https://licitantevencedor.com.br/api/hotmart/webhook/", {
     method: "POST",
     headers: {
       "content-type": "application/json",
@@ -132,7 +132,7 @@ describe("o aviso da Hotmart", () => {
   });
 
   it("corpo que não é JSON responde 400", async () => {
-    const cru = new Request("https://licitantevencedor.com.br/api/hotmart/webhook", {
+    const cru = new Request("https://licitantevencedor.com.br/api/hotmart/webhook/", {
       method: "POST",
       headers: { "x-hotmart-hottok": TOKEN },
       body: "isto não é json",
