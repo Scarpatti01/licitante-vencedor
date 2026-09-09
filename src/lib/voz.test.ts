@@ -106,6 +106,7 @@ const VIGIADOS = [
   "components/venda/OfertaDoWorkbook.tsx",
   "app/jornada/page.tsx",
   "components/jornada/SemAcessoAJornada.tsx",
+  "components/jornada/ReenviarConvite.tsx",
   "components/jornada/FormularioDaEtapa.tsx",
   "app/(app)/minha-jornada/page.tsx",
   "app/(app)/minha-jornada/[semana]/page.tsx",
