@@ -54,14 +54,54 @@ const LIBERAM = new Set(["PURCHASE_APPROVED", "PURCHASE_COMPLETE"]);
  *
  * `PURCHASE_PROTEST` é contestação de cartão: o dinheiro sai da conta do dono
  * mesmo que a compra pareça boa na tela da Hotmart.
+ *
+ * ## `dinheiroVoltou` DECIDE SE UMA APROVAÇÃO POSTERIOR RELIGA O ACESSO
+ *
+ * Os cinco motivos parecem a mesma coisa na coluna, e não são. A pergunta que
+ * separa os dois grupos é uma só: o dinheiro chegou a sair do comprador?
+ *
+ * - **Voltou** (reembolso, chargeback, contestação). A pessoa foi ressarcida.
+ *   Uma "compra aprovada" depois disso não é dinheiro entrando de novo, e
+ *   religar sozinho seria entregar o produto a quem já recebeu o valor de
+ *   volta. Esses ficam revogados, e o log avisa.
+ *
+ * - **Nunca saiu** (cancelamento, expiração). O pagamento não se concluiu, e
+ *   por isso o acesso caiu. Se a aprovação chega DEPOIS, é o pagamento
+ *   entrando com atraso: boleto pago perto do vencimento, Pix que demorou a
+ *   compensar. Manter o acesso desligado aqui é negar o produto a quem pagou,
+ *   e o erro é do lado caro para o cliente e invisível para o dono.
+ *
+ * A régua é o caminho do dinheiro, e não a gravidade do nome do evento. É por
+ * isso que "cancelada" religa e "reembolsada" não, mesmo as duas soando como
+ * desistência.
  */
-const REVOGAM: Record<string, string> = {
-  PURCHASE_REFUNDED: "reembolso na Hotmart",
-  PURCHASE_CHARGEBACK: "chargeback na Hotmart",
-  PURCHASE_PROTEST: "contestação na Hotmart",
-  PURCHASE_CANCELED: "compra cancelada na Hotmart",
-  PURCHASE_EXPIRED: "pagamento expirado na Hotmart",
+type Revogacao = { motivo: string; dinheiroVoltou: boolean };
+
+const REVOGAM: Record<string, Revogacao> = {
+  PURCHASE_REFUNDED: { motivo: "reembolso na Hotmart", dinheiroVoltou: true },
+  PURCHASE_CHARGEBACK: { motivo: "chargeback na Hotmart", dinheiroVoltou: true },
+  PURCHASE_PROTEST: { motivo: "contestação na Hotmart", dinheiroVoltou: true },
+  PURCHASE_CANCELED: { motivo: "compra cancelada na Hotmart", dinheiroVoltou: false },
+  PURCHASE_EXPIRED: { motivo: "pagamento expirado na Hotmart", dinheiroVoltou: false },
 };
+
+/**
+ * O dinheiro voltou para o comprador nesta revogação?
+ *
+ * Lê o motivo GRAVADO na coluna, que é a única informação que sobra quando a
+ * aprovação atrasada chega dias depois. Consulta o mesmo mapa acima, de
+ * propósito: uma segunda lista de motivos em outro arquivo divergiria no dia em
+ * que alguém acrescentasse um evento, e a divergência liberaria acesso.
+ *
+ * Motivo desconhecido conta como "voltou". É o lado seguro: um motivo que esta
+ * função não reconhece pode ter vindo de uma versão futura da Hotmart, e na
+ * dúvida não se devolve produto pago de volta.
+ */
+export function dinheiroVoltou(motivoGravado: string | null | undefined): boolean {
+  if (!motivoGravado) return true;
+  const achado = Object.values(REVOGAM).find((r) => r.motivo === motivoGravado);
+  return achado ? achado.dinheiroVoltou : true;
+}
 
 function texto(valor: unknown): string | null {
   return typeof valor === "string" && valor.trim() ? valor.trim() : null;
@@ -138,5 +178,5 @@ export function lerAviso(corpo: Record<string, unknown>): Decisao | null {
   if (LIBERAM.has(evento)) {
     return { fazer: "liberar", email, referencia };
   }
-  return { fazer: "revogar", email, referencia, motivo: REVOGAM[evento] };
+  return { fazer: "revogar", email, referencia, motivo: REVOGAM[evento].motivo };
 }
