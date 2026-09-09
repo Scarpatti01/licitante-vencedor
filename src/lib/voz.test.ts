@@ -41,6 +41,12 @@ const VIGIADOS = [
   "lib/resumo/plano.ts",
   "lib/resumo/repositorio.ts",
   "lib/leads-emails.ts",
+  /*
+   * A regra sempre nomeou e-mail, e este arquivo é onde o e-mail é escrito.
+   * Ficou de fora da lista até 09/09 por esquecimento, e os cinco travessões
+   * que estavam nele saíram junto com esta linha.
+   */
+  "lib/email/mensagens.ts",
   "components/CardAssinatura.tsx",
   /*
    * O carimbo do livro. É a linha que o comprador lê no rodapé de todas as 126

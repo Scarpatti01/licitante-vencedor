@@ -8,7 +8,19 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function CriarConta() {
+/**
+ * O `email` da URL vem do convite enviado quando a compra na Hotmart é gravada.
+ *
+ * É dado de fora, então nada aqui confia nele: serve só para preencher o campo,
+ * e quem valida continua sendo `criarConta`. O pior que um valor inventado faz
+ * é o formulário nascer com um endereço errado escrito, que a pessoa apaga.
+ */
+export default async function CriarConta({
+  searchParams,
+}: {
+  searchParams: Promise<{ email?: string }>;
+}) {
+  const { email } = await searchParams;
   return (
     <main className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-5 py-12">
       <h1 className="text-2xl font-semibold tracking-tight">Criar conta</h1>
@@ -21,6 +33,7 @@ export default function CriarConta() {
         rotulo="Criar conta"
         enviando="Criando…"
         minimoDaSenha={MINIMO_DA_SENHA}
+        emailInicial={email}
         rodape={
           <>
             Já tem conta? <LinkDeAcesso href="/entrar/">Entrar</LinkDeAcesso>.

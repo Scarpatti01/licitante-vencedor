@@ -20,6 +20,7 @@ export function FormularioDeAcesso({
   enviando,
   minimoDaSenha,
   proximo,
+  emailInicial,
   rodape,
 }: {
   acao: (estado: EstadoDaEntrada, dados: FormData) => Promise<EstadoDaEntrada>;
@@ -29,6 +30,15 @@ export function FormularioDeAcesso({
   minimoDaSenha?: number;
   /** Caminho para onde voltar depois de entrar. */
   proximo?: string;
+  /**
+   * Preenche o campo de e-mail. Só a criação de conta vinda do convite usa.
+   *
+   * `defaultValue`, e não `value`: o campo continua editável. Quem comprou com
+   * um endereço e prefere a conta em outro tem de conseguir trocar, mesmo que
+   * aí o acesso não apareça, porque impedir a digitação não conserta a compra e
+   * ainda tranca a pessoa numa tela.
+   */
+  emailInicial?: string;
   rodape: React.ReactNode;
 }) {
   const [estado, executar] = useActionState(acao, ESTADO_INICIAL);
@@ -47,6 +57,7 @@ export function FormularioDeAcesso({
           type="email"
           required
           autoComplete="email"
+          defaultValue={emailInicial}
           className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
         />
       </div>

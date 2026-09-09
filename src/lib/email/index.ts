@@ -31,14 +31,18 @@ export {
 export {
   conteudoDeBoasVindas,
   conteudoDeConfirmacao,
+  conteudoDoConvite,
   emHtml,
   emTextoSimples,
   LIMITES,
   mensagemDeBoasVindas,
   mensagemDeConfirmacao,
+  mensagemDoConvite,
+  urlDeCriarConta,
   urlDeDescadastro,
   type ConteudoDeEmail,
   type DadosDaConfirmacao,
+  type DadosDoConvite,
   type DadosDeBoasVindas,
 } from "./mensagens.ts";
 
