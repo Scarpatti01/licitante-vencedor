@@ -258,7 +258,11 @@ describe("destino supabase — ações sobre o lead", () => {
     const jaGravado = "TokenQueJaEstavaNaLinhaDoBanco1234567890";
     roteador((c) =>
       c.metodo === "POST"
-        ? new Response("[]") // ignore-duplicates: nada inserido
+        // 409, e não lista vazia. Este mock já disse `new Response("[]")`,
+        // com um comentário afirmando que era isso que `ignore-duplicates`
+        // produzia. Não produzia, e por isso o teste passava enquanto a
+        // produção reprovava. Observado no log do PostgREST em 09/09.
+        ? new Response("", { status: 409 })
         : new Response(JSON.stringify([{ token: jaGravado, descadastrado_em: null }])),
     );
 
@@ -268,7 +272,7 @@ describe("destino supabase — ações sobre o lead", () => {
   it("quem saiu e voltou é reaberto com token novo, em vez de ficar fora em silêncio", async () => {
     const chamadas = roteador((c) =>
       c.metodo === "POST"
-        ? new Response("[]")
+        ? new Response("", { status: 409 })
         : c.metodo === "GET"
           ? new Response(JSON.stringify([{ token: "antigo-de-quem-saiu-000000", descadastrado_em: "2026-01-01T00:00:00Z" }]))
           : new Response(null, { status: 204 }),
@@ -278,5 +282,76 @@ describe("destino supabase — ações sobre o lead", () => {
 
     const reabertura = chamadas.find((c) => c.metodo === "PATCH");
     expect(reabertura).toBeDefined();
+  });
+});
+
+describe("o 409 do e-mail repetido", () => {
+  /*
+   * A guarda que faltava. `reaproveitarCadastro` existe desde que o double
+   * opt-in nasceu, com comentário explicando os dois cenários que ela trata, e
+   * NUNCA rodou: o 409 do banco saía antes, no `if (!resposta.ok)`, e virava
+   * "Não conseguimos registrar agora" na cara do visitante.
+   *
+   * Quem se cadastra duas vezes é quem não recebeu o primeiro e-mail, ou seja,
+   * a pessoa mais interessada e a que mais precisa que funcione. O defeito
+   * estava no topo do funil, e passou despercebido porque o mock afirmava o que
+   * eu supunha do PostgREST em vez do que ele faz.
+   */
+  beforeEach(() => {
+    process.env.LEADS_DESTINO = "supabase";
+    process.env.NEXT_PUBLIC_SUPABASE_URL = "https://projeto.supabase.test";
+    process.env.SUPABASE_SERVICE_ROLE_KEY = "chave-de-servico";
+  });
+
+  it("não vira falha: cai no reaproveitamento", async () => {
+    const jaGravado = "TokenQueJaEstavaNaLinhaDoBanco1234567890";
+    const metodos: string[] = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (_url: string, init?: RequestInit) => {
+        const metodo = String(init?.method ?? "GET");
+        metodos.push(metodo);
+        if (metodo === "POST") return new Response("", { status: 409 });
+        return new Response(JSON.stringify([{ token: jaGravado, descadastrado_em: null }]));
+      }),
+    );
+
+    expect(
+      await destinoAtual()!.gravar(LEAD),
+      "409 é o banco dizendo que o e-mail já está lá. Tratar como falha faz o " +
+        "visitante ler `não conseguimos registrar` no caso mais comum de todos.",
+    ).toEqual({ ok: true, token: jaGravado });
+
+    expect(
+      metodos,
+      "depois do 409 a consulta por e-mail precisa acontecer, senão o link de " +
+        "confirmação levaria um token que não está no banco.",
+    ).toContain("GET");
+  });
+
+  it("não pede `ignore-duplicates`, que aqui não protege nada", async () => {
+    // Ele mira a chave primária `id`, gerada, e a unicidade do e-mail é uma
+    // constraint separada. Mantê-lo sugeria uma proteção inexistente, que foi
+    // exatamente como o defeito sobreviveu.
+    const cabecalhos: Array<Record<string, string>> = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (_url: string, init?: RequestInit) => {
+        if (String(init?.method) === "POST") {
+          cabecalhos.push(init!.headers as Record<string, string>);
+          return new Response(JSON.stringify([{ token: TOKEN }]), { status: 201 });
+        }
+        return new Response("[]");
+      }),
+    );
+
+    await destinoAtual()!.gravar(LEAD);
+    expect(cabecalhos[0].prefer).not.toContain("ignore-duplicates");
+  });
+
+  it("erro de verdade continua erro", async () => {
+    // O 409 virar sucesso não pode arrastar indisponibilidade junto.
+    vi.stubGlobal("fetch", vi.fn(async () => new Response("caiu", { status: 503 })));
+    expect(await destinoAtual()!.gravar(LEAD)).toEqual({ ok: false, motivo: "falha" });
   });
 });
