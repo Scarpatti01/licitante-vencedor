@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { nomeDaEmpresa } from "@/lib/dominio/nome-da-empresa";
 import Link from "next/link";
 import { empresaAtual, repositorio } from "@/lib/dados";
 import type { FiltroDeOportunidades, ResumoDaOportunidade } from "@/lib/dados/porta";
@@ -145,12 +146,12 @@ export default async function OportunidadesPagina({
       <header>
         <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">Oportunidades</h1>
         <p className="mt-2 max-w-2xl text-sm leading-relaxed text-[var(--muted)]">
-          Editais triados para o perfil de {perfil.nomeFantasia ?? perfil.razaoSocial}, ordenados
+          Editais triados para o perfil de {nomeDaEmpresa(perfil)}, ordenados
           pelo que encerra antes e, depois, pela aderência ao seu perfil.
         </p>
       </header>
 
-      <AvisoDePerfilIncompleto lacunas={lacunas} razaoSocial={perfil.razaoSocial} />
+      <AvisoDePerfilIncompleto lacunas={lacunas} nomeDaEmpresa={nomeDaEmpresa(perfil)} />
 
       <section aria-label="Filtros" className="rounded-xl border p-4 sm:p-5">
         <Filtros valores={valoresDosFiltros} />

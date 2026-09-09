@@ -49,7 +49,7 @@ test("score detalhado sem valor mostra o motivo no lugar do número", async () =
 test("perfil incompleto lista exatamente o que falta", () => {
   const lacunas = lacunasDoPerfil(PERFIL_INCOMPLETO);
   const html = renderToStaticMarkup(
-    <AvisoDePerfilIncompleto lacunas={lacunas} razaoSocial={PERFIL_INCOMPLETO.razaoSocial} />,
+    <AvisoDePerfilIncompleto lacunas={lacunas} nomeDaEmpresa={PERFIL_INCOMPLETO.razaoSocial} />,
   );
   expect(lacunas.map((l) => l.chave)).toEqual([
     "palavrasChave",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { nomeDaEmpresa } from "@/lib/dominio/nome-da-empresa";
 import Link from "next/link";
 import { connection } from "next/server";
 import { empresaAtual, repositorio } from "@/lib/dados";
@@ -82,7 +83,7 @@ export default async function PainelDoDiaPagina() {
           ) : (
             <>Ainda não há registro de coleta para a sua empresa.</>
           )}{" "}
-          Empresa: {perfil.nomeFantasia ?? perfil.razaoSocial}.
+          Empresa: {nomeDaEmpresa(perfil)}.
         </p>
       </header>
 
@@ -96,7 +97,7 @@ export default async function PainelDoDiaPagina() {
         </Aviso>
       ) : null}
 
-      <AvisoDePerfilIncompleto lacunas={lacunas} razaoSocial={perfil.razaoSocial} />
+      <AvisoDePerfilIncompleto lacunas={lacunas} nomeDaEmpresa={nomeDaEmpresa(perfil)} />
 
       <section aria-labelledby="funil-do-dia" className="space-y-3">
         <h2 id="funil-do-dia" className="text-sm font-semibold tracking-tight">
