@@ -132,11 +132,18 @@ export function abrirRepositorioDeIA(): RepositorioDeIA | null {
     },
 
     async registrarAviso(instante, resumo, totalEmCentavosBrl) {
-      const resposta = await fetch(`${url}/rest/v1/avisos_de_custo_de_ia`, {
+      /*
+       * Este é o único dos quatro usos de `ignore-duplicates` do projeto que
+       * FUNCIONAVA sem `on_conflict`, e por um acidente feliz: a chave primária
+       * desta tabela é `(mes)`, que é exatamente a unicidade que interessa, e o
+       * alvo implícito calhava de ser o certo.
+       *
+       * Continua explícito mesmo assim. Depender de a primária coincidir com a
+       * chave natural é depender de uma coincidência que a próxima migração
+       * pode desfazer sem ninguém relacionar as duas coisas.
+       */
+      const resposta = await fetch(`${url}/rest/v1/avisos_de_custo_de_ia?on_conflict=mes`, {
         method: "POST",
-        // Absorve o par que já existia em vez de estourar — mesma defesa de
-        // `alertas/repositorio.ts` contra duas execuções concorrentes gravando
-        // o mesmo mês.
         headers: { ...cabecalhos, prefer: "resolution=ignore-duplicates,return=representation" },
         body: JSON.stringify({
           mes: inicioDoMes(instante),
