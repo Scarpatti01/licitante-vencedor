@@ -26,6 +26,10 @@
   },
   {
    "uf": "AL",
+   "slug": "penedo"
+  },
+  {
+   "uf": "AL",
    "slug": "porto-real-do-colegio"
   },
   {
@@ -39,6 +43,14 @@
   {
    "uf": "AL",
    "slug": "teotonio-vilela"
+  },
+  {
+   "uf": "AM",
+   "slug": "atalaia-do-norte"
+  },
+  {
+   "uf": "AM",
+   "slug": "coari"
   },
   {
    "uf": "AM",
@@ -102,7 +114,23 @@
   },
   {
    "uf": "BA",
+   "slug": "canarana"
+  },
+  {
+   "uf": "BA",
+   "slug": "capim-grosso"
+  },
+  {
+   "uf": "BA",
+   "slug": "catu"
+  },
+  {
+   "uf": "BA",
    "slug": "cruz-das-almas"
+  },
+  {
+   "uf": "BA",
+   "slug": "euclides-da-cunha"
   },
   {
    "uf": "BA",
@@ -126,6 +154,10 @@
   },
   {
    "uf": "BA",
+   "slug": "ipira"
+  },
+  {
+   "uf": "BA",
    "slug": "irece"
   },
   {
@@ -139,6 +171,10 @@
   {
    "uf": "BA",
    "slug": "itapetinga"
+  },
+  {
+   "uf": "BA",
+   "slug": "itapicuru"
   },
   {
    "uf": "BA",
@@ -250,7 +286,15 @@
   },
   {
    "uf": "CE",
+   "slug": "baturite"
+  },
+  {
+   "uf": "CE",
    "slug": "beberibe"
+  },
+  {
+   "uf": "CE",
+   "slug": "boa-viagem"
   },
   {
    "uf": "CE",
@@ -334,6 +378,10 @@
   },
   {
    "uf": "CE",
+   "slug": "iraucuba"
+  },
+  {
+   "uf": "CE",
    "slug": "itaitinga"
   },
   {
@@ -342,7 +390,15 @@
   },
   {
    "uf": "CE",
+   "slug": "itarema"
+  },
+  {
+   "uf": "CE",
    "slug": "jaguaribe"
+  },
+  {
+   "uf": "CE",
+   "slug": "jaguaruana"
   },
   {
    "uf": "CE",
@@ -375,6 +431,14 @@
   {
    "uf": "CE",
    "slug": "monsenhor-tabosa"
+  },
+  {
+   "uf": "CE",
+   "slug": "morada-nova"
+  },
+  {
+   "uf": "CE",
+   "slug": "nova-russas"
   },
   {
    "uf": "CE",
@@ -442,7 +506,15 @@
   },
   {
    "uf": "CE",
+   "slug": "santana-do-acarau"
+  },
+  {
+   "uf": "CE",
    "slug": "sao-benedito"
+  },
+  {
+   "uf": "CE",
+   "slug": "sao-goncalo-do-amarante"
   },
   {
    "uf": "CE",
@@ -490,6 +562,14 @@
   },
   {
    "uf": "ES",
+   "slug": "baixo-guandu"
+  },
+  {
+   "uf": "ES",
+   "slug": "barra-de-sao-francisco"
+  },
+  {
+   "uf": "ES",
    "slug": "boa-esperanca"
   },
   {
@@ -526,6 +606,14 @@
   },
   {
    "uf": "ES",
+   "slug": "ibiracu"
+  },
+  {
+   "uf": "ES",
+   "slug": "iconha"
+  },
+  {
+   "uf": "ES",
    "slug": "iuna"
   },
   {
@@ -542,11 +630,23 @@
   },
   {
    "uf": "ES",
+   "slug": "mimoso-do-sul"
+  },
+  {
+   "uf": "ES",
    "slug": "nova-venecia"
   },
   {
    "uf": "ES",
    "slug": "piuma"
+  },
+  {
+   "uf": "ES",
+   "slug": "ponto-belo"
+  },
+  {
+   "uf": "ES",
+   "slug": "rio-bananal"
   },
   {
    "uf": "ES",
@@ -571,6 +671,10 @@
   {
    "uf": "ES",
    "slug": "venda-nova-do-imigrante"
+  },
+  {
+   "uf": "ES",
+   "slug": "viana"
   },
   {
    "uf": "ES",
@@ -610,11 +714,19 @@
   },
   {
    "uf": "GO",
+   "slug": "bela-vista-de-goias"
+  },
+  {
+   "uf": "GO",
    "slug": "bom-jardim-de-goias"
   },
   {
    "uf": "GO",
    "slug": "bom-jesus-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "bonopolis"
   },
   {
    "uf": "GO",
@@ -638,11 +750,19 @@
   },
   {
    "uf": "GO",
+   "slug": "colinas-do-sul"
+  },
+  {
+   "uf": "GO",
    "slug": "cristalina"
   },
   {
    "uf": "GO",
    "slug": "davinopolis"
+  },
+  {
+   "uf": "GO",
+   "slug": "diorama"
   },
   {
    "uf": "GO",
@@ -674,7 +794,15 @@
   },
   {
    "uf": "GO",
+   "slug": "hidrolandia"
+  },
+  {
+   "uf": "GO",
    "slug": "inhumas"
+  },
+  {
+   "uf": "GO",
+   "slug": "ipora"
   },
   {
    "uf": "GO",
@@ -686,6 +814,10 @@
   },
   {
    "uf": "GO",
+   "slug": "ivolandia"
+  },
+  {
+   "uf": "GO",
    "slug": "jatai"
   },
   {
@@ -694,7 +826,15 @@
   },
   {
    "uf": "GO",
+   "slug": "jussara"
+  },
+  {
+   "uf": "GO",
    "slug": "minacu"
+  },
+  {
+   "uf": "GO",
+   "slug": "mineiros"
   },
   {
    "uf": "GO",
@@ -706,7 +846,19 @@
   },
   {
    "uf": "GO",
+   "slug": "niquelandia"
+  },
+  {
+   "uf": "GO",
+   "slug": "nova-roma"
+  },
+  {
+   "uf": "GO",
    "slug": "nova-veneza"
+  },
+  {
+   "uf": "GO",
+   "slug": "ouvidor"
   },
   {
    "uf": "GO",
@@ -734,7 +886,31 @@
   },
   {
    "uf": "GO",
+   "slug": "rubiataba"
+  },
+  {
+   "uf": "GO",
+   "slug": "santa-barbara-de-goias"
+  },
+  {
+   "uf": "GO",
    "slug": "santa-helena-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "sao-joao-d-alianca"
+  },
+  {
+   "uf": "GO",
+   "slug": "sao-miguel-do-araguaia"
+  },
+  {
+   "uf": "GO",
+   "slug": "senador-canedo"
+  },
+  {
+   "uf": "GO",
+   "slug": "silvania"
   },
   {
    "uf": "GO",
@@ -751,6 +927,14 @@
   {
    "uf": "MA",
    "slug": "acailandia"
+  },
+  {
+   "uf": "MA",
+   "slug": "alcantara"
+  },
+  {
+   "uf": "MA",
+   "slug": "balsas"
   },
   {
    "uf": "MA",
@@ -786,6 +970,10 @@
   },
   {
    "uf": "MG",
+   "slug": "aimores"
+  },
+  {
+   "uf": "MG",
    "slug": "alfenas"
   },
   {
@@ -803,6 +991,10 @@
   {
    "uf": "MG",
    "slug": "bambui"
+  },
+  {
+   "uf": "MG",
+   "slug": "barao-de-cocais"
   },
   {
    "uf": "MG",
@@ -830,7 +1022,15 @@
   },
   {
    "uf": "MG",
+   "slug": "botelhos"
+  },
+  {
+   "uf": "MG",
    "slug": "brasilia-de-minas"
+  },
+  {
+   "uf": "MG",
+   "slug": "camanducaia"
   },
   {
    "uf": "MG",
@@ -839,6 +1039,10 @@
   {
    "uf": "MG",
    "slug": "campo-belo"
+  },
+  {
+   "uf": "MG",
+   "slug": "capitao-eneas"
   },
   {
    "uf": "MG",
@@ -855,6 +1059,10 @@
   {
    "uf": "MG",
    "slug": "carmo-do-cajuru"
+  },
+  {
+   "uf": "MG",
+   "slug": "carmo-do-rio-claro"
   },
   {
    "uf": "MG",
@@ -878,6 +1086,10 @@
   },
   {
    "uf": "MG",
+   "slug": "conceicao-do-rio-verde"
+  },
+  {
+   "uf": "MG",
    "slug": "congonhas"
   },
   {
@@ -886,11 +1098,23 @@
   },
   {
    "uf": "MG",
+   "slug": "conselheiro-lafaiete"
+  },
+  {
+   "uf": "MG",
    "slug": "contagem"
   },
   {
    "uf": "MG",
+   "slug": "coqueiral"
+  },
+  {
+   "uf": "MG",
    "slug": "coronel-fabriciano"
+  },
+  {
+   "uf": "MG",
+   "slug": "curvelo"
   },
   {
    "uf": "MG",
@@ -918,7 +1142,19 @@
   },
   {
    "uf": "MG",
+   "slug": "esmeraldas"
+  },
+  {
+   "uf": "MG",
    "slug": "espera-feliz"
+  },
+  {
+   "uf": "MG",
+   "slug": "estrela-do-indaia"
+  },
+  {
+   "uf": "MG",
+   "slug": "extrema"
   },
   {
    "uf": "MG",
@@ -942,7 +1178,15 @@
   },
   {
    "uf": "MG",
+   "slug": "guaxupe"
+  },
+  {
+   "uf": "MG",
    "slug": "ibia"
+  },
+  {
+   "uf": "MG",
+   "slug": "ibiai"
   },
   {
    "uf": "MG",
@@ -974,6 +1218,10 @@
   },
   {
    "uf": "MG",
+   "slug": "itanhandu"
+  },
+  {
+   "uf": "MG",
    "slug": "itauna"
   },
   {
@@ -982,11 +1230,19 @@
   },
   {
    "uf": "MG",
+   "slug": "janauba"
+  },
+  {
+   "uf": "MG",
    "slug": "januaria"
   },
   {
    "uf": "MG",
    "slug": "joao-monlevade"
+  },
+  {
+   "uf": "MG",
+   "slug": "juatuba"
   },
   {
    "uf": "MG",
@@ -1003,6 +1259,10 @@
   {
    "uf": "MG",
    "slug": "lagoa-santa"
+  },
+  {
+   "uf": "MG",
+   "slug": "lambari"
   },
   {
    "uf": "MG",
@@ -1054,6 +1314,10 @@
   },
   {
    "uf": "MG",
+   "slug": "nepomuceno"
+  },
+  {
+   "uf": "MG",
    "slug": "olaria"
   },
   {
@@ -1062,11 +1326,31 @@
   },
   {
    "uf": "MG",
+   "slug": "oratorios"
+  },
+  {
+   "uf": "MG",
+   "slug": "ouro-branco"
+  },
+  {
+   "uf": "MG",
    "slug": "ouro-fino"
   },
   {
    "uf": "MG",
+   "slug": "ouro-preto"
+  },
+  {
+   "uf": "MG",
    "slug": "para-de-minas"
+  },
+  {
+   "uf": "MG",
+   "slug": "paracatu"
+  },
+  {
+   "uf": "MG",
+   "slug": "paraisopolis"
   },
   {
    "uf": "MG",
@@ -1122,11 +1406,23 @@
   },
   {
    "uf": "MG",
+   "slug": "resplendor"
+  },
+  {
+   "uf": "MG",
    "slug": "ressaquinha"
   },
   {
    "uf": "MG",
    "slug": "ribeirao-das-neves"
+  },
+  {
+   "uf": "MG",
+   "slug": "rodeiro"
+  },
+  {
+   "uf": "MG",
+   "slug": "sabinopolis"
   },
   {
    "uf": "MG",
@@ -1142,7 +1438,15 @@
   },
   {
    "uf": "MG",
+   "slug": "santa-rita-de-caldas"
+  },
+  {
+   "uf": "MG",
    "slug": "santana-do-garambeu"
+  },
+  {
+   "uf": "MG",
+   "slug": "santos-dumont"
   },
   {
    "uf": "MG",
@@ -1175,6 +1479,10 @@
   {
    "uf": "MG",
    "slug": "sete-lagoas"
+  },
+  {
+   "uf": "MG",
+   "slug": "taiobeiras"
   },
   {
    "uf": "MG",
@@ -1218,11 +1526,27 @@
   },
   {
    "uf": "MG",
+   "slug": "urucania"
+  },
+  {
+   "uf": "MG",
    "slug": "varginha"
   },
   {
    "uf": "MG",
+   "slug": "varzelandia"
+  },
+  {
+   "uf": "MG",
    "slug": "vicosa"
+  },
+  {
+   "uf": "MS",
+   "slug": "amambai"
+  },
+  {
+   "uf": "MS",
+   "slug": "aquidauana"
   },
   {
    "uf": "MS",
@@ -1250,6 +1574,10 @@
   },
   {
    "uf": "MS",
+   "slug": "chapadao-do-sul"
+  },
+  {
+   "uf": "MS",
    "slug": "corumba"
   },
   {
@@ -1263,6 +1591,22 @@
   {
    "uf": "MS",
    "slug": "eldorado"
+  },
+  {
+   "uf": "MS",
+   "slug": "figueirao"
+  },
+  {
+   "uf": "MS",
+   "slug": "inocencia"
+  },
+  {
+   "uf": "MS",
+   "slug": "itapora"
+  },
+  {
+   "uf": "MS",
+   "slug": "jardim"
   },
   {
    "uf": "MS",
@@ -1298,6 +1642,10 @@
   },
   {
    "uf": "MS",
+   "slug": "rio-brilhante"
+  },
+  {
+   "uf": "MS",
    "slug": "sao-gabriel-do-oeste"
   },
   {
@@ -1310,6 +1658,10 @@
   },
   {
    "uf": "MT",
+   "slug": "barra-do-garcas"
+  },
+  {
+   "uf": "MT",
    "slug": "caceres"
   },
   {
@@ -1318,7 +1670,31 @@
   },
   {
    "uf": "MT",
+   "slug": "canarana"
+  },
+  {
+   "uf": "MT",
+   "slug": "colider"
+  },
+  {
+   "uf": "MT",
    "slug": "cuiaba"
+  },
+  {
+   "uf": "MT",
+   "slug": "juina"
+  },
+  {
+   "uf": "MT",
+   "slug": "lucas-do-rio-verde"
+  },
+  {
+   "uf": "MT",
+   "slug": "nova-mutum"
+  },
+  {
+   "uf": "MT",
+   "slug": "peixoto-de-azevedo"
   },
   {
    "uf": "MT",
@@ -1370,6 +1746,10 @@
   },
   {
    "uf": "PA",
+   "slug": "canaa-dos-carajas"
+  },
+  {
+   "uf": "PA",
    "slug": "capanema"
   },
   {
@@ -1394,6 +1774,18 @@
   },
   {
    "uf": "PA",
+   "slug": "parauapebas"
+  },
+  {
+   "uf": "PA",
+   "slug": "ponta-de-pedras"
+  },
+  {
+   "uf": "PA",
+   "slug": "portel"
+  },
+  {
+   "uf": "PA",
    "slug": "salinopolis"
   },
   {
@@ -1411,6 +1803,10 @@
   {
    "uf": "PA",
    "slug": "viseu"
+  },
+  {
+   "uf": "PB",
+   "slug": "agua-branca"
   },
   {
    "uf": "PB",
@@ -1434,7 +1830,15 @@
   },
   {
    "uf": "PB",
+   "slug": "mae-d-agua"
+  },
+  {
+   "uf": "PB",
    "slug": "mamanguape"
+  },
+  {
+   "uf": "PB",
+   "slug": "patos"
   },
   {
    "uf": "PB",
@@ -1463,6 +1867,14 @@
   {
    "uf": "PE",
    "slug": "bonito"
+  },
+  {
+   "uf": "PE",
+   "slug": "cabo-de-santo-agostinho"
+  },
+  {
+   "uf": "PE",
+   "slug": "camocim-de-sao-felix"
   },
   {
    "uf": "PE",
@@ -1518,6 +1930,10 @@
   },
   {
    "uf": "PE",
+   "slug": "joaquim-nabuco"
+  },
+  {
+   "uf": "PE",
    "slug": "limoeiro"
   },
   {
@@ -1527,6 +1943,10 @@
   {
    "uf": "PE",
    "slug": "machados"
+  },
+  {
+   "uf": "PE",
+   "slug": "nazare-da-mata"
   },
   {
    "uf": "PE",
@@ -1562,11 +1982,23 @@
   },
   {
    "uf": "PE",
+   "slug": "santa-cruz-do-capibaribe"
+  },
+  {
+   "uf": "PE",
+   "slug": "santa-maria-da-boa-vista"
+  },
+  {
+   "uf": "PE",
    "slug": "sao-bento-do-una"
   },
   {
    "uf": "PE",
    "slug": "sao-jose-do-egito"
+  },
+  {
+   "uf": "PE",
+   "slug": "sao-lourenco-da-mata"
   },
   {
    "uf": "PE",
@@ -1614,6 +2046,14 @@
   },
   {
    "uf": "PI",
+   "slug": "avelino-lopes"
+  },
+  {
+   "uf": "PI",
+   "slug": "parnaiba"
+  },
+  {
+   "uf": "PI",
    "slug": "picos"
   },
   {
@@ -1622,7 +2062,23 @@
   },
   {
    "uf": "PR",
+   "slug": "abatia"
+  },
+  {
+   "uf": "PR",
+   "slug": "altonia"
+  },
+  {
+   "uf": "PR",
    "slug": "alvorada-do-sul"
+  },
+  {
+   "uf": "PR",
+   "slug": "andira"
+  },
+  {
+   "uf": "PR",
+   "slug": "antonina"
   },
   {
    "uf": "PR",
@@ -1646,6 +2102,10 @@
   },
   {
    "uf": "PR",
+   "slug": "bocaiuva-do-sul"
+  },
+  {
+   "uf": "PR",
    "slug": "cambe"
   },
   {
@@ -1658,11 +2118,19 @@
   },
   {
    "uf": "PR",
+   "slug": "capitao-leonidas-marques"
+  },
+  {
+   "uf": "PR",
    "slug": "cascavel"
   },
   {
    "uf": "PR",
    "slug": "catanduvas"
+  },
+  {
+   "uf": "PR",
+   "slug": "centenario-do-sul"
   },
   {
    "uf": "PR",
@@ -1683,6 +2151,10 @@
   {
    "uf": "PR",
    "slug": "cornelio-procopio"
+  },
+  {
+   "uf": "PR",
+   "slug": "cruz-machado"
   },
   {
    "uf": "PR",
@@ -1758,6 +2230,10 @@
   },
   {
    "uf": "PR",
+   "slug": "mallet"
+  },
+  {
+   "uf": "PR",
    "slug": "mandaguacu"
   },
   {
@@ -1794,11 +2270,23 @@
   },
   {
    "uf": "PR",
+   "slug": "nova-fatima"
+  },
+  {
+   "uf": "PR",
    "slug": "nova-laranjeiras"
   },
   {
    "uf": "PR",
+   "slug": "paicandu"
+  },
+  {
+   "uf": "PR",
    "slug": "palmeira"
+  },
+  {
+   "uf": "PR",
+   "slug": "palmital"
   },
   {
    "uf": "PR",
@@ -1818,6 +2306,14 @@
   },
   {
    "uf": "PR",
+   "slug": "piraquara"
+  },
+  {
+   "uf": "PR",
+   "slug": "pitanga"
+  },
+  {
+   "uf": "PR",
    "slug": "pitangueiras"
   },
   {
@@ -1827,6 +2323,10 @@
   {
    "uf": "PR",
    "slug": "prado-ferreira"
+  },
+  {
+   "uf": "PR",
+   "slug": "prudentopolis"
   },
   {
    "uf": "PR",
@@ -1843,6 +2343,18 @@
   {
    "uf": "PR",
    "slug": "rio-negro"
+  },
+  {
+   "uf": "PR",
+   "slug": "rolandia"
+  },
+  {
+   "uf": "PR",
+   "slug": "rondon"
+  },
+  {
+   "uf": "PR",
+   "slug": "santa-cruz-de-monte-castelo"
   },
   {
    "uf": "PR",
@@ -1922,6 +2434,10 @@
   },
   {
    "uf": "RJ",
+   "slug": "cabo-frio"
+  },
+  {
+   "uf": "RJ",
    "slug": "cachoeiras-de-macacu"
   },
   {
@@ -1947,6 +2463,10 @@
   {
    "uf": "RJ",
    "slug": "macae"
+  },
+  {
+   "uf": "RJ",
+   "slug": "mangaratiba"
   },
   {
    "uf": "RJ",
@@ -1986,6 +2506,14 @@
   },
   {
    "uf": "RJ",
+   "slug": "pinheiral"
+  },
+  {
+   "uf": "RJ",
+   "slug": "porto-real"
+  },
+  {
+   "uf": "RJ",
    "slug": "quissama"
   },
   {
@@ -2014,11 +2542,19 @@
   },
   {
    "uf": "RJ",
+   "slug": "sao-joao-da-barra"
+  },
+  {
+   "uf": "RJ",
    "slug": "sao-pedro-da-aldeia"
   },
   {
    "uf": "RJ",
    "slug": "sao-sebastiao-do-alto"
+  },
+  {
+   "uf": "RJ",
+   "slug": "sapucaia"
   },
   {
    "uf": "RJ",
@@ -2058,6 +2594,10 @@
   },
   {
    "uf": "RN",
+   "slug": "currais-novos"
+  },
+  {
+   "uf": "RN",
    "slug": "extremoz"
   },
   {
@@ -2071,6 +2611,10 @@
   {
    "uf": "RN",
    "slug": "macau"
+  },
+  {
+   "uf": "RN",
+   "slug": "martins"
   },
   {
    "uf": "RN",
@@ -2098,7 +2642,15 @@
   },
   {
    "uf": "RN",
+   "slug": "sao-miguel"
+  },
+  {
+   "uf": "RN",
    "slug": "sao-rafael"
+  },
+  {
+   "uf": "RO",
+   "slug": "alto-paraiso"
   },
   {
    "uf": "RO",
@@ -2162,6 +2714,10 @@
   },
   {
    "uf": "RS",
+   "slug": "alvorada"
+  },
+  {
+   "uf": "RS",
    "slug": "bage"
   },
   {
@@ -2170,7 +2726,15 @@
   },
   {
    "uf": "RS",
+   "slug": "cachoeira-do-sul"
+  },
+  {
+   "uf": "RS",
    "slug": "camaqua"
+  },
+  {
+   "uf": "RS",
+   "slug": "cangucu"
   },
   {
    "uf": "RS",
@@ -2278,6 +2842,10 @@
   },
   {
    "uf": "RS",
+   "slug": "planalto"
+  },
+  {
+   "uf": "RS",
    "slug": "porto-alegre"
   },
   {
@@ -2334,11 +2902,23 @@
   },
   {
    "uf": "RS",
+   "slug": "sao-jeronimo"
+  },
+  {
+   "uf": "RS",
    "slug": "sao-leopoldo"
   },
   {
    "uf": "RS",
    "slug": "sao-luiz-gonzaga"
+  },
+  {
+   "uf": "RS",
+   "slug": "sao-marcos"
+  },
+  {
+   "uf": "RS",
+   "slug": "sao-miguel-das-missoes"
   },
   {
    "uf": "RS",
@@ -2371,6 +2951,10 @@
   {
    "uf": "RS",
    "slug": "xangri-la"
+  },
+  {
+   "uf": "SC",
+   "slug": "anita-garibaldi"
   },
   {
    "uf": "SC",
@@ -2423,6 +3007,10 @@
   {
    "uf": "SC",
    "slug": "blumenau"
+  },
+  {
+   "uf": "SC",
+   "slug": "bocaina-do-sul"
   },
   {
    "uf": "SC",
@@ -2486,6 +3074,10 @@
   },
   {
    "uf": "SC",
+   "slug": "curitibanos"
+  },
+  {
+   "uf": "SC",
    "slug": "florianopolis"
   },
   {
@@ -2498,7 +3090,15 @@
   },
   {
    "uf": "SC",
+   "slug": "gaspar"
+  },
+  {
+   "uf": "SC",
    "slug": "gravatal"
+  },
+  {
+   "uf": "SC",
+   "slug": "guaraciaba"
   },
   {
    "uf": "SC",
@@ -2522,6 +3122,14 @@
   },
   {
    "uf": "SC",
+   "slug": "itapoa"
+  },
+  {
+   "uf": "SC",
+   "slug": "ituporanga"
+  },
+  {
+   "uf": "SC",
    "slug": "jaguaruna"
   },
   {
@@ -2542,7 +3150,15 @@
   },
   {
    "uf": "SC",
+   "slug": "mafra"
+  },
+  {
+   "uf": "SC",
    "slug": "maravilha"
+  },
+  {
+   "uf": "SC",
+   "slug": "massaranduba"
   },
   {
    "uf": "SC",
@@ -2558,6 +3174,10 @@
   },
   {
    "uf": "SC",
+   "slug": "nova-erechim"
+  },
+  {
+   "uf": "SC",
    "slug": "nova-itaberaba"
   },
   {
@@ -2566,7 +3186,15 @@
   },
   {
    "uf": "SC",
+   "slug": "paial"
+  },
+  {
+   "uf": "SC",
    "slug": "palhoca"
+  },
+  {
+   "uf": "SC",
+   "slug": "palmitos"
   },
   {
    "uf": "SC",
@@ -2602,6 +3230,10 @@
   },
   {
    "uf": "SC",
+   "slug": "rodeio"
+  },
+  {
+   "uf": "SC",
    "slug": "saltinho"
   },
   {
@@ -2611,6 +3243,10 @@
   {
    "uf": "SC",
    "slug": "sao-bento-do-sul"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-bernardino"
   },
   {
    "uf": "SC",
@@ -2634,6 +3270,10 @@
   },
   {
    "uf": "SC",
+   "slug": "sao-lourenco-do-oeste"
+  },
+  {
+   "uf": "SC",
    "slug": "sao-ludgero"
   },
   {
@@ -2646,11 +3286,19 @@
   },
   {
    "uf": "SC",
+   "slug": "seara"
+  },
+  {
+   "uf": "SC",
    "slug": "serra-alta"
   },
   {
    "uf": "SC",
    "slug": "sul-brasil"
+  },
+  {
+   "uf": "SC",
+   "slug": "taio"
   },
   {
    "uf": "SC",
@@ -2662,11 +3310,23 @@
   },
   {
    "uf": "SC",
+   "slug": "tres-barras"
+  },
+  {
+   "uf": "SC",
+   "slug": "treviso"
+  },
+  {
+   "uf": "SC",
    "slug": "tubarao"
   },
   {
    "uf": "SC",
    "slug": "urussanga"
+  },
+  {
+   "uf": "SC",
+   "slug": "vargem-bonita"
   },
   {
    "uf": "SC",
@@ -2694,6 +3354,10 @@
   },
   {
    "uf": "SE",
+   "slug": "estancia"
+  },
+  {
+   "uf": "SE",
    "slug": "itabaiana"
   },
   {
@@ -2703,6 +3367,10 @@
   {
    "uf": "SE",
    "slug": "macambira"
+  },
+  {
+   "uf": "SE",
+   "slug": "neopolis"
   },
   {
    "uf": "SE",
@@ -2719,6 +3387,18 @@
   {
    "uf": "SP",
    "slug": "adamantina"
+  },
+  {
+   "uf": "SP",
+   "slug": "aguai"
+  },
+  {
+   "uf": "SP",
+   "slug": "aguas-de-lindoia"
+  },
+  {
+   "uf": "SP",
+   "slug": "altinopolis"
   },
   {
    "uf": "SP",
@@ -2746,6 +3426,10 @@
   },
   {
    "uf": "SP",
+   "slug": "araras"
+  },
+  {
+   "uf": "SP",
    "slug": "assis"
   },
   {
@@ -2758,6 +3442,10 @@
   },
   {
    "uf": "SP",
+   "slug": "bariri"
+  },
+  {
+   "uf": "SP",
    "slug": "barra-bonita"
   },
   {
@@ -2767,6 +3455,10 @@
   {
    "uf": "SP",
    "slug": "barueri"
+  },
+  {
+   "uf": "SP",
+   "slug": "batatais"
   },
   {
    "uf": "SP",
@@ -2803,6 +3495,14 @@
   {
    "uf": "SP",
    "slug": "brotas"
+  },
+  {
+   "uf": "SP",
+   "slug": "cacapava"
+  },
+  {
+   "uf": "SP",
+   "slug": "cajati"
   },
   {
    "uf": "SP",
@@ -2847,6 +3547,14 @@
   {
    "uf": "SP",
    "slug": "conchal"
+  },
+  {
+   "uf": "SP",
+   "slug": "cordeiropolis"
+  },
+  {
+   "uf": "SP",
+   "slug": "cosmopolis"
   },
   {
    "uf": "SP",
@@ -2922,6 +3630,10 @@
   },
   {
    "uf": "SP",
+   "slug": "ibitinga"
+  },
+  {
+   "uf": "SP",
    "slug": "ibiuna"
   },
   {
@@ -2938,7 +3650,19 @@
   },
   {
    "uf": "SP",
+   "slug": "ipero"
+  },
+  {
+   "uf": "SP",
+   "slug": "itabera"
+  },
+  {
+   "uf": "SP",
    "slug": "itai"
+  },
+  {
+   "uf": "SP",
+   "slug": "itanhaem"
   },
   {
    "uf": "SP",
@@ -2950,11 +3674,27 @@
   },
   {
    "uf": "SP",
+   "slug": "itapeva"
+  },
+  {
+   "uf": "SP",
    "slug": "itapira"
   },
   {
    "uf": "SP",
+   "slug": "itapolis"
+  },
+  {
+   "uf": "SP",
+   "slug": "itaporanga"
+  },
+  {
+   "uf": "SP",
    "slug": "itaquaquecetuba"
+  },
+  {
+   "uf": "SP",
+   "slug": "itatinga"
   },
   {
    "uf": "SP",
@@ -2975,6 +3715,10 @@
   {
    "uf": "SP",
    "slug": "jacarei"
+  },
+  {
+   "uf": "SP",
+   "slug": "jacupiranga"
   },
   {
    "uf": "SP",
@@ -3006,6 +3750,10 @@
   },
   {
    "uf": "SP",
+   "slug": "lencois-paulista"
+  },
+  {
+   "uf": "SP",
    "slug": "limeira"
   },
   {
@@ -3018,7 +3766,15 @@
   },
   {
    "uf": "SP",
+   "slug": "louveira"
+  },
+  {
+   "uf": "SP",
    "slug": "lucelia"
+  },
+  {
+   "uf": "SP",
+   "slug": "mairinque"
   },
   {
    "uf": "SP",
@@ -3034,7 +3790,15 @@
   },
   {
    "uf": "SP",
+   "slug": "matao"
+  },
+  {
+   "uf": "SP",
    "slug": "maua"
+  },
+  {
+   "uf": "SP",
+   "slug": "miracatu"
   },
   {
    "uf": "SP",
@@ -3075,6 +3839,10 @@
   {
    "uf": "SP",
    "slug": "ourinhos"
+  },
+  {
+   "uf": "SP",
+   "slug": "pacaembu"
   },
   {
    "uf": "SP",
@@ -3138,7 +3906,15 @@
   },
   {
    "uf": "SP",
+   "slug": "pompeia"
+  },
+  {
+   "uf": "SP",
    "slug": "pontal"
+  },
+  {
+   "uf": "SP",
+   "slug": "porto-feliz"
   },
   {
    "uf": "SP",
@@ -3147,6 +3923,10 @@
   {
    "uf": "SP",
    "slug": "praia-grande"
+  },
+  {
+   "uf": "SP",
+   "slug": "presidente-bernardes"
   },
   {
    "uf": "SP",
@@ -3182,6 +3962,10 @@
   },
   {
    "uf": "SP",
+   "slug": "rio-das-pedras"
+  },
+  {
+   "uf": "SP",
    "slug": "salto"
   },
   {
@@ -3202,11 +3986,19 @@
   },
   {
    "uf": "SP",
+   "slug": "santo-antonio-do-pinhal"
+  },
+  {
+   "uf": "SP",
    "slug": "santos"
   },
   {
    "uf": "SP",
    "slug": "sao-bernardo-do-campo"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-caetano-do-sul"
   },
   {
    "uf": "SP",
@@ -3218,11 +4010,19 @@
   },
   {
    "uf": "SP",
+   "slug": "sao-joaquim-da-barra"
+  },
+  {
+   "uf": "SP",
    "slug": "sao-jose-do-rio-preto"
   },
   {
    "uf": "SP",
    "slug": "sao-jose-dos-campos"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-luiz-do-paraitinga"
   },
   {
    "uf": "SP",
@@ -3310,6 +4110,14 @@
   },
   {
    "uf": "SP",
+   "slug": "valparaiso"
+  },
+  {
+   "uf": "SP",
+   "slug": "vinhedo"
+  },
+  {
+   "uf": "SP",
    "slug": "votuporanga"
   },
   {
@@ -3326,6 +4134,14 @@
   },
   {
    "uf": "TO",
+   "slug": "dianopolis"
+  },
+  {
+   "uf": "TO",
+   "slug": "goianorte"
+  },
+  {
+   "uf": "TO",
    "slug": "guarai"
   },
   {
@@ -3335,6 +4151,10 @@
   {
    "uf": "TO",
    "slug": "itapora-do-tocantins"
+  },
+  {
+   "uf": "TO",
+   "slug": "nazare"
   },
   {
    "uf": "TO",
