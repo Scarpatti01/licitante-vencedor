@@ -73,7 +73,23 @@ export type ConteudoDeEmail = {
   rodape: {
     /** O endereço cadastrado. Vem de quem preencheu o formulário: escapar. */
     cadastradoComo: string;
-    descadastro: string;
+    /**
+     * O link de saída. OPCIONAL, e a exceção tem um dono só.
+     *
+     * A regra desta camada é que toda mensagem de LISTA carrega descadastro: é
+     * o que separa uma lista de uma denúncia de spam, e denúncia derruba a
+     * entrega de todos os outros assinantes.
+     *
+     * Mensagem transacional é outra classe. Ninguém se descadastra da própria
+     * compra, e oferecer a saída ali seria pior que não oferecer: ou o link é
+     * morto, porque o comprador pode nem estar em lista nenhuma e não haveria
+     * token, ou ele tira da lista de alertas quem só queria fechar um e-mail de
+     * entrega.
+     *
+     * `mensagens.guarda.test.ts` cobra o link presente em toda mensagem de
+     * lista, para esta abertura não virar porta dos fundos.
+     */
+    descadastro?: string;
     /** Os limites do produto, repetidos em toda mensagem. */
     limites: string;
     /**
@@ -142,12 +158,74 @@ export function conteudoDeConfirmacao(dados: DadosDaConfirmacao): ConteudoDeEmai
     acao: { rotulo: "Confirmar meu e-mail", url: dados.linkDeConfirmacao },
     listas: [],
     fecho: [
-      "Enquanto você não clicar, não enviamos nada — nem o primeiro alerta.",
+      "Enquanto você não clicar, não enviamos nada, nem o primeiro alerta.",
       "Se não foi você quem pediu, é só ignorar esta mensagem: sem o clique, o endereço não entra na lista.",
     ],
     rodape: {
       cadastradoComo: dados.email,
       descadastro: urlDeDescadastro(dados.tokenDeDescadastro, dados.urlBase),
+      limites: LIMITES,
+    },
+  };
+}
+
+/**
+ * Onde o comprador cria a conta, com o e-mail já preenchido.
+ *
+ * O parâmetro não é conveniência de digitação. O acesso à Jornada é ligado pelo
+ * E-MAIL da compra, e criar a conta com outro endereço é o jeito mais provável
+ * de alguém pagar e não conseguir entrar. Levar o endereço certo no link ataca
+ * exatamente esse caso.
+ */
+export function urlDeCriarConta(email: string, urlBase: string = SITE.url): string {
+  return `${urlBase}/criar-conta/?email=${encodeURIComponent(email)}`;
+}
+
+export type DadosDoConvite = {
+  email: string;
+  urlBase?: string;
+};
+
+/**
+ * O convite que sai quando a compra na Hotmart é gravada.
+ *
+ * ## POR QUE ELE NÃO ENTREGA O LIVRO
+ *
+ * Porque a Hotmart já entrega. O comprador recebe dela um e-mail com o PDF e o
+ * ePub, e repetir isso aqui faria duas coisas ruins: competiria com a mensagem
+ * dela pelo mesmo clique, e deslocaria o assunto deste e-mail, que é OUTRO.
+ *
+ * Este aqui existe para uma coisa só: a Jornada de 12 semanas fica no site, e
+ * abri-la exige uma conta. Então ele diz o que falta e leva ao lugar de fazer.
+ *
+ * ## POR QUE O E-MAIL APARECE ESCRITO NO CORPO
+ *
+ * Repetido de propósito, além de já ir no link. O acesso é reconhecido pelo
+ * e-mail da compra, e quem cria conta com outro endereço não encontra nada.
+ * Dizer o endereço em letra, e não só embutido num botão, é o que dá a quem
+ * abriu no celular a chance de perceber antes de errar.
+ *
+ * ## SEM DESCADASTRO, DE PROPÓSITO
+ *
+ * É transacional. Ver a nota em `ConteudoDeEmail.rodape.descadastro`.
+ */
+export function conteudoDoConvite(dados: DadosDoConvite): ConteudoDeEmail {
+  return {
+    assunto: "Sua compra está confirmada. Falta abrir a Jornada",
+    titulo: "Falta um passo para começar a Jornada",
+    paragrafos: [
+      "Sua compra do Workbook do Licitante foi confirmada. O PDF e o arquivo ePub chegam pela Hotmart, no e-mail de entrega dela.",
+      `A Jornada de 12 semanas fica aqui no site, e para abrir você precisa de uma conta com este mesmo endereço: ${dados.email}`,
+    ],
+    acao: { rotulo: "Criar minha conta", url: urlDeCriarConta(dados.email, dados.urlBase) },
+    listas: [],
+    fecho: [
+      "Use exatamente este endereço. É por ele que a sua compra é reconhecida, então uma conta criada com outro e-mail não encontra o acesso.",
+      "Se você já tem conta com este endereço, não precisa criar outra: é só entrar, que a Jornada já está liberada.",
+    ],
+    rodape: {
+      cadastradoComo: dados.email,
+      porque: "Você recebe este e-mail porque comprou o Workbook do Licitante.",
       limites: LIMITES,
     },
   };
@@ -176,7 +254,7 @@ export function conteudoDeBoasVindas(dados: DadosDeBoasVindas): ConteudoDeEmail 
        * roda no Leve (`assinatura/teste.ts`), então é o Leve que a abertura tem
        * de prometer — quem experimenta o Leve e assina o Leve recebe o que viu.
        */
-      `Você tem ${DIAS_DE_TESTE} dias no plano Leve, sem cartão e sem cobrança no fim. Para começar, falta cadastrar a empresa e escolher onde procurar — leva uns cinco minutos, e é o que permite a triagem comparar cada edital com o que você vende.`,
+      `Você tem ${DIAS_DE_TESTE} dias no plano Leve, sem cartão e sem cobrança no fim. Para começar, falta cadastrar a empresa e escolher onde procurar, leva uns cinco minutos, e é o que permite a triagem comparar cada edital com o que você vende.`,
       /*
        * A cidade digitada volta aqui de propósito.
        *
@@ -244,7 +322,7 @@ export function conteudoDeBoasVindas(dados: DadosDeBoasVindas): ConteudoDeEmail 
              */
             rotulo: "Valor",
             texto:
-              "o valor estimado, e “não informado” quando o órgão não publica — nunca R$ 0,00 no lugar do que falta",
+              "o valor estimado, e “não informado” quando o órgão não publica, nunca R$ 0,00 no lugar do que falta",
           },
           {
             rotulo: "Prazo",
@@ -267,7 +345,7 @@ export function conteudoDeBoasVindas(dados: DadosDeBoasVindas): ConteudoDeEmail 
          * sempre: quem descobre limitação depois de investir tempo pede
          * reembolso, e quem descobre antes decide com informação.
          */
-        titulo: `O que o teste NÃO faz — para você não contar com isso`,
+        titulo: `O que o teste NÃO faz, para você não contar com isso`,
         itens: [
           {
             rotulo: "Leitura do documento",
@@ -303,6 +381,14 @@ export function conteudoDeBoasVindas(dados: DadosDeBoasVindas): ConteudoDeEmail 
  * e-mail do destinatário, a cidade que ele digitou e os dois tokens são texto de
  * terceiro que nenhuma camada acima valida quanto a formato.
  */
+/** Por que esta pessoa está recebendo. A frase padrão é a do alerta. */
+function porqueDoRodape(conteudo: ConteudoDeEmail): string {
+  return (
+    conteudo.rodape.porque ??
+    `Você recebe este e-mail porque cadastrou ${conteudo.rodape.cadastradoComo} no alerta do ${SITE.name}.`
+  );
+}
+
 function escapar(texto: string): string {
   return texto
     .replace(/&/g, "&amp;")
@@ -332,10 +418,12 @@ export function emTextoSimples(conteudo: ConteudoDeEmail): string {
   // Depois do `fecho`, e não entre a lista e ele: é o `fecho` que explica o que
   // o botão promete, e a explicação vem antes da promessa.
   if (acao && conteudo.acaoDepoisDasListas) partes.push(acao);
-  partes.push("———");
+  partes.push("---");
   partes.push(conteudo.rodape.limites);
   partes.push(
-    `${conteudo.rodape.porque ?? `Você recebe este e-mail porque cadastrou ${conteudo.rodape.cadastradoComo} no alerta do ${SITE.name}.`} Para não receber mais: ${conteudo.rodape.descadastro}`,
+    conteudo.rodape.descadastro
+      ? `${porqueDoRodape(conteudo)} Para não receber mais: ${conteudo.rodape.descadastro}`
+      : porqueDoRodape(conteudo),
   );
 
   return partes.join("\n\n");
@@ -396,7 +484,11 @@ ${linhas}
 <p style="margin:0 0 18px;font-size:20px;line-height:1.3;font-weight:600;color:#101418">${escapar(conteudo.titulo)}</p>
 ${paragrafos}${antes}${listas}${fecho}${depois}
 <p style="margin:24px 0 0;font-size:12px;line-height:1.6;color:#5b6472">${escapar(conteudo.rodape.limites)}</p>
-<p style="margin:10px 0 0;font-size:12px;line-height:1.6;color:#5b6472">${escapar(conteudo.rodape.porque ?? `Você recebe este e-mail porque cadastrou ${conteudo.rodape.cadastradoComo} no alerta do ${SITE.name}.`)} <a href="${escapar(conteudo.rodape.descadastro)}" style="color:#5b6472">Não quero mais receber</a>.</p>
+<p style="margin:10px 0 0;font-size:12px;line-height:1.6;color:#5b6472">${escapar(porqueDoRodape(conteudo))}${
+  conteudo.rodape.descadastro
+    ? ` <a href="${escapar(conteudo.rodape.descadastro)}" style="color:#5b6472">Não quero mais receber</a>.`
+    : ""
+}</p>
 </div>`;
 }
 
@@ -412,6 +504,10 @@ function mensagem(para: string, conteudo: ConteudoDeEmail): Mensagem {
 
 export function mensagemDeConfirmacao(dados: DadosDaConfirmacao): Mensagem {
   return mensagem(dados.email, conteudoDeConfirmacao(dados));
+}
+
+export function mensagemDoConvite(dados: DadosDoConvite): Mensagem {
+  return mensagem(dados.email, conteudoDoConvite(dados));
 }
 
 export function mensagemDeBoasVindas(dados: DadosDeBoasVindas): Mensagem {

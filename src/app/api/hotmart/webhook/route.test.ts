@@ -1,5 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST } from "./route";
+import * as conviteDoModulo from "@/lib/hotmart/convite";
 
 /**
  * O CÓDIGO DE RESPOSTA É O PRODUTO DESTA ROTA.
@@ -142,5 +143,85 @@ describe("o aviso da Hotmart", () => {
       body: "isto não é json",
     });
     expect((await POST(cru)).status).toBe(400);
+  });
+});
+
+describe("o convite para criar conta", () => {
+  /*
+   * Ele existe porque a Hotmart entrega o livro, e não a Jornada: quem compra
+   * recebe PDF e ePub por lá, e o acesso ao site só aparece quando a pessoa
+   * cria conta COM O MESMO E-MAIL. Sem este e-mail, o comprador não é avisado
+   * disso por ninguém.
+   *
+   * Estes testes travam as duas coisas que podem sair caro: mandar demais, e
+   * deixar o envio derrubar a compra.
+   */
+  function bancoQue(status: number) {
+    return vi.fn(async (url: string, init: RequestInit) => {
+      const metodo = String(init?.method ?? "GET");
+      if (metodo === "GET") return new Response("[]");
+      if (metodo === "POST") {
+        return status === 201
+          ? new Response(JSON.stringify([{ id: "1" }]), { status: 201 })
+          : new Response("", { status });
+      }
+      return new Response("[]");
+    });
+  }
+
+  it("sai na primeira gravação", async () => {
+    vi.stubGlobal("fetch", bancoQue(201));
+    const convite = vi.spyOn(conviteDoModulo, "convidarParaCriarConta").mockResolvedValue();
+
+    const r = await POST(aviso(COMPRA));
+
+    expect(r.status).toBe(200);
+    expect(convite).toHaveBeenCalledWith("comprador@exemplo.com");
+    convite.mockRestore();
+  });
+
+  it("NÃO sai na reentrega, senão vira uma enxurrada", async () => {
+    /*
+     * Em 08/09 a Hotmart reentregou o mesmo evento 165 vezes, e o índice único
+     * transformou cada uma em `repetida`. Se o convite saísse aqui, teriam sido
+     * 165 e-mails para a mesma pessoa, sobre uma compra só.
+     */
+    vi.stubGlobal("fetch", bancoQue(409));
+    const convite = vi.spyOn(conviteDoModulo, "convidarParaCriarConta").mockResolvedValue();
+
+    const r = await POST(aviso(COMPRA));
+
+    expect(r.status).toBe(200);
+    expect(
+      convite,
+      "reentrega não é compra nova. Só a INSERÇÃO de fato pode disparar convite.",
+    ).not.toHaveBeenCalled();
+    convite.mockRestore();
+  });
+
+  it("falha no envio não derruba a compra", async () => {
+    /*
+     * Propagar o erro daria o pior dos mundos: a Hotmart receberia não-2xx e
+     * reentregaria, a reentrega devolveria `repetida`, e `repetida` NÃO dispara
+     * convite. Ou seja, a compra ficaria em retentativa eterna no painel dela
+     * sem nunca reenviar o e-mail que falhou.
+     */
+    vi.stubGlobal("fetch", bancoQue(201));
+    const convite = vi
+      .spyOn(conviteDoModulo, "convidarParaCriarConta")
+      .mockRejectedValue(new Error("resend fora do ar"));
+
+    await expect(POST(aviso(COMPRA))).resolves.toMatchObject({ status: 200 });
+    convite.mockRestore();
+  });
+
+  it("não sai numa revogação", async () => {
+    vi.stubGlobal("fetch", bancoQue(201));
+    const convite = vi.spyOn(conviteDoModulo, "convidarParaCriarConta").mockResolvedValue();
+
+    await POST(aviso({ ...COMPRA, event: "PURCHASE_REFUNDED" }));
+
+    expect(convite).not.toHaveBeenCalled();
+    convite.mockRestore();
   });
 });

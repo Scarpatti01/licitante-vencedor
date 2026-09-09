@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { segredoDaHotmart, tokenConfere } from "@/lib/hotmart/configuracao";
 import { lerAviso, nomeDoEvento } from "@/lib/hotmart/webhook";
 import { aplicar } from "@/lib/hotmart/repositorio";
+import { convidarParaCriarConta } from "@/lib/hotmart/convite";
 
 /**
  * O aviso de venda da Hotmart.
@@ -99,6 +100,28 @@ export async function POST(requisicao: Request) {
   const resultado = await aplicar(decisao);
   if (!resultado.ok) {
     return NextResponse.json({ erro: resultado.motivo }, { status: 503 });
+  }
+
+  /*
+   * O convite sai só na PRIMEIRA gravação, e quem garante isso é o índice único
+   * de `referencia_externa`: reentrega devolve `repetida`, e não `gravada`. Em
+   * 08/09 a Hotmart reentregou o mesmo evento 165 vezes; sem esta amarra seriam
+   * 165 e-mails para a mesma pessoa.
+   *
+   * `await`, e não disparar e esquecer: função serverless pode ser congelada no
+   * instante em que a resposta sai, e uma promessa solta morre com ela. O custo
+   * é a resposta demorar o tempo do envio; o benefício é o e-mail existir.
+   *
+   * E ele nunca derruba a compra. `convidarParaCriarConta` já engole a própria
+   * falha, e o `catch` aqui é redundante DE PROPÓSITO: sem ele, a sobrevivência
+   * desta rota dependeria de uma promessa feita em outro arquivo, e o dia em
+   * que alguém refatorar aquele `try` some com a compra sem nada avisar. A
+   * consequência é cara demais para depender de convenção.
+   */
+  if (decisao.fazer === "liberar" && resultado.efeito === "gravada") {
+    await convidarParaCriarConta(decisao.email).catch((erro) => {
+      console.error("Hotmart: convite lançou, e a compra segue.", erro);
+    });
   }
 
   console.log("Hotmart:", decisao.fazer, resultado.efeito, decisao.referencia);
