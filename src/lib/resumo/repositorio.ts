@@ -344,7 +344,10 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
        * sem reclamar do que já está. A unicidade da tabela é o que garante que
        * "de novo" não vira "duas vezes".
        */
-      await pedir(`envios_do_resumo`, {
+      // `on_conflict` nomeia o alvo. Sem ele o PostgREST mira a primária `id`,
+      // gerada, e a unicidade real (`um_envio_por_empresa_e_edital`) nunca era
+      // o alvo: o par repetido virava 409 e `pedir` lançava, no meio do envio.
+      await pedir(`envios_do_resumo?on_conflict=empresa_id,edital_id`, {
         method: "POST",
         headers: { prefer: "resolution=ignore-duplicates,return=minimal" },
         body: JSON.stringify(

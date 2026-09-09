@@ -163,7 +163,21 @@ export function abrirRepositorio(): Repositorio | null {
        * aquele certame; um que ele recebeu e não consta é, no pior caso, um
        * e-mail repetido. A segunda falha é a que se pode admitir.
        */
-      const resposta = await fetch(`${url}/rest/v1/envios_de_alerta`, {
+      /*
+       * `on_conflict` NOMEIA o alvo, e sem ele nada disso acima funcionava.
+       *
+       * Sem esse parâmetro o PostgREST usa a CHAVE PRIMÁRIA como alvo, e aqui a
+       * primária é `id`, gerado. A unicidade que interessa é a constraint
+       * separada `envio_unico_por_lead_e_edital`, que nunca era o alvo: o par
+       * repetido estourava a inserção com 409, e o `throw` abaixo derrubava o
+       * envio inteiro DEPOIS de o e-mail já ter saído.
+       *
+       * Ou seja, a retentativa que este bloco existe para tornar segura era
+       * justamente a que quebrava. Inferência conferida contra o banco de
+       * produção em 09/09, com `on conflict (lead_id, edital_id) do nothing`
+       * dentro de uma transação revertida.
+       */
+      const resposta = await fetch(`${url}/rest/v1/envios_de_alerta?on_conflict=lead_id,edital_id`, {
         method: "POST",
         headers: {
           ...cabecalhos,
