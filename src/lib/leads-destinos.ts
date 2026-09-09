@@ -143,15 +143,22 @@ function destinoSupabase(): Destino | null {
           method: "POST",
           headers: {
             ...cabecalhos,
-            // `ignore-duplicates` faz o mesmo e-mail reenviado devolver sucesso
-            // em vez de erro: quem cadastra duas vezes não precisa saber que já
-            // estava lá, e um 409 na cara do visitante viraria "deu errado".
-            //
-            // `return=representation` mudou junto com o double opt-in. Com
-            // `return=minimal` não dava para distinguir "inseriu" de "ignorou", e
-            // essa diferença agora importa: no caso ignorado, o token válido é o
-            // que já está na linha, não o que acabamos de gerar.
-            prefer: "resolution=ignore-duplicates,return=representation",
+            /*
+             * `resolution=ignore-duplicates` SAIU daqui, e o comentário que
+             * estava neste lugar dizia que ele fazia o e-mail repetido devolver
+             * sucesso em vez de erro. Não fazia.
+             *
+             * Sem `on_conflict=` na URL, o PostgREST usa a CHAVE PRIMÁRIA como
+             * alvo do conflito. A chave primária desta tabela é `id`, gerado, e
+             * a unicidade do e-mail é uma constraint SEPARADA
+             * (`lead_unico_por_email`). O alvo nunca conflita, a violação do
+             * e-mail sobe como erro, e o visitante lê "não conseguimos
+             * registrar" exatamente no caso que este header prometia cobrir.
+             *
+             * `return=representation` fica: com `return=minimal` não daria para
+             * distinguir "inseriu" de qualquer outra coisa.
+             */
+            prefer: "return=representation",
           },
           body: JSON.stringify({
             email: lead.email,
@@ -161,6 +168,26 @@ function destinoSupabase(): Destino | null {
             token: lead.token,
           }),
         });
+
+        /*
+         * O e-mail já está cadastrado, e isso NÃO é erro: é o caso que
+         * `reaproveitarCadastro` existe para tratar, e que nunca era alcançado
+         * porque o 409 saía antes daqui.
+         *
+         * Provado em produção em 09/09, com o dono tentando se cadastrar de
+         * novo com um e-mail que já era lead desde agosto:
+         *
+         *     POST | 409 | .../rest/v1/leads    11:28:35
+         *     POST | 409 | .../rest/v1/leads    11:30:36
+         *
+         * Esta tabela não tem chave estrangeira, então 409 aqui só pode ser
+         * unicidade, e são duas: `lead_unico_por_email` e `lead_token_unico`. A
+         * primeira é o caso comum. A segunda seria uma colisão de token recém
+         * gerado, e mesmo ela termina certo: a consulta por e-mail não acha
+         * nada, e `reaproveitarCadastro` falha alto em vez de devolver um token
+         * que não identifica ninguém.
+         */
+        if (resposta.status === 409) return reaproveitarCadastro(lead);
 
         if (!resposta.ok) {
           // O corpo do erro pode conter detalhe do banco. Fica no log do servidor,

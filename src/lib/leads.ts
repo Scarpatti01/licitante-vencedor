@@ -57,8 +57,8 @@ export type ResultadoCaptura =
        *
        * Quase sempre é o mesmo de `Lead.token`. Não é quando o e-mail já estava
        * cadastrado: o destino Supabase absorve o segundo cadastro em vez de
-       * duplicar (`resolution=ignore-duplicates`), e a linha mantém o token da
-       * primeira vez. Enviar o token recém-gerado nesse caso produziria um link
+       * duplicar, lendo o 409 do banco como "já está lá", e a linha mantém o
+       * token da primeira vez. Enviar o token recém-gerado nesse caso produziria um link
        * de confirmação morto justo para quem se cadastrou duas vezes — que é
        * gente interessada, não gente distraída.
        */
