@@ -1,3 +1,5 @@
+import { CONTATO, SITE } from "../site.ts";
+
 /**
  * O contrato de envio de e-mail.
  *
@@ -32,11 +34,27 @@ export interface ProvedorDeEmail {
 /**
  * De onde os e-mails saem.
  *
- * Lido do ambiente a cada chamada, com queda para o domínio do site. Nunca pode
+ * Lido do ambiente a cada chamada, com queda para o padrão abaixo. Nunca pode
  * ser um endereço `@gmail.com`: além de não autenticar por SPF/DKIM, o Gmail
  * rejeita quem se passa por ele, e o e-mail nem chega.
+ *
+ * ## POR QUE ELE É DERIVADO DE `CONTATO`, E NÃO ESCRITO AQUI
+ *
+ * Era `alertas@`, literal, e fazia sentido enquanto todo e-mail daqui era
+ * alerta de licitação. Deixou de fazer em 09/09, quando a compra passou a
+ * disparar um convite: "alertas@" num e-mail de compra confirmada soa como
+ * disparo de lista, exatamente na mensagem em que a pessoa acabou de pagar.
+ *
+ * Trocar por outro literal resolveria hoje e criaria a divergência de amanhã: o
+ * site publica `CONTATO.email` no rodapé, na privacidade e nos termos como o
+ * canal para falar com a gente, e responder um e-mail nosso tem de cair ali. Um
+ * segundo literal aqui é a chance de alguém mudar um e esquecer o outro.
+ *
+ * Então o remetente É o canal publicado. A caixa precisa ser real e monitorada
+ * pelo motivo já escrito em `site.ts`, e agora por mais um: resposta de
+ * comprador chega nela.
  */
-export const REMETENTE_PADRAO = "Licitante Vencedor <alertas@licitantevencedor.com.br>";
+export const REMETENTE_PADRAO = `${SITE.name} <${CONTATO.email}>`;
 
 export function remetente(): string {
   const configurado = process.env.EMAIL_REMETENTE?.trim();
