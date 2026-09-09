@@ -14,6 +14,7 @@ import {
 import { CLASSE_RAIZ, ESTILO_PREMIUM } from "@/components/venda/estilo";
 import { Icone } from "@/components/venda/Icone";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { ReenviarConvite } from "@/components/jornada/ReenviarConvite";
 
 /*
  * As duas faces do Workbook, carregadas só nesta rota. `display: swap` deixa o
@@ -609,6 +610,30 @@ export default function PaginaDeVendaDaJornada() {
               }}
               textoDoBotao="Quero ser avisado"
             />
+          </div>
+        </section>
+      ) : null}
+
+      {/*
+        Quem já comprou e não recebeu o convite.
+
+        Fica DEPOIS da oferta e antes do último CTA, de propósito: quem chega
+        aqui procurando isso já rolou a página inteira, e quem está decidindo a
+        compra não é interrompido por um formulário de suporte no meio do
+        argumento. Só aparece com a compra aberta, porque antes disso não há
+        comprador para reenviar nada.
+      */}
+      {ABERTO ? (
+        <section id="ja-comprei" className="px-6 py-16" style={{ background: "var(--papel)" }}>
+          <div className="mx-auto max-w-2xl">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              Já comprou e não recebeu o e-mail?
+            </h2>
+            <p className="mt-2 mb-6 text-sm leading-relaxed">
+              O livro em PDF e o ePub chegam pela Hotmart. A Jornada fica aqui no site, e o
+              convite para criar a conta vai por e-mail. Se ele não chegou, peça de novo abaixo.
+            </p>
+            <ReenviarConvite />
           </div>
         </section>
       ) : null}
