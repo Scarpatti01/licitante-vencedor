@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { nomeDaEmpresa } from "@/lib/dominio/nome-da-empresa";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { empresaAtual, ehDemonstracao, repositorio } from "@/lib/dados";
@@ -181,7 +182,7 @@ function IdentidadeDaEmpresa({
   return (
     <div className="min-w-0">
       <p className="truncate text-sm font-medium" title={razaoSocial}>
-        {nomeFantasia ?? razaoSocial}
+        {nomeDaEmpresa({ razaoSocial, nomeFantasia })}
       </p>
       <p className="truncate text-xs text-[var(--muted)]">
         {cnpj ? formatarCnpj(cnpj) : "CNPJ não informado"}

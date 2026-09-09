@@ -67,17 +67,25 @@ export function lacunasDoPerfil(perfil: PerfilDaEmpresa): LacunaDoPerfil[] {
 
 export function AvisoDePerfilIncompleto({
   lacunas,
-  razaoSocial,
+  nomeDaEmpresa,
 }: {
   lacunas: LacunaDoPerfil[];
-  razaoSocial: string;
+  /**
+   * Como o CLIENTE chama a própria empresa, e não o nome jurídico.
+   *
+   * O nome da prop mudou junto com o valor, de propósito: enquanto ela se
+   * chamava `razaoSocial`, passar a razão social era o que parecia certo, e foi
+   * exatamente o que aconteceu nas duas telas que a usam. Use
+   * `nomeDaEmpresa(perfil)`, de `lib/dominio/nome-da-empresa.ts`.
+   */
+  nomeDaEmpresa: string;
 }) {
   if (lacunas.length === 0) return null;
 
   return (
     <Aviso
       tom="atencao"
-      titulo={`O perfil de ${razaoSocial} está incompleto — e é por isso que falta score`}
+      titulo={`O perfil de ${nomeDaEmpresa} está incompleto — e é por isso que falta score`}
     >
       <p>
         Preferimos não pontuar a chute: quando metade dos critérios fica sem base, o produto diz que
