@@ -365,3 +365,110 @@ describe("compra aprovada sobre transação já revogada", () => {
     aviso.mockRestore();
   });
 });
+
+describe("pagamento que chega depois da revogação", () => {
+  /*
+   * A régua é o CAMINHO DO DINHEIRO, e não a gravidade do nome do evento.
+   *
+   * Cancelamento e expiração desligam o acesso sem o dinheiro ter saído do
+   * comprador: a aprovação que chega depois é a entrada acontecendo, com
+   * atraso. Reembolso, chargeback e contestação devolveram o valor, e aí uma
+   * aprovação posterior não é dinheiro novo.
+   *
+   * É por isso que "cancelada" religa e "reembolsada" não, mesmo as duas
+   * soando como desistência.
+   */
+  function bancoRevogadoPor(motivo: string) {
+    const linha: Record<string, unknown> = {
+      revogado_em: "2026-09-08T21:45:54.675Z",
+      motivo_da_revogacao: motivo,
+    };
+    const patches: Array<Record<string, unknown>> = [];
+    return {
+      linha,
+      patches,
+      fetch: vi.fn(async (url: string, init?: RequestInit) => {
+        const metodo = String(init?.method ?? "GET");
+        if (metodo === "GET") return new Response(JSON.stringify([linha]));
+        if (metodo === "PATCH") {
+          patches.push({ url: String(url), corpo: JSON.parse(String(init!.body)) });
+          Object.assign(linha, JSON.parse(String(init!.body)));
+          return new Response(JSON.stringify([linha]));
+        }
+        return new Response("", { status: 409 });
+      }),
+    };
+  }
+
+  for (const motivo of ["compra cancelada na Hotmart", "pagamento expirado na Hotmart"]) {
+    it(`religa quando o dinheiro nunca saiu: ${motivo}`, async () => {
+      const banco = bancoRevogadoPor(motivo);
+      vi.stubGlobal("fetch", banco.fetch);
+
+      await expect(aplicar(LIBERAR)).resolves.toEqual({ ok: true, efeito: "reativada" });
+
+      expect(
+        banco.linha.revogado_em,
+        "boleto pago perto do vencimento e Pix que demora a compensar caem " +
+          "aqui. Manter desligado nega o produto a quem pagou, e o dono não " +
+          "recebe reclamação de quem desistiu de insistir.",
+      ).toBeNull();
+      expect(banco.linha.motivo_da_revogacao).toBeNull();
+    });
+  }
+
+  for (const motivo of [
+    "reembolso na Hotmart",
+    "chargeback na Hotmart",
+    "contestação na Hotmart",
+  ]) {
+    it(`NÃO religa quando o dinheiro voltou: ${motivo}`, async () => {
+      const banco = bancoRevogadoPor(motivo);
+      vi.stubGlobal("fetch", banco.fetch);
+      const aviso = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+      await expect(aplicar(LIBERAR)).resolves.toEqual({
+        ok: true,
+        efeito: "aprovada-apos-revogacao",
+      });
+
+      expect(
+        banco.patches,
+        "o comprador já recebeu o valor de volta. Religar sozinho aqui entrega " +
+          "o produto de graça, e em silêncio.",
+      ).toHaveLength(0);
+      expect(banco.linha.revogado_em).not.toBeNull();
+      aviso.mockRestore();
+    });
+  }
+
+  it("motivo desconhecido não religa, porque a dúvida é do lado seguro", async () => {
+    // Pode ter vindo de uma versão futura da Hotmart. Na dúvida, não se
+    // devolve produto que já foi pago de volta.
+    const banco = bancoRevogadoPor("motivo que ainda não existe");
+    vi.stubGlobal("fetch", banco.fetch);
+    const aviso = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+    await expect(aplicar(LIBERAR)).resolves.toEqual({
+      ok: true,
+      efeito: "aprovada-apos-revogacao",
+    });
+    expect(banco.patches).toHaveLength(0);
+    aviso.mockRestore();
+  });
+
+  it("a reativação só toca linha revogada", async () => {
+    /*
+     * Sem o filtro, duas entregas simultâneas da mesma aprovação atrasada
+     * fariam a segunda limpar o que a primeira já limpou, e um reembolso que
+     * chegasse no meio seria apagado por ela.
+     */
+    const banco = bancoRevogadoPor("pagamento expirado na Hotmart");
+    vi.stubGlobal("fetch", banco.fetch);
+
+    await aplicar(LIBERAR);
+
+    expect(banco.patches).toHaveLength(1);
+    expect(String(banco.patches[0].url)).toContain("revogado_em=not.is.null");
+  });
+});

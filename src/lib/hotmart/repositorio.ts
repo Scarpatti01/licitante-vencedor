@@ -1,6 +1,6 @@
 import "server-only";
 
-import type { Decisao } from "./webhook.ts";
+import { dinheiroVoltou, type Decisao } from "./webhook.ts";
 
 /**
  * Onde a compra da Hotmart vira acesso.
@@ -35,8 +35,8 @@ function credenciais(): { url: string; chave: string } | null {
  * `nada-a-revogar` saiu: enquanto ele existia, um reembolso sem compra
  * correspondente terminava em silêncio, que era o defeito.
  *
- * `aprovada-apos-revogacao` existe só para deixar de ser silêncio também. Ver
- * `gravarCompra`.
+ * `aprovada-apos-revogacao` existe só para deixar de ser silêncio também, e
+ * `reativada` é o caso em que o pagamento chegou atrasado. Ver `gravarCompra`.
  */
 export type Resultado =
   | {
@@ -47,7 +47,8 @@ export type Resultado =
         | "revogada"
         | "revogada-antes-da-compra"
         | "ja-revogada"
-        | "aprovada-apos-revogacao";
+        | "aprovada-apos-revogacao"
+        | "reativada";
     }
   | { ok: false; motivo: string };
 
@@ -208,14 +209,77 @@ async function gravarCompra(email: string, referencia: string): Promise<Resultad
   const situacao = await situacaoDaCompra(referencia);
   if (!situacao?.revogadaEm) return resultado;
 
+  /*
+   * O pagamento chegou atrasado. Cancelamento e expiração desligam o acesso
+   * sem que o dinheiro tenha saído do comprador, então uma aprovação depois
+   * deles é a entrada acontecendo, e não uma segunda cobrança. Boleto pago
+   * perto do vencimento e Pix que demora a compensar caem aqui.
+   *
+   * Manter desligado neste caso seria negar o produto a quem pagou, com o
+   * agravante de ser invisível: o dono não recebe reclamação de quem desistiu
+   * de insistir.
+   */
+  if (!dinheiroVoltou(situacao.motivo)) {
+    const religada = await reativarCompra(referencia);
+    if (!religada.ok) return religada;
+
+    console.log(
+      "Hotmart: pagamento atrasado reativou o acesso.",
+      "transação:", referencia,
+      "estava revogada por:", situacao.motivo,
+    );
+    return religada;
+  }
+
   console.warn(
     "Hotmart: COMPRA APROVADA chegou para transação JÁ REVOGADA, e o acesso",
-    "continua desligado.",
+    "continua desligado porque o dinheiro voltou ao comprador.",
     "transação:", referencia,
     "revogada em:", situacao.revogadaEm,
     "motivo:", situacao.motivo,
   );
   return { ok: true, efeito: "aprovada-apos-revogacao" };
+}
+
+/**
+ * Devolve o acesso limpando a revogação.
+ *
+ * O filtro por `revogado_em=not.is.null` não é decoração: sem ele, duas
+ * entregas simultâneas da mesma aprovação atrasada fariam a segunda limpar uma
+ * linha que a primeira já limpou, e um reembolso que chegasse no meio seria
+ * apagado por ela. Com o filtro, quem já está ativo não é tocado.
+ *
+ * `motivo_da_revogacao` é zerado junto porque a trava `revogacao_tem_motivo` do
+ * banco só exige motivo enquanto houver data. Deixar o motivo velho numa linha
+ * ativa faria a próxima leitura pensar que ela ainda está revogada.
+ */
+async function reativarCompra(referencia: string): Promise<Resultado> {
+  const cred = credenciais();
+  if (!cred) return { ok: false, motivo: "sem-credencial" };
+
+  const alvo =
+    `${cred.url}/rest/v1/compras_da_jornada` +
+    `?referencia_externa=eq.${encodeURIComponent(referencia)}&revogado_em=not.is.null`;
+
+  const resposta = await fetch(alvo, {
+    method: "PATCH",
+    headers: {
+      apikey: cred.chave,
+      authorization: `Bearer ${cred.chave}`,
+      "content-type": "application/json",
+      prefer: "return=representation",
+    },
+    body: JSON.stringify({ revogado_em: null, motivo_da_revogacao: null }),
+    cache: "no-store",
+  });
+
+  if (!resposta.ok) {
+    const detalhe = await resposta.text().catch(() => "");
+    console.error("Hotmart: não reativou a compra", resposta.status, detalhe);
+    return { ok: false, motivo: `banco-${resposta.status}` };
+  }
+
+  return { ok: true, efeito: "reativada" };
 }
 
 /**
