@@ -90,6 +90,10 @@
   },
   {
    "uf": "BA",
+   "slug": "andarai"
+  },
+  {
+   "uf": "BA",
    "slug": "barreiras"
   },
   {
@@ -298,6 +302,10 @@
   },
   {
    "uf": "CE",
+   "slug": "brejo-santo"
+  },
+  {
+   "uf": "CE",
    "slug": "camocim"
   },
   {
@@ -430,6 +438,10 @@
   },
   {
    "uf": "CE",
+   "slug": "mombaca"
+  },
+  {
+   "uf": "CE",
    "slug": "monsenhor-tabosa"
   },
   {
@@ -463,6 +475,10 @@
   {
    "uf": "CE",
    "slug": "parambu"
+  },
+  {
+   "uf": "CE",
+   "slug": "pentecoste"
   },
   {
    "uf": "CE",
@@ -635,6 +651,10 @@
   {
    "uf": "ES",
    "slug": "nova-venecia"
+  },
+  {
+   "uf": "ES",
+   "slug": "pinheiros"
   },
   {
    "uf": "ES",
@@ -1014,6 +1034,10 @@
   },
   {
    "uf": "MG",
+   "slug": "bocaina-de-minas"
+  },
+  {
+   "uf": "MG",
    "slug": "bocaiuva"
   },
   {
@@ -1039,6 +1063,10 @@
   {
    "uf": "MG",
    "slug": "campo-belo"
+  },
+  {
+   "uf": "MG",
+   "slug": "capelinha"
   },
   {
    "uf": "MG",
@@ -1215,6 +1243,10 @@
   {
    "uf": "MG",
    "slug": "itamarandiba"
+  },
+  {
+   "uf": "MG",
+   "slug": "itambacuri"
   },
   {
    "uf": "MG",
@@ -1678,6 +1710,10 @@
   },
   {
    "uf": "MT",
+   "slug": "confresa"
+  },
+  {
+   "uf": "MT",
    "slug": "cuiaba"
   },
   {
@@ -1830,6 +1866,10 @@
   },
   {
    "uf": "PB",
+   "slug": "cuite"
+  },
+  {
+   "uf": "PB",
    "slug": "joao-pessoa"
   },
   {
@@ -1938,6 +1978,10 @@
   },
   {
    "uf": "PE",
+   "slug": "lagoa-do-carro"
+  },
+  {
+   "uf": "PE",
    "slug": "limoeiro"
   },
   {
@@ -1959,6 +2003,14 @@
   {
    "uf": "PE",
    "slug": "orobo"
+  },
+  {
+   "uf": "PE",
+   "slug": "ouricuri"
+  },
+  {
+   "uf": "PE",
+   "slug": "palmares"
   },
   {
    "uf": "PE",
@@ -2246,6 +2298,10 @@
   },
   {
    "uf": "PR",
+   "slug": "mandirituba"
+  },
+  {
+   "uf": "PR",
    "slug": "marechal-candido-rondon"
   },
   {
@@ -2283,6 +2339,10 @@
   {
    "uf": "PR",
    "slug": "paicandu"
+  },
+  {
+   "uf": "PR",
+   "slug": "palmas"
   },
   {
    "uf": "PR",
@@ -2450,6 +2510,10 @@
   },
   {
    "uf": "RJ",
+   "slug": "casimiro-de-abreu"
+  },
+  {
+   "uf": "RJ",
    "slug": "duque-de-caxias"
   },
   {
@@ -2463,6 +2527,10 @@
   {
    "uf": "RJ",
    "slug": "itatiaia"
+  },
+  {
+   "uf": "RJ",
+   "slug": "japeri"
   },
   {
    "uf": "RJ",
@@ -2846,6 +2914,10 @@
   },
   {
    "uf": "RS",
+   "slug": "pinhal-grande"
+  },
+  {
+   "uf": "RS",
    "slug": "planalto"
   },
   {
@@ -3154,6 +3226,10 @@
   },
   {
    "uf": "SC",
+   "slug": "laguna"
+  },
+  {
+   "uf": "SC",
    "slug": "mafra"
   },
   {
@@ -3207,6 +3283,10 @@
   {
    "uf": "SC",
    "slug": "pinhalzinho"
+  },
+  {
+   "uf": "SC",
+   "slug": "pomerode"
   },
   {
    "uf": "SC",
@@ -3634,6 +3714,10 @@
   },
   {
    "uf": "SP",
+   "slug": "iaras"
+  },
+  {
+   "uf": "SP",
    "slug": "ibitinga"
   },
   {
@@ -3886,6 +3970,10 @@
   },
   {
    "uf": "SP",
+   "slug": "piracaia"
+  },
+  {
+   "uf": "SP",
    "slug": "piracicaba"
   },
   {
@@ -3978,11 +4066,19 @@
   },
   {
    "uf": "SP",
+   "slug": "santa-cruz-do-rio-pardo"
+  },
+  {
+   "uf": "SP",
    "slug": "santa-fe-do-sul"
   },
   {
    "uf": "SP",
    "slug": "santa-rita-do-passa-quatro"
+  },
+  {
+   "uf": "SP",
+   "slug": "santana-de-parnaiba"
   },
   {
    "uf": "SP",
