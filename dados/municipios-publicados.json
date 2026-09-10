@@ -758,7 +758,15 @@
   },
   {
    "uf": "GO",
+   "slug": "caldas-novas"
+  },
+  {
+   "uf": "GO",
    "slug": "catalao"
+  },
+  {
+   "uf": "GO",
+   "slug": "caturai"
   },
   {
    "uf": "GO",
@@ -1578,6 +1586,10 @@
   },
   {
    "uf": "MS",
+   "slug": "anastacio"
+  },
+  {
+   "uf": "MS",
    "slug": "aquidauana"
   },
   {
@@ -1703,6 +1715,10 @@
   {
    "uf": "MT",
    "slug": "canarana"
+  },
+  {
+   "uf": "MT",
+   "slug": "claudia"
   },
   {
    "uf": "MT",
@@ -2158,6 +2174,10 @@
   },
   {
    "uf": "PR",
+   "slug": "bituruna"
+  },
+  {
+   "uf": "PR",
    "slug": "bocaiuva-do-sul"
   },
   {
@@ -2199,6 +2219,10 @@
   {
    "uf": "PR",
    "slug": "colombo"
+  },
+  {
+   "uf": "PR",
+   "slug": "congonhinhas"
   },
   {
    "uf": "PR",
@@ -2735,6 +2759,10 @@
   {
    "uf": "RO",
    "slug": "cacoal"
+  },
+  {
+   "uf": "RO",
+   "slug": "jaru"
   },
   {
    "uf": "RO",
@@ -3275,6 +3303,10 @@
   {
    "uf": "SC",
    "slug": "palmitos"
+  },
+  {
+   "uf": "SC",
+   "slug": "papanduva"
   },
   {
    "uf": "SC",
