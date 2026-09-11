@@ -486,6 +486,10 @@
   },
   {
    "uf": "CE",
+   "slug": "pedra-branca"
+  },
+  {
+   "uf": "CE",
    "slug": "pentecoste"
   },
   {
@@ -770,6 +774,10 @@
   },
   {
    "uf": "GO",
+   "slug": "cachoeira-dourada"
+  },
+  {
+   "uf": "GO",
    "slug": "cacu"
   },
   {
@@ -891,6 +899,10 @@
   {
    "uf": "GO",
    "slug": "morrinhos"
+  },
+  {
+   "uf": "GO",
+   "slug": "neropolis"
   },
   {
    "uf": "GO",
@@ -1955,6 +1967,10 @@
   {
    "uf": "PB",
    "slug": "pombal"
+  },
+  {
+   "uf": "PB",
+   "slug": "sousa"
   },
   {
    "uf": "PE",
