@@ -962,6 +962,10 @@
   },
   {
    "uf": "GO",
+   "slug": "santo-antonio-da-barra"
+  },
+  {
+   "uf": "GO",
    "slug": "sao-joao-d-alianca"
   },
   {
@@ -991,6 +995,10 @@
   {
    "uf": "GO",
    "slug": "valparaiso-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "vila-boa"
   },
   {
    "uf": "MA",
@@ -1062,6 +1070,10 @@
   },
   {
    "uf": "MG",
+   "slug": "astolfo-dutra"
+  },
+  {
+   "uf": "MG",
    "slug": "bambui"
   },
   {
@@ -1095,6 +1107,10 @@
   {
    "uf": "MG",
    "slug": "bom-despacho"
+  },
+  {
+   "uf": "MG",
+   "slug": "bom-sucesso"
   },
   {
    "uf": "MG",
@@ -1162,6 +1178,10 @@
   },
   {
    "uf": "MG",
+   "slug": "chapada-gaucha"
+  },
+  {
+   "uf": "MG",
    "slug": "coimbra"
   },
   {
@@ -1195,6 +1215,10 @@
   {
    "uf": "MG",
    "slug": "coronel-fabriciano"
+  },
+  {
+   "uf": "MG",
+   "slug": "cristais"
   },
   {
    "uf": "MG",
@@ -1279,6 +1303,10 @@
   {
    "uf": "MG",
    "slug": "iguatama"
+  },
+  {
+   "uf": "MG",
+   "slug": "ilicinea"
   },
   {
    "uf": "MG",
@@ -2258,6 +2286,10 @@
   },
   {
    "uf": "PR",
+   "slug": "campo-largo"
+  },
+  {
+   "uf": "PR",
    "slug": "campo-mourao"
   },
   {
@@ -2430,6 +2462,10 @@
   },
   {
    "uf": "PR",
+   "slug": "nova-prata-do-iguacu"
+  },
+  {
+   "uf": "PR",
    "slug": "paicandu"
   },
   {
@@ -2443,6 +2479,10 @@
   {
    "uf": "PR",
    "slug": "palmital"
+  },
+  {
+   "uf": "PR",
+   "slug": "paranacity"
   },
   {
    "uf": "PR",
@@ -2494,6 +2534,10 @@
   },
   {
    "uf": "PR",
+   "slug": "rancho-alegre"
+  },
+  {
+   "uf": "PR",
    "slug": "reserva"
   },
   {
@@ -2507,6 +2551,10 @@
   {
    "uf": "PR",
    "slug": "rondon"
+  },
+  {
+   "uf": "PR",
+   "slug": "salgado-filho"
   },
   {
    "uf": "PR",
@@ -2591,6 +2639,10 @@
   {
    "uf": "RJ",
    "slug": "belford-roxo"
+  },
+  {
+   "uf": "RJ",
+   "slug": "bom-jesus-do-itabapoana"
   },
   {
    "uf": "RJ",
@@ -2810,6 +2862,10 @@
   },
   {
    "uf": "RN",
+   "slug": "santa-cruz"
+  },
+  {
+   "uf": "RN",
    "slug": "sao-goncalo-do-amarante"
   },
   {
@@ -2987,6 +3043,10 @@
   {
    "uf": "RS",
    "slug": "itaqui"
+  },
+  {
+   "uf": "RS",
+   "slug": "jaguarao"
   },
   {
    "uf": "RS",
@@ -3254,6 +3314,10 @@
   },
   {
    "uf": "SC",
+   "slug": "celso-ramos"
+  },
+  {
+   "uf": "SC",
    "slug": "cerro-negro"
   },
   {
@@ -3383,6 +3447,10 @@
   {
    "uf": "SC",
    "slug": "nova-itaberaba"
+  },
+  {
+   "uf": "SC",
+   "slug": "nova-trento"
   },
   {
    "uf": "SC",
@@ -3702,6 +3770,10 @@
   },
   {
    "uf": "SP",
+   "slug": "boituva"
+  },
+  {
+   "uf": "SP",
    "slug": "bom-jesus-dos-perdoes"
   },
   {
@@ -3851,6 +3923,10 @@
   {
    "uf": "SP",
    "slug": "hortolandia"
+  },
+  {
+   "uf": "SP",
+   "slug": "iacanga"
   },
   {
    "uf": "SP",
