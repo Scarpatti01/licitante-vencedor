@@ -242,16 +242,64 @@ export default function Home() {
             revisado e reescrito para a Lei 14.133/2021. Estes já estão no ar:
           </p>
 
-          <div className="mt-8 grid gap-6 sm:grid-cols-3">
+          {/*
+            OS CARTÕES PRECISAM PARECER CLICÁVEIS, E NÃO SÓ SER
+
+            Até aqui só o título era link, sem sublinhado em repouso: no
+            computador a pessoa tinha que passar o mouse por cima para
+            descobrir, e no celular não existe passar o mouse por cima. Nove
+            guias publicados que ninguém abre porque parecem parágrafos.
+
+            O que muda: caixa desenhada (borda e fundo de superfície), título
+            na cor de link, uma chamada explícita com seta, e a área de clique
+            passa a ser o cartão inteiro.
+
+            ## Por que `after:absolute after:inset-0`, e não um `<a>` em volta
+
+            Envolver tudo no link é o que `Funil.tsx` e `LinhaDaOportunidade.tsx`
+            fazem, e ali cabe: são números e rótulos curtos. Aqui o resumo tem
+            duas linhas de prosa, e ele entraria no nome acessível do link, que
+            é o que o leitor de tela anuncia. O pseudo-elemento estica a área
+            de clique sobre o cartão sem mexer no conteúdo do link: o nome
+            continua sendo só o título, e o resumo continua selecionável com o
+            mouse.
+
+            A chamada "Ler o guia" é `aria-hidden` de propósito. Ela é a pista
+            visual de que o bloco leva a algum lugar; para quem usa leitor de
+            tela essa pista já é o link do título, e lê-la de novo só repetiria.
+
+            O foco do teclado desenha o anel no cartão inteiro, e não em volta
+            do texto do título, porque a área que responde ao Enter é o cartão.
+            É `has-[a:focus-visible]` e não `focus-within` para o anel aparecer
+            só para quem chegou pelo teclado: clique de mouse também dá foco ao
+            link, e com `focus-within` o cartão ficaria contornado depois do
+            clique.
+          */}
+          <div className="mt-8 grid gap-4 sm:grid-cols-3 sm:gap-6">
             {GUIAS_PUBLICADOS.map((guia) => (
-              <article key={guia.href}>
+              <article
+                key={guia.href}
+                className="group relative flex flex-col rounded-xl border bg-[var(--surface)] p-5 transition-colors hover:border-[var(--accent)] hover:bg-[var(--accent-soft)] has-[a:focus-visible]:outline-2 has-[a:focus-visible]:-outline-offset-2 has-[a:focus-visible]:outline-[var(--accent)]"
+              >
                 <h3 className="font-semibold tracking-tight">
-                  <a href={guia.href} className="underline-offset-4 hover:underline">
+                  <a
+                    href={guia.href}
+                    className="text-[var(--accent)] underline-offset-4 after:absolute after:inset-0 group-hover:underline focus-visible:outline-none"
+                  >
                     {guia.titulo}
                   </a>
                 </h3>
                 <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
                   {guia.resumo}
+                </p>
+                <p
+                  aria-hidden
+                  className="mt-auto flex items-center gap-1.5 pt-4 text-sm font-medium text-[var(--accent)]"
+                >
+                  Ler o guia
+                  <span className="transition-transform group-hover:translate-x-0.5">
+                    &rarr;
+                  </span>
                 </p>
               </article>
             ))}
