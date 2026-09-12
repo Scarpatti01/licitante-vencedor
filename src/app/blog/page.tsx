@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { GUIAS_EM_RECONSTRUCAO, GUIAS_PUBLICADOS } from "@/lib/guias";
 import { ARTIGOS_PUBLICADOS } from "@/lib/blog";
@@ -7,6 +6,7 @@ import { redirecionamentosAtivos, urlsDoAcervo } from "@/lib/legacy";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { CartaoDeConteudo } from "@/components/CartaoDeConteudo";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
 
 const TITULO = "Guias e artigos sobre licitações públicas";
@@ -91,22 +91,27 @@ export default function Blog() {
             <h2 className="text-sm font-semibold tracking-wide text-[var(--muted)] uppercase">
               Artigos
             </h2>
-            <div className="mt-6 space-y-8">
+            {/*
+              Os dois blocos desta página são cartões desde 12/09, pelo mesmo
+              motivo que a home: eram títulos soltos separados por um filete,
+              e a pista de que ali se clica dependia de passar o mouse por
+              cima. No celular, que é de onde vem a maior parte de quem cai
+              num artigo pela busca, essa pista não existe.
+
+              Continua em coluna única, e não em grade: o título grande é a
+              hierarquia desta página, e é ele que a pessoa varre.
+            */}
+            <div className="mt-6 space-y-4">
               {ARTIGOS_PUBLICADOS.map((artigo) => (
-                <article key={artigo.slug} className="border-t pt-8">
-                  <h3 className="text-2xl font-semibold tracking-tight">
-                    <Link
-                      href={`/blog/${artigo.slug}/`}
-                      className="underline-offset-4 hover:underline"
-                    >
-                      {artigo.titulo}
-                    </Link>
-                  </h3>
-                  <p className="mt-3 leading-relaxed text-[var(--muted)]">{artigo.descricao}</p>
-                  <p className="mt-3 text-sm text-[var(--muted)]">
-                    Conferido nas fontes oficiais em {dataDeBrasilia(`${artigo.verificadoEm}T12:00:00-03:00`)}
-                  </p>
-                </article>
+                <CartaoDeConteudo
+                  key={artigo.slug}
+                  href={`/blog/${artigo.slug}/`}
+                  titulo={artigo.titulo}
+                  resumo={artigo.descricao}
+                  nota={`Conferido nas fontes oficiais em ${dataDeBrasilia(`${artigo.verificadoEm}T12:00:00-03:00`)}`}
+                  chamada="Ler o artigo"
+                  destaque
+                />
               ))}
             </div>
           </section>
@@ -128,22 +133,20 @@ export default function Blog() {
           Guias
         </h2>
 
-        <section className="mt-6 space-y-8">
+        {/* O h3 dentro do cartão é deliberado: existe um h2 "Guias" acima de
+            toda a lista. E `prefetch={false}` porque são nove hubs pesados
+            numa lista só, como na home. */}
+        <section className="mt-6 space-y-4">
           {GUIAS_PUBLICADOS.map((guia) => (
-            <article key={guia.href} className="border-t pt-8">
-              {/* h3, e não h2: agora existe um h2 "Guias" acima de toda a lista. */}
-              <h3 className="text-2xl font-semibold tracking-tight">
-                <a href={guia.href} className="underline-offset-4 hover:underline">
-                  {guia.titulo}
-                </a>
-              </h3>
-              <p className="mt-3 leading-relaxed text-[var(--muted)]">{guia.resumo}</p>
-              <p className="mt-3">
-                <a href={guia.href} className="text-sm underline underline-offset-4">
-                  Ler o guia
-                </a>
-              </p>
-            </article>
+            <CartaoDeConteudo
+              key={guia.href}
+              href={guia.href}
+              titulo={guia.titulo}
+              resumo={guia.resumo}
+              chamada="Ler o guia"
+              destaque
+              prefetch={false}
+            />
           ))}
         </section>
 
