@@ -1,18 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 23760 editais coletados em 2026-09-13T11:43:44.836Z.
+Revisão dos dados — 28494 editais coletados em 2026-09-13T13:16:58.904Z.
 
-ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 25 foram coletadas por inteiro, 0 ficaram parciais e 2 não trouxeram nada.
-
-  Completas (representadas por inteiro nos números abaixo): AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, RJ, RN, RO, RR, RS, SE, SP, TO
-  Sem coleta (nenhum edital; NÃO estão representadas nos números abaixo):
-    PR: não coletada nesta rodada
-    SC: não coletada nesta rodada
-
-  Os 23760 editais revisados vêm de AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, RJ, RN, RO, RR, RS, SE, SP, TO.
-
-Encontrados 0 erro(s), 3 suspeita(s) e 148 aviso(s).
+Encontrados 0 erro(s), 4 suspeita(s) e 151 aviso(s).
 
 [AVISO] O edital 07954480000179-1-023100/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "COPA E COZINHA"
@@ -278,6 +269,14 @@ Encontrados 0 erro(s), 3 suspeita(s) e 148 aviso(s).
   Evidência: objeto declarado: "Sifão"
   Edital: https://pncp.gov.br/app/editais/14485841000140/2026/2333
 
+[AVISO] O edital 77780146000121-1-000031/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Água mineral"
+  Edital: https://pncp.gov.br/app/editais/77780146000121/2026/31
+
+[AVISO] O edital 77780146000121-1-000032/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Agua mineral"
+  Edital: https://pncp.gov.br/app/editais/77780146000121/2026/32
+
 [AVISO] O edital 94707494000192-1-000645/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "MEDICAMENTOS"
   Edital: https://pncp.gov.br/app/editais/94707494000192/2026/645
@@ -355,7 +354,7 @@ Encontrados 0 erro(s), 3 suspeita(s) e 148 aviso(s).
   Edital: https://pncp.gov.br/app/editais/18715599000105/2026/676
 
 [SUSPEITA] No edital 10221745000134-1-000065/2026, do órgão MUNICIPIO DE JACAREACANGA, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 7.404.388.540,00, contra máximo de R$ 2.029.055.625,00 entre os demais Pregão - Eletrônico deste conjunto
+  Evidência: valor declarado R$ 7.404.388.540,00, contra máximo de R$ 6.742.822.235,80 entre os demais Pregão - Eletrônico deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10 daria R$ 740.438.854,00; dividido por 100 daria R$ 74.043.885,40; dividido por 1.000 daria R$ 7.404.388,54; dividido por 10.000 daria R$ 740.438,85). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/10221745000134/2026/65
 
@@ -398,6 +397,10 @@ Encontrados 0 erro(s), 3 suspeita(s) e 148 aviso(s).
 [AVISO] O edital 87843819000107-1-001351/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "CONTRATAÇÃO"
   Edital: https://pncp.gov.br/app/editais/87843819000107/2026/1351
+
+[AVISO] O edital 14814139000183-1-000144/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "PE"
+  Edital: https://pncp.gov.br/app/editais/14814139000183/2026/144
 
 [AVISO] O edital 87344016000108-1-000513/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "FERRAMENTAS"
@@ -553,7 +556,7 @@ Encontrados 0 erro(s), 3 suspeita(s) e 148 aviso(s).
   Edital: https://pncp.gov.br/app/editais/17914128000163/2026/106
 
 [SUSPEITA] No edital 13284641000167-1-000002/2026, do órgão MUNICIPIO DE MAETINGA, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 3.561.024.617.607,35, contra máximo de R$ 1.126.663.538,88 entre os demais Concorrência - Eletrônica deste conjunto
+  Evidência: valor declarado R$ 3.561.024.617.607,35, contra máximo de R$ 2.180.561.964,56 entre os demais Concorrência - Eletrônica deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Concorrência - Eletrônica (dividido por 10.000 daria R$ 356.102.461,76; dividido por 100.000 daria R$ 35.610.246,18). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/13284641000167/2026/2
 
@@ -621,5 +624,10 @@ Encontrados 0 erro(s), 3 suspeita(s) e 148 aviso(s).
   Evidência: objeto declarado: "CONTRATAÇÃO"
   Edital: https://pncp.gov.br/app/editais/32104465000189/2026/49
 
-85% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
+[SUSPEITA] No edital 14682109000160-1-000030/2026, do órgão FUNDO DE URBANIZACAO DE CURITIBA, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
+  Evidência: valor declarado R$ 19.737.063.876,00, contra máximo de R$ 1.743.398.724,09 entre os demais Concorrência - Presencial deste conjunto
+  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Concorrência - Presencial (dividido por 100 daria R$ 197.370.638,76; dividido por 1.000 daria R$ 19.737.063,88; dividido por 10.000 daria R$ 1.973.706,39). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
+  Edital: https://pncp.gov.br/app/editais/14682109000160/2026/30
+
+86% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
 ```
