@@ -426,6 +426,10 @@
   },
   {
    "uf": "CE",
+   "slug": "lavras-da-mangabeira"
+  },
+  {
+   "uf": "CE",
    "slug": "limoeiro-do-norte"
   },
   {
@@ -1170,6 +1174,10 @@
   },
   {
    "uf": "MG",
+   "slug": "cataguases"
+  },
+  {
+   "uf": "MG",
    "slug": "caxambu"
   },
   {
@@ -1579,6 +1587,10 @@
   {
    "uf": "MG",
    "slug": "sao-joao-del-rei"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-joao-nepomuceno"
   },
   {
    "uf": "MG",
@@ -3018,6 +3030,10 @@
   },
   {
    "uf": "RS",
+   "slug": "frederico-westphalen"
+  },
+  {
+   "uf": "RS",
    "slug": "garibaldi"
   },
   {
@@ -3519,6 +3535,10 @@
   {
    "uf": "SC",
    "slug": "santa-helena"
+  },
+  {
+   "uf": "SC",
+   "slug": "santa-terezinha-do-progresso"
   },
   {
    "uf": "SC",
@@ -4115,6 +4135,10 @@
   {
    "uf": "SP",
    "slug": "maua"
+  },
+  {
+   "uf": "SP",
+   "slug": "miguelopolis"
   },
   {
    "uf": "SP",
