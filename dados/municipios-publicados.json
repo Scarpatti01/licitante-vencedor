@@ -134,6 +134,10 @@
   },
   {
    "uf": "BA",
+   "slug": "conceicao-do-coite"
+  },
+  {
+   "uf": "BA",
    "slug": "cruz-das-almas"
   },
   {
@@ -518,6 +522,10 @@
   },
   {
    "uf": "CE",
+   "slug": "potengi"
+  },
+  {
+   "uf": "CE",
    "slug": "quixada"
   },
   {
@@ -570,6 +578,10 @@
   },
   {
    "uf": "CE",
+   "slug": "tabuleiro-do-norte"
+  },
+  {
+   "uf": "CE",
    "slug": "taua"
   },
   {
@@ -603,6 +615,10 @@
   {
    "uf": "ES",
    "slug": "aguia-branca"
+  },
+  {
+   "uf": "ES",
+   "slug": "alegre"
   },
   {
    "uf": "ES",
@@ -771,6 +787,10 @@
   {
    "uf": "GO",
    "slug": "arenopolis"
+  },
+  {
+   "uf": "GO",
+   "slug": "avelinopolis"
   },
   {
    "uf": "GO",
@@ -958,6 +978,10 @@
   },
   {
    "uf": "GO",
+   "slug": "parauna"
+  },
+  {
+   "uf": "GO",
    "slug": "petrolina-de-goias"
   },
   {
@@ -1079,6 +1103,10 @@
   {
    "uf": "MG",
    "slug": "alto-caparao"
+  },
+  {
+   "uf": "MG",
+   "slug": "andradas"
   },
   {
    "uf": "MG",
@@ -1291,6 +1319,10 @@
   {
    "uf": "MG",
    "slug": "extrema"
+  },
+  {
+   "uf": "MG",
+   "slug": "florestal"
   },
   {
    "uf": "MG",
@@ -1534,6 +1566,10 @@
   },
   {
    "uf": "MG",
+   "slug": "piumhi"
+  },
+  {
+   "uf": "MG",
    "slug": "pocos-de-caldas"
   },
   {
@@ -1607,6 +1643,10 @@
   {
    "uf": "MG",
    "slug": "sao-joao-del-rei"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-joao-evangelista"
   },
   {
    "uf": "MG",
@@ -2614,6 +2654,14 @@
   },
   {
    "uf": "PR",
+   "slug": "santa-monica"
+  },
+  {
+   "uf": "PR",
+   "slug": "santo-antonio-do-paraiso"
+  },
+  {
+   "uf": "PR",
    "slug": "sao-jeronimo-da-serra"
   },
   {
@@ -2647,6 +2695,10 @@
   {
    "uf": "PR",
    "slug": "telemaco-borba"
+  },
+  {
+   "uf": "PR",
+   "slug": "terra-rica"
   },
   {
    "uf": "PR",
@@ -3023,6 +3075,10 @@
   {
    "uf": "RS",
    "slug": "camaqua"
+  },
+  {
+   "uf": "RS",
+   "slug": "campo-bom"
   },
   {
    "uf": "RS",
@@ -3978,6 +4034,10 @@
   },
   {
    "uf": "SP",
+   "slug": "diadema"
+  },
+  {
+   "uf": "SP",
    "slug": "divinolandia"
   },
   {
@@ -4163,6 +4223,10 @@
   {
    "uf": "SP",
    "slug": "junqueiropolis"
+  },
+  {
+   "uf": "SP",
+   "slug": "juquia"
   },
   {
    "uf": "SP",
@@ -4451,6 +4515,10 @@
   {
    "uf": "SP",
    "slug": "sao-joaquim-da-barra"
+  },
+  {
+   "uf": "SP",
+   "slug": "sao-jose-do-rio-pardo"
   },
   {
    "uf": "SP",
