@@ -234,6 +234,10 @@
   },
   {
    "uf": "BA",
+   "slug": "sao-felix"
+  },
+  {
+   "uf": "BA",
    "slug": "sao-felix-do-coribe"
   },
   {
@@ -291,6 +295,10 @@
   {
    "uf": "CE",
    "slug": "assare"
+  },
+  {
+   "uf": "CE",
+   "slug": "banabuiu"
   },
   {
    "uf": "CE",
@@ -542,6 +550,10 @@
   },
   {
    "uf": "CE",
+   "slug": "santana-do-cariri"
+  },
+  {
+   "uf": "CE",
    "slug": "sao-benedito"
   },
   {
@@ -551,6 +563,10 @@
   {
    "uf": "CE",
    "slug": "sobral"
+  },
+  {
+   "uf": "CE",
+   "slug": "solonopole"
   },
   {
    "uf": "CE",
@@ -895,6 +911,10 @@
   {
    "uf": "GO",
    "slug": "mineiros"
+  },
+  {
+   "uf": "GO",
+   "slug": "moipora"
   },
   {
    "uf": "GO",
@@ -1826,6 +1846,10 @@
   },
   {
    "uf": "MT",
+   "slug": "colniza"
+  },
+  {
+   "uf": "MT",
    "slug": "confresa"
   },
   {
@@ -2042,6 +2066,10 @@
   },
   {
    "uf": "PE",
+   "slug": "cachoeirinha"
+  },
+  {
+   "uf": "PE",
    "slug": "camocim-de-sao-felix"
   },
   {
@@ -2166,6 +2194,10 @@
   },
   {
    "uf": "PE",
+   "slug": "santa-filomena"
+  },
+  {
+   "uf": "PE",
    "slug": "santa-maria-da-boa-vista"
   },
   {
@@ -2215,6 +2247,10 @@
   {
    "uf": "PE",
    "slug": "tracunhaem"
+  },
+  {
+   "uf": "PE",
+   "slug": "trindade"
   },
   {
    "uf": "PE",
@@ -2383,6 +2419,10 @@
   {
    "uf": "PR",
    "slug": "ibipora"
+  },
+  {
+   "uf": "PR",
+   "slug": "imbau"
   },
   {
    "uf": "PR",
@@ -2586,6 +2626,10 @@
   },
   {
    "uf": "PR",
+   "slug": "sao-mateus-do-sul"
+  },
+  {
+   "uf": "PR",
    "slug": "sao-tome"
   },
   {
@@ -2759,6 +2803,10 @@
   {
    "uf": "RJ",
    "slug": "rio-bonito"
+  },
+  {
+   "uf": "RJ",
+   "slug": "rio-das-flores"
   },
   {
    "uf": "RJ",
@@ -3282,6 +3330,10 @@
   },
   {
    "uf": "SC",
+   "slug": "bom-jesus-do-oeste"
+  },
+  {
+   "uf": "SC",
    "slug": "bombinhas"
   },
   {
@@ -3350,6 +3402,10 @@
   },
   {
    "uf": "SC",
+   "slug": "coronel-freitas"
+  },
+  {
+   "uf": "SC",
    "slug": "criciuma"
   },
   {
@@ -3367,6 +3423,10 @@
   {
    "uf": "SC",
    "slug": "fraiburgo"
+  },
+  {
+   "uf": "SC",
+   "slug": "garuva"
   },
   {
    "uf": "SC",
@@ -3398,6 +3458,10 @@
   },
   {
    "uf": "SC",
+   "slug": "itaiopolis"
+  },
+  {
+   "uf": "SC",
    "slug": "itajai"
   },
   {
@@ -3415,6 +3479,10 @@
   {
    "uf": "SC",
    "slug": "jaragua-do-sul"
+  },
+  {
+   "uf": "SC",
+   "slug": "jardinopolis"
   },
   {
    "uf": "SC",
@@ -3491,6 +3559,10 @@
   {
    "uf": "SC",
    "slug": "penha"
+  },
+  {
+   "uf": "SC",
+   "slug": "peritiba"
   },
   {
    "uf": "SC",
@@ -3650,6 +3722,10 @@
   },
   {
    "uf": "SE",
+   "slug": "boquim"
+  },
+  {
+   "uf": "SE",
    "slug": "carira"
   },
   {
@@ -3670,6 +3746,10 @@
   },
   {
    "uf": "SE",
+   "slug": "muribeca"
+  },
+  {
+   "uf": "SE",
    "slug": "neopolis"
   },
   {
@@ -3683,6 +3763,10 @@
   {
    "uf": "SE",
    "slug": "simao-dias"
+  },
+  {
+   "uf": "SE",
+   "slug": "tobias-barreto"
   },
   {
    "uf": "SE",
