@@ -3306,6 +3306,10 @@
   },
   {
    "uf": "RS",
+   "slug": "trindade-do-sul"
+  },
+  {
+   "uf": "RS",
    "slug": "uruguaiana"
   },
   {
@@ -3462,6 +3466,10 @@
   },
   {
    "uf": "SC",
+   "slug": "correia-pinto"
+  },
+  {
+   "uf": "SC",
    "slug": "criciuma"
   },
   {
@@ -3479,6 +3487,10 @@
   {
    "uf": "SC",
    "slug": "fraiburgo"
+  },
+  {
+   "uf": "SC",
+   "slug": "garopaba"
   },
   {
    "uf": "SC",
@@ -3559,6 +3571,10 @@
   {
    "uf": "SC",
    "slug": "mafra"
+  },
+  {
+   "uf": "SC",
+   "slug": "major-vieira"
   },
   {
    "uf": "SC",
@@ -3679,6 +3695,10 @@
   {
    "uf": "SC",
    "slug": "sao-carlos"
+  },
+  {
+   "uf": "SC",
+   "slug": "sao-domingos"
   },
   {
    "uf": "SC",
@@ -3810,6 +3830,10 @@
   },
   {
    "uf": "SE",
+   "slug": "propria"
+  },
+  {
+   "uf": "SE",
    "slug": "riachuelo"
   },
   {
@@ -3842,6 +3866,10 @@
   },
   {
    "uf": "SP",
+   "slug": "aguas-de-santa-barbara"
+  },
+  {
+   "uf": "SP",
    "slug": "altinopolis"
   },
   {
@@ -3859,6 +3887,10 @@
   {
    "uf": "SP",
    "slug": "aparecida"
+  },
+  {
+   "uf": "SP",
+   "slug": "apiai"
   },
   {
    "uf": "SP",
@@ -4158,6 +4190,10 @@
   },
   {
    "uf": "SP",
+   "slug": "itapevi"
+  },
+  {
+   "uf": "SP",
    "slug": "itapira"
   },
   {
@@ -4322,6 +4358,10 @@
   },
   {
    "uf": "SP",
+   "slug": "nova-odessa"
+  },
+  {
+   "uf": "SP",
    "slug": "olimpia"
   },
   {
@@ -4422,6 +4462,10 @@
   },
   {
    "uf": "SP",
+   "slug": "presidente-alves"
+  },
+  {
+   "uf": "SP",
    "slug": "presidente-bernardes"
   },
   {
@@ -4459,6 +4503,10 @@
   {
    "uf": "SP",
    "slug": "rio-das-pedras"
+  },
+  {
+   "uf": "SP",
+   "slug": "riversul"
   },
   {
    "uf": "SP",
