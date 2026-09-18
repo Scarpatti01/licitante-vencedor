@@ -2846,6 +2846,10 @@
   },
   {
    "uf": "RJ",
+   "slug": "queimados"
+  },
+  {
+   "uf": "RJ",
    "slug": "quissama"
   },
   {
@@ -3594,6 +3598,10 @@
   },
   {
    "uf": "SC",
+   "slug": "morro-da-fumaca"
+  },
+  {
+   "uf": "SC",
    "slug": "navegantes"
   },
   {
@@ -3910,6 +3918,10 @@
   },
   {
    "uf": "SP",
+   "slug": "artur-nogueira"
+  },
+  {
+   "uf": "SP",
    "slug": "assis"
   },
   {
@@ -3979,6 +3991,10 @@
   {
    "uf": "SP",
    "slug": "brotas"
+  },
+  {
+   "uf": "SP",
+   "slug": "buri"
   },
   {
    "uf": "SP",
@@ -4207,6 +4223,10 @@
   {
    "uf": "SP",
    "slug": "itaquaquecetuba"
+  },
+  {
+   "uf": "SP",
+   "slug": "itatiba"
   },
   {
    "uf": "SP",
@@ -4631,6 +4651,10 @@
   {
    "uf": "SP",
    "slug": "taboao-da-serra"
+  },
+  {
+   "uf": "SP",
+   "slug": "tambau"
   },
   {
    "uf": "SP",
