@@ -222,7 +222,15 @@
   },
   {
    "uf": "BA",
+   "slug": "remanso"
+  },
+  {
+   "uf": "BA",
    "slug": "ribeira-do-pombal"
+  },
+  {
+   "uf": "BA",
+   "slug": "ruy-barbosa"
   },
   {
    "uf": "BA",
@@ -382,11 +390,19 @@
   },
   {
    "uf": "CE",
+   "slug": "fortim"
+  },
+  {
+   "uf": "CE",
    "slug": "graca"
   },
   {
    "uf": "CE",
    "slug": "horizonte"
+  },
+  {
+   "uf": "CE",
+   "slug": "ibaretama"
   },
   {
    "uf": "CE",
@@ -399,6 +415,10 @@
   {
    "uf": "CE",
    "slug": "iguatu"
+  },
+  {
+   "uf": "CE",
+   "slug": "ipu"
   },
   {
    "uf": "CE",
@@ -446,6 +466,10 @@
   },
   {
    "uf": "CE",
+   "slug": "madalena"
+  },
+  {
+   "uf": "CE",
    "slug": "maracanau"
   },
   {
@@ -455,6 +479,10 @@
   {
    "uf": "CE",
    "slug": "marco"
+  },
+  {
+   "uf": "CE",
+   "slug": "milagres"
   },
   {
    "uf": "CE",
@@ -662,6 +690,10 @@
   },
   {
    "uf": "ES",
+   "slug": "ecoporanga"
+  },
+  {
+   "uf": "ES",
    "slug": "guacui"
   },
   {
@@ -751,6 +783,10 @@
   {
    "uf": "ES",
    "slug": "viana"
+  },
+  {
+   "uf": "ES",
+   "slug": "vila-pavao"
   },
   {
    "uf": "ES",
@@ -974,6 +1010,10 @@
   },
   {
    "uf": "GO",
+   "slug": "palestina-de-goias"
+  },
+  {
+   "uf": "GO",
    "slug": "palmeiras-de-goias"
   },
   {
@@ -994,6 +1034,10 @@
   },
   {
    "uf": "GO",
+   "slug": "professor-jamil"
+  },
+  {
+   "uf": "GO",
    "slug": "rio-verde"
   },
   {
@@ -1011,6 +1055,10 @@
   {
    "uf": "GO",
    "slug": "santo-antonio-da-barra"
+  },
+  {
+   "uf": "GO",
+   "slug": "santo-antonio-do-descoberto"
   },
   {
    "uf": "GO",
@@ -1174,6 +1222,10 @@
   },
   {
    "uf": "MG",
+   "slug": "buritis"
+  },
+  {
+   "uf": "MG",
    "slug": "camanducaia"
   },
   {
@@ -1239,6 +1291,10 @@
   {
    "uf": "MG",
    "slug": "coimbra"
+  },
+  {
+   "uf": "MG",
+   "slug": "conceicao-das-alagoas"
   },
   {
    "uf": "MG",
@@ -1786,6 +1842,10 @@
   },
   {
    "uf": "MS",
+   "slug": "costa-rica"
+  },
+  {
+   "uf": "MS",
    "slug": "coxim"
   },
   {
@@ -1898,6 +1958,10 @@
   },
   {
    "uf": "MT",
+   "slug": "guaranta-do-norte"
+  },
+  {
+   "uf": "MT",
    "slug": "juina"
   },
   {
@@ -1966,6 +2030,10 @@
   },
   {
    "uf": "PA",
+   "slug": "cameta"
+  },
+  {
+   "uf": "PA",
    "slug": "canaa-dos-carajas"
   },
   {
@@ -1975,6 +2043,10 @@
   {
    "uf": "PA",
    "slug": "castanhal"
+  },
+  {
+   "uf": "PA",
+   "slug": "chaves"
   },
   {
    "uf": "PA",
@@ -2082,6 +2154,10 @@
   },
   {
    "uf": "PE",
+   "slug": "alianca"
+  },
+  {
+   "uf": "PE",
    "slug": "amaraji"
   },
   {
@@ -2138,6 +2214,10 @@
   },
   {
    "uf": "PE",
+   "slug": "escada"
+  },
+  {
+   "uf": "PE",
    "slug": "exu"
   },
   {
@@ -2151,6 +2231,10 @@
   {
    "uf": "PE",
    "slug": "gloria-do-goita"
+  },
+  {
+   "uf": "PE",
+   "slug": "goiana"
   },
   {
    "uf": "PE",
@@ -2294,6 +2378,10 @@
   },
   {
    "uf": "PE",
+   "slug": "vicencia"
+  },
+  {
+   "uf": "PE",
    "slug": "vitoria-de-santo-antao"
   },
   {
@@ -2311,6 +2399,10 @@
   {
    "uf": "PI",
    "slug": "picos"
+  },
+  {
+   "uf": "PI",
+   "slug": "ribeiro-goncalves"
   },
   {
    "uf": "PI",
