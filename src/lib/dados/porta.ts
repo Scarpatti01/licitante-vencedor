@@ -118,12 +118,37 @@ export interface RepositorioDoProduto {
    */
   salvarRecortes(empresaId: string, recortes: Recorte[]): Promise<void>;
 
-  painelDoDia(empresaId: string, agora?: Date): Promise<PainelDoDia>;
+  /*
+   * ## O instante é obrigatório nos dois, e era opcional
+
+   * Estes dois avaliam prazo: decidem o que está encerrado, o que é urgente e
+   * o que ainda dá tempo. O instante era `agora?: Date`, com `new Date()` no
+   * padrão de cada implementação, e o padrão deixava o relógio real entrar sem
+   * ninguém escrever que estava entrando.
+   *
+   * Custou duas coisas, medidas em 19/09/2026:
+   *
+   *   Em teste, três reprovaram sozinhos quando os prazos dos exemplos
+   *   venceram. `alertas.test.ts` prendia o instante das ASSERÇÕES em agosto e
+   *   deixava o dos DADOS no relógio de hoje, sem que a chamada dissesse nada.
+   *
+   *   Em produção, `painel/page.tsx` passava o instante para `painelDoDia` e
+   *   NÃO para `listarOportunidades`, na mesma tela. Dois relógios por render:
+   *   um edital podia contar como aberto no painel e encerrado na lista logo
+   *   abaixo, se o render cruzasse o encerramento.
+   *
+   * Exigir o argumento move as duas para o compilador. Não é possível chamar
+   * sem decidir, e a decisão fica escrita na chamada. Quem quiser o relógio
+   * real continua podendo passar `new Date()`: a diferença é que agora isso é
+   * uma frase que alguém escreveu, e não o que acontece quando ninguém pensou
+   * no assunto.
+   */
+  painelDoDia(empresaId: string, agora: Date): Promise<PainelDoDia>;
 
   listarOportunidades(
     empresaId: string,
-    filtro?: FiltroDeOportunidades,
-    agora?: Date,
+    filtro: FiltroDeOportunidades | undefined,
+    agora: Date,
   ): Promise<ResumoDaOportunidade[]>;
 
   oportunidade(empresaId: string, id: string): Promise<ResumoDaOportunidade | null>;

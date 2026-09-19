@@ -32,6 +32,18 @@ import { join } from "node:path";
  *
  * A guarda cobra instante explícito. Não é estilo: é a diferença entre um teste
  * que mede uma regra e um que mede a data em que rodou.
+ *
+ * ## O que mudou quando o argumento virou obrigatório
+ *
+ * `porta.ts` tirou o `?` de `agora` nos dois métodos, e o compilador passou a
+ * cobrar o argumento em toda chamada, de teste e de produção. Isso não torna
+ * esta guarda redundante, e vale dizer por quê: o compilador exige que alguém
+ * DECIDA, e aceita `new Date()` como decisão. Em produção essa é a resposta
+ * certa; em teste é o defeito de volta, com uma linha a mais.
+ *
+ * Os dois se completam. O compilador impede a chamada distraída em qualquer
+ * lugar; esta guarda impede a chamada deliberada no único lugar onde ela não
+ * serve.
  */
 
 const METODOS = ["listarOportunidades", "painelDoDia"];
@@ -39,18 +51,16 @@ const METODOS = ["listarOportunidades", "painelDoDia"];
 /**
  * Chamadas isentas, uma a uma e com o motivo.
  *
- * Só entra aqui o que não afirma nada que dependa do tempo. Lista curta de
- * propósito: "este não precisa" é a frase que devolve o defeito à base.
+ * Só entraria aqui o que não afirma nada que dependa do tempo. Está vazia
+ * desde que o instante virou argumento obrigatório na porta: a única isenção
+ * que existiu era um teste de delegação que não lia o resultado, e agora ele
+ * precisa passar um instante como todo mundo.
+ *
+ * Fica declarada, e vazia, porque o caso pode voltar a existir. "Este não
+ * precisa" é a frase que devolve o defeito à base, então quando voltar vai
+ * voltar com o motivo escrito ao lado.
  */
-const ISENTAS: { arquivo: string; trecho: string; porque: string }[] = [
-  {
-    arquivo: "src/lib/dados/supabase-oportunidades.test.ts",
-    trecho: "listarOportunidades(EMPRESA_DE_DEMONSTRACAO)",
-    porque:
-      "só confere que a chamada NÃO foi ao banco (chamadas.length === 0). " +
-      "Não lê nada do resultado, então o instante não muda o veredito.",
-  },
-];
+const ISENTAS: { arquivo: string; trecho: string; porque: string }[] = [];
 
 function arquivosDeTeste(raiz: string): string[] {
   const achados: string[] = [];

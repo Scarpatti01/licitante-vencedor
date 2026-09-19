@@ -127,14 +127,14 @@ export default async function OportunidadesPagina({
   const aplicarRecorte = (lista: ResumoDaOportunidade[]) =>
     prioridade === "recomendadas" ? lista.filter(ehRecomendada) : lista;
 
-  const lista = aplicarRecorte(await repo.listarOportunidades(empresaId, filtro));
+  const lista = aplicarRecorte(await repo.listarOportunidades(empresaId, filtro, agora));
 
   // Quantas ficaram de fora por não terem score. Sem esta conta, filtrar por
   // score esconderia silenciosamente justamente as que precisam de olho humano.
   let semScoreForaDoFiltro = 0;
   if (score !== null) {
     const semEsseFiltro = aplicarRecorte(
-      await repo.listarOportunidades(empresaId, { ...filtro, scoreMinimo: undefined }),
+      await repo.listarOportunidades(empresaId, { ...filtro, scoreMinimo: undefined }, agora),
     );
     semScoreForaDoFiltro = semEsseFiltro.filter((o) => o.avaliacao.score.valor === null).length;
   }

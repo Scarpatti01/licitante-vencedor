@@ -222,7 +222,7 @@ describe("listarOportunidades", () => {
 
   it("delega para a demonstração quando a empresa é a de exemplo", async () => {
     const { cliente, chamadas } = clienteFalso({});
-    await new RepositorioSupabase(cliente).listarOportunidades(EMPRESA_DE_DEMONSTRACAO);
+    await new RepositorioSupabase(cliente).listarOportunidades(EMPRESA_DE_DEMONSTRACAO, {}, AGORA);
     expect(chamadas).toHaveLength(0);
   });
 });

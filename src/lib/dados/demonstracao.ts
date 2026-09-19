@@ -124,7 +124,7 @@ export class RepositorioDeDemonstracao implements RepositorioDoProduto {
     });
   }
 
-  async painelDoDia(empresaId: string, agora: Date = new Date()): Promise<PainelDoDia> {
+  async painelDoDia(empresaId: string, agora: Date): Promise<PainelDoDia> {
     const todas = this.avaliarTodas(empresaId, agora).filter((o) => o.situacao !== "descartada");
     const recomendadas = todas.filter(
       (o) =>
@@ -149,7 +149,7 @@ export class RepositorioDeDemonstracao implements RepositorioDoProduto {
   async listarOportunidades(
     empresaId: string,
     filtro: FiltroDeOportunidades = {},
-    agora: Date = new Date(),
+    agora: Date,
   ): Promise<ResumoDaOportunidade[]> {
     let lista = this.avaliarTodas(empresaId, agora);
 

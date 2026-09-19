@@ -415,7 +415,7 @@ export class RepositorioSupabase implements RepositorioDoProduto {
     return linhas.map((linha) => resumoDaLinha(linha, agora));
   }
 
-  async painelDoDia(empresaId: string, agora: Date = new Date()): Promise<PainelDoDia> {
+  async painelDoDia(empresaId: string, agora: Date): Promise<PainelDoDia> {
     if (ehEmpresaDeDemonstracao(empresaId)) return this.demonstracao.painelDoDia(empresaId, agora);
 
     const oportunidades = await this.oportunidadesDaEmpresa(empresaId, agora);
@@ -460,7 +460,7 @@ export class RepositorioSupabase implements RepositorioDoProduto {
   async listarOportunidades(
     empresaId: string,
     filtro: FiltroDeOportunidades = {},
-    agora: Date = new Date(),
+    agora: Date,
   ): Promise<ResumoDaOportunidade[]> {
     if (ehEmpresaDeDemonstracao(empresaId)) {
       return this.demonstracao.listarOportunidades(empresaId, filtro, agora);
