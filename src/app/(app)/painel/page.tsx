@@ -59,9 +59,22 @@ export default async function PainelDoDiaPagina() {
     );
   }
 
+  /*
+   * O MESMO `agora` nas duas chamadas.
+   *
+   * Até 19/09/2026 o painel recebia o instante e a lista não, e a lista caía
+   * no `new Date()` que era o padrão do método. Dois relógios no mesmo render:
+   * um edital que encerrasse no intervalo entre as duas chamadas podia contar
+   * como aberto em cima e encerrado logo abaixo, na mesma tela.
+   *
+   * A janela é de milissegundos e o `Promise.all` a torna ainda menor, então
+   * isso quase nunca acontece — que é justamente o que faz um defeito desses
+   * sobreviver: ele não aparece em teste, aparece uma vez para um cliente, num
+   * horário que ninguém consegue reproduzir depois.
+   */
   const [painel, lista] = await Promise.all([
     repo.painelDoDia(empresaId, agora),
-    repo.listarOportunidades(empresaId),
+    repo.listarOportunidades(empresaId, undefined, agora),
   ]);
 
   // A lista já vem ordenada por urgência e depois por score. O que sobra é

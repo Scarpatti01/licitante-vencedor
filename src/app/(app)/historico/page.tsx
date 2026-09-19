@@ -34,9 +34,22 @@ export default async function HistoricoPagina() {
   const repo = await repositorio();
   const empresaId = await empresaAtual();
 
+  /*
+   * Um instante só para as duas metades da tela.
+   *
+   * São duas consultas que o cliente lê como uma página. Com um relógio por
+   * chamada, as duas listas poderiam discordar sobre o mesmo certame no
+   * instante em que ele encerra.
+   *
+   * A página é de requisição por construção: `empresaAtual()` aguarda
+   * `connection()`, então este `new Date()` é o instante de quem pediu, e não
+   * o do deploy. Ver o comentário em `lib/dados/index.ts`.
+   */
+  const agora = new Date();
+
   const [emAndamento, concluidas] = await Promise.all([
-    repo.listarOportunidades(empresaId, { situacoes: EM_ANDAMENTO }),
-    repo.listarOportunidades(empresaId, { situacoes: CONCLUIDAS }),
+    repo.listarOportunidades(empresaId, { situacoes: EM_ANDAMENTO }, agora),
+    repo.listarOportunidades(empresaId, { situacoes: CONCLUIDAS }, agora),
   ]);
 
   const semNada = emAndamento.length === 0 && concluidas.length === 0;
