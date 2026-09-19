@@ -97,3 +97,53 @@ export function agregarPorMunicipio(editais: readonly Edital[]): MunicipioAgrega
     }))
     .sort((a, b) => b.editais - a.editais);
 }
+
+/** As esferas que a fonte distingue. Mesmo conjunto de `Edital["orgao"]`. */
+export type Esfera = Edital["orgao"]["esfera"];
+
+export type ContagemPorEsfera = {
+  /** Quantos editais medidos nesta coleta, por esfera do órgão comprador. */
+  porEsfera: Record<Esfera, number>;
+  /**
+   * A soma das partes, escrita e não deduzida pelo leitor.
+   *
+   * É o denominador de todo percentual derivado daqui, e existe por isso: sem
+   * ele, quem monta o gráfico escolheria sozinho o denominador, e o candidato
+   * mais à mão seria `cobertura.editaisColetados`. Os dois são iguais no dia
+   * bom e DIFERENTES no dia em que uma UF ausente teve os municípios dela
+   * carregados da medição anterior — aqueles editais contam na cobertura e não
+   * passaram por esta contagem, porque não foram medidos hoje. Percentual com
+   * denominador emprestado não fecha em 100, e ninguém percebe que não fechou.
+   */
+  total: number;
+};
+
+/**
+ * A distribuição por esfera administrativa da coleta inteira.
+ *
+ * Responde "de onde vêm as licitações do Brasil" com o que foi medido hoje, e
+ * não com um retrato tirado uma vez. A pergunta valia um infográfico em PNG na
+ * home até 19/09/2026; em pixel, os números daquela arte já tinham envelhecido
+ * 11 editais na primeira conferência, e nenhuma guarda consegue ler pixel.
+ *
+ * Fica aqui, ao lado de `agregarPorMunicipio`, pelo mesmo motivo que aquele
+ * existe: é agregação da MESMA lista de editais, e as duas precisam continuar
+ * enxergando a mesma coleta. Separadas em arquivos diferentes, divergiriam no
+ * dia em que alguém filtrasse uma e esquecesse a outra.
+ */
+export function contarPorEsfera(editais: readonly Edital[]): ContagemPorEsfera {
+  const porEsfera: Record<Esfera, number> = {
+    municipal: 0,
+    estadual: 0,
+    distrital: 0,
+    federal: 0,
+    desconhecida: 0,
+  };
+
+  for (const e of editais) porEsfera[e.orgao.esfera]++;
+
+  return {
+    porEsfera,
+    total: Object.values(porEsfera).reduce((s, n) => s + n, 0),
+  };
+}

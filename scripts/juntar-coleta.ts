@@ -64,7 +64,7 @@ import { deduplicar } from "../src/lib/fontes/deduplicacao.ts";
 import { resumirCobertura, type ColetaDeUf } from "../src/lib/fontes/cobertura.ts";
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
-import { agregarPorMunicipio } from "../src/lib/pncp/agregarPorMunicipio.ts";
+import { agregarPorMunicipio, contarPorEsfera } from "../src/lib/pncp/agregarPorMunicipio.ts";
 import { atualizarRegistro, normalizarRegistro } from "../src/lib/pncp/registroDePublicacao.ts";
 import {
   municipiosCarregados,
@@ -282,6 +282,17 @@ async function main() {
     coletadoEm,
     fonte: fontePncp.nome,
     cobertura,
+    /*
+     * Conta `editais`, que é o que foi MEDIDO nesta rodada, e não
+     * `[...medidosHoje, ...carregados]`, que é o que vai ser PUBLICADO.
+     *
+     * Município carregado de UF ausente entra na lista publicada com a data em
+     * que foi medido, semanas atrás; somá-lo aqui misturaria duas medições numa
+     * porcentagem só e faria o gráfico afirmar sobre hoje um número de antes.
+     * `total` registra o denominador para a diferença ficar visível em vez de
+     * silenciosa. Ver `contarPorEsfera`.
+     */
+    esferas: contarPorEsfera(editais),
     municipios: [...medidosHoje, ...carregados],
   };
 
