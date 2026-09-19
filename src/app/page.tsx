@@ -8,6 +8,8 @@ import { numerosDaColeta, pracasParaBusca } from "@/lib/regioes";
 import { BuscaDePracas } from "@/components/BuscaDePracas";
 import { RodapeSite } from "@/components/RodapeSite";
 import { ChuvaDeDados } from "@/components/ChuvaDeDados";
+import { EsferasDaColeta } from "@/components/EsferasDaColeta";
+import { distribuicaoPorEsfera } from "@/lib/dominio/esferas";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
 import { Logo } from "@/components/Logo";
 
@@ -45,6 +47,7 @@ const PILARES = [
 
 export default function Home() {
   const coleta = numerosDaColeta();
+  const esferas = distribuicaoPorEsfera();
 
   return (
     <div className="min-h-screen">
@@ -234,85 +237,53 @@ export default function Home() {
         </section>
 
         {/*
-          ## O infográfico é dado medido, e por isso se comporta como dado
+          ## De onde vêm as licitações, medido e não desenhado
 
-          Ele responde à objeção silenciosa de quem chega na home: "licitação é
-          coisa de empresa grande, para contrato federal". Não é. Seis em cada
-          dez editais saem de prefeitura, e essa é a razão de a triagem começar
-          pela região do cliente e não pelo volume de Brasília.
+          Responde à objeção silenciosa de quem chega na home: "licitação é
+          coisa de empresa grande, para contrato federal". Não é, e a razão de
+          a triagem começar pela região do cliente está neste número.
 
-          ### Por que nem a legenda nem o alt repetem os totais da arte
+          ### Esta seção já foi um PNG, e o PNG era o defeito
 
-          `numeros-da-coleta.test.ts` proíbe contagem de edital escrita à mão no
-          JSX desta página, e a razão está escrita lá: um número digitado é
-          verdade no dia em que foi digitado e mentira em todos os outros. A
-          primeira versão desta seção reprovou nessa guarda, com razão.
+          De 13/09 a 19/09/2026 aqui morava um infográfico gerado uma vez. Ele
+          era honesto no dia em que nasceu, e a conferência feita naquele dia já
+          mediu a deriva: no recorte de 17 a 22/08/2026 a arte dizia 13.397
+          editais e a recontagem contra o banco dava 13.408, porque o PNCP
+          publica com data retroativa e segue enchendo a semana depois que ela
+          acaba.
 
-          A conferência feita antes de publicar mostra que a guarda está certa
-          até para uma janela FECHADA do passado. Recontando o mesmo recorte
-          (17 a 22/08/2026, fuso de Brasília) contra o banco em 13/09/2026:
+          Onze editais não enganam ninguém. O problema é a direção: a diferença
+          só cresce, e número dentro de imagem é número escrito à mão que
+          `numeros-da-coleta.test.ts` não consegue ler. A guarda proíbe contagem
+          chumbada no JSX desta página exatamente para isso, e a arte passava por
+          baixo dela em pixel.
 
-            esfera                   arte      recontagem
-            municipal              ≈ 8.320          8.322
-            estadual               ≈ 2.934          2.938
-            federal                ≈ 1.594          1.594
-            outros                       -            554
-            total                   13.397         13.408
+          Agora o desenho é HTML e os números saem da coleta diária, pelo mesmo
+          caminho do hero. Inclusive o "em cada 10" do título: se a distribuição
+          andar, o título anda junto, sem ninguém lembrar de reescrevê-lo.
 
-          Os percentuais batem na casa decimal mostrada; os absolutos andaram,
-          porque o PNCP publica com data retroativa e continua enchendo uma
-          semana depois de ela acabar. Por isso a arte traz "≈" e por isso o
-          texto desta página afirma PERCENTUAL, que é o que se sustenta, e não
-          repete os absolutos, que já mudaram uma vez e vão mudar de novo.
+          ### Por que a seção inteira some quando não há contagem
 
-          O alt descreve que as contagens existem na imagem sem transcrevê-las:
-          quem usa leitor de tela recebe a mesma conclusão que quem enxerga, e
-          nenhum dos dois recebe um número com prazo de validade vencido.
-
-          Se a arte for refeita, reconte antes:
-            select orgao_esfera, count(*) from editais
-            where publicado_em >= '2026-08-17 00:00-03'
-              and publicado_em <  '2026-08-23 00:00-03'
-            group by orgao_esfera;
+          `distribuicaoPorEsfera()` devolve `null` num agregado anterior a
+          20/09/2026, que é quando a coleta passou a escrever `esferas`. Melhor
+          a seção não existir do que desenhar barra de zero: gráfico vazio
+          parece afirmação sobre o mercado, e seria afirmação sobre a nossa
+          coleta. Ver `lib/dominio/esferas.ts`.
         */}
-        <section className="mx-auto max-w-5xl px-6 py-16">
-          <h2 className="text-2xl font-semibold tracking-tight">
-            Seis em cada dez editais saem de uma prefeitura
-          </h2>
-          <p className="mt-4 max-w-2xl leading-relaxed text-[var(--muted)]">
-            A maior parte do dinheiro que muda de mão em contratação pública não
-            está no governo federal, está na cidade ao lado. É por isso que a
-            triagem começa pela sua região: o volume que decide o seu mês é
-            municipal.
-          </p>
+        {esferas && (
+          <section className="mx-auto max-w-5xl px-6 py-16">
+            <h2 className="text-2xl font-semibold tracking-tight">
+              {esferas.emCadaDez} em cada 10 editais saem de uma prefeitura
+            </h2>
+            <p className="mt-4 max-w-2xl leading-relaxed text-[var(--muted)]">
+              A maior parte das oportunidades não está no governo federal, está
+              na cidade ao lado. É por isso que a triagem começa pela sua
+              região: o volume que decide o seu mês é municipal.
+            </p>
 
-          <figure className="mt-8">
-            <Image
-              src="/licitacoes-por-esfera-administrativa.webp"
-              alt="Infográfico com a distribuição das licitações publicadas no PNCP entre 17 e 22 de agosto de 2026, por esfera administrativa: municipal e prefeituras com 62,1%, estadual mais o Distrito Federal com 21,9%, federal e União com 11,9%, e outros com 4,1%. A arte mostra sob cada faixa a contagem aproximada de editais do período, destaca que seis em cada dez vêm das prefeituras e encerra lembrando que edital publicado não é o mesmo que contrato firmado."
-              width={1536}
-              height={1024}
-              sizes="(max-width: 1024px) 100vw, 896px"
-              className="h-auto w-full rounded-xl border"
-            />
-            <figcaption className="mt-4 max-w-2xl text-xs leading-relaxed text-[var(--muted)]">
-              Recorte da nossa própria coleta do{" "}
-              <a href="https://www.pncp.gov.br/" rel="noopener" className="underline underline-offset-4">
-                Portal Nacional de Contratações Públicas
-              </a>
-              , publicações de 17 a 22 de agosto de 2026. As contagens da arte
-              são aproximadas de propósito: o PNCP publica com data retroativa e
-              segue enchendo a semana depois que ela acaba, então os totais
-              andam alguns editais para cima. Recontamos o mesmo período em
-              13/09/2026 e os percentuais acima continuaram os mesmos. Edital
-              publicado não é contrato assinado: o gráfico mostra onde a disputa
-              começa, não quem ganhou.{" "}
-              <Link href="/metodologia/" className="underline underline-offset-4">
-                Como medimos
-              </Link>
-            </figcaption>
-          </figure>
-        </section>
+            <EsferasDaColeta dados={esferas} />
+          </section>
+        )}
 
         <section className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="text-2xl font-semibold tracking-tight">

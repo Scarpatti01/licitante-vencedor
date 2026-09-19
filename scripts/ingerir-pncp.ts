@@ -25,7 +25,7 @@ import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao
 import { deduplicar } from "../src/lib/fontes/deduplicacao.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
-import { agregarPorMunicipio } from "../src/lib/pncp/agregarPorMunicipio.ts";
+import { agregarPorMunicipio, contarPorEsfera } from "../src/lib/pncp/agregarPorMunicipio.ts";
 import { atualizarRegistro, normalizarRegistro } from "../src/lib/pncp/registroDePublicacao.ts";
 import { gravarEditais } from "../src/lib/editais/gravar.ts";
 import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
@@ -314,6 +314,7 @@ async function main() {
     coletadoEm,
     fonte: fonte.nome,
     cobertura,
+    esferas: contarPorEsfera(editais),
     municipios: agregarPorMunicipio(editais),
   };
 
