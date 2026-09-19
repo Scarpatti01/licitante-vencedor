@@ -5,7 +5,9 @@ import { ATRASO_NO_PAGAMENTO } from "./atraso-no-pagamento-de-contrato-administr
 import { COMO_SABER_SE_SAIU_UMA_LICITACAO } from "./como-saber-se-saiu-uma-licitacao";
 import { DOCUMENTOS_PARA_PARTICIPAR } from "./documentos-para-participar-de-licitacao";
 import { PRAZO_PARA_IMPUGNAR_EDITAL } from "./prazo-para-impugnar-edital-de-licitacao";
+import { PRAZO_PARA_RECURSO } from "./prazo-para-recurso-em-licitacao";
 import { QUANTAS_LICITACOES_POR_DIA } from "./quantas-licitacoes-sao-publicadas-por-dia";
+import { REEQUILIBRIO_ECONOMICO_FINANCEIRO } from "./reequilibrio-economico-financeiro-de-contrato";
 import { VALE_A_PENA_PARTICIPAR } from "./vale-a-pena-participar-de-licitacao";
 
 /**
@@ -24,7 +26,9 @@ const ARTIGOS: readonly Artigo[] = [
   COMO_SABER_SE_SAIU_UMA_LICITACAO,
   DOCUMENTOS_PARA_PARTICIPAR,
   PRAZO_PARA_IMPUGNAR_EDITAL,
+  PRAZO_PARA_RECURSO,
   QUANTAS_LICITACOES_POR_DIA,
+  REEQUILIBRIO_ECONOMICO_FINANCEIRO,
   VALE_A_PENA_PARTICIPAR,
 ];
 
