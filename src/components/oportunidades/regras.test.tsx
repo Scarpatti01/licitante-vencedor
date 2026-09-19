@@ -15,18 +15,34 @@ import { Checklist } from "./Checklist";
  * zero, o motivo da ausência sempre aparece, o perfil incompleto é dito campo a
  * campo e o checklist mostra os quatro estados em palavra, não só em cor. Todas
  * são fáceis de desfazer sem perceber numa refatoração de layout.
+ *
+ * ## O relógio é fixo, e precisa ser
+ *
+ * `listarOportunidades` avalia os exemplos contra um instante, e o padrão dele
+ * é `new Date()`. Chamado sem data, este arquivo media os exemplos com o
+ * relógio DE HOJE e, como os prazos deles são absolutos, foi ficando sem
+ * oportunidade viva para testar conforme setembro passou: em 19/09/2026 a
+ * lista voltava vazia e três testes reprovaram sem ninguém ter tocado no
+ * produto. A regra que eles vigiam não mudou nesse dia.
+ *
+ * Teste que muda de resultado com o calendário não vigia nada: ou reprova
+ * sozinho, ou passa a aprovar sozinho. `AGORA` prende o relógio no dia em que
+ * os exemplos foram escritos.
  */
+
+/** O dia dos exemplos. Ver o cabeçalho. */
+const AGORA = new Date("2026-08-14T12:00:00-03:00");
 
 test("linha sem score mostra rótulo indeterminado e o motivo, nunca zero", async () => {
   const repo = new RepositorioDeDemonstracao();
-  const lista = await repo.listarOportunidades(PERFIL_INCOMPLETO.empresaId);
+  const lista = await repo.listarOportunidades(PERFIL_INCOMPLETO.empresaId, {}, AGORA);
   const semScore = lista.filter((o) => o.avaliacao.score.valor === null);
   expect(semScore.length).toBeGreaterThan(0);
 
   const html = renderToStaticMarkup(
     <ListaDeOportunidades>
       {semScore.map((o) => (
-        <LinhaDaOportunidade key={o.id} oportunidade={o} agora={new Date()} />
+        <LinhaDaOportunidade key={o.id} oportunidade={o} agora={AGORA} />
       ))}
     </ListaDeOportunidades>,
   );
@@ -39,7 +55,7 @@ test("linha sem score mostra rótulo indeterminado e o motivo, nunca zero", asyn
 
 test("score detalhado sem valor mostra o motivo no lugar do número", async () => {
   const repo = new RepositorioDeDemonstracao();
-  const lista = await repo.listarOportunidades(PERFIL_INCOMPLETO.empresaId);
+  const lista = await repo.listarOportunidades(PERFIL_INCOMPLETO.empresaId, {}, AGORA);
   const html = renderToStaticMarkup(<ScoreDetalhado score={lista[0].avaliacao.score} />);
   expect(html).toContain("Sem score");
   expect(html).toContain("Faltam informações demais");
@@ -65,7 +81,7 @@ test("perfil incompleto lista exatamente o que falta", () => {
 
 test("checklist mostra os quatro estados com palavra, não só cor", async () => {
   const repo = new RepositorioDeDemonstracao();
-  const lista = await repo.listarOportunidades(PERFIL_DOCUMENTACAO_RUIM.empresaId);
+  const lista = await repo.listarOportunidades(PERFIL_DOCUMENTACAO_RUIM.empresaId, {}, AGORA);
   const html = renderToStaticMarkup(<Checklist checklist={lista[0].avaliacao.checklist} />);
   for (const rotulo of ["Disponível", "Conferir", "Ausente", "Não identificado"]) {
     expect(html).toContain(rotulo);

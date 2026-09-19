@@ -4,11 +4,25 @@ import { emHtml, emTextoSimples, montarMensagem } from "./mensagem";
 import { RepositorioDeDemonstracao, EMPRESA_DE_DEMONSTRACAO } from "../dados/demonstracao";
 import type { ResumoDaOportunidade } from "../dados/porta";
 
+/** O dia em que os exemplos foram escritos. Ver o comentário abaixo. */
 const AGORA = new Date("2026-08-14T12:00:00-03:00");
 
+/**
+ * O MESMO instante vale para os dados e para as asserções.
+ *
+ * Até 19/09/2026 esta função chamava `listarOportunidades` sem data, e o padrão
+ * do método é `new Date()`. O teste media os exemplos com o relógio de hoje e
+ * julgava o resultado com `AGORA`, 14/08: dois relógios, um deles andando.
+ *
+ * Funcionou enquanto os prazos dos exemplos ainda estavam à frente da data
+ * real. O mais longo encerrava em 15/09; passado isso, a lista voltou vazia e
+ * dois testes daqui reprovaram sem ninguém ter tocado no produto.
+ *
+ * A guarda que impede a volta disso está em `dados/relogio-nos-testes.guarda`.
+ */
 async function oportunidades(): Promise<ResumoDaOportunidade[]> {
   const repo = new RepositorioDeDemonstracao();
-  return repo.listarOportunidades(EMPRESA_DE_DEMONSTRACAO, {});
+  return repo.listarOportunidades(EMPRESA_DE_DEMONSTRACAO, {}, AGORA);
 }
 
 describe("selecionarParaAlerta", () => {
