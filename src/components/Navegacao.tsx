@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { SITE } from "@/lib/site";
-import { pracasParaBusca } from "@/lib/regioes";
 import { BuscaDePracas } from "@/components/BuscaDePracas";
 import { Logo } from "@/components/Logo";
 
@@ -70,7 +69,7 @@ export function CabecalhoSite() {
             ))}
           </nav>
 
-          <BuscaDePracas pracas={pracasParaBusca()} className="w-36 sm:w-52" />
+          <BuscaDePracas className="w-36 sm:w-52" />
 
           {/*
             Fora do `nav` de cima, e não escondido no celular: login e cadastro

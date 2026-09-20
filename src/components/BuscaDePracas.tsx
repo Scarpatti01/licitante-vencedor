@@ -8,13 +8,36 @@ import { buscarPracas, type PracaBuscavel } from "@/lib/busca-de-pracas";
 /**
  * O campo de busca do cabeçalho.
  *
- * ## Por que a lista chega por propriedade
+ * ## Por que a lista chega por rede, e não por propriedade
  *
- * Este é um componente de cliente, e importar `regioes.ts` aqui arrastaria
- * `dados/agregados.json` — 100 KB, 576 municípios — para o bundle do navegador
- * em toda página do site. Quem monta a lista é o servidor, que já tem o arquivo
- * carregado, e manda só as ~96 linhas que a busca usa. O motivo completo está em
- * `pracasParaBusca`.
+ * Ela chegava por propriedade, e a decisão estava certa quando foi tomada: o
+ * comentário que estava aqui falava em "~96 linhas". Importar `regioes.ts` num
+ * componente de cliente arrastaria `dados/agregados.json` inteiro para o bundle,
+ * então o servidor mandava só as linhas que a busca usa.
+ *
+ * A cobertura cresceu e ninguém remediu. Em 20/09/2026 eram 1246 praças, 147 KB
+ * — 21 vezes o que o desenho supunha. Como este componente mora em
+ * `Navegacao.tsx`, que é o menu de toda página, a lista ia em todo documento do
+ * site E em toda resposta de prefetch de rota.
+ *
+ * Abrir a home baixava 1703 KB, e 1096 KB eram esta lista, seis vezes: uma no
+ * documento e uma em cada um dos cinco prefetches. Sessenta e quatro por cento
+ * do peso da primeira tela era a mesma lista de cidades, repetida.
+ *
+ * Agora ela vem de `/pracas.json` na primeira vez que alguém demonstra
+ * interesse no campo, e o navegador guarda. Quem nunca usa a busca — que é a
+ * maioria de quem cai numa página pela busca do Google — não baixa nada.
+ *
+ * ## Quando a busca dispara
+ *
+ * No foco E no ponteiro entrando no campo, não na primeira tecla. Entre passar
+ * o mouse e digitar a segunda letra existem centenas de milissegundos, e é
+ * neles que os ~45 KB comprimidos chegam. Esperar a tecla faria a primeira
+ * busca de cada visita parecer travada.
+ *
+ * O `carregando` só aparece se a pessoa digitar antes de a lista chegar. Em
+ * rede boa ninguém vê; em rede ruim é a diferença entre "está vindo" e "esta
+ * busca está quebrada".
  *
  * ## Por que combobox e não `<datalist>`
  *
@@ -36,21 +59,63 @@ import { buscarPracas, type PracaBuscavel } from "@/lib/busca-de-pracas";
  */
 
 type Props = {
-  pracas: PracaBuscavel[];
   /** Estreita o campo onde o cabeçalho é apertado. */
   className?: string;
 };
 
-export function BuscaDePracas({ pracas, className = "" }: Props) {
+/**
+ * A promessa da busca, guardada no módulo.
+ *
+ * A home renderiza DOIS campos de busca: um no cabeçalho dela e outro no menu.
+ * Com o estado só dentro do componente, passar o mouse por um e depois pelo
+ * outro baixaria o arquivo duas vezes. Guardada aqui, a segunda chamada pega a
+ * mesma promessa.
+ *
+ * Fica `null` de novo se a busca falhar, para uma queda de rede momentânea não
+ * condenar a busca pelo resto da visita.
+ */
+let pedido: Promise<PracaBuscavel[]> | null = null;
+
+function carregarPracas(): Promise<PracaBuscavel[]> {
+  pedido ??= fetch("/pracas.json")
+    .then((r) => {
+      if (!r.ok) throw new Error(`pracas.json respondeu ${r.status}`);
+      return r.json() as Promise<PracaBuscavel[]>;
+    })
+    .catch((erro) => {
+      pedido = null;
+      throw erro;
+    });
+  return pedido;
+}
+
+export function BuscaDePracas({ className = "" }: Props) {
   const [texto, setTexto] = useState("");
   const [aberto, setAberto] = useState(false);
   const [ativo, setAtivo] = useState(0);
+  const [pracas, setPracas] = useState<PracaBuscavel[] | null>(null);
+  const [falhou, setFalhou] = useState(false);
+
+  /*
+   * Chamado no foco e no ponteiro entrando. Idempotente: `carregarPracas`
+   * devolve a mesma promessa, então repetir não custa requisição.
+   */
+  function pedirLista() {
+    if (pracas) return;
+    carregarPracas().then(
+      (lista) => {
+        setPracas(lista);
+        setFalhou(false);
+      },
+      () => setFalhou(true),
+    );
+  }
   const router = useRouter();
   const idBase = useId();
   const idDaLista = `${idBase}-lista`;
   const caixa = useRef<HTMLDivElement>(null);
 
-  const resultados = useMemo(() => buscarPracas(pracas, texto), [pracas, texto]);
+  const resultados = useMemo(() => buscarPracas(pracas ?? [], texto), [pracas, texto]);
 
   const digitou = texto.trim().length > 0;
   const mostrarPainel = aberto && digitou;
@@ -133,7 +198,11 @@ export function BuscaDePracas({ pracas, className = "" }: Props) {
           setAberto(true);
           setAtivo(0);
         }}
-        onFocus={() => setAberto(true)}
+        onFocus={() => {
+          setAberto(true);
+          pedirLista();
+        }}
+        onPointerEnter={pedirLista}
         onKeyDown={aoTeclar}
         /*
           `text-[var(--foreground)]` é o conserto de um defeito que a nota de
@@ -155,7 +224,36 @@ export function BuscaDePracas({ pracas, className = "" }: Props) {
 
       {mostrarPainel ? (
         <div className="absolute right-0 z-50 mt-1 w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border bg-[var(--background)] shadow-lg">
-          {resultados.length > 0 ? (
+          {falhou ? (
+            /*
+             * A busca depende de rede agora, e rede falha. Sem esta linha, o
+             * campo devolveria "nenhuma praça com esse nome" para QUALQUER
+             * busca: uma resposta que soa definitiva e está errada. Dizer o que
+             * aconteceu, e dar o caminho que não depende da lista, é o que
+             * separa uma falha honesta de um site que parece mentir.
+             */
+            <div className="px-3 py-3 text-sm text-[var(--muted)]">
+              <p>Não consegui carregar a lista de praças.</p>
+              <p className="mt-2">
+                Tente de novo em instantes, ou{" "}
+                <Link
+                  href="/portais-de-licitacao/#pracas"
+                  onClick={fechar}
+                  className="underline underline-offset-4"
+                >
+                  veja todas as praças
+                </Link>
+                .
+              </p>
+            </div>
+          ) : pracas === null ? (
+            /*
+             * Só aparece para quem digita antes de a lista chegar. Em rede boa
+             * ninguém vê; em rede ruim é a diferença entre "está vindo" e "esta
+             * busca está quebrada".
+             */
+            <p className="px-3 py-3 text-sm text-[var(--muted)]">Carregando as praças…</p>
+          ) : resultados.length > 0 ? (
             <ul id={idDaLista} role="listbox" aria-label="Praças encontradas">
               {resultados.map((praca, i) => (
                 <li key={praca.href} role="option" aria-selected={i === ativo}>
@@ -207,7 +305,7 @@ export function BuscaDePracas({ pracas, className = "" }: Props) {
                 onClick={fechar}
                 className="underline underline-offset-4"
               >
-                Ver todas as {pracas.length} praças
+                Ver todas as {pracas?.length ?? 0} praças
               </Link>
             </div>
           ) : null}
