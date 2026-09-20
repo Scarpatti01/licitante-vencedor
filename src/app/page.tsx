@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 import { GUIAS_PUBLICADOS } from "@/lib/guias";
 import { AutorBio } from "@/components/AutorBio";
 import { CartaoDeConteudo } from "@/components/CartaoDeConteudo";
-import { numerosDaColeta, pracasParaBusca } from "@/lib/regioes";
+import { numerosDaColeta } from "@/lib/regioes";
 import { BuscaDePracas } from "@/components/BuscaDePracas";
 import { RodapeSite } from "@/components/RodapeSite";
 import { ChuvaDeDados } from "@/components/ChuvaDeDados";
@@ -102,7 +102,7 @@ export default function Home() {
             {/* Some no celular para o campo de busca caber sem espremer o nome
                 do site; a página continua alcançável pelo rodapé. */}
             <a href="/sobre/" className="hidden underline-offset-4 hover:underline sm:inline">Sobre</a>
-            <BuscaDePracas pracas={pracasParaBusca()} className="w-36 sm:w-56" />
+            <BuscaDePracas className="w-36 sm:w-56" />
             {/* Não escondido no celular, diferente de "Sobre": login e cadastro
                 já funcionam, e era o único caminho que faltava no site público. */}
             <Link href="/entrar/" className="shrink-0 font-medium underline-offset-4 hover:underline">
