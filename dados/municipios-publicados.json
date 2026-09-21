@@ -1042,6 +1042,10 @@
   },
   {
    "uf": "GO",
+   "slug": "planaltina"
+  },
+  {
+   "uf": "GO",
    "slug": "porangatu"
   },
   {
@@ -2242,6 +2246,10 @@
   },
   {
    "uf": "PE",
+   "slug": "brejo-da-madre-de-deus"
+  },
+  {
+   "uf": "PE",
    "slug": "cabo-de-santo-agostinho"
   },
   {
@@ -3182,6 +3190,10 @@
   },
   {
    "uf": "RO",
+   "slug": "cacaulandia"
+  },
+  {
+   "uf": "RO",
    "slug": "cacoal"
   },
   {
@@ -3335,6 +3347,10 @@
   {
    "uf": "RS",
    "slug": "guaiba"
+  },
+  {
+   "uf": "RS",
+   "slug": "horizontina"
   },
   {
    "uf": "RS",
@@ -4863,6 +4879,10 @@
   {
    "uf": "SP",
    "slug": "tiete"
+  },
+  {
+   "uf": "SP",
+   "slug": "trabiju"
   },
   {
    "uf": "SP",
