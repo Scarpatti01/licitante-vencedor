@@ -90,6 +90,10 @@
   },
   {
    "uf": "BA",
+   "slug": "amargosa"
+  },
+  {
+   "uf": "BA",
    "slug": "amelia-rodrigues"
   },
   {
@@ -570,6 +574,10 @@
   },
   {
    "uf": "CE",
+   "slug": "quixere"
+  },
+  {
+   "uf": "CE",
    "slug": "redencao"
   },
   {
@@ -766,6 +774,10 @@
   },
   {
    "uf": "ES",
+   "slug": "santa-leopoldina"
+  },
+  {
+   "uf": "ES",
    "slug": "santa-maria-de-jetiba"
   },
   {
@@ -847,6 +859,10 @@
   {
    "uf": "GO",
    "slug": "bom-jesus-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "bonfinopolis"
   },
   {
    "uf": "GO",
@@ -1030,6 +1046,10 @@
   },
   {
    "uf": "GO",
+   "slug": "paranaiguara"
+  },
+  {
+   "uf": "GO",
    "slug": "parauna"
   },
   {
@@ -1067,6 +1087,10 @@
   {
    "uf": "GO",
    "slug": "santa-helena-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "santa-rita-do-araguaia"
   },
   {
    "uf": "GO",
@@ -1155,6 +1179,10 @@
   {
    "uf": "MA",
    "slug": "sao-vicente-ferrer"
+  },
+  {
+   "uf": "MA",
+   "slug": "serrano-do-maranhao"
   },
   {
    "uf": "MG",
@@ -2046,6 +2074,10 @@
   },
   {
    "uf": "MT",
+   "slug": "pontes-e-lacerda"
+  },
+  {
+   "uf": "MT",
    "slug": "primavera-do-leste"
   },
   {
@@ -2179,6 +2211,10 @@
   {
    "uf": "PB",
    "slug": "cabedelo"
+  },
+  {
+   "uf": "PB",
+   "slug": "cacimba-de-dentro"
   },
   {
    "uf": "PB",
@@ -3558,6 +3594,10 @@
   },
   {
    "uf": "SC",
+   "slug": "aurora"
+  },
+  {
+   "uf": "SC",
    "slug": "balneario-arroio-do-silva"
   },
   {
@@ -3838,6 +3878,10 @@
   },
   {
    "uf": "SC",
+   "slug": "palma-sola"
+  },
+  {
+   "uf": "SC",
    "slug": "palmitos"
   },
   {
@@ -3995,6 +4039,10 @@
   {
    "uf": "SC",
    "slug": "videira"
+  },
+  {
+   "uf": "SC",
+   "slug": "xanxere"
   },
   {
    "uf": "SE",
