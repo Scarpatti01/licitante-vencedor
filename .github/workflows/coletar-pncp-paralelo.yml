@@ -36,10 +36,46 @@ name: Coletar PNCP (paralelo)
 
 on:
   schedule:
-    # 06:10 UTC = 03:10 em Brasília. Cedo o bastante para o alerta das 7h e
-    # fora do horário de pico do PNCP.
-    - cron: "10 6 * * *"
-    # 08:10 UTC = 05:10 em Brasília. SEGUNDA TENTATIVA, e ela quase sempre não
+    # ## O horário agendado NÃO é o horário em que roda
+    #
+    # Até 24/09/2026 isto era 06:10 e 08:10 UTC. Medido nos 15 dias de 09 a
+    # 23/09, os 30 disparos saíram com atraso de 3h57 a 6h53, mediana de 5h:
+    #
+    #   agendado 06:10 UTC  ->  rodou entre 10:40 e 12:40 UTC
+    #   agendado 08:10 UTC  ->  rodou entre 12:07 e 15:03 UTC
+    #
+    # Não é defeito daqui. A documentação do GitHub diz que `schedule` "pode
+    # atrasar em períodos de carga alta", que a virada de cada hora é o pior
+    # momento, e que sob carga suficiente um disparo pode até ser DESCARTADO.
+    # O início da manhã na Europa é carga alta todo dia.
+    #
+    # Então este cron diz "não antes de", e nada mais. Quem precisa de hora
+    # certa não pode depender dele: ver o resumo diário, que tem o mesmo
+    # atraso e promete 7h ao cliente.
+    #
+    # ## Por que 03:47 e 05:47
+    #
+    # Mais cedo, porque o atraso é somado ao agendado: com o mesmo atraso de
+    # hoje, a coleta chega ~2h20 antes, e a home deixa de passar a manhã
+    # mostrando o dia anterior. Se a carga das 3h UTC for menor que a das 6h,
+    # como costuma ser, o atraso também cai.
+    #
+    # Não mais cedo que isso, porque a mensagem de commit usa `date -u` e o
+    # dia de Brasília só vira às 03:00 UTC. Antes disso a coleta de 23/09 à
+    # noite sairia rotulada como a de 24/09.
+    #
+    # Minuto 47, e não 00 ou 10, porque a virada da hora é o pico que o GitHub
+    # manda evitar.
+    #
+    # `ler-em-lote.yml` andou junto, de 03:00 para 00:47: ele precisa rodar
+    # três horas antes desta coleta para deixar o cache de leitura quente, e
+    # mover só a coleta teria encolhido essa folga para 47 minutos sem nenhum
+    # teste perceber. Agora percebe: `leitura-em-lote-no-workflow.test.ts`.
+    #
+    # A distância de 2h entre as duas tentativas foi mantida: ela existe para o
+    # PNCP ter tempo de voltar, e não tem nada a ver com o atraso.
+    - cron: "47 3 * * *"
+    # 05:47 UTC = 02:47 em Brasília. SEGUNDA TENTATIVA, e ela quase sempre não
     # faz nada.
     #
     # Existe porque uma tentativa por dia se mostrou pouco contra esta fonte: o
@@ -48,9 +84,10 @@ on:
     # recolhe — a janela desta coleta é "propostas abertas HOJE", então o edital
     # que encerrou no intervalo saiu do alcance para sempre.
     #
-    # 08:10, e não mais tarde, porque o envio de alertas é 10:10: a segunda
-    # tentativa tem de caber inteira antes dele.
-    - cron: "10 8 * * *"
+    # Ela precisa terminar antes do resumo diário. Com os dois sofrendo o mesmo
+    # atraso isso vem acontecendo por coincidência, e mover a coleta para mais
+    # cedo só aumenta a folga.
+    - cron: "47 5 * * *"
   workflow_dispatch:
     inputs:
       ufs:

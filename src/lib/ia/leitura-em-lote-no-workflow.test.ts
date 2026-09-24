@@ -108,7 +108,25 @@ describe("o lote não substitui a leitura avulsa", () => {
    * nada. Três horas antes dá folga de sobra para o lote terminar e deixar o
    * cache quente.
    */
-  it("o lote é agendado antes da coleta das 06:10", () => {
+  /*
+   * ## Três horas, e não só "antes"
+   *
+   * Até 24/09/2026 este teste cobrava só `horaDoLote < horaDaColeta`, enquanto
+   * o comentário acima dizia "três horas antes dá folga de sobra". Os dois não
+   * eram a mesma regra, e a diferença apareceu no dia em que a coleta mudou de
+   * horário: mover só ela de 06:10 para 03:47 deixava o lote às 03:00 com 47
+   * minutos de folga, e o teste antigo passava — 3 < 3,78.
+   *
+   * Quarenta e sete minutos não bastam para a Batch API devolver o lote. A
+   * avulsa leria tudo pelo preço cheio, o lote chegaria depois só para achar
+   * cache, e a economia sumiria sem nenhuma linha vermelha em lugar nenhum.
+   *
+   * Agora a folga é o que está sendo medido. O número é o mesmo do comentário,
+   * e não um novo: o que mudou foi o teste passar a cobrar o que já prometia.
+   */
+  const FOLGA_MINIMA_EM_HORAS = 3;
+
+  it("o lote é agendado com pelo menos três horas de folga antes da coleta", () => {
     const cron = /- cron: "(\d+) (\d+) \* \* \*"/.exec(WORKFLOW);
     expect(cron, "o agendamento do lote sumiu — a leitura voltou a custar o dobro").not.toBeNull();
 
@@ -125,11 +143,28 @@ describe("o lote não substitui a leitura avulsa", () => {
     expect(horarios.length, "não achei o agendamento da coleta paralela").toBeGreaterThan(0);
     const horaDaColeta = Math.min(...horarios);
 
+    /*
+     * Subtração direta, SEM dar a volta no relógio, de propósito.
+     *
+     * A primeira versão desta linha usava `(coleta - lote + 24) % 24`, para
+     * aceitar um lote às 23h da véspera. Parecia generoso e era o defeito de
+     * volta: com a volta, um lote UM MINUTO DEPOIS da coleta vira "23h59 de
+     * folga" e passa. É exatamente o caso que este teste existe para barrar.
+     *
+     * Se um dia o lote precisar cair na véspera em UTC, este teste reprova e
+     * obriga alguém a pensar no caso. Reprovar por excesso de cuidado custa uma
+     * conversa; aprovar o lote depois da coleta custa a economia inteira, em
+     * silêncio.
+     */
+    const folga = horaDaColeta - horaDoLote;
+
     expect(
-      horaDoLote,
-      `o lote roda às ${horaDoLote}h UTC e a coleta às ${horaDaColeta}h. Rodando depois, ` +
-        "a avulsa já leu tudo pelo preço cheio e o lote não economiza nada.",
-    ).toBeLessThan(horaDaColeta);
+      folga,
+      `o lote roda às ${horaDoLote.toFixed(2)}h UTC e a coleta às ${horaDaColeta.toFixed(2)}h: ` +
+        `${(folga * 60).toFixed(0)} minutos de folga. São precisos ${FOLGA_MINIMA_EM_HORAS}h ` +
+        "para a Batch API devolver o lote antes de a leitura avulsa começar. Com menos, " +
+        "a avulsa lê tudo pelo preço cheio e o lote não economiza nada.",
+    ).toBeGreaterThanOrEqual(FOLGA_MINIMA_EM_HORAS);
   });
 
   /**

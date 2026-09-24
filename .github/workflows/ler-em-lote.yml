@@ -6,9 +6,18 @@
 # derrubou um degrau que nenhum teste nosso pegaria (o dialeto do estado, o
 # lugar das respostas, o enum do custo).
 #
-# 03:00 UTC é meia-noite em Brasília, e é ANTES da coleta das 06:10 de
-# propósito: quando a leitura avulsa da coleta rodar, encontra o cache já
-# quente e só lê o que o lote não conseguiu.
+# Roda TRÊS HORAS antes da coleta, de propósito: quando a leitura avulsa da
+# coleta rodar, encontra o cache já quente e só lê o que o lote não conseguiu.
+# Rodando depois, a avulsa já teria lido tudo pelo preço cheio e o lote não
+# economizaria nada. `leitura-em-lote-no-workflow.test.ts` cobra a folga.
+#
+# Em 24/09/2026 a coleta foi de 06:10 para 03:47 UTC (ver o porquê em
+# `coletar-pncp-paralelo.yml`), e este lote andou junto, de 03:00 para 00:47,
+# para as três horas continuarem sendo três horas.
+#
+# 00:47 UTC é 21:47 da véspera em Brasília, e isso não muda o que o lote lê:
+# ele escolhe entre os editais que JÁ estão no banco, que são os da coleta
+# anterior, e o rótulo do lote usa a data UTC, que já virou às 00:00.
 #
 # Rodar isto NÃO desliga a leitura avulsa, e não é para desligar. Os dois
 # convivem: o lote pega a maioria pela metade do preço, e o que ele deixa
@@ -20,8 +29,9 @@ name: Ler editais em lote
 
 on:
   schedule:
-    # 03:00 UTC = meia-noite em Brasília, três horas antes da coleta.
-    - cron: "0 3 * * *"
+    # 00:47 UTC, três horas antes da coleta das 03:47. Minuto 47 pelo mesmo
+    # motivo dela: a virada da hora é o pico de atraso do agendador do GitHub.
+    - cron: "47 0 * * *"
   workflow_dispatch:
     inputs:
       simular:
