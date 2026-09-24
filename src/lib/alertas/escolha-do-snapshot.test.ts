@@ -113,7 +113,26 @@ describe("a escolha do snapshot", () => {
     const semComentarios = (y: string) => y.replace(/^\s*#.*$/gm, "");
     const quemColeta = /^\s*schedule:/m.test(semComentarios(COLETA)) ? COLETA : PARALELA;
 
-    expect(quemColeta).toContain('cron: "10 6 * * *"');
-    expect(quemColeta).toContain('cron: "10 8 * * *"');
+    /*
+     * A regra, e não o horário.
+     *
+     * Até 24/09/2026 isto cobrava as strings exatas `"10 6 * * *"` e
+     * `"10 8 * * *"`. O que se queria proteger nunca foi 06:10: foi haver
+     * SEGUNDA tentativa, e com distância suficiente para o PNCP voltar. No dia
+     * em que o horário mudou por um motivo legítimo (o agendador do GitHub
+     * atrasando 5h, ver `coletar-pncp-paralelo.yml`), as strings viraram teste
+     * vermelho sem nada ter quebrado — o ruído que ensina a mexer no teste em
+     * vez de ler o que ele diz.
+     */
+    const diarios = [...semComentarios(quemColeta).matchAll(/- cron: "(\d+) (\d+) \* \* \*"/g)]
+      .map((m) => Number(m[2]) * 60 + Number(m[1]))
+      .sort((a, b) => a - b);
+
+    expect(diarios, "a coleta não tem exatamente duas rodadas diárias").toHaveLength(2);
+    expect(
+      diarios[1] - diarios[0],
+      "as duas tentativas precisam de pelo menos 1h de distância, para o PNCP " +
+        "ter tempo de voltar quando a primeira pega ele fora do ar",
+    ).toBeGreaterThanOrEqual(60);
   });
 });
