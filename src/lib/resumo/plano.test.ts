@@ -444,3 +444,61 @@ describe("valor ausente é dito, nunca vira R$ 0,00", () => {
     expect(linhaDeValor(0)).not.toMatch(/não informado/i);
   });
 });
+
+/**
+ * Um resumo por empresa por dia de Brasília.
+ *
+ * Nasceu em 24/09/2026, quando o resumo passou a sair quando a coleta termina.
+ * A coleta roda duas vezes por dia e a segunda quase sempre traz algum edital
+ * novo, então sem esta regra o cliente receberia dois e-mails no mesmo dia.
+ *
+ * `AGORA` é 24/08/2026, 07:00 em Brasília (10:00 UTC).
+ */
+describe("um resumo por empresa por dia", () => {
+  it("não manda o segundo no mesmo dia, mesmo com edital novo", () => {
+    // Recebeu às 06:30 de Brasília do mesmo dia; `e1` é novo e passaria no corte.
+    const plano = planejarResumoDiario(dados({ ultimoEnvio: "2026-08-24T09:30:00Z" }), AGORA);
+    expect(plano.tipo).toBe("ja-recebeu-hoje");
+  });
+
+  it("manda normalmente se o último foi ontem", () => {
+    const plano = planejarResumoDiario(dados({ ultimoEnvio: "2026-08-23T13:00:00Z" }), AGORA);
+    expect(plano.tipo).toBe("enviar");
+  });
+
+  it("manda normalmente para quem nunca recebeu", () => {
+    expect(planejarResumoDiario(dados({ ultimoEnvio: null }), AGORA).tipo).toBe("enviar");
+    // Ausente conta como nunca: é como os testes antigos montam o dado.
+    expect(planejarResumoDiario(dados(), AGORA).tipo).toBe("enviar");
+  });
+
+  /**
+   * O caso que uma conta em UTC erra.
+   *
+   * 02:00 UTC de 24/08 e 10:00 UTC de 24/08 são o MESMO dia em UTC. Em
+   * Brasília, o primeiro é 23:00 de 23/08. Comparando em UTC, o resumo de hoje
+   * seria bloqueado por um envio feito ontem à noite.
+   */
+  it("o dia é o de Brasília: um envio às 23h de ontem não conta como hoje", () => {
+    const plano = planejarResumoDiario(dados({ ultimoEnvio: "2026-08-24T02:00:00Z" }), AGORA);
+    expect(plano.tipo).toBe("enviar");
+  });
+
+  /**
+   * O que a regra NÃO pode fazer é perder edital.
+   *
+   * O edital que chegou depois do e-mail de hoje não é registrado em
+   * `envios_do_resumo`, então continua novo e sai no dia seguinte.
+   */
+  it("o edital barrado hoje sai amanhã", () => {
+    const hoje = planejarResumoDiario(dados({ ultimoEnvio: "2026-08-24T09:30:00Z" }), AGORA);
+    expect(hoje.tipo).toBe("ja-recebeu-hoje");
+
+    const amanha = planejarResumoDiario(
+      dados({ ultimoEnvio: "2026-08-24T09:30:00Z" }),
+      new Date("2026-08-25T10:00:00Z"),
+    );
+    expect(amanha.tipo).toBe("enviar");
+    expect(amanha.tipo === "enviar" && amanha.editaisIds).toEqual(["e1"]);
+  });
+});

@@ -43,6 +43,8 @@ export type Repositorio = {
   destinatarias(): Promise<EmpresaParaResumo[]>;
   oportunidadesDe(empresaId: string): Promise<OportunidadeDoResumo[]>;
   jaEnviados(empresaId: string): Promise<Set<string>>;
+  /** O `enviado_em` mais recente desta empresa, ou `null` se nunca recebeu. */
+  ultimoEnvio(empresaId: string): Promise<string | null>;
   registrar(empresaId: string, editaisIds: string[], idNoProvedor: string | null): Promise<number>;
 };
 
@@ -333,6 +335,23 @@ export function abrirRepositorioDoResumo(): Repositorio | null {
           .map((linha) => (linha as Record<string, unknown>).edital_id)
           .filter((id): id is string => typeof id === "string"),
       );
+    },
+
+    /*
+     * Uma linha só, pelo índice `(empresa_id, enviado_em desc)` que a tabela já
+     * tinha. O que interessa é o dia do último envio, e não a lista inteira.
+     */
+    async ultimoEnvio(empresaId) {
+      const consulta = new URLSearchParams({
+        select: "enviado_em",
+        empresa_id: `eq.${empresaId}`,
+        order: "enviado_em.desc",
+        limit: "1",
+      });
+
+      const linhas = await pedir(`envios_do_resumo?${consulta}`);
+      if (!Array.isArray(linhas) || linhas.length === 0) return null;
+      return texto((linhas[0] as Record<string, unknown>).enviado_em);
     },
 
     async registrar(empresaId, editaisIds, idNoProvedor) {
