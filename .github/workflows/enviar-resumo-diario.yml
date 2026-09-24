@@ -6,12 +6,26 @@
 # canal na tela dela. Um workflow só misturaria as duas regras, e é aí que este
 # tipo de sistema erra feio.
 #
-# ## Por que 10:00 UTC
+# ## Quando sai: quando a coleta termina, nunca antes das 7h
 #
-# 07:00 em Brasília, que é o padrão de `preferencias_de_envio.horario` e o
-# horário anunciado nas páginas públicas. A coleta roda 06:10 e 08:10 UTC, e a
-# triagem e a leitura são passos dela — então às 10:00 as oportunidades do dia
-# já estão gravadas.
+# A home promete "todo dia útil, às 7h". Até 24/09/2026 isso era um `schedule`
+# às 10:00 UTC, e nos 12 dias úteis medidos de 08 a 23/09 o resumo chegou entre
+# 10h58 e 13h07 de Brasília — todos os dias. O agendador do GitHub atrasa sob
+# carga, e atrasou de 4 a 6 horas, sempre. O conteúdo estava certo; a hora não.
+#
+# Agora o gatilho é a COLETA terminar (`workflow_run`), que é o momento em que
+# os dados do dia existem: a triagem e a leitura são passos dela. Se ela
+# terminar antes das 7h, este job espera; depois das 20h, não manda. A regra
+# mora em `src/lib/resumo/janela.ts`, onde é testada, e não aqui.
+#
+# A coleta roda duas vezes por dia, então isto dispara duas vezes. Não sai
+# e-mail duplicado: o plano manda UM resumo por empresa por dia de Brasília, e
+# o que a segunda coleta trouxer depois vai no resumo do próximo dia útil —
+# como já acontecia com o horário fixo. Ver `ultimoEnvio` em `resumo/plano.ts`.
+#
+# O `schedule` continua, como reserva: se um disparo da coleta for descartado
+# pelo GitHub (a documentação diz que sob carga isso acontece), o resumo ainda
+# sai. Nos dias normais ele chega depois e encontra todo mundo já atendido.
 #
 # ## O que acontece quando falta segredo
 #
@@ -22,9 +36,19 @@
 name: Enviar resumo diário
 
 on:
+  # O gatilho principal: a coleta terminou, com qualquer desfecho. "failure" é
+  # o normal — a coleta termina assim sempre que UMA das 27 UFs cai, e publica
+  # os dados do mesmo jeito. Ver `aviso-de-praca-le-a-coleta-certa.test.ts`.
+  workflow_run:
+    workflows: ["Coletar PNCP (paralelo)", "Coletar PNCP"]
+    types: [completed]
+    # Só a main. Uma coleta disparada à mão num ramo de teste mandaria e-mail de
+    # verdade para cliente de verdade, com dado de um código que ninguém mesclou.
+    branches: [main]
   schedule:
-    # 10:00 UTC = 07:00 em Brasília, de segunda a sexta.
-    - cron: "0 10 * * 1-5"
+    # Reserva. 10:07 UTC = 07:07 em Brasília; minuto 7 para fugir da virada da
+    # hora, que é o pico de atraso do agendador.
+    - cron: "7 10 * * 1-5"
   workflow_dispatch:
     inputs:
       simular:
@@ -41,13 +65,21 @@ concurrency:
   # Duas execuções em paralelo mandariam o mesmo edital duas vezes: a checagem
   # de duplicidade lê o estado ANTES do envio. A unicidade de
   # `envios_do_resumo` pega na gravação, mas o e-mail já teria saído.
+  #
+  # Desde 24/09/2026 um disparo pode passar até 5h30 esperando as 7h, e segura
+  # o grupo enquanto espera. Os outros disparos do dia — a segunda coleta, a
+  # reserva — ficam na fila, e o GitHub mantém só o mais recente dela. Perder
+  # um da fila não custa nada: todos são idempotentes, porque o plano manda um
+  # resumo por empresa por dia e nunca o mesmo edital duas vezes.
   group: enviar-resumo-diario
   cancel-in-progress: false
 
 jobs:
   enviar:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # A espera até as 7h pode chegar a 5h30 (`ESPERA_MAXIMA_MS`), e um job do
+    # GitHub vive no máximo 6 horas. 350 cobre a espera e o envio.
+    timeout-minutes: 350
 
     steps:
       - uses: actions/checkout@v4
@@ -62,10 +94,41 @@ jobs:
       - name: Instalar dependências
         run: npm ci --omit=dev
 
+      # Quem dispara à mão quer agora: o ensaio com `simular` às 3h da manhã não
+      # pode ficar cinco horas esperando. A janela vale para os gatilhos
+      # automáticos.
+      - name: Decidir a hora do resumo
+        id: janela
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          set -euo pipefail
+          node scripts/decidir-janela-do-resumo.ts
+
+          # Pular é resultado previsto, não falha: o job fica verde. Mas diz por
+          # quê, na primeira tela da execução — um resumo que não saiu sem
+          # explicação é o silêncio que `aviso-de-praca-le-a-coleta-certa.test.ts`
+          # documenta.
+          if [ "$(grep '^acao=' "$GITHUB_OUTPUT" | tail -1 | cut -d= -f2)" = "pular" ]; then
+            motivo=$(grep '^motivo=' "$GITHUB_OUTPUT" | tail -1 | cut -d= -f2-)
+            echo "::notice title=Resumo não sai neste disparo::$motivo"
+            {
+              echo "## Resumo não sai neste disparo"
+              echo
+              echo "$motivo"
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Esperar até as 7h de Brasília
+        if: steps.janela.outputs.acao == 'esperar'
+        run: |
+          echo "a coleta terminou antes das 7h; esperando ${{ steps.janela.outputs.segundos }}s"
+          sleep "${{ steps.janela.outputs.segundos }}"
+
       # As praças ausentes saem daqui. `continue-on-error` porque o resumo NÃO
       # depende disso: sem o arquivo, o e-mail sai sem a observação sobre praça
       # faltante — que é uma linha a menos, não um envio a menos.
       - name: Baixar a classificação da última coleta
+        if: steps.janela.outputs.acao != 'pular'
         id: classificacao
         continue-on-error: true
         env:
@@ -137,6 +200,7 @@ jobs:
           fi
 
       - name: Encerrar os testes vencidos
+        if: steps.janela.outputs.acao != 'pular'
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -168,6 +232,7 @@ jobs:
           fi
 
       - name: Enviar
+        if: steps.janela.outputs.acao != 'pular'
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

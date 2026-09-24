@@ -37,7 +37,7 @@ const arg = (nome: string): string | undefined => {
   return i === -1 ? undefined : process.argv[i + 1];
 };
 
-type Desfecho = "enviado" | "sem-novidade" | "falha-no-envio";
+type Desfecho = "enviado" | "sem-novidade" | "ja-recebeu-hoje" | "falha-no-envio";
 
 async function main(): Promise<void> {
   const simular = temFlag("simular");
@@ -74,13 +74,19 @@ async function main(): Promise<void> {
   console.log(`${empresas.length} empresa(s) com perfil, e-mail e canal ligado\n`);
 
   const provedor = criarProvedorResend();
-  const contagem: Record<Desfecho, number> = { enviado: 0, "sem-novidade": 0, "falha-no-envio": 0 };
+  const contagem: Record<Desfecho, number> = {
+    enviado: 0,
+    "sem-novidade": 0,
+    "ja-recebeu-hoje": 0,
+    "falha-no-envio": 0,
+  };
   let editaisEnviados = 0;
 
   for (const empresa of empresas) {
-    const [oportunidades, jaEnviados] = await Promise.all([
+    const [oportunidades, jaEnviados, ultimoEnvio] = await Promise.all([
       repositorio.oportunidadesDe(empresa.id),
       repositorio.jaEnviados(empresa.id),
+      repositorio.ultimoEnvio(empresa.id),
     ]);
 
     const plano = planejarResumoDiario(
@@ -91,11 +97,20 @@ async function main(): Promise<void> {
         leituraInclusaNoPlano: empresa.leituraInclusaNoPlano,
         oportunidades,
         jaEnviados,
+        ultimoEnvio,
         ufsAusentes,
         preferencias: empresa.preferencias,
       },
       agora,
     );
+
+    if (plano.tipo === "ja-recebeu-hoje") {
+      // O resumo agora sai quando a coleta termina, e a coleta roda duas vezes.
+      // O que chegou depois do primeiro e-mail vai no de amanhã. Ver o plano.
+      console.log(`  ${empresa.nome.padEnd(28)} já recebeu o resumo de hoje`);
+      contagem["ja-recebeu-hoje"]++;
+      continue;
+    }
 
     if (plano.tipo === "sem-novidade") {
       // A promessa: dia sem edital novo é dia sem e-mail — inclusive quando o
@@ -142,6 +157,7 @@ async function main(): Promise<void> {
 
   console.log(
     `\n${contagem.enviado} enviado(s) · ${contagem["sem-novidade"]} sem novidade · ` +
+      `${contagem["ja-recebeu-hoje"]} já recebera(m) hoje · ` +
       `${contagem["falha-no-envio"]} falha(s) · ${editaisEnviados} edital(is) no total`,
   );
 

@@ -1,3 +1,4 @@
+import { mesmoDiaEmBrasilia } from "./janela.ts";
 import type { BlocoDeLista, ConteudoDeEmail } from "../email/mensagens.ts";
 import { SITE } from "../site.ts";
 import { cortar, OBJETO_NO_ROTULO } from "../email/cortar.ts";
@@ -60,6 +61,22 @@ export type DadosDoResumo = {
   oportunidades: readonly OportunidadeDoResumo[];
   /** `editais.id` já enviados a esta empresa em dias anteriores. */
   jaEnviados: ReadonlySet<string>;
+  /**
+   * Quando esta empresa recebeu o último resumo, ISO, ou `null` se nunca.
+   *
+   * Existe desde 24/09/2026, quando o resumo passou a sair quando a COLETA
+   * termina, e não mais num horário fixo. A coleta roda duas vezes por dia, e
+   * a segunda quase sempre traz algum edital que a primeira não trouxe — o PNCP
+   * derruba alguma UF quase todo dia, e a segunda tentativa existe para
+   * recolher. Sem isto, o cliente receberia dois e-mails no mesmo dia.
+   *
+   * `jaEnviados` não resolve: ele impede o mesmo EDITAL de sair duas vezes, e
+   * não o segundo E-MAIL com editais diferentes.
+   *
+   * Opcional para quem monta o dado à mão, como os testes antigos: ausente
+   * conta como nunca recebeu, que é o comportamento de antes desta regra.
+   */
+  ultimoEnvio?: string | null;
   /** Praças que a coleta de hoje não alcançou. Ver `Classificacao.ufsAusentes`. */
   ufsAusentes: readonly string[];
   /**
@@ -152,6 +169,7 @@ export function aberturaDoResumo(
 
 export type PlanoDoResumo =
   | { tipo: "sem-novidade" }
+  | { tipo: "ja-recebeu-hoje" }
   | { tipo: "enviar"; conteudo: ConteudoDeEmail; editaisIds: string[] };
 
 /** Quais praças do perfil ficaram de fora hoje. Vazio quando nenhuma. */
@@ -248,6 +266,21 @@ function blocoDoEdital(
  * a atenção dele.
  */
 export function planejarResumoDiario(dados: DadosDoResumo, agora: Date = new Date()): PlanoDoResumo {
+  /*
+   * Um resumo por empresa por dia de Brasília.
+   *
+   * Os editais que chegarem depois NÃO são perdidos: como não foram
+   * registrados em `envios_do_resumo`, continuam "novos" e saem no resumo do
+   * próximo dia útil. É o mesmo destino que tinham até 24/09, quando o resumo
+   * era um horário fixo e a segunda coleta caía sempre depois dele.
+   *
+   * O dia é o de Brasília, e não o de UTC: 21h em Brasília já é o dia seguinte
+   * em UTC, e a conta errada liberaria um segundo e-mail à noite.
+   */
+  if (dados.ultimoEnvio && mesmoDiaEmBrasilia(new Date(dados.ultimoEnvio), agora)) {
+    return { tipo: "ja-recebeu-hoje" };
+  }
+
   const novas = dados.oportunidades
     .filter((o) => !dados.jaEnviados.has(o.editalId))
     .filter((o) => !o.encerramentoProposta || Date.parse(o.encerramentoProposta) > agora.getTime())

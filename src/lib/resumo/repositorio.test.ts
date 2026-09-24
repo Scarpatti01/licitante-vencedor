@@ -129,3 +129,67 @@ describe("a recusa do banco continua sendo erro", () => {
     ).rejects.toThrow(/401/);
   });
 });
+
+/**
+ * O último envio de uma empresa.
+ *
+ * É o que impede o segundo e-mail no mesmo dia desde que o resumo passou a
+ * sair quando a coleta termina. Uma consulta sem ordem e sem limite devolveria
+ * um envio QUALQUER, e aí a regra ficaria certa ou errada por sorte.
+ *
+ * O corpo simulado abaixo usa o formato que o banco de produção devolve,
+ * conferido em 24/09/2026 com `select to_json(enviado_em)`: seis casas de
+ * microssegundo e fuso `+00:00`. Um mock escrito de cabeça, com `Z` e
+ * milissegundos, testaria o formato que eu acho que existe, e não o que existe.
+ */
+describe("ultimoEnvio", () => {
+  const REAL = "2026-09-04T13:55:08.309878+00:00";
+
+  it("pede só o mais recente, desta empresa", async () => {
+    const chamadas: string[] = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (url: string) => {
+        chamadas.push(String(url));
+        return new Response(JSON.stringify([{ enviado_em: REAL }]), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        });
+      }),
+    );
+
+    await abrirRepositorioDoResumo()!.ultimoEnvio("empresa-1");
+
+    const url = new URL(chamadas[0]);
+    expect(url.pathname).toMatch(/envios_do_resumo$/);
+    expect(url.searchParams.get("empresa_id")).toBe("eq.empresa-1");
+    expect(url.searchParams.get("order")).toBe("enviado_em.desc");
+    expect(url.searchParams.get("limit")).toBe("1");
+  });
+
+  it("devolve o instante no formato do banco, e ele é uma data válida", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(
+        async () =>
+          new Response(JSON.stringify([{ enviado_em: REAL }]), {
+            status: 200,
+            headers: { "content-type": "application/json" },
+          }),
+      ),
+    );
+
+    const ultimo = await abrirRepositorioDoResumo()!.ultimoEnvio("empresa-1");
+    expect(ultimo).toBe(REAL);
+    expect(Number.isNaN(new Date(ultimo!).getTime())).toBe(false);
+  });
+
+  it("quem nunca recebeu devolve null, e não estoura", async () => {
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response("[]", { status: 200, headers: { "content-type": "application/json" } })),
+    );
+
+    expect(await abrirRepositorioDoResumo()!.ultimoEnvio("empresa-1")).toBeNull();
+  });
+});
