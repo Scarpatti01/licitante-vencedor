@@ -1298,6 +1298,10 @@
   },
   {
    "uf": "MG",
+   "slug": "canaa"
+  },
+  {
+   "uf": "MG",
    "slug": "capelinha"
   },
   {
@@ -1526,6 +1530,10 @@
   },
   {
    "uf": "MG",
+   "slug": "itanhomi"
+  },
+  {
+   "uf": "MG",
    "slug": "itauna"
   },
   {
@@ -1682,6 +1690,10 @@
   },
   {
    "uf": "MG",
+   "slug": "patrocinio-do-muriae"
+  },
+  {
+   "uf": "MG",
    "slug": "pedro-leopoldo"
   },
   {
@@ -1695,6 +1707,10 @@
   {
    "uf": "MG",
    "slug": "pirauba"
+  },
+  {
+   "uf": "MG",
+   "slug": "pitangui"
   },
   {
    "uf": "MG",
@@ -1719,6 +1735,10 @@
   {
    "uf": "MG",
    "slug": "pouso-alegre"
+  },
+  {
+   "uf": "MG",
+   "slug": "prata"
   },
   {
    "uf": "MG",
@@ -1774,11 +1794,19 @@
   },
   {
    "uf": "MG",
+   "slug": "santana-do-paraiso"
+  },
+  {
+   "uf": "MG",
    "slug": "santos-dumont"
   },
   {
    "uf": "MG",
    "slug": "sao-goncalo-do-rio-abaixo"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-gotardo"
   },
   {
    "uf": "MG",
@@ -1838,6 +1866,10 @@
   },
   {
    "uf": "MG",
+   "slug": "tiros"
+  },
+  {
+   "uf": "MG",
    "slug": "tres-coracoes"
   },
   {
@@ -1885,6 +1917,10 @@
    "slug": "vicosa"
   },
   {
+   "uf": "MG",
+   "slug": "visconde-do-rio-branco"
+  },
+  {
    "uf": "MS",
    "slug": "alcinopolis"
   },
@@ -1899,6 +1935,10 @@
   {
    "uf": "MS",
    "slug": "aquidauana"
+  },
+  {
+   "uf": "MS",
+   "slug": "bandeirantes"
   },
   {
    "uf": "MS",
@@ -1991,6 +2031,10 @@
   {
    "uf": "MS",
    "slug": "paranaiba"
+  },
+  {
+   "uf": "MS",
+   "slug": "pedro-gomes"
   },
   {
    "uf": "MS",
@@ -2578,6 +2622,10 @@
   },
   {
    "uf": "PR",
+   "slug": "campo-magro"
+  },
+  {
+   "uf": "PR",
    "slug": "campo-mourao"
   },
   {
@@ -2615,6 +2663,10 @@
   {
    "uf": "PR",
    "slug": "congonhinhas"
+  },
+  {
+   "uf": "PR",
+   "slug": "contenda"
   },
   {
    "uf": "PR",
@@ -2662,11 +2714,23 @@
   },
   {
    "uf": "PR",
+   "slug": "ibaiti"
+  },
+  {
+   "uf": "PR",
    "slug": "ibipora"
   },
   {
    "uf": "PR",
    "slug": "imbau"
+  },
+  {
+   "uf": "PR",
+   "slug": "indianopolis"
+  },
+  {
+   "uf": "PR",
+   "slug": "ipiranga"
   },
   {
    "uf": "PR",
@@ -2802,6 +2866,14 @@
   },
   {
    "uf": "PR",
+   "slug": "pinhais"
+  },
+  {
+   "uf": "PR",
+   "slug": "pinhao"
+  },
+  {
+   "uf": "PR",
    "slug": "piraquara"
   },
   {
@@ -2835,6 +2907,10 @@
   {
    "uf": "PR",
    "slug": "rancho-alegre"
+  },
+  {
+   "uf": "PR",
+   "slug": "renascenca"
   },
   {
    "uf": "PR",
@@ -2939,6 +3015,10 @@
   {
    "uf": "PR",
    "slug": "umuarama"
+  },
+  {
+   "uf": "PR",
+   "slug": "uniao-da-vitoria"
   },
   {
    "uf": "PR",
@@ -3059,6 +3139,10 @@
   {
    "uf": "RJ",
    "slug": "pinheiral"
+  },
+  {
+   "uf": "RJ",
+   "slug": "pirai"
   },
   {
    "uf": "RJ",
@@ -3618,6 +3702,10 @@
   },
   {
    "uf": "SC",
+   "slug": "barra-bonita"
+  },
+  {
+   "uf": "SC",
    "slug": "barra-velha"
   },
   {
@@ -3755,6 +3843,10 @@
   {
    "uf": "SC",
    "slug": "guaraciaba"
+  },
+  {
+   "uf": "SC",
+   "slug": "guaramirim"
   },
   {
    "uf": "SC",
@@ -3990,6 +4082,10 @@
   },
   {
    "uf": "SC",
+   "slug": "sao-pedro-de-alcantara"
+  },
+  {
+   "uf": "SC",
    "slug": "saudades"
   },
   {
@@ -4182,6 +4278,10 @@
   },
   {
    "uf": "SP",
+   "slug": "aruja"
+  },
+  {
+   "uf": "SP",
    "slug": "assis"
   },
   {
@@ -4258,6 +4358,10 @@
   },
   {
    "uf": "SP",
+   "slug": "cabreuva"
+  },
+  {
+   "uf": "SP",
    "slug": "cacapava"
   },
   {
@@ -4311,6 +4415,10 @@
   {
    "uf": "SP",
    "slug": "cerqueira-cesar"
+  },
+  {
+   "uf": "SP",
+   "slug": "cerquilho"
   },
   {
    "uf": "SP",
@@ -4403,6 +4511,10 @@
   {
    "uf": "SP",
    "slug": "guarulhos"
+  },
+  {
+   "uf": "SP",
+   "slug": "holambra"
   },
   {
    "uf": "SP",
@@ -4747,6 +4859,10 @@
   {
    "uf": "SP",
    "slug": "praia-grande"
+  },
+  {
+   "uf": "SP",
+   "slug": "pratania"
   },
   {
    "uf": "SP",
