@@ -218,11 +218,19 @@
   },
   {
    "uf": "BA",
+   "slug": "morro-do-chapeu"
+  },
+  {
+   "uf": "BA",
    "slug": "paulo-afonso"
   },
   {
    "uf": "BA",
    "slug": "pojuca"
+  },
+  {
+   "uf": "BA",
+   "slug": "porto-seguro"
   },
   {
    "uf": "BA",
@@ -358,6 +366,10 @@
   },
   {
    "uf": "CE",
+   "slug": "caririacu"
+  },
+  {
+   "uf": "CE",
    "slug": "cascavel"
   },
   {
@@ -446,7 +458,15 @@
   },
   {
    "uf": "CE",
+   "slug": "itapiuna"
+  },
+  {
+   "uf": "CE",
    "slug": "itarema"
+  },
+  {
+   "uf": "CE",
+   "slug": "itatira"
   },
   {
    "uf": "CE",
@@ -610,6 +630,10 @@
   },
   {
    "uf": "CE",
+   "slug": "senador-pompeu"
+  },
+  {
+   "uf": "CE",
    "slug": "sobral"
   },
   {
@@ -619,6 +643,10 @@
   {
    "uf": "CE",
    "slug": "tabuleiro-do-norte"
+  },
+  {
+   "uf": "CE",
+   "slug": "tamboril"
   },
   {
    "uf": "CE",
@@ -727,6 +755,10 @@
   {
    "uf": "ES",
    "slug": "iconha"
+  },
+  {
+   "uf": "ES",
+   "slug": "itapemirim"
   },
   {
    "uf": "ES",
@@ -874,6 +906,10 @@
   },
   {
    "uf": "GO",
+   "slug": "buriti-de-goias"
+  },
+  {
+   "uf": "GO",
    "slug": "cachoeira-dourada"
   },
   {
@@ -942,6 +978,10 @@
   },
   {
    "uf": "GO",
+   "slug": "goianira"
+  },
+  {
+   "uf": "GO",
    "slug": "goias"
   },
   {
@@ -986,6 +1026,10 @@
   },
   {
    "uf": "GO",
+   "slug": "luziania"
+  },
+  {
+   "uf": "GO",
    "slug": "minacu"
   },
   {
@@ -1003,6 +1047,10 @@
   {
    "uf": "GO",
    "slug": "morrinhos"
+  },
+  {
+   "uf": "GO",
+   "slug": "nazario"
   },
   {
    "uf": "GO",
@@ -1043,6 +1091,10 @@
   {
    "uf": "GO",
    "slug": "palmelo"
+  },
+  {
+   "uf": "GO",
+   "slug": "palminopolis"
   },
   {
    "uf": "GO",
@@ -1099,6 +1151,10 @@
   {
    "uf": "GO",
    "slug": "santo-antonio-do-descoberto"
+  },
+  {
+   "uf": "GO",
+   "slug": "sao-francisco-de-goias"
   },
   {
    "uf": "GO",
