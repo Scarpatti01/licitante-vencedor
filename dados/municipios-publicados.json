@@ -530,6 +530,10 @@
   },
   {
    "uf": "CE",
+   "slug": "morrinhos"
+  },
+  {
+   "uf": "CE",
    "slug": "nova-russas"
   },
   {
@@ -775,6 +779,10 @@
   {
    "uf": "ES",
    "slug": "linhares"
+  },
+  {
+   "uf": "ES",
+   "slug": "marataizes"
   },
   {
    "uf": "ES",
@@ -1074,6 +1082,10 @@
   },
   {
    "uf": "GO",
+   "slug": "novo-gama"
+  },
+  {
+   "uf": "GO",
    "slug": "ouvidor"
   },
   {
@@ -1159,6 +1171,10 @@
   {
    "uf": "GO",
    "slug": "sao-joao-d-alianca"
+  },
+  {
+   "uf": "GO",
+   "slug": "sao-luis-de-montes-belos"
   },
   {
    "uf": "GO",
@@ -1339,6 +1355,10 @@
   {
    "uf": "MG",
    "slug": "camanducaia"
+  },
+  {
+   "uf": "MG",
+   "slug": "cambui"
   },
   {
    "uf": "MG",
@@ -2282,6 +2302,10 @@
   },
   {
    "uf": "PA",
+   "slug": "rondon-do-para"
+  },
+  {
+   "uf": "PA",
    "slug": "salinopolis"
   },
   {
@@ -2742,6 +2766,10 @@
   },
   {
    "uf": "PR",
+   "slug": "diamante-d-oeste"
+  },
+  {
+   "uf": "PR",
    "slug": "fazenda-rio-grande"
   },
   {
@@ -2787,6 +2815,10 @@
   {
    "uf": "PR",
    "slug": "ipiranga"
+  },
+  {
+   "uf": "PR",
+   "slug": "ipora"
   },
   {
    "uf": "PR",
@@ -3014,6 +3046,10 @@
   },
   {
    "uf": "PR",
+   "slug": "sao-joao-do-caiua"
+  },
+  {
+   "uf": "PR",
    "slug": "sao-joao-do-ivai"
   },
   {
@@ -3099,6 +3135,10 @@
   {
    "uf": "RJ",
    "slug": "belford-roxo"
+  },
+  {
+   "uf": "RJ",
+   "slug": "bom-jardim"
   },
   {
    "uf": "RJ",
@@ -3550,6 +3590,10 @@
   },
   {
    "uf": "RS",
+   "slug": "ivoti"
+  },
+  {
+   "uf": "RS",
    "slug": "jaguarao"
   },
   {
@@ -3903,6 +3947,10 @@
   {
    "uf": "SC",
    "slug": "guaramirim"
+  },
+  {
+   "uf": "SC",
+   "slug": "herval-d-oeste"
   },
   {
    "uf": "SC",
