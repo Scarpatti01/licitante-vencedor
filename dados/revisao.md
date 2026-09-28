@@ -1,25 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 28441 editais coletados em 2026-09-28T10:10:20.965Z.
+Revisão dos dados — 26949 editais coletados em 2026-09-28T12:01:50.196Z.
 
-ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 26 foram coletadas por inteiro, 0 ficaram parciais e 1 não trouxe nada.
-
-  Completas (representadas por inteiro nos números abaixo): AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP, TO
-  Sem coleta (nenhum edital; NÃO estão representadas nos números abaixo):
-    AC: não coletada nesta rodada
-
-  Os 28441 editais revisados vêm de AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP, TO.
-
-Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
-
-[AVISO] O edital 88067780000138-1-000128/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "MATERIAL"
-  Edital: https://pncp.gov.br/app/editais/88067780000138/2026/128
-
-[AVISO] O edital 01602022000194-1-000333/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "SERVIÇOS"
-  Edital: https://pncp.gov.br/app/editais/01602022000194/2026/333
+Encontrados 0 erro(s), 3 suspeita(s) e 173 aviso(s).
 
 [AVISO] O edital 13595251000108-1-000053/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
@@ -358,6 +342,10 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
   Evidência: objeto declarado: "MEDICAMENTOS"
   Edital: https://pncp.gov.br/app/editais/05816630000152/2026/7310
 
+[AVISO] O edital 33457634000127-1-000993/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Quadro escolar"
+  Edital: https://pncp.gov.br/app/editais/33457634000127/2026/993
+
 [AVISO] O edital 07954480000179-1-024957/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "FERRAMENTAS"
   Edital: https://pncp.gov.br/app/editais/07954480000179/2026/24957
@@ -369,6 +357,14 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
 [AVISO] O edital 13937073000156-1-000228/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "ESTABILIZADOR"
   Edital: https://pncp.gov.br/app/editais/13937073000156/2026/228
+
+[AVISO] O edital 14485841000140-1-002501/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "colchões"
+  Edital: https://pncp.gov.br/app/editais/14485841000140/2026/2501
+
+[AVISO] O edital 05467476000150-1-000128/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "FRAGMENTADORA"
+  Edital: https://pncp.gov.br/app/editais/05467476000150/2026/128
 
 [AVISO] O edital 14485841000140-1-002497/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Banner"
@@ -402,6 +398,10 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
   Evidência: objeto declarado: "Camisas"
   Edital: https://pncp.gov.br/app/editais/14485841000140/2026/2420
 
+[AVISO] O edital 13937065000100-1-000898/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "NOBREAK"
+  Edital: https://pncp.gov.br/app/editais/13937065000100/2026/898
+
 [AVISO] O edital 05816630000152-1-007191/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "MORFINA"
   Edital: https://pncp.gov.br/app/editais/05816630000152/2026/7191
@@ -409,6 +409,10 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
 [AVISO] O edital 14485841000140-1-002421/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Camisas"
   Edital: https://pncp.gov.br/app/editais/14485841000140/2026/2421
+
+[AVISO] O edital 05467476000150-1-000127/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "ALCOOL"
+  Edital: https://pncp.gov.br/app/editais/05467476000150/2026/127
 
 [AVISO] O edital 17305729000179-1-000033/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Pasta em L"
@@ -421,6 +425,10 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
 [AVISO] O edital 14485841000140-1-002432/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "GUARDANAPO"
   Edital: https://pncp.gov.br/app/editais/14485841000140/2026/2432
+
+[AVISO] O edital 49238155000150-1-000127/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Monitor"
+  Edital: https://pncp.gov.br/app/editais/49238155000150/2026/127
 
 [AVISO] O edital 14485841000140-1-002431/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "COPO DE AGUA"
@@ -450,6 +458,14 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
   Evidência: objeto declarado: "Plano de Saúde"
   Edital: https://pncp.gov.br/app/editais/20733358000130/2026/103
 
+[AVISO] O edital 02931604000187-1-000366/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "FREEZER"
+  Edital: https://pncp.gov.br/app/editais/02931604000187/2026/366
+
+[AVISO] O edital 13323274000163-1-000735/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Mobiliário"
+  Edital: https://pncp.gov.br/app/editais/13323274000163/2026/735
+
 [AVISO] O edital 05054929000117-1-000375/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Raio -X Móvel"
   Edital: https://pncp.gov.br/app/editais/05054929000117/2026/375
@@ -473,6 +489,10 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
 [AVISO] O edital 13323001000119-1-000127/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
   Edital: https://pncp.gov.br/app/editais/13323001000119/2026/127
+
+[AVISO] O edital 05816630000152-1-007328/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "ETIQUETA"
+  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/7328
 
 [AVISO] O edital 88818299000137-1-000265/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "PAVIMENTAÇÃO"
@@ -530,6 +550,10 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
   Evidência: objeto declarado: "Obras comuns"
   Edital: https://pncp.gov.br/app/editais/34306340000167/2026/83
 
+[AVISO] O edital 78640489000153-1-000822/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "EXCLUSIVA ME"
+  Edital: https://pncp.gov.br/app/editais/78640489000153/2026/822
+
 [AVISO] O edital 88349238000178-1-000221/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "SERVIÇOS"
   Edital: https://pncp.gov.br/app/editais/88349238000178/2026/221
@@ -549,6 +573,14 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
 [AVISO] O edital 02931604000187-1-000358/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
   Edital: https://pncp.gov.br/app/editais/02931604000187/2026/358
+
+[AVISO] O edital 91566877000108-1-000989/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "SERVICOS"
+  Edital: https://pncp.gov.br/app/editais/91566877000108/2026/989
+
+[AVISO] O edital 24082016000159-1-000622/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "FIOS DE SUTURA"
+  Edital: https://pncp.gov.br/app/editais/24082016000159/2026/622
 
 [AVISO] O edital 13595251000108-1-000068/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
@@ -578,6 +610,18 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
   Evidência: objeto declarado: "Exclusiva ME"
   Edital: https://pncp.gov.br/app/editais/78640489000153/2026/796
 
+[AVISO] O edital 02931604000187-1-000364/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Obras comuns"
+  Edital: https://pncp.gov.br/app/editais/02931604000187/2026/364
+
+[AVISO] O edital 02931604000187-1-000365/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Obras comuns"
+  Edital: https://pncp.gov.br/app/editais/02931604000187/2026/365
+
+[AVISO] O edital 02931604000187-1-000367/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Obras comuns"
+  Edital: https://pncp.gov.br/app/editais/02931604000187/2026/367
+
 [AVISO] O edital 46374500000194-1-007987/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Medicamentos"
   Edital: https://pncp.gov.br/app/editais/46374500000194/2026/7987
@@ -601,6 +645,10 @@ Encontrados 0 erro(s), 3 suspeita(s) e 159 aviso(s).
 [AVISO] O edital 02160863000151-1-000004/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Pregão SRP."
   Edital: https://pncp.gov.br/app/editais/02160863000151/2026/4
+
+[AVISO] O edital 46374500000194-1-008010/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Dedetização"
+  Edital: https://pncp.gov.br/app/editais/46374500000194/2026/8010
 
 [AVISO] O edital 20101246000167-1-000020/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "PATROCINIO"
