@@ -838,6 +838,10 @@
   },
   {
    "uf": "ES",
+   "slug": "sooretama"
+  },
+  {
+   "uf": "ES",
    "slug": "venda-nova-do-imigrante"
   },
   {
@@ -918,6 +922,10 @@
   },
   {
    "uf": "GO",
+   "slug": "buritinopolis"
+  },
+  {
+   "uf": "GO",
    "slug": "cachoeira-dourada"
   },
   {
@@ -927,6 +935,10 @@
   {
    "uf": "GO",
    "slug": "caldas-novas"
+  },
+  {
+   "uf": "GO",
+   "slug": "campo-alegre-de-goias"
   },
   {
    "uf": "GO",
@@ -1230,6 +1242,10 @@
   },
   {
    "uf": "MA",
+   "slug": "buriticupu"
+  },
+  {
+   "uf": "MA",
    "slug": "caxias"
   },
   {
@@ -1282,6 +1298,10 @@
   },
   {
    "uf": "MG",
+   "slug": "antonio-carlos"
+  },
+  {
+   "uf": "MG",
    "slug": "aracuai"
   },
   {
@@ -1291,6 +1311,10 @@
   {
    "uf": "MG",
    "slug": "araxa"
+  },
+  {
+   "uf": "MG",
+   "slug": "arinos"
   },
   {
    "uf": "MG",
@@ -1363,6 +1387,10 @@
   {
    "uf": "MG",
    "slug": "cambuquira"
+  },
+  {
+   "uf": "MG",
+   "slug": "campanha"
   },
   {
    "uf": "MG",
@@ -1654,6 +1682,10 @@
   },
   {
    "uf": "MG",
+   "slug": "lamim"
+  },
+  {
+   "uf": "MG",
    "slug": "lavras"
   },
   {
@@ -1743,6 +1775,10 @@
   {
    "uf": "MG",
    "slug": "paracatu"
+  },
+  {
+   "uf": "MG",
+   "slug": "paraguacu"
   },
   {
    "uf": "MG",
@@ -2066,6 +2102,14 @@
   },
   {
    "uf": "MS",
+   "slug": "deodapolis"
+  },
+  {
+   "uf": "MS",
+   "slug": "douradina"
+  },
+  {
+   "uf": "MS",
    "slug": "dourados"
   },
   {
@@ -2151,6 +2195,10 @@
   {
    "uf": "MT",
    "slug": "caceres"
+  },
+  {
+   "uf": "MT",
+   "slug": "campo-novo-do-parecis"
   },
   {
    "uf": "MT",
@@ -2310,6 +2358,10 @@
   },
   {
    "uf": "PA",
+   "slug": "redencao"
+  },
+  {
+   "uf": "PA",
    "slug": "rondon-do-para"
   },
   {
@@ -2382,6 +2434,10 @@
   },
   {
    "uf": "PB",
+   "slug": "riachao-do-bacamarte"
+  },
+  {
+   "uf": "PB",
    "slug": "sousa"
   },
   {
@@ -2399,6 +2455,10 @@
   {
    "uf": "PE",
    "slug": "araripina"
+  },
+  {
+   "uf": "PE",
+   "slug": "barreiros"
   },
   {
    "uf": "PE",
@@ -3330,6 +3390,10 @@
   },
   {
    "uf": "RN",
+   "slug": "alexandria"
+  },
+  {
+   "uf": "RN",
    "slug": "apodi"
   },
   {
@@ -3826,6 +3890,10 @@
   },
   {
    "uf": "SC",
+   "slug": "biguacu"
+  },
+  {
+   "uf": "SC",
    "slug": "blumenau"
   },
   {
@@ -3883,6 +3951,10 @@
   {
    "uf": "SC",
    "slug": "capivari-de-baixo"
+  },
+  {
+   "uf": "SC",
+   "slug": "catanduvas"
   },
   {
    "uf": "SC",
@@ -4294,6 +4366,10 @@
   },
   {
    "uf": "SE",
+   "slug": "laranjeiras"
+  },
+  {
+   "uf": "SE",
    "slug": "macambira"
   },
   {
@@ -4403,6 +4479,10 @@
   {
    "uf": "SP",
    "slug": "avare"
+  },
+  {
+   "uf": "SP",
+   "slug": "barao-de-antonina"
   },
   {
    "uf": "SP",
@@ -4647,6 +4727,10 @@
   {
    "uf": "SP",
    "slug": "ibiuna"
+  },
+  {
+   "uf": "SP",
+   "slug": "igarapava"
   },
   {
    "uf": "SP",
@@ -5155,6 +5239,10 @@
   {
    "uf": "SP",
    "slug": "taquaritinga"
+  },
+  {
+   "uf": "SP",
+   "slug": "taquarituba"
   },
   {
    "uf": "SP",
