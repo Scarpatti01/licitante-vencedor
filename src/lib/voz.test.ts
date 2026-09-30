@@ -88,6 +88,7 @@ const VIGIADOS = [
   "lib/jornada/oferta.ts",
   "lib/jornada/exportacao.ts",
   "lib/jornada/compras.ts",
+  "lib/jornada/produto.ts",
   "components/jornada/FormularioDeLiberacao.tsx",
   "app/administracao/jornada/page.tsx",
   "app/administracao/jornada/acoes.ts",

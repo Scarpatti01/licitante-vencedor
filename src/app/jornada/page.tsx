@@ -15,6 +15,7 @@ import { CLASSE_RAIZ, ESTILO_PREMIUM } from "@/components/venda/estilo";
 import { Icone } from "@/components/venda/Icone";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { ReenviarConvite } from "@/components/jornada/ReenviarConvite";
+import { IMAGEM_DO_PRODUTO, produtoEmDadosEstruturados } from "@/lib/jornada/produto";
 
 /*
  * As duas faces do Workbook, carregadas só nesta rota. `display: swap` deixa o
@@ -52,23 +53,7 @@ export const metadata: Metadata = {
 const schema = {
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "Product",
-      "@id": `${SITE.url}/jornada/#produto`,
-      name: OFERTA.nomeCompleto,
-      description: DESCRICAO,
-      brand: { "@type": "Brand", name: SITE.name },
-      author: { "@type": "Person", name: AUTHOR.name },
-      offers: {
-        "@type": "Offer",
-        price: String(OFERTA.preco),
-        priceCurrency: "BRL",
-        availability: checkoutAberto()
-          ? "https://schema.org/InStock"
-          : "https://schema.org/PreOrder",
-        url: `${SITE.url}/jornada/`,
-      },
-    },
+    produtoEmDadosEstruturados(checkoutAberto(), DESCRICAO),
     {
       "@type": "FAQPage",
       "@id": `${SITE.url}/jornada/#faq`,
@@ -242,7 +227,7 @@ export default function PaginaDeVendaDaJornada() {
       <section className="px-6 py-16" style={{ background: "var(--champagne-claro)" }}>
         <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
           <Image
-            src="/workbook-do-licitante-produto.webp"
+            src={IMAGEM_DO_PRODUTO}
             alt={O_LIVRO.alt}
             width={1200}
             height={1200}
