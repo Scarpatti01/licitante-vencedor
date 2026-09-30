@@ -190,6 +190,10 @@
   },
   {
    "uf": "BA",
+   "slug": "itagiba"
+  },
+  {
+   "uf": "BA",
    "slug": "itapetinga"
   },
   {
@@ -415,6 +419,10 @@
   {
    "uf": "CE",
    "slug": "graca"
+  },
+  {
+   "uf": "CE",
+   "slug": "groairas"
   },
   {
    "uf": "CE",
@@ -1266,6 +1274,10 @@
   },
   {
    "uf": "MA",
+   "slug": "sao-raimundo-das-mangabeiras"
+  },
+  {
+   "uf": "MA",
    "slug": "sao-vicente-ferrer"
   },
   {
@@ -1307,6 +1319,10 @@
   {
    "uf": "MG",
    "slug": "araguari"
+  },
+  {
+   "uf": "MG",
+   "slug": "arapora"
   },
   {
    "uf": "MG",
@@ -1431,6 +1447,10 @@
   {
    "uf": "MG",
    "slug": "carmo-do-cajuru"
+  },
+  {
+   "uf": "MG",
+   "slug": "carmo-do-paranaiba"
   },
   {
    "uf": "MG",
@@ -2430,6 +2450,10 @@
   },
   {
    "uf": "PB",
+   "slug": "picui"
+  },
+  {
+   "uf": "PB",
    "slug": "pombal"
   },
   {
@@ -2439,6 +2463,10 @@
   {
    "uf": "PB",
    "slug": "sousa"
+  },
+  {
+   "uf": "PB",
+   "slug": "umbuzeiro"
   },
   {
    "uf": "PE",
@@ -2738,6 +2766,10 @@
   },
   {
    "uf": "PR",
+   "slug": "arapoti"
+  },
+  {
+   "uf": "PR",
    "slug": "araucaria"
   },
   {
@@ -2786,6 +2818,10 @@
   },
   {
    "uf": "PR",
+   "slug": "castro"
+  },
+  {
+   "uf": "PR",
    "slug": "catanduvas"
   },
   {
@@ -2827,6 +2863,10 @@
   {
    "uf": "PR",
    "slug": "cruz-machado"
+  },
+  {
+   "uf": "PR",
+   "slug": "cruzmaltina"
   },
   {
    "uf": "PR",
@@ -2899,6 +2939,10 @@
   {
    "uf": "PR",
    "slug": "jacarezinho"
+  },
+  {
+   "uf": "PR",
+   "slug": "japura"
   },
   {
    "uf": "PR",
@@ -3015,6 +3059,10 @@
   {
    "uf": "PR",
    "slug": "pato-branco"
+  },
+  {
+   "uf": "PR",
+   "slug": "paulo-frontin"
   },
   {
    "uf": "PR",
@@ -3462,6 +3510,10 @@
   },
   {
    "uf": "RN",
+   "slug": "sao-jose-do-serido"
+  },
+  {
+   "uf": "RN",
    "slug": "sao-miguel"
   },
   {
@@ -3658,6 +3710,10 @@
   },
   {
    "uf": "RS",
+   "slug": "imbe"
+  },
+  {
+   "uf": "RS",
    "slug": "itaqui"
   },
   {
@@ -3827,6 +3883,10 @@
   {
    "uf": "RS",
    "slug": "xangri-la"
+  },
+  {
+   "uf": "SC",
+   "slug": "alto-bela-vista"
   },
   {
    "uf": "SC",
@@ -4143,6 +4203,10 @@
   {
    "uf": "SC",
    "slug": "orleans"
+  },
+  {
+   "uf": "SC",
+   "slug": "otacilio-costa"
   },
   {
    "uf": "SC",
@@ -5107,6 +5171,10 @@
   {
    "uf": "SP",
    "slug": "riversul"
+  },
+  {
+   "uf": "SP",
+   "slug": "rosana"
   },
   {
    "uf": "SP",
