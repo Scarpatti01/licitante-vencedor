@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { planejarResumoDiario, pracasQueFaltaram, type DadosDoResumo, type OportunidadeDoResumo, linhaDeLeitura, aberturaDoResumo } from "./plano";
+import { planejarResumoDiario, pracasQueFaltaram, type DadosDoResumo, type OportunidadeDoResumo, linhaDeLeitura, aberturaDoResumo, ANTECEDENCIA_MINIMA_MS } from "./plano";
 
 /**
  * As regras do resumo diário são promessas ao cliente, e é por isso que estão
@@ -64,6 +64,45 @@ describe("dia sem edital novo é dia sem e-mail", () => {
     );
 
     expect(plano.tipo).toBe("sem-novidade");
+  });
+
+  /**
+   * 30/09/2026: o resumo das 7h05 levou um edital que fechava às 8h05. O
+   * corte era "ainda não fechou". Decisão do dono: no mínimo 24 horas.
+   */
+  it("descarta edital que fecha em menos de 24 horas", () => {
+    const umaHora = new Date(AGORA.getTime() + 60 * 60 * 1000).toISOString();
+    const plano = planejarResumoDiario(
+      dados({ oportunidades: [oportunidade({ encerramentoProposta: umaHora })] }),
+      AGORA,
+    );
+    expect(plano.tipo).toBe("sem-novidade");
+  });
+
+  it("24 horas em ponto ainda entra", () => {
+    const vinteEQuatro = new Date(AGORA.getTime() + ANTECEDENCIA_MINIMA_MS).toISOString();
+    const plano = planejarResumoDiario(
+      dados({ oportunidades: [oportunidade({ encerramentoProposta: vinteEQuatro })] }),
+      AGORA,
+    );
+    expect(plano.tipo).toBe("enviar");
+    expect(ANTECEDENCIA_MINIMA_MS).toBe(24 * 60 * 60 * 1000);
+  });
+
+  it("o prazo é dito pela data de Brasília, com a hora quando é amanhã", () => {
+    // AGORA é 24/08, 07:00 em Brasília. 25/08 às 10:00 de Brasília = 13:00 UTC.
+    const amanha = planejarResumoDiario(
+      dados({ oportunidades: [oportunidade({ encerramentoProposta: "2026-08-25T13:00:00Z" })] }),
+      AGORA,
+    );
+    expect(amanha.tipo === "enviar" && JSON.stringify(amanha.conteudo.listas)).toContain("encerra amanhã, às 10h");
+
+    // 26/08 às 08:05 de Brasília: duas datas adiante, não importa a hora.
+    const depois = planejarResumoDiario(
+      dados({ oportunidades: [oportunidade({ encerramentoProposta: "2026-08-26T11:05:00Z" })] }),
+      AGORA,
+    );
+    expect(depois.tipo === "enviar" && JSON.stringify(depois.conteudo.listas)).toContain("encerra em 2 dias");
   });
 
   it("descarta edital com prazo já encerrado", () => {
