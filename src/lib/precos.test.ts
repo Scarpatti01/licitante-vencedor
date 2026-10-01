@@ -12,6 +12,7 @@ import {
   emReais,
   porEmpresa,
   divergenciasDePreco,
+  QUANTOS_PLANOS,
   type PlanoNoBanco,
 } from "./precos";
 
@@ -118,6 +119,16 @@ describe("os planos", () => {
 });
 
 describe("a página de preços não promete o que não existe", () => {
+  it("diz quantos planos existem, contando a lista, e não de cabeça", () => {
+    // De 26/08 a 01/10/2026 a página abriu com "Dois planos" enquanto mostrava
+    // quatro, e ainda dizia que o produto entregue era "o mesmo nos dois".
+    expect(QUANTOS_PLANOS).toBe(["Nenhum", "Um", "Dois", "Três", "Quatro", "Cinco"][PLANOS.length]);
+    const codigo = PAGINA.replace(/\/\*[\s\S]*?\*\//g, "");
+    expect(codigo).toContain("{QUANTOS_PLANOS} planos");
+    expect(codigo).toContain("${QUANTOS_PLANOS} planos");
+    expect(codigo).not.toMatch(/\b(Um|Dois|Três|Quatro|Cinco|Seis) planos\b/);
+  });
+
   it("diz que ainda não dá para assinar", () => {
     // O dia em que a cobrança abrir, esta seção sai — e o teste cai, obrigando
     // quem ligou o checkout a conferir o resto do texto junto.

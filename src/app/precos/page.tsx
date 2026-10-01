@@ -8,6 +8,7 @@ import {
   oQueIncluiO,
   emReais,
   porEmpresa,
+  QUANTOS_PLANOS,
 } from "@/lib/precos";
 import { limitarDescricao } from "@/lib/seo/resultado-de-busca";
 import { pagamentoLigado } from "@/lib/pagamento/configuracao";
@@ -61,7 +62,7 @@ const MAIS_BARATO = PLANOS.reduce((a, b) =>
 );
 
 const DESCRICAO = limitarDescricao(
-  `Quatro planos, a partir de ${emReais(MAIS_BARATO.mensalidadeEmCentavos)} por mês. ` +
+  `${QUANTOS_PLANOS} planos, a partir de ${emReais(MAIS_BARATO.mensalidadeEmCentavos)} por mês. ` +
     `O que muda é o quanto entramos no edital e quantas empresas cabem na conta.`,
 );
 const ATUALIZADO = "2026-08-22";
@@ -99,9 +100,9 @@ export default function Precos() {
 
         <div className="mt-4 space-y-4">
           <P>
-            Dois planos, e o que muda entre eles é uma coisa só:{" "}
-            <strong>quantas empresas cabem na conta</strong>. O produto entregue
-            é o mesmo nos dois.
+            {QUANTOS_PLANOS} planos, e o que muda entre eles são duas coisas:{" "}
+            <strong>se alguém abre o arquivo do edital por você</strong> e{" "}
+            <strong>quantas empresas cabem na conta</strong>.
           </P>
         </div>
 
