@@ -1,4 +1,4 @@
-import { mesmoDiaEmBrasilia } from "./janela.ts";
+import { diaEmBrasilia, mesmoDiaEmBrasilia } from "./janela.ts";
 import type { BlocoDeLista, ConteudoDeEmail } from "../email/mensagens.ts";
 import { SITE } from "../site.ts";
 import { cortar, OBJETO_NO_ROTULO } from "../email/cortar.ts";
@@ -34,6 +34,9 @@ export const OPORTUNIDADES_POR_RESUMO = 8;
  * aqui lê os de maior aderência. Repetir a frase errada seria prometer a menos
  * num canal pago — ou a mais, dependendo de qual copiássemos.
  */
+/** Quanto tempo, no mínimo, o edital precisa ter pela frente para entrar no resumo. */
+export const ANTECEDENCIA_MINIMA_MS = 24 * 60 * 60 * 1000;
+
 export const LIMITES_DO_RESUMO =
   "Lemos os editais de maior aderência ao seu perfil, todo dia. Não garantimos habilitação, não avaliamos se você vai ganhar e não emitimos opinião jurídica.";
 
@@ -186,13 +189,42 @@ export function pracasQueFaltaram(
 const real = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
 
+/**
+ * O prazo em palavras, pelo calendário de Brasília.
+ *
+ * A primeira versão arredondava as horas restantes para cima, em dias: um
+ * edital que fechava UMA hora depois do e-mail saía como "encerra amanhã".
+ * Aconteceu em 30/09/2026, com um edital da Marinha que fechava às 8h05 e um
+ * resumo que chegou às 7h05. "Hoje" e "amanhã" são datas, e é pela data de
+ * Brasília que o leitor os entende; para os dois, vai também a hora.
+ */
 function prazoEmTexto(encerramento: string | null, agora: Date): string {
   if (!encerramento) return "prazo não informado";
 
-  const dias = Math.ceil((Date.parse(encerramento) - agora.getTime()) / 86_400_000);
-  if (!Number.isFinite(dias)) return "prazo não informado";
-  if (dias <= 0) return "encerra hoje";
-  return dias === 1 ? "encerra amanhã" : `encerra em ${dias} dias`;
+  const fim = new Date(encerramento);
+  if (Number.isNaN(fim.getTime())) return "prazo não informado";
+
+  const dias = Math.round(
+    (Date.parse(`${diaEmBrasilia(fim)}T00:00:00Z`) - Date.parse(`${diaEmBrasilia(agora)}T00:00:00Z`)) /
+      86_400_000,
+  );
+  const hora = horaEmBrasilia(fim);
+  if (dias <= 0) return `encerra hoje, às ${hora}`;
+  if (dias === 1) return `encerra amanhã, às ${hora}`;
+  return `encerra em ${dias} dias`;
+}
+
+const formatoDaHora = new Intl.DateTimeFormat("pt-BR", {
+  timeZone: "America/Sao_Paulo",
+  hour: "2-digit",
+  minute: "2-digit",
+  hourCycle: "h23",
+});
+
+/** "8h05", "10h": o jeito como o leitor fala a hora. */
+function horaEmBrasilia(instante: Date): string {
+  const [h, m] = formatoDaHora.format(instante).split(":");
+  return m === "00" ? `${Number(h)}h` : `${Number(h)}h${m}`;
 }
 
 /**
@@ -283,7 +315,22 @@ export function planejarResumoDiario(dados: DadosDoResumo, agora: Date = new Dat
 
   const novas = dados.oportunidades
     .filter((o) => !dados.jaEnviados.has(o.editalId))
-    .filter((o) => !o.encerramentoProposta || Date.parse(o.encerramentoProposta) > agora.getTime())
+    /*
+     * Só entra edital com pelo menos 24 horas pela frente.
+     *
+     * Até 01/10/2026 o corte era "ainda não fechou", e em 30/09 o resumo das
+     * 7h05 levou um edital que fechava às 8h05: uma hora para ler, decidir e
+     * mandar proposta, que ninguém consegue. Mandar isso não é serviço, é
+     * ruído que ensina o cliente a pular o e-mail. Decisão do dono: 24 horas.
+     *
+     * Edital sem data de encerramento continua passando: a falta de data é
+     * declarada no bloco, e barrar por ela esconderia o edital para sempre.
+     */
+    .filter(
+      (o) =>
+        !o.encerramentoProposta ||
+        Date.parse(o.encerramentoProposta) - agora.getTime() >= ANTECEDENCIA_MINIMA_MS,
+    )
     /*
      * Score ausente NÃO passa no corte.
      *

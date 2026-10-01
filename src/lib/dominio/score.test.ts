@@ -125,6 +125,19 @@ describe("calcularScore — impedimentos", () => {
     expect(score.impedimentos).toHaveLength(1);
   });
 
+  it("a menos de 24 horas a frase diz horas, e não \"1 dia\"", () => {
+    // 30/09/2026: um edital que fechava em uma hora saiu como "Faltam 1 dia",
+    // porque os dias são arredondados para cima.
+    const umaHora = { ...EDITAL_COMPATIVEL, encerramentoProposta: new Date(AGORA.getTime() + 3_600_000).toISOString() };
+    const { score } = calcularScore(umaHora, analiseCompleta(umaHora.id), PERFIL_COMPLETO, AGORA);
+    const prazo = score.criterios.find((c) => c.chave === "prazo")!;
+    expect(prazo.frase).toMatch(/^Faltam menos de 24 horas/);
+
+    const trintaHoras = { ...EDITAL_COMPATIVEL, encerramentoProposta: new Date(AGORA.getTime() + 30 * 3_600_000).toISOString() };
+    const outro = calcularScore(trintaHoras, analiseCompleta(trintaHoras.id), PERFIL_COMPLETO, AGORA).score;
+    expect(outro.criterios.find((c) => c.chave === "prazo")!.frase).toMatch(/^Faltam 2 dias/);
+  });
+
   it("prazo encerrado é impedimento", () => {
     const { score } = calcularScore(EDITAL_ENCERRADO, analiseCompleta(EDITAL_ENCERRADO.id), PERFIL_COMPLETO, AGORA);
     expect(score.criterios.find((c) => c.chave === "prazo")!.status).toBe("impedimento");

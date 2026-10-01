@@ -362,7 +362,18 @@ function criterioPrazo(edital: Edital, agora: Date): CriterioAvaliado {
       ...base,
       status: "atencao",
       aproveitamento: 0.3,
-      frase: `Faltam ${dias === 0 ? "menos de 24 horas" : `${dias} dia${dias === 1 ? "" : "s"}`} — só vale se a documentação já estiver pronta.`,
+      /*
+       * `diasAteEncerrar` arredonda para cima: uma hora restante vira "1".
+       * O ramo de "menos de 24 horas" nunca era alcançado, e em 30/09/2026 a
+       * análise de um edital que fechava em uma hora dizia "Faltam 1 dia". A
+       * frase olha as horas de verdade; o número continua o mesmo, porque é
+       * ele que pontua.
+       */
+      frase: `Faltam ${
+        Date.parse(edital.encerramentoProposta!) - agora.getTime() < 86_400_000
+          ? "menos de 24 horas"
+          : `${dias} dia${dias === 1 ? "" : "s"}`
+      } — só vale se a documentação já estiver pronta.`,
       procedencia: evidencia,
     };
   }
