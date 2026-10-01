@@ -17,6 +17,12 @@ import { Faq, P, RespostaDireta, Secao } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
+import Image from "next/image";
+import {
+  ALT_DA_ASSINATURA,
+  IMAGEM_DA_ASSINATURA,
+  assinaturaEmDadosEstruturados,
+} from "@/lib/assinatura/dados-estruturados";
 
 const TITULO = "Preços: da lista do edital ao documento lido";
 /*
@@ -73,33 +79,11 @@ export const metadata: Metadata = {
   },
 };
 
-/**
- * `schema.org/Offer`, um por plano.
- *
- * É daqui que buscadores clássicos e motores de IA tiram "quanto custa". Os
- * valores vêm de `PLANOS`, a mesma fonte que a página exibe — preço divergente
- * entre o texto e o dado estruturado faz o buscador anunciar um número que a
- * página não pratica, e o visitante chega achando que foi enganado.
- *
- * `availability: PreOrder` porque é a verdade hoje: o preço está definido e a
- * forma de pagar ainda não existe. Marcar `InStock` seria afirmar que dá para
- * comprar agora.
+/*
+ * A assinatura como `Product`, com a imagem que o Google exige. A montagem, e
+ * o porquê de cada campo, moram em `assinaturaEmDadosEstruturados`.
  */
-const schema = {
-  "@context": "https://schema.org",
-  "@type": "Product",
-  name: `${SITE.name}, assinatura`,
-  description: DESCRICAO,
-  brand: { "@type": "Brand", name: SITE.name },
-  offers: PLANOS.map((plano) => ({
-    "@type": "Offer",
-    name: plano.nome,
-    price: (plano.mensalidadeEmCentavos / 100).toFixed(2),
-    priceCurrency: "BRL",
-    availability: "https://schema.org/PreOrder",
-    url: `${SITE.url}/precos/`,
-  })),
-};
+const schema = assinaturaEmDadosEstruturados(DESCRICAO, pagamentoLigado());
 
 export default function Precos() {
   return (
@@ -225,6 +209,34 @@ export default function Precos() {
             </div>
           </Secao>
           )}
+
+          {/*
+            A foto do produto, visível, porque o Google exige que a imagem dos
+            dados estruturados seja a que a página mostra. Ela vem DEPOIS dos
+            planos e da ressalva: quem abre esta página veio ver preço.
+          */}
+          <Secao id="o-que-chega" titulo="O que chega no seu e-mail">
+            <P>
+              Todo dia útil, perto das 7h, um e-mail com os editais de maior
+              aderência ao perfil da sua empresa: objeto, órgão, local, valor,
+              prazo e o link para a publicação oficial.
+            </P>
+            <figure className="mt-4">
+              <Image
+                src={IMAGEM_DA_ASSINATURA}
+                alt={ALT_DA_ASSINATURA}
+                width={1200}
+                height={1200}
+                sizes="(max-width: 767px) 92vw, 640px"
+                className="h-auto w-full rounded-xl border border-[var(--border)]"
+              />
+              <figcaption className="mt-2 text-sm text-[var(--muted)]">
+                O resumo de 29/09/2026 no plano Leve, com os editais reais daquele
+                dia, publicados no PNCP. Trocamos só o nome do cliente por
+                &ldquo;sua empresa&rdquo;.
+              </figcaption>
+            </figure>
+          </Secao>
 
           <Secao id="nao-faz" titulo="O que os planos não fazem">
             <P>
