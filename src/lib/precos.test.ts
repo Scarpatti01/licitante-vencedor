@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import { assinaturaEmDadosEstruturados } from "./assinatura/dados-estruturados";
 import {
   PLANOS,
   FORMATO_DO_CODIGO,
@@ -123,14 +124,19 @@ describe("a página de preços não promete o que não existe", () => {
     expect(PAGINA).toMatch(/Ainda não dá para assinar/);
   });
 
-  it("marca a oferta como PreOrder, e não InStock", () => {
+  it("marca a oferta como PreOrder enquanto não há como pagar", () => {
     /*
      * `InStock` afirmaria ao buscador que dá para comprar agora. O visitante
      * chegaria pelo resultado da busca esperando checkout e encontraria uma
      * lista de espera — decepção que o dado estruturado causou, não a página.
+     *
+     * Desde 01/10/2026 o `Product` é montado em `assinaturaEmDadosEstruturados`,
+     * e a disponibilidade segue `pagamentoLigado()`, o mesmo interruptor que
+     * esconde a seção "Ainda não dá para assinar".
      */
-    expect(PAGINA).toMatch(/schema\.org\/PreOrder/);
-    expect(PAGINA).not.toMatch(/schema\.org\/InStock/);
+    const fechado = assinaturaEmDadosEstruturados("", false);
+    for (const o of fechado.offers) expect(o.availability).toBe("https://schema.org/PreOrder");
+    expect(PAGINA).toContain("assinaturaEmDadosEstruturados(DESCRICAO, pagamentoLigado())");
   });
 
   it("não fixa preço na mão: o texto e o `Offer` saem da mesma constante", () => {
