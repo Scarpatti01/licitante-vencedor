@@ -1,5 +1,6 @@
 import type { Edital } from "@/lib/pncp/tipos";
 import { diasAteEncerrar } from "@/lib/pncp/normaliza";
+import { localDeExecucao, localEmTexto } from "@/lib/dominio/local-de-execucao";
 import type { FaixaDoScore, StatusDoCriterio } from "@/lib/dominio/score";
 import type { NivelDaRecomendacao } from "@/lib/dominio/recomendacao";
 import type { StatusDoItem } from "@/lib/dominio/checklist";
@@ -293,12 +294,17 @@ export function orgaoDoEdital(edital: Edital): DadoExibivel {
 }
 
 export function localDoEdital(edital: Edital): DadoExibivel {
+  // Onde o serviço acontece, e não onde fica quem compra. Ver `local-de-execucao.ts`.
+  const local = localDeExecucao(edital);
+  const lugar = `${local.municipio}/${local.uf}`;
   return {
-    texto: `${edital.local.municipio}/${edital.local.uf}`,
+    texto: localEmTexto(local, edital.local),
     tom: "neutro",
     campo: doEdital(
-      `${edital.local.municipio}/${edital.local.uf}`,
-      `Município e UF da unidade compradora, informados na publicação (código IBGE ${edital.local.codigoIbge}).`,
+      lugar,
+      local.origem === "objeto"
+        ? `Local de execução escrito no objeto ("${local.trecho}"). A unidade compradora fica em ${edital.local.municipio}/${edital.local.uf}.`
+        : `Município e UF da unidade compradora, informados na publicação (código IBGE ${edital.local.codigoIbge}).`,
     ),
   };
 }

@@ -11,6 +11,7 @@ import {
 } from "./estilo";
 import { Selo } from "./Primitivos";
 import { ScoreCompacto, ScoreEmLinha } from "./Score";
+import { localDeExecucao } from "@/lib/dominio/local-de-execucao";
 
 /**
  * Uma linha da lista.
@@ -105,7 +106,7 @@ export function LinhaDaOportunidade({
           <p className="mt-1.5 line-clamp-1 text-sm text-[var(--muted)]">
             {edital.orgao.nome}
             <span aria-hidden> · </span>
-            {edital.local.municipio}/{edital.local.uf}
+            {localDeExecucao(edital).municipio}/{localDeExecucao(edital).uf}
             <span aria-hidden> · </span>
             {edital.modalidade}
           </p>

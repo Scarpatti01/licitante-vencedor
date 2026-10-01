@@ -5,6 +5,7 @@ import type { SituacaoDaOportunidade } from "@/lib/dominio/tipos";
 import { hrefDaOportunidade, SITUACAO, type Tom } from "./estilo";
 import { Selo } from "./Primitivos";
 import { ScoreEmLinha } from "./Score";
+import { localDeExecucao } from "@/lib/dominio/local-de-execucao";
 
 /**
  * Uma linha do histórico: o que a empresa decidiu, e o que aconteceu.
@@ -50,7 +51,7 @@ export function LinhaDoHistorico({ oportunidade }: { oportunidade: ResumoDaOport
           <p className="mt-1.5 line-clamp-1 text-sm text-[var(--muted)]">
             {edital.orgao.nome}
             <span aria-hidden> · </span>
-            {edital.local.municipio}/{edital.local.uf}
+            {localDeExecucao(edital).municipio}/{localDeExecucao(edital).uf}
           </p>
         </div>
 

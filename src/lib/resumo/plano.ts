@@ -2,6 +2,7 @@ import { diaEmBrasilia, mesmoDiaEmBrasilia } from "./janela.ts";
 import type { BlocoDeLista, ConteudoDeEmail } from "../email/mensagens.ts";
 import { SITE } from "../site.ts";
 import { cortar, OBJETO_NO_ROTULO } from "../email/cortar.ts";
+import { localDeExecucao, localEmTexto } from "../dominio/local-de-execucao.ts";
 
 /**
  * Quem recebe o resumo diário do cliente, e o que vai nele.
@@ -260,7 +261,15 @@ function blocoDoEdital(
       // Primeiro, porque é o que ordena a lista e o que este produto acrescenta.
       { rotulo: "Aderência", texto: o.score === null ? "não foi possível calcular" : `${o.score} de 100` },
       { rotulo: "Órgão", texto: o.orgao },
-      { rotulo: "Local", texto: `${o.municipio}/${o.uf}` },
+      // Onde o serviço acontece, com a cidade do órgão quando são diferentes.
+      // Ver `local-de-execucao.ts`: até 01/10/2026 ia só a cidade de quem compra.
+      {
+        rotulo: "Local",
+        texto: localEmTexto(
+          localDeExecucao({ objeto: o.objeto, local: { uf: o.uf, municipio: o.municipio, codigoIbge: "" } }),
+          o,
+        ),
+      },
       { rotulo: "Valor", texto: o.valorEstimado === null ? "não informado" : real(o.valorEstimado) },
       { rotulo: "Prazo", texto: prazoEmTexto(o.encerramentoProposta, agora) },
       /*
