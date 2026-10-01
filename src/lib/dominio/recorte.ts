@@ -1,4 +1,5 @@
 import type { Edital } from "../fontes/tipos.ts";
+import { localDeExecucao } from "./local-de-execucao.ts";
 
 /**
  * O recorte: uma abrangência geográfica com filtro próprio.
@@ -110,10 +111,11 @@ export function abrangenciaAceita(abrangencia: Abrangencia, edital: Edital): boo
   switch (abrangencia.tipo) {
     case "brasil":
       return true;
+    // Onde o serviço acontece, e não onde fica quem compra. Ver `local-de-execucao.ts`.
     case "uf":
-      return edital.local.uf === abrangencia.uf;
+      return localDeExecucao(edital).uf === abrangencia.uf;
     case "municipio":
-      return edital.local.codigoIbge === abrangencia.codigoIbge;
+      return localDeExecucao(edital).codigoIbge === abrangencia.codigoIbge;
   }
 }
 

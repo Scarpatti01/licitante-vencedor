@@ -105,6 +105,26 @@ describe("dia sem edital novo é dia sem e-mail", () => {
     expect(depois.tipo === "enviar" && JSON.stringify(depois.conteudo.listas)).toContain("encerra em 2 dias");
   });
 
+  it("o Local é onde o serviço acontece, com a cidade do órgão ao lado", () => {
+    // 25/09/2026: a limpeza da NAV Brasil em Alta Floresta/MT saiu como
+    // "Rio de Janeiro/RJ", a cidade de quem compra.
+    const plano = planejarResumoDiario(
+      dados({
+        oportunidades: [
+          oportunidade({
+            objeto: "Limpeza na Dependência da NAV Brasil – DNAT (Alta Floresta/MT).",
+            municipio: "Rio de Janeiro",
+            uf: "RJ",
+          }),
+        ],
+      }),
+      AGORA,
+    );
+    expect(plano.tipo === "enviar" && JSON.stringify(plano.conteudo.listas)).toContain(
+      "Alta Floresta/MT (órgão: Rio de Janeiro/RJ)",
+    );
+  });
+
   it("descarta edital com prazo já encerrado", () => {
     const plano = planejarResumoDiario(
       dados({ oportunidades: [oportunidade({ encerramentoProposta: "2026-08-20T13:00:00Z" })] }),

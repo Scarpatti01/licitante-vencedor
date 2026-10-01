@@ -1,5 +1,6 @@
 import type { Edital } from "../pncp/tipos.ts";
 import { diasAteEncerrar } from "../pncp/normaliza.ts";
+import { localDeExecucao, type LocalDeExecucao } from "./local-de-execucao.ts";
 import type { AnaliseDoEdital, PerfilDaEmpresa } from "./tipos.ts";
 import { montarChecklist, prontidaoDocumental, type Checklist } from "./checklist.ts";
 import { coberturaDeTermos, termosEncontrados } from "./texto.ts";
@@ -166,12 +167,16 @@ function criterioRegiao(edital: Edital, perfil: PerfilDaEmpresa): CriterioAvalia
     };
   }
 
-  if (!perfil.ufsAtendidas.includes(edital.local.uf)) {
+  // Onde o serviço acontece, e não onde fica quem compra. Ver `local-de-execucao.ts`.
+  const local = localDeExecucao(edital);
+  const lugar = `${local.municipio}/${local.uf}`;
+
+  if (!perfil.ufsAtendidas.includes(local.uf)) {
     return {
       ...base,
       status: "impedimento",
       aproveitamento: 0,
-      frase: `A execução é em ${edital.local.municipio}/${edital.local.uf}, fora dos estados que você atende.`,
+      frase: `A execução é em ${lugar}, fora dos estados que você atende.`,
       procedencia: doPerfil(
         perfil.ufsAtendidas,
         `Estados declarados: ${perfil.ufsAtendidas.join(", ")}.`,
@@ -179,19 +184,23 @@ function criterioRegiao(edital: Edital, perfil: PerfilDaEmpresa): CriterioAvalia
     };
   }
 
-  const prioritario = perfil.municipiosPrioritarios.includes(edital.local.codigoIbge);
+  const prioritario = perfil.municipiosPrioritarios.includes(local.codigoIbge);
   return {
     ...base,
     status: "positivo",
     aproveitamento: prioritario ? 1 : 0.85,
     frase: prioritario
-      ? `${edital.local.municipio}/${edital.local.uf} é um dos municípios que você marcou como prioritários.`
-      : `${edital.local.municipio}/${edital.local.uf} está dentro dos estados que você atende.`,
-    procedencia: doEdital(
-      `${edital.local.municipio}/${edital.local.uf}`,
-      "Município e UF da unidade compradora, informados na publicação.",
-    ),
+      ? `${lugar} é um dos municípios que você marcou como prioritários.`
+      : `${lugar} está dentro dos estados que você atende.`,
+    procedencia: doEdital(lugar, evidenciaDoLocal(local, edital)),
   };
+}
+
+/** De onde saiu o lugar, dito para quem confere. */
+function evidenciaDoLocal(local: LocalDeExecucao, edital: Edital): string {
+  return local.origem === "objeto"
+    ? `Local de execução escrito no objeto ("${local.trecho}"). A unidade compradora fica em ${edital.local.municipio}/${edital.local.uf}.`
+    : "Município e UF da unidade compradora, informados na publicação.";
 }
 
 function criterioValor(edital: Edital, perfil: PerfilDaEmpresa): CriterioAvaliado {
