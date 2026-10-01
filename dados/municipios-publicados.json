@@ -818,6 +818,10 @@
   },
   {
    "uf": "ES",
+   "slug": "presidente-kennedy"
+  },
+  {
+   "uf": "ES",
    "slug": "rio-bananal"
   },
   {
@@ -1055,6 +1059,10 @@
   {
    "uf": "GO",
    "slug": "luziania"
+  },
+  {
+   "uf": "GO",
+   "slug": "marzagao"
   },
   {
    "uf": "GO",
@@ -1298,6 +1306,10 @@
   },
   {
    "uf": "MG",
+   "slug": "aiuruoca"
+  },
+  {
+   "uf": "MG",
    "slug": "alfenas"
   },
   {
@@ -1371,6 +1383,10 @@
   {
    "uf": "MG",
    "slug": "bom-despacho"
+  },
+  {
+   "uf": "MG",
+   "slug": "bom-jesus-da-penha"
   },
   {
    "uf": "MG",
@@ -1591,6 +1607,10 @@
   {
    "uf": "MG",
    "slug": "guape"
+  },
+  {
+   "uf": "MG",
+   "slug": "guarda-mor"
   },
   {
    "uf": "MG",
@@ -2634,6 +2654,10 @@
   },
   {
    "uf": "PE",
+   "slug": "pocao"
+  },
+  {
+   "uf": "PE",
    "slug": "recife"
   },
   {
@@ -3042,6 +3066,10 @@
   },
   {
    "uf": "PR",
+   "slug": "palotina"
+  },
+  {
+   "uf": "PR",
    "slug": "paraiso-do-norte"
   },
   {
@@ -3143,6 +3171,10 @@
   {
    "uf": "PR",
    "slug": "santa-cruz-de-monte-castelo"
+  },
+  {
+   "uf": "PR",
+   "slug": "santa-isabel-do-ivai"
   },
   {
    "uf": "PR",
@@ -3521,6 +3553,10 @@
    "slug": "sao-rafael"
   },
   {
+   "uf": "RN",
+   "slug": "tibau"
+  },
+  {
    "uf": "RO",
    "slug": "alto-paraiso"
   },
@@ -3698,6 +3734,10 @@
   },
   {
    "uf": "RS",
+   "slug": "guapore"
+  },
+  {
+   "uf": "RS",
    "slug": "horizontina"
   },
   {
@@ -3779,6 +3819,10 @@
   {
    "uf": "RS",
    "slug": "rio-grande"
+  },
+  {
+   "uf": "RS",
+   "slug": "rodeio-bonito"
   },
   {
    "uf": "RS",
@@ -4026,6 +4070,10 @@
   },
   {
    "uf": "SC",
+   "slug": "chapadao-do-lageado"
+  },
+  {
+   "uf": "SC",
    "slug": "chapeco"
   },
   {
@@ -4079,6 +4127,10 @@
   {
    "uf": "SC",
    "slug": "gravatal"
+  },
+  {
+   "uf": "SC",
+   "slug": "guabiruba"
   },
   {
    "uf": "SC",
@@ -4159,6 +4211,10 @@
   {
    "uf": "SC",
    "slug": "mafra"
+  },
+  {
+   "uf": "SC",
+   "slug": "major-gercino"
   },
   {
    "uf": "SC",
@@ -4278,6 +4334,10 @@
   },
   {
    "uf": "SC",
+   "slug": "sangao"
+  },
+  {
+   "uf": "SC",
    "slug": "santa-helena"
   },
   {
@@ -4379,6 +4439,10 @@
   {
    "uf": "SC",
    "slug": "vargem-bonita"
+  },
+  {
+   "uf": "SC",
+   "slug": "vidal-ramos"
   },
   {
    "uf": "SC",
@@ -4798,6 +4862,10 @@
   },
   {
    "uf": "SP",
+   "slug": "iguape"
+  },
+  {
+   "uf": "SP",
    "slug": "ilha-solteira"
   },
   {
@@ -4879,6 +4947,10 @@
   {
    "uf": "SP",
    "slug": "itupeva"
+  },
+  {
+   "uf": "SP",
+   "slug": "ituverava"
   },
   {
    "uf": "SP",
@@ -5023,6 +5095,10 @@
   {
    "uf": "SP",
    "slug": "osasco"
+  },
+  {
+   "uf": "SP",
+   "slug": "osvaldo-cruz"
   },
   {
    "uf": "SP",
@@ -5347,6 +5423,10 @@
   {
    "uf": "SP",
    "slug": "valparaiso"
+  },
+  {
+   "uf": "SP",
+   "slug": "varzea-paulista"
   },
   {
    "uf": "SP",
