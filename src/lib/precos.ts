@@ -105,6 +105,18 @@ export const PLANOS: readonly Plano[] = [
   },
 ] as const;
 
+const POR_EXTENSO = ["Nenhum", "Um", "Dois", "Três", "Quatro", "Cinco", "Seis", "Sete", "Oito"];
+
+/**
+ * Quantos planos existem, por extenso e com inicial maiúscula.
+ *
+ * Existe porque a página de preços abriu com "Dois planos" desde 26/08/2026,
+ * no mesmo dia em que a lista passou a ter quatro, e ninguém viu por mais de
+ * um mês. A contagem escrita à mão é o tipo de frase que envelhece calada:
+ * daqui ela sai da própria lista.
+ */
+export const QUANTOS_PLANOS: string = POR_EXTENSO[PLANOS.length] ?? String(PLANOS.length);
+
 /**
  * O que TODO plano entrega, independente da profundidade.
  *
