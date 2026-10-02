@@ -61,7 +61,18 @@ function migracoes(): Migracao[] {
     }));
 }
 
-const CRIA = /create\s+(?:or\s+replace\s+)?function\s+public\.([a-z_0-9]+)\s*\(/g;
+/**
+ * O `public.` é opcional porque o Postgres não exige: sem schema, a função
+ * nasce no primeiro do `search_path`, que é `public`. Exigir o prefixo foi o
+ * terceiro buraco desta guarda. As quatro funções de 25/08
+ * (`limpar_decisoes_expiradas` e companhia) foram escritas sem ele, a guarda
+ * não as viu, e a que APAGA decisões de triagem ficou chamável por `anon` em
+ * `/rest/v1/rpc/` até o advisor do Supabase apontar, em 02/10.
+ *
+ * Função de outro schema (`storage.x(`) não casa: o nome pararia no ponto, e o
+ * padrão exige o parêntese logo depois.
+ */
+const CRIA = /create\s+(?:or\s+replace\s+)?function\s+(?:public\.)?([a-z_0-9]+)\s*\(/g;
 
 describe("função criada depois da limpeza geral fecha a própria porta", () => {
   it("toda função nova revoga EXECUTE de `public` e de `anon`", () => {
@@ -75,7 +86,7 @@ describe("função criada depois da limpeza geral fecha a própria porta", () =>
         // das quatro funções de trigger, fechadas em `20260814120000`.
         const fechada = migracoes().some(({ sql: outra }) =>
           new RegExp(
-            `revoke\\s+execute\\s+on\\s+function\\s+public\\.${nome}\\s*\\([^)]*\\)\\s+from\\s+[^;]*\\bpublic\\b[^;]*\\banon\\b`,
+            `revoke\\s+execute\\s+on\\s+function\\s+(?:public\\.)?${nome}\\s*\\([^)]*\\)\\s+from\\s+[^;]*\\bpublic\\b[^;]*\\banon\\b`,
           ).test(outra),
         );
 
@@ -111,5 +122,18 @@ describe("função criada depois da limpeza geral fecha a própria porta", () =>
       "o varredor deixou de encontrar declarações de função nas migrações. " +
         "Enquanto ele não encontrar, a guarda acima aprova qualquer coisa.",
     ).toBeGreaterThan(10);
+  });
+
+  /**
+   * A outra guarda da guarda, para o buraco de 02/10: contar mais de dez não
+   * pega o varredor que enxerga só METADE das declarações. Função escrita sem
+   * schema também mora em `public`, e precisa ser vista.
+   */
+  it("o varredor enxerga função declarada sem o `public.`", () => {
+    const semSchema = "create or replace function limpar_algo(dias int) returns int";
+    expect([...semSchema.matchAll(CRIA)].map((m) => m[1])).toEqual(["limpar_algo"]);
+
+    const outroSchema = "create function storage.outra(x int) returns int";
+    expect([...outroSchema.matchAll(CRIA)]).toEqual([]);
   });
 });
