@@ -68,6 +68,7 @@ import { agregarPorMunicipio, contarPorEsfera } from "../src/lib/pncp/agregarPor
 import { atualizarRegistro, normalizarRegistro } from "../src/lib/pncp/registroDePublicacao.ts";
 import {
   municipiosCarregados,
+  semUfsAusentes,
   type AgregadoAnterior,
 } from "../src/lib/pncp/carregarUfAusente.ts";
 import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao.ts";
@@ -265,7 +266,9 @@ async function main() {
    * permanente para quem já as tinha encontrado na busca. Ver
    * `src/lib/pncp/carregarUfAusente.ts` para o porquê e para o prazo.
    */
-  const medidosHoje = agregarPorMunicipio(editais);
+  // `semUfsAusentes`: o que chegou a uma UF ausente por outras UFs é
+  // fragmento, e não medição. Ver o comentário da função.
+  const medidosHoje = semUfsAusentes(agregarPorMunicipio(editais), ausentes);
   const carregados = municipiosCarregados({
     municipiosDeHoje: medidosHoje,
     anterior,

@@ -108,3 +108,27 @@ export function municipiosCarregados({
   }
   return carregados;
 }
+
+/**
+ * Tira da medição de hoje os municípios das UFs que não foram coletadas.
+ *
+ * Desde 02/10/2026 o edital conta no município onde o serviço acontece, que
+ * pode ser de outra UF: a Procuradoria Militar em São Paulo é comprada em
+ * Brasília e chega pela coleta do DF. No dia em que a coleta de SP falhar,
+ * São Paulo apareceria "medido hoje" com os dois ou três editais que vieram
+ * de outras UFs, e `municipiosCarregados` deixaria de carregar a medição
+ * anterior, que tem centenas, porque o município já "tem hoje".
+ *
+ * Uma UF que não foi coletada não foi medida, e o que chegou a ela por outras
+ * UFs é fragmento. Sem isto, a página de São Paulo afirmaria um número que
+ * ninguém mediu. Com isto, vale a medição anterior, com a data dela, que é o
+ * comportamento de antes da mudança.
+ */
+export function semUfsAusentes(
+  municipiosDeHoje: MunicipioAgregado[],
+  ufsAusentes: string[],
+): MunicipioAgregado[] {
+  if (ufsAusentes.length === 0) return municipiosDeHoje;
+  const ausentes = new Set(ufsAusentes.map((uf) => uf.toUpperCase()));
+  return municipiosDeHoje.filter((m) => !ausentes.has(m.uf.toUpperCase()));
+}

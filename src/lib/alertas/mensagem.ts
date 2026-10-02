@@ -2,6 +2,7 @@ import type { ItemSelecionado, SelecaoDeAlerta } from "./selecao";
 import { emReais, prazoEmTexto } from "./formato";
 import { diasAteEncerrar } from "../pncp/normaliza";
 import { SITE } from "../site";
+import { localDeExecucao, localEmTexto } from "../dominio/local-de-execucao";
 
 /**
  * O texto do alerta.
@@ -60,7 +61,7 @@ export function montarBloco(item: ItemSelecionado, agora: Date, urlBase = SITE.u
     objeto: edital.objeto,
     valor: emReais(edital.valorEstimado, edital.valorSuspeito),
     orgao: edital.orgao.nome,
-    local: `${edital.local.municipio}/${edital.local.uf}`,
+    local: localEmTexto(localDeExecucao(edital), edital.local),
     prazo: prazoEmTexto(diasAteEncerrar(edital, agora)),
     score:
       score.valor === null
