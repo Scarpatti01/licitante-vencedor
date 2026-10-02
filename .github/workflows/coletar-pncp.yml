@@ -248,6 +248,26 @@ jobs:
         run: |
           set -o pipefail
 
+          # A leva de hoje pode ter chegado à `main` DEPOIS do checkout desta
+          # coleta, pelo botão `publicar-posts.yml`. Publicar de novo faria o
+          # rebase do commit desta coleta conflitar em `dados/posts/<dia>.json`,
+          # e a coleta perderia o agregado do dia por causa de um post. Se a
+          # leva já estava no checkout (gravada pela tentativa anterior desta
+          # mesma coleta), segue o de sempre: regrava. `dia` é o do script, a
+          # data em UTC.
+          dia=$(date -u +%Y-%m-%d)
+          git fetch -q origin "+refs/heads/main:refs/remotes/origin/main" || true
+          if git cat-file -e "origin/main:dados/posts/$dia.json" 2>/dev/null \
+             && ! git cat-file -e "HEAD:dados/posts/$dia.json" 2>/dev/null; then
+            {
+              echo "## Leva de posts já publicada à mão hoje"
+              echo
+              echo "\`dados/posts/$dia.json\` chegou à \`main\` durante esta coleta, pelo botão \`publicar-posts.yml\`. Nada foi lido nem gravado aqui."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Leva já publicada à mão::dados/posts/$dia.json"
+            exit 0
+          fi
+
           # `continue-on-error` protege o commit do agregado — um post não pode
           # custar a coleta do dia. O que ele NÃO pode fazer é esconder que a
           # publicação falhou, e foi exatamente isso que aconteceu entre 16 e
@@ -273,6 +293,10 @@ jobs:
               echo '```'
             } >> "$GITHUB_STEP_SUMMARY"
             echo "::error title=Leva de posts não publicada::o script saiu com $codigo — ver o resumo desta execução"
+            # O passo termina verde para o commit do agregado acontecer. Quem
+            # pinta a execução de vermelho é "Cobrar a leva de posts recusada",
+            # no fim do job, depois do commit.
+            echo "recusada=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
@@ -429,6 +453,27 @@ jobs:
           done
 
           echo "::error title=Coleta não conseguiu versionar::push recusado em 3 tentativas"
+          exit 1
+
+      # A leva de posts recusada pinta a execução de vermelho AQUI, no fim, e
+      # não no próprio passo. O `continue-on-error` de lá continua certo: um
+      # post não pode custar o commit do agregado, e este passo roda depois
+      # dele. Mas só a anotação `::error` não bastou. De 03/09 a 02/10 o
+      # crédito do Gemini esteve esgotado, a leva foi recusada todo dia, e
+      # ninguém viu, porque a execução já era vermelha quase todo dia por UF
+      # tolerada. Job vermelho é a única coisa que o GitHub notifica sozinho
+      # num cron, então ele precisa querer dizer "alguém tem de olhar".
+      - name: Cobrar a leva de posts recusada
+        if: steps.posts.outputs.recusada == 'true'
+        run: |
+          {
+            echo "## ⚠️ A execução fica vermelha por causa dos posts"
+            echo
+            echo "O agregado do dia foi versionado normalmente. A leva de posts foi recusada:"
+            echo "veja o passo \"Publicar a leva de posts do dia\" e as linhas \`análise recusada em …\`."
+            echo "Se elas falarem em \`prepayment credits\`, é o crédito do Gemini (ver AGENTS.md)."
+          } >> "$GITHUB_STEP_SUMMARY"
+          echo "::error title=Leva de posts recusada::o agregado foi versionado, mas os posts do dia não saíram"
           exit 1
 
       # Coleta degradada NÃO commita — e também não passa em silêncio, que era

@@ -58,6 +58,12 @@ const COLETAS = [
     workflow: ".github/workflows/coletar-pncp.yml",
     scripts: ["scripts/ingerir-pncp.ts", "scripts/publicar-posts.ts"],
   },
+  // O botão de publicar à mão. Até 02/10 ele não versionava nada, e a leva
+  // lida morria com o runner: ver `botao-publica-de-verdade.test.ts`.
+  {
+    workflow: ".github/workflows/publicar-posts.yml",
+    scripts: ["scripts/publicar-posts.ts"],
+  },
 ] as const;
 
 /**
