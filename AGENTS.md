@@ -98,57 +98,37 @@ O par de perguntas que resolve cada uma:
 PR aberta parada não é trabalho guardado. É trabalho apodrecendo — o custo de
 mesclá-la sobe todo dia, e o benefício que ela não entrega é cobrado todo dia.
 
-# Pendência aberta: a leitura dos posts (21/08)
+# Pendência aberta: o crédito do Gemini acabou (02/10)
 
-**Pedido do dono, para a próxima sessão: rodar a leitura dos posts.**
+**Os posts não saem desde 03/09, e a causa não é código: o crédito pré-pago
+do Gemini acabou.** Toda leitura volta `HTTP 402 … Your prepayment credits are
+depleted` (em 04/09 a mesma mensagem vinha como HTTP 429). O script recusa a
+leva, corretamente, porque nenhum post foi lido. A última leva com leitura de
+verdade é a de 26/08, com 24 de 25.
 
-Antes de rodar, confira — porque provavelmente já rodou sozinha. O script
-`publicar-posts.ts` é passo das duas coletas, e a coleta roda 06:10 e 08:10
-UTC. Se a madrugada passou entre aquela sessão e esta, o trabalho está feito e
-a pergunta vira "funcionou?".
+**Antes de mexer em código por causa de post sem leitura, leia a linha
+`análise recusada em …` no log.** Se ela falar em `prepayment credits`, o
+conserto é recarregar em https://ai.studio/projects, e mais nada. A pendência
+anterior desta seção, de 21/08 (modelo aposentado e dialeto de schema), foi
+resolvida pela #58 e pela #63: as levas de 23/08 (22 de 25) e de 26/08 (24 de
+25) saíram lidas. Quem procurar aquela causa de novo vai perder tempo.
 
-Como conferir, na ordem:
+Depois de recarregar, a prova é a de sempre: disparar `publicar-posts.yml` à
+mão, com **simular** desmarcado, e contar `com leitura: n de 5` no resumo. Job
+verde não prova nada, porque o passo é `continue-on-error`.
 
-```sh
-ls dados/posts/            # existe leva com a data de hoje?
-```
+Hoje nenhum cliente sente: nenhuma empresa tem leitura no plano (o log diz
+`0 de 1 empresa(s) com perfil completo têm leitura no plano`). O primeiro que
+tiver vai receber oportunidade sem análise enquanto o crédito não voltar,
+porque `ler-recomendados.ts` usa a mesma chave.
 
-Se existe, conte quantos daqueles posts têm leitura de verdade — campo
-`analise` preenchido no JSON da leva. Esse é o número que importa.
-
-**NÃO confie em `execucoes_de_ia` para responder isso.** Conferido em 21/08: os
-25 posts falharam e a tabela ficou VAZIA. O script empilha as gravações em
-segundo plano (`gravacoesPendentes`) e o guarda de recusa em bloco interrompe
-antes de esperá-las — ou seja, no dia em que tudo falha, o livro de execuções
-perde justamente a evidência de que falhou. Consertar isso é trabalho legítimo,
-e não foi feito.
-
-A fonte confiável é o log: a saída do passo "Publicar a leva de posts do dia"
-na execução da coleta, ou o resumo de `publicar-posts.yml`, que carrega a saída
-inteira de propósito. É lá que aparece `[n/25] ... com leitura` linha a linha.
-
-Se não houver leva de hoje, ou se houver mas sem leitura, dispare
-`publicar-posts.yml` à mão (com **simular** desmarcado).
-
-**O que torna isso traiçoeiro, e por que não basta olhar se o job ficou verde:**
-o passo dentro da coleta é `continue-on-error: true`, e o script publica os
-posts SEM leitura quando a chave do Gemini não serve, declarando isso na
-página. Ou seja: falha e sucesso degradado são ambos verdes. A única prova é
-contar quantos posts saíram com leitura.
-
-Estado em 21/08, e o que o log já provou: a coleta das 08h54 rodou os posts, e
-os **25 falharam com o mesmo erro** — `models/gemini-2.5-pro is no longer
-available` (HTTP 404). É exatamente o modelo aposentado que a #58 corrigiu, e
-os dois scripts pegam o id no mesmo `modelosGemini()`, então a correção alcança
-os posts sem ninguém tocar em `publicar-posts.ts`. A causa está identificada,
-não suposta.
-
-O que continua em aberto são as paredes seguintes, que os posts nunca
-alcançaram por terem morrido no 404: o dialeto de schema (#63, mesmo caminho,
-não exercido para posts) e o limite de tokens de saída, que derrubou 2 de 21 na
-execução boa das oportunidades e que **nenhuma das duas correções resolve**.
-Espere um ou dois posts sem leitura — isso não impede a leva, porque o guarda
-só recusa quando NENHUM é lido.
+**Por que ninguém viu durante um mês, e isso continua de pé.** A anotação
+`::error` "Leva de posts não publicada" sai numa execução que já é vermelha
+quase todo dia: 41 de 60 coletas desde 02/09, quase sempre por uma ou duas UFs
+com `fetch failed` contra o PNCP, que a junção tolera como `parcial-aceitavel`.
+Vermelho todo dia ensina a não olhar, e foi assim que o aviso certo sumiu. O
+conserto (aviso por e-mail quando a leva é recusada, ou UF tolerada deixar de
+pintar o job) é decisão do dono e não foi feito.
 
 Apague esta seção quando uma leva sair com a maioria dos posts lidos.
 

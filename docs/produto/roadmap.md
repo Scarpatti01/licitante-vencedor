@@ -5,7 +5,9 @@ planejado parecer que existe. Um item só sai de "em construção" quando funcio
 está integrado, tem tratamento de erro, tem estado vazio e de carregamento, foi
 testado e não quebrou nada que já funcionava.
 
-Estado em 2026-08-15.
+Estado em 2026-08-15, com correções pontuais em 2026-10-02: a seção "O próximo
+passo", a Fase 4, a cobertura de UF e o link "Entrar". O resto não foi
+reconferido naquela data.
 
 ## Fase 1 — Fundação
 
@@ -135,8 +137,8 @@ Conversão não é item de checklist de alguém: é condição de build.
 | Formato da mensagem (e-mail e WhatsApp) | **No ar** |
 | Alerta diário do lead: região, seleção e texto | **No ar**, testado |
 | Não repetir edital já enviado (`envios_de_alerta`) | **No ar** — tabela aplicada |
-| Agendamento diário do alerta | **No ar** — dias úteis, 07:10 de Brasília |
-| Envio de e-mail | **Escrito, inerte** — falta `RESEND_API_KEY`. Sem ele o workflow encerra verde avisando, não falha |
+| Agendamento diário do alerta | **Desligado de propósito desde 25/08** — o alerta gratuito acabou e deu lugar a 14 dias de teste do produto (#105). O workflow continua disparável à mão, e `alerta-virou-convite.test.ts` cobra que ele não tenha `cron` |
+| Envio de e-mail | **No ar** — `RESEND_API_KEY` confirmada em 20/08 nos dois lugares (ver "Decisões em aberto", item 4) |
 | Envio de WhatsApp | **Não existe** — exige conta e aprovação de template |
 
 ## Fase 5 — Monetização
@@ -149,9 +151,18 @@ Conversão não é item de checklist de alguém: é condição de build.
 
 ## O próximo passo, e a armadilha dele
 
-**Aberto, em 21/08 — a leitura dos posts.** O blog nunca teve leitura de
-verdade: as levas de 15 e 16/08 saíram com 0 de 25 posts lidos, e desde 16/08
-não sai leva nenhuma, embora a coleta rode todo dia.
+**Aberto, em 02/10 — o crédito do Gemini acabou.** Os posts não saem desde
+03/09: toda leitura volta `HTTP 402 … prepayment credits are depleted`, e o
+script recusa a leva por não ter lido nenhum. Não é código, é recarga. O
+estado e a conferência estão em `AGENTS.md`, na seção de pendência aberta.
+
+~~**Aberto, em 21/08 — a leitura dos posts.**~~ **Fechado em 23/08:** a leva
+saiu com 22 de 25 posts lidos, e a de 26/08 com 24 de 25. O texto abaixo fica
+pela armadilha que descreve, que voltou em setembro com outra causa.
+
+Em 21/08 o blog ainda não tinha tido leitura de verdade: as levas de 15 e
+16/08 saíram com 0 de 25 posts lidos, e desde 16/08 não saía leva nenhuma,
+embora a coleta rodasse todo dia.
 
 A armadilha aqui é a mesma que este documento já descreve em outros pontos, na
 sua forma mais cara: **não existe sinal vermelho.** O passo é
@@ -204,10 +215,8 @@ dois lados — gravar e ler.
 
 **O que ainda falta:**
 
-- **Cobertura de UF.** A única empresa cadastrada hoje atende só o RJ, e a
-  coleta ainda cobre só as 6 UFs do piloto (Nordeste) — nenhum RJ. Até a
-  coleta paralela (27 UFs) ser promovida, a triagem roda certa e não entrega
-  nada para ela. Ver "Decisões em aberto" e a validação da coleta de 19/08.
+- ~~**Cobertura de UF.**~~ **Feita, em 20/08 (#42).** A coleta paralela
+  roda as 27 UFs, uma por job, e é a única agendada.
 
 ~~`painelDoDia.coletaCompleta` sempre `true`.~~ **Feita, em 18/08.**
 `execucoes_de_coleta` (migração `20260818200000`) guarda o veredito
@@ -265,10 +274,9 @@ clientes reais usando o produto. Construir agora seria inventar o insumo.
    `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Vercel, diferente dos três acima — é a
    chave pública que a tela de login usa no navegador) também está
    confirmada pela mesma evidência: sem ela, a empresa cadastrada não teria
-   conseguido criar conta. **O que falta não é segredo, é navegação:** ainda
-   não existe link de "Entrar" no menu público do site — botão levando a
-   tela morta é pior que botão nenhum, e por isso ele nunca foi adicionado;
-   agora que a chave está confirmada, adicionar o link é só um item de UI.
+   conseguido criar conta. ~~**O que falta não é segredo, é navegação.**~~
+   **Feito, em 20/08 (#43):** o link "Entrar" está no menu público, em
+   `src/components/Navegacao.tsx`.
 5. ~~**Retenção e exclusão de documentos.**~~ **Decidido e implementado em
    20/08** — `src/lib/lgpd/`, dois scripts (`lgpd-purgar-documentos-
    cancelados.ts` para a carência de 30 dias, `lgpd-excluir-empresa.ts` para
