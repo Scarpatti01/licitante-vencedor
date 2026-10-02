@@ -1,5 +1,5 @@
 # Dispara a publicação da leva de posts do dia (`scripts/publicar-posts.ts`) à
-# mão.
+# mão, e VERSIONA a leva, como a coleta faz.
 #
 # ⚠️ SEM AGENDAMENTO, DE PROPÓSITO — mesma disciplina de `triar-editais.yml` e
 # `ler-recomendados.yml`. O script JÁ roda automaticamente como passo das duas
@@ -26,6 +26,36 @@
 # posts sem leitura e a página declara isso — degradação honesta, e justamente
 # por ser honesta ela não grita. É o modo de falha mais caro que existe aqui:
 # o produto continua saindo, só que menos do que promete.
+#
+# ## Até 02/10 este botão não publicava nada
+#
+# Tinha `contents: read` e nenhum passo de commit. O script gravava
+# `dados/posts/<dia>.json` no runner, e o arquivo morria com ele. Ninguém
+# percebeu porque o botão nasceu para investigar, e investigar funcionava: o
+# log mostrava `com leitura: n de 5`. Apareceu no dia em que se precisou dele
+# para publicar: o crédito do Gemini voltou às 17h, a coleta do dia já tinha
+# passado, e a leva lida (4 de 5) não chegou ao site.
+#
+# ## As duas recusas, e por que elas existem
+#
+# Agora existem dois processos que escrevem `dados/posts/<dia>.json`: este botão
+# e a coleta. Se os dois escreverem o mesmo dia, o segundo a empurrar encontra
+# o arquivo já criado pelo primeiro, o rebase antes do push conflita, e o push
+# desiste. Se o segundo for a coleta, ela perde o commit do AGREGADO do dia por
+# causa de um post, que é exatamente o que o `continue-on-error` dela existe
+# para impedir.
+#
+# Por isso este botão recusa publicar:
+#
+#   1. com uma coleta rodando ou na fila. Ela vai publicar a leva; se não
+#      publicar, dispare de novo quando ela terminar.
+#   2. com a leva de hoje já versionada na `main`. Republicar trocaria os posts
+#      de um dia que já está no ar.
+#
+# E a coleta, do lado dela, pula a publicação quando a leva do dia aparece na
+# `main` DURANTE a execução: é o caso de o botão ter rodado antes de ela
+# começar a publicar. Ver "Publicar a leva de posts do dia" nos dois workflows
+# de coleta, e `botao-publica-de-verdade.test.ts`.
 
 name: Publicar posts do dia
 
@@ -38,13 +68,18 @@ on:
         default: true
 
 permissions:
-  contents: read
+  # Para versionar a leva.
+  contents: write
+  # Para perguntar se há coleta rodando (`gh run list`).
+  actions: read
 
 concurrency:
   # Duas execuções simultâneas escreveriam a mesma leva do dia, e a segunda
   # pagaria de novo pela leitura dos mesmos editais. NÃO cobre a coleta, que
-  # roda o mesmo script sob o grupo `coletar-pncp` — juntar os dois faria uma
-  # publicação manual bloquear a coleta inteira, caro demais para o que evita.
+  # roda o mesmo script sob o grupo `coletar-pncp`. Juntar os dois grupos não
+  # serve: o GitHub mantém só UMA execução pendente por grupo e cancela a que
+  # estava esperando, então um clique aqui na hora errada cancelaria a segunda
+  # coleta do dia. A coordenação com a coleta é feita pelas recusas acima.
   group: publicar-posts
   cancel-in-progress: false
 
@@ -69,7 +104,54 @@ jobs:
       - name: Instalar dependências
         run: npm ci --omit=dev
 
+      # Simulação não grava nada, então não briga com ninguém e pula esta
+      # conferência. `dia` é o mesmo do script: `toISOString().slice(0, 10)`,
+      # ou seja, a data em UTC.
+      - name: Conferir se a leva de hoje pode ser publicada aqui
+        id: conferir
+        if: ${{ !inputs.simular }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          dia=$(date -u +%Y-%m-%d)
+          echo "dia=$dia" >> "$GITHUB_OUTPUT"
+
+          if [ -f "dados/posts/$dia.json" ]; then
+            {
+              echo "## A leva de $dia já está publicada"
+              echo
+              echo "\`dados/posts/$dia.json\` já está na \`main\`. Nada foi lido nem gravado:"
+              echo "republicar trocaria os posts de um dia que já está no ar."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice title=Leva já publicada::dados/posts/$dia.json já está na main"
+            echo "pode=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          rodando=0
+          for wf in coletar-pncp-paralelo.yml coletar-pncp.yml; do
+            n=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$wf" --limit 20 \
+                  --json status --jq '[.[] | select(.status != "completed")] | length')
+            rodando=$((rodando + n))
+          done
+
+          if [ "$rodando" != "0" ]; then
+            {
+              echo "## Não publicado: há coleta rodando ou na fila"
+              echo
+              echo "A coleta publica a leva do dia ela mesma. Publicar aqui ao mesmo tempo faria"
+              echo "o commit da coleta conflitar em \`dados/posts/$dia.json\` e ela perderia o"
+              echo "agregado do dia. Se a coleta terminar sem publicar, dispare de novo."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error title=Leva não publicada::há coleta rodando ou na fila — ver o resumo desta execução"
+            exit 1
+          fi
+
+          echo "pode=true" >> "$GITHUB_OUTPUT"
+
       - name: Publicar
+        if: ${{ inputs.simular || steps.conferir.outputs.pode == 'true' }}
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -112,6 +194,62 @@ jobs:
           } >> "$GITHUB_STEP_SUMMARY"
 
           exit "$codigo"
+
+      # Só com a leva de fato gravada: o script sai com 1 quando recusa a leva
+      # (nada lido), e aí este passo nem roda. O push repete o desenho da coleta
+      # (`coleta-versiona-o-que-coletou.test.ts`): rebase sobre a `main` e até
+      # três tentativas, porque merge no meio é comum. Conflito de verdade em
+      # `dados/posts/` quer dizer que outro processo gravou o mesmo dia, e aí o
+      # job falha alto, que é o certo.
+      - name: Versionar a leva
+        if: ${{ !inputs.simular && steps.conferir.outputs.pode == 'true' }}
+        env:
+          DIA: ${{ steps.conferir.outputs.dia }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A mesma pergunta da conferência, de novo, porque a leitura pode
+          # levar muitos minutos num PNCP lento, e uma coleta pode ter começado
+          # no meio. Se começou, ela não viu esta leva no checkout dela e vai
+          # publicar o mesmo dia: empurrar agora faria o rebase DELA conflitar
+          # e custaria o agregado. Quem cede é o botão.
+          rodando=0
+          for wf in coletar-pncp-paralelo.yml coletar-pncp.yml; do
+            n=$(gh run list --repo "$GITHUB_REPOSITORY" --workflow "$wf" --limit 20 \
+                  --json status --jq '[.[] | select(.status != "completed")] | length')
+            rodando=$((rodando + n))
+          done
+          if [ "$rodando" != "0" ]; then
+            {
+              echo "## Leva lida, mas não versionada: uma coleta começou durante a leitura"
+              echo
+              echo "A coleta publica a leva do dia ela mesma. Se ela terminar sem publicar, dispare de novo."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error title=Leva não versionada::uma coleta começou durante a leitura e vai publicar o dia"
+            exit 1
+          fi
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -f dados/posts/
+          if git diff --cached --quiet; then
+            echo "::warning title=Nada a versionar::o script terminou sem gravar a leva de $DIA"
+            exit 0
+          fi
+          git commit -m "Leva de posts de $DIA (publicada à mão)"
+
+          for tentativa in 1 2 3; do
+            if git push; then
+              echo "empurrado na tentativa $tentativa"
+              echo "## Leva de $DIA versionada na \`main\`" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "push recusado; rebaseando sobre o main e tentando de novo"
+            git pull --rebase origin main || exit 1
+            sleep $((tentativa * 5))
+          done
+
+          echo "::error title=Leva não conseguiu versionar::push recusado em 3 tentativas"
+          exit 1
 
       - name: Publicar o log
         if: always()

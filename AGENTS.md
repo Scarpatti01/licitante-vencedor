@@ -111,11 +111,19 @@ disparo manual de `publicar-posts.yml` (execução 37043860046) leu 4 de 5. O
 quinto, Guaimbê/SP, não tinha documento com texto extraível, o que não é falha
 nossa.
 
-**Mas aquela leva NÃO foi publicada.** `publicar-posts.yml` tem
-`permissions: contents: read` e nenhum passo de commit: o JSON da leva morre
-com o runner. Ele prova a leitura, não publica, apesar do nome. Quem publica é
-o mesmo script como passo da coleta, que versiona `dados/posts/`. A primeira
-leva publicada depois da recarga deve ser a de 03/10.
+**Mas aquela leva NÃO foi publicada.** Até 02/10 `publicar-posts.yml` tinha
+`permissions: contents: read` e nenhum passo de commit, e o JSON da leva morria
+com o runner. Desde então o botão versiona a leva como a coleta faz, e recusa
+publicar com coleta rodando ou com a leva do dia já na `main` (o porquê está no
+cabeçalho do workflow). A primeira leva publicada depois da recarga deve ser a
+de 03/10.
+
+E a leva recusada deixou de passar em silêncio: desde 02/10 ela pinta a coleta
+de vermelho no fim (passo "Cobrar a leva de posts recusada"), depois do commit
+do agregado. Antes, o aviso caía numa execução que já era vermelha quase todo
+dia por UF tolerada, e foi assim que um mês de crédito esgotado passou sem
+ninguém ver. Agora UF tolerada não pinta mais a execução: ver
+`vermelho-quer-dizer-olhe.test.ts`.
 
 **Antes de mexer em código por causa de post sem leitura, leia a linha
 `análise recusada em …` no log.** Se ela falar em `prepayment credits`, o
@@ -124,32 +132,16 @@ anterior desta seção, de 21/08 (modelo aposentado e dialeto de schema), foi
 resolvida pela #58 e pela #63: as levas de 23/08 (22 de 25) e de 26/08 (24 de
 25) saíram lidas. Quem procurar aquela causa de novo vai perder tempo.
 
-Job verde não prova nada, porque o passo é `continue-on-error`. A prova é a
-linha `com leitura: n de 5` no log, e o arquivo do dia em `dados/posts/`.
+Job verde prova só que a leva não foi recusada inteira: 1 de 5 lido também
+sai verde. A prova de leitura é a linha `com leitura: n de 5` no log, e o
+arquivo do dia em `dados/posts/`.
 
 Enquanto não houver crédito, quem sente é o blog e o primeiro cliente com
 leitura no plano (em 02/10 eram 0 de 1 empresa), porque `ler-recomendados.ts`
 usa a mesma chave.
 
-Apague esta seção quando uma leva **publicada pela coleta**, com arquivo em
+Apague esta seção quando uma leva **versionada**, com arquivo em
 `dados/posts/`, sair com a maioria dos posts lidos.
-
-# Pendência aberta: vermelho todo dia esconde o aviso certo (02/10)
-
-O crédito do Gemini passou um mês esgotado sem ninguém ver, e a razão continua
-de pé. A anotação `::error` "Leva de posts não publicada" sai numa execução que
-já é vermelha quase todo dia: 41 de 60 coletas desde 02/09, quase sempre por
-uma ou duas UFs com `fetch failed` contra o PNCP, que a junção tolera como
-`parcial-aceitavel` e commita normalmente. Vermelho todo dia ensina a não
-olhar, e foi assim que o aviso certo sumiu.
-
-Dois consertos possíveis, que não se excluem: aviso por e-mail ao administrador
-quando a leva é recusada (como `avisos_de_custo_de_ia` já faz para custo), ou
-UF tolerada deixar de pintar o job de vermelho. **Decisão do dono, e não foi
-tomada.**
-
-Apague esta seção quando o conserto entrar, ou quando o dono decidir que fica
-como está. Nesse caso, registre a decisão e o motivo antes de apagar.
 
 # A voz do texto que o cliente lê
 
