@@ -32,6 +32,7 @@ import {
 } from "../src/lib/abertos/tipos.ts";
 import { perfilDaUf } from "../src/lib/abertos/perfilDaUf.ts";
 import { contarPorMunicipio } from "../src/lib/abertos/porMunicipio.ts";
+import { comLocalDeExecucao } from "../src/lib/dominio/local-de-execucao.ts";
 
 const SEM_CONFIGURACAO = 78;
 const UM_DIA_MS = 24 * 60 * 60 * 1000;
@@ -84,7 +85,13 @@ async function main() {
   }
 
   const agora = new Date();
-  const abertos = await repositorio.editaisAbertos(agora);
+  // Cada edital na cidade onde o serviço acontece, e não na do órgão. É o
+  // mesmo critério de `agregados.json`, para a página do município não contar
+  // um número e listar outro. Ver `local-de-execucao.ts`.
+  const abertos = (await repositorio.editaisAbertos(agora)).map((a) => ({
+    ...a,
+    edital: comLocalDeExecucao(a.edital),
+  }));
 
   // Sem `encerramentoProposta` não dá para dizer que está aberto nem marcar o
   // fim no relógio de quem lê. Fora da listagem, e contado à parte para a

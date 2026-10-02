@@ -1,4 +1,5 @@
 import type { Edital } from "../fontes/tipos.ts";
+import { comLocalDeExecucao } from "../dominio/local-de-execucao.ts";
 
 /**
  * O agregado por município, extraído de `ingerir-pncp.ts` e `juntar-coleta.ts`
@@ -63,7 +64,14 @@ export function agregarPorMunicipio(editais: readonly Edital[]): MunicipioAgrega
     }
   >();
 
-  for (const e of editais) {
+  for (const publicado of editais) {
+    /*
+     * A página do município conta o que acontece NELE, e não o que foi
+     * comprado por um órgão sediado nele. Até 02/10/2026 a limpeza da NAV
+     * Brasil em Alta Floresta/MT contava para a página do Rio de Janeiro.
+     * Ver `local-de-execucao.ts`.
+     */
+    const e = comLocalDeExecucao(publicado);
     const chave = `${e.local.uf}/${e.local.municipioSlug}`;
     let m = porMunicipio.get(chave);
     if (!m) {

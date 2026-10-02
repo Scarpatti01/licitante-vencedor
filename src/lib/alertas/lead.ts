@@ -1,6 +1,7 @@
 import type { Edital } from "../fontes/tipos.ts";
 import { diasAteEncerrar } from "../pncp/normaliza.ts";
 import { localCasaComRegiao, type Regiao } from "./regiao.ts";
+import { comLocalDeExecucao } from "../dominio/local-de-execucao.ts";
 
 /**
  * O que entra no alerta diário de um lead — e o que fica de fora.
@@ -91,7 +92,9 @@ export function selecionarParaLead(
   const candidatos: ItemDoAlertaDeLead[] = [];
 
   for (const edital of editais) {
-    if (!localCasaComRegiao(edital.local, regiao)) continue;
+    // Onde o serviço acontece, e não onde fica quem compra: quem pediu alerta
+    // de Alta Floresta quer a limpeza da NAV Brasil lá, comprada no Rio.
+    if (!localCasaComRegiao(comLocalDeExecucao(edital).local, regiao)) continue;
     if (jaEnviados.has(edital.id)) continue;
 
     const dias = diasAteEncerrar(edital, agora);

@@ -31,6 +31,7 @@ import { selecionarDoDia, POSTS_POR_DIA } from "../src/lib/posts/selecao.ts";
 import { slugDoPost } from "../src/lib/posts/slug.ts";
 import type { LevaDoDia, PostDeEdital } from "../src/lib/posts/tipos.ts";
 import type { Edital } from "../src/lib/fontes/tipos.ts";
+import { comLocalDeExecucao } from "../src/lib/dominio/local-de-execucao.ts";
 import { abrirRepositorioDeIA } from "../src/lib/ia/repositorio.ts";
 import type { ExecucaoDeIA } from "../src/lib/ia/custo.ts";
 import { lerEAnalisar } from "../src/lib/ia/lerEdital.ts";
@@ -138,7 +139,9 @@ async function candidatos(url: string, chave: string): Promise<Edital[]> {
     if (pagina.length < POR_PAGINA) break;
   }
 
-  return todos.map(paraEdital);
+  // O post aparece na página do município onde o serviço acontece, e não na
+  // do órgão comprador. Ver `local-de-execucao.ts`.
+  return todos.map(paraEdital).map(comLocalDeExecucao);
 }
 
 function paraPost(edital: Edital, postadoEm: string): PostDeEdital {

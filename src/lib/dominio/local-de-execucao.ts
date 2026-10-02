@@ -1,5 +1,6 @@
 import ibge from "../../../dados/municipios-ibge.json" with { type: "json" };
 import type { Edital } from "../fontes/tipos.ts";
+import { slugDeMunicipio } from "../pncp/normaliza.ts";
 
 /**
  * Onde o serviço acontece, e não onde fica quem compra.
@@ -164,4 +165,36 @@ export function localEmTexto(
 ): string {
   const lugar = `${local.municipio}/${local.uf}`;
   return local.origem === "objeto" ? `${lugar} (órgão: ${unidade.municipio}/${unidade.uf})` : lugar;
+}
+
+/**
+ * O mesmo edital, com `local` trocado pelo lugar onde o serviço acontece.
+ *
+ * Existe para as pontas que agrupam e filtram por `local` sem saber da regra:
+ * o alerta dos leads, as páginas de município (`agregados.json`), a lista de
+ * abertos (`abertos.json`) e os posts. Trocar o `local` na entrada, num lugar
+ * só, é o que impede cada uma de ter a sua versão de "onde é".
+ *
+ * O slug sai do nome oficial do IBGE, pela mesma função que dá o slug aos
+ * municípios da coleta. Conferido em 02/10/2026: nos 4.004 municípios do
+ * `agregados.json`, o slug do nome do PNCP e o do nome do IBGE são idênticos,
+ * então o edital transferido cai na MESMA página que os editais comprados ali.
+ *
+ * Sem lugar no objeto, devolve o próprio objeto recebido, sem cópia.
+ */
+export function comLocalDeExecucao<
+  T extends Pick<Edital, "objeto"> & { local: Pick<Edital["local"], "uf" | "municipio" | "codigoIbge" | "municipioSlug"> },
+>(edital: T): T {
+  const local = localDeExecucao(edital);
+  if (local.origem === "unidade") return edital;
+  return {
+    ...edital,
+    local: {
+      ...edital.local,
+      uf: local.uf,
+      municipio: local.municipio,
+      municipioSlug: slugDeMunicipio(local.municipio),
+      codigoIbge: local.codigoIbge,
+    },
+  };
 }

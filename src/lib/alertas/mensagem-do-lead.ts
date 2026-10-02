@@ -4,6 +4,7 @@ import { emReais, prazoEmTexto } from "./formato.ts";
 import type { ItemDoAlertaDeLead, SelecaoParaLead } from "./lead.ts";
 import { SITE } from "../site.ts";
 import { cortar } from "../email/cortar.ts";
+import { localDeExecucao, localEmTexto } from "../dominio/local-de-execucao.ts";
 
 /**
  * O texto do alerta diário do lead.
@@ -70,7 +71,7 @@ function bloco(item: ItemDoAlertaDeLead): BlocoDeLista {
     titulo: cortar(edital.objeto, 120),
     itens: [
       { rotulo: "Órgão", texto: edital.orgao.nome },
-      { rotulo: "Local", texto: `${edital.local.municipio}/${edital.local.uf}` },
+      { rotulo: "Local", texto: localEmTexto(localDeExecucao(edital), edital.local) },
       { rotulo: "Valor", texto: emReais(edital.valorEstimado, edital.valorSuspeito) },
       { rotulo: "Prazo", texto: prazoEmTexto(diasParaEncerrar) },
       // O link vai por último e é o único item com `url`: é a ação do bloco.
