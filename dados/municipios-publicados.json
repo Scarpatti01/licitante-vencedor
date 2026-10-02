@@ -54,6 +54,10 @@
   },
   {
    "uf": "AM",
+   "slug": "boa-vista-do-ramos"
+  },
+  {
+   "uf": "AM",
    "slug": "coari"
   },
   {
@@ -110,6 +114,10 @@
   },
   {
    "uf": "BA",
+   "slug": "bom-jesus-da-serra"
+  },
+  {
+   "uf": "BA",
    "slug": "brumado"
   },
   {
@@ -127,6 +135,10 @@
   {
    "uf": "BA",
    "slug": "canarana"
+  },
+  {
+   "uf": "BA",
+   "slug": "cansancao"
   },
   {
    "uf": "BA",
@@ -166,6 +178,10 @@
   },
   {
    "uf": "BA",
+   "slug": "ibirapua"
+  },
+  {
+   "uf": "BA",
    "slug": "ilheus"
   },
   {
@@ -194,6 +210,10 @@
   },
   {
    "uf": "BA",
+   "slug": "itajuipe"
+  },
+  {
+   "uf": "BA",
    "slug": "itapetinga"
   },
   {
@@ -218,6 +238,10 @@
   },
   {
    "uf": "BA",
+   "slug": "luis-eduardo-magalhaes"
+  },
+  {
+   "uf": "BA",
    "slug": "mata-de-sao-joao"
   },
   {
@@ -235,6 +259,10 @@
   {
    "uf": "BA",
    "slug": "porto-seguro"
+  },
+  {
+   "uf": "BA",
+   "slug": "queimadas"
   },
   {
    "uf": "BA",
@@ -259,6 +287,10 @@
   {
    "uf": "BA",
    "slug": "santo-antonio-de-jesus"
+  },
+  {
+   "uf": "BA",
+   "slug": "santo-estevao"
   },
   {
    "uf": "BA",
@@ -305,6 +337,14 @@
    "slug": "vitoria-da-conquista"
   },
   {
+   "uf": "BA",
+   "slug": "xique-xique"
+  },
+  {
+   "uf": "CE",
+   "slug": "acarape"
+  },
+  {
    "uf": "CE",
    "slug": "acarau"
   },
@@ -346,6 +386,10 @@
   },
   {
    "uf": "CE",
+   "slug": "bela-cruz"
+  },
+  {
+   "uf": "CE",
    "slug": "boa-viagem"
   },
   {
@@ -371,6 +415,10 @@
   {
    "uf": "CE",
    "slug": "caririacu"
+  },
+  {
+   "uf": "CE",
+   "slug": "carius"
   },
   {
    "uf": "CE",
@@ -886,6 +934,14 @@
   },
   {
    "uf": "GO",
+   "slug": "aloandia"
+  },
+  {
+   "uf": "GO",
+   "slug": "alto-paraiso-de-goias"
+  },
+  {
+   "uf": "GO",
    "slug": "anapolis"
   },
   {
@@ -895,6 +951,10 @@
   {
    "uf": "GO",
    "slug": "aparecida-de-goiania"
+  },
+  {
+   "uf": "GO",
+   "slug": "aragarcas"
   },
   {
    "uf": "GO",
@@ -974,6 +1034,10 @@
   },
   {
    "uf": "GO",
+   "slug": "corrego-do-ouro"
+  },
+  {
+   "uf": "GO",
    "slug": "cristalina"
   },
   {
@@ -983,6 +1047,10 @@
   {
    "uf": "GO",
    "slug": "diorama"
+  },
+  {
+   "uf": "GO",
+   "slug": "divinopolis-de-goias"
   },
   {
    "uf": "GO",
@@ -1030,6 +1098,10 @@
   },
   {
    "uf": "GO",
+   "slug": "ipameri"
+  },
+  {
+   "uf": "GO",
    "slug": "ipora"
   },
   {
@@ -1059,6 +1131,10 @@
   {
    "uf": "GO",
    "slug": "luziania"
+  },
+  {
+   "uf": "GO",
+   "slug": "mambai"
   },
   {
    "uf": "GO",
@@ -1114,6 +1190,10 @@
   },
   {
    "uf": "GO",
+   "slug": "novo-planalto"
+  },
+  {
+   "uf": "GO",
    "slug": "ouvidor"
   },
   {
@@ -1155,6 +1235,10 @@
   {
    "uf": "GO",
    "slug": "planaltina"
+  },
+  {
+   "uf": "GO",
+   "slug": "pontalina"
   },
   {
    "uf": "GO",
@@ -1207,6 +1291,10 @@
   {
    "uf": "GO",
    "slug": "sao-miguel-do-araguaia"
+  },
+  {
+   "uf": "GO",
+   "slug": "sao-patricio"
   },
   {
    "uf": "GO",
@@ -1314,6 +1402,10 @@
   },
   {
    "uf": "MG",
+   "slug": "almenara"
+  },
+  {
+   "uf": "MG",
    "slug": "alto-caparao"
   },
   {
@@ -1394,6 +1486,10 @@
   },
   {
    "uf": "MG",
+   "slug": "borda-da-mata"
+  },
+  {
+   "uf": "MG",
    "slug": "botelhos"
   },
   {
@@ -1450,6 +1546,10 @@
   },
   {
    "uf": "MG",
+   "slug": "carandai"
+  },
+  {
+   "uf": "MG",
    "slug": "carangola"
   },
   {
@@ -1475,6 +1575,10 @@
   {
    "uf": "MG",
    "slug": "carmopolis-de-minas"
+  },
+  {
+   "uf": "MG",
+   "slug": "carvalhopolis"
   },
   {
    "uf": "MG",
@@ -1583,6 +1687,10 @@
   {
    "uf": "MG",
    "slug": "extrema"
+  },
+  {
+   "uf": "MG",
+   "slug": "ferros"
   },
   {
    "uf": "MG",
@@ -1738,6 +1846,10 @@
   },
   {
    "uf": "MG",
+   "slug": "lontra"
+  },
+  {
+   "uf": "MG",
    "slug": "machado"
   },
   {
@@ -1775,6 +1887,10 @@
   {
    "uf": "MG",
    "slug": "muriae"
+  },
+  {
+   "uf": "MG",
+   "slug": "mutum"
   },
   {
    "uf": "MG",
@@ -1875,6 +1991,10 @@
   {
    "uf": "MG",
    "slug": "pocos-de-caldas"
+  },
+  {
+   "uf": "MG",
+   "slug": "pocrane"
   },
   {
    "uf": "MG",
@@ -1990,6 +2110,10 @@
   },
   {
    "uf": "MG",
+   "slug": "sao-roque-de-minas"
+  },
+  {
+   "uf": "MG",
    "slug": "sao-sebastiao-do-paraiso"
   },
   {
@@ -2071,6 +2195,10 @@
   {
    "uf": "MG",
    "slug": "vicosa"
+  },
+  {
+   "uf": "MG",
+   "slug": "virgem-da-lapa"
   },
   {
    "uf": "MG",
@@ -2594,6 +2722,10 @@
   },
   {
    "uf": "PE",
+   "slug": "ilha-de-itamaraca"
+  },
+  {
+   "uf": "PE",
    "slug": "ipojuca"
   },
   {
@@ -2750,6 +2882,10 @@
   },
   {
    "uf": "PI",
+   "slug": "bom-jesus"
+  },
+  {
+   "uf": "PI",
    "slug": "parnaiba"
   },
   {
@@ -2894,6 +3030,10 @@
   },
   {
    "uf": "PR",
+   "slug": "cruzeiro-do-oeste"
+  },
+  {
+   "uf": "PR",
    "slug": "cruzmaltina"
   },
   {
@@ -2935,6 +3075,10 @@
   {
    "uf": "PR",
    "slug": "ibaiti"
+  },
+  {
+   "uf": "PR",
+   "slug": "ibema"
   },
   {
    "uf": "PR",
@@ -2991,6 +3135,10 @@
   {
    "uf": "PR",
    "slug": "loanda"
+  },
+  {
+   "uf": "PR",
+   "slug": "lobato"
   },
   {
    "uf": "PR",
@@ -3134,6 +3282,10 @@
   },
   {
    "uf": "PR",
+   "slug": "quatro-barras"
+  },
+  {
+   "uf": "PR",
    "slug": "quedas-do-iguacu"
   },
   {
@@ -3151,6 +3303,10 @@
   {
    "uf": "PR",
    "slug": "reserva"
+  },
+  {
+   "uf": "PR",
+   "slug": "rio-branco-do-sul"
   },
   {
    "uf": "PR",
@@ -3318,6 +3474,10 @@
   },
   {
    "uf": "RJ",
+   "slug": "itaborai"
+  },
+  {
+   "uf": "RJ",
    "slug": "itaguai"
   },
   {
@@ -3459,6 +3619,10 @@
   {
    "uf": "RJ",
    "slug": "tres-rios"
+  },
+  {
+   "uf": "RJ",
+   "slug": "valenca"
   },
   {
    "uf": "RJ",
@@ -4146,6 +4310,10 @@
   },
   {
    "uf": "SC",
+   "slug": "guaruja-do-sul"
+  },
+  {
+   "uf": "SC",
    "slug": "herval-d-oeste"
   },
   {
@@ -4167,6 +4335,10 @@
   {
    "uf": "SC",
    "slug": "ipuacu"
+  },
+  {
+   "uf": "SC",
+   "slug": "ita"
   },
   {
    "uf": "SC",
@@ -4211,6 +4383,10 @@
   {
    "uf": "SC",
    "slug": "laguna"
+  },
+  {
+   "uf": "SC",
+   "slug": "lauro-muller"
   },
   {
    "uf": "SC",
@@ -4270,6 +4446,10 @@
   },
   {
    "uf": "SC",
+   "slug": "ouro"
+  },
+  {
+   "uf": "SC",
    "slug": "paial"
   },
   {
@@ -4315,6 +4495,10 @@
   {
    "uf": "SC",
    "slug": "presidente-getulio"
+  },
+  {
+   "uf": "SC",
+   "slug": "rio-do-campo"
   },
   {
    "uf": "SC",
@@ -4435,6 +4619,10 @@
   {
    "uf": "SC",
    "slug": "tubarao"
+  },
+  {
+   "uf": "SC",
+   "slug": "uniao-do-oeste"
   },
   {
    "uf": "SC",
