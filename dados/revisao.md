@@ -1,21 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29380 editais coletados em 2026-10-02T10:03:26.626Z.
+Revisão dos dados — 28854 editais coletados em 2026-10-02T11:23:02.793Z.
 
-Encontrados 0 erro(s), 2 suspeita(s) e 158 aviso(s).
-
-[AVISO] O edital 05943030000155-1-000243/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "TESTE TESTE"
-  Edital: https://pncp.gov.br/app/editais/05943030000155/2026/243
-
-[AVISO] O edital 46374500000194-1-007546/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Andador"
-  Edital: https://pncp.gov.br/app/editais/46374500000194/2026/7546
-
-[AVISO] O edital 46374500000194-1-007547/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Medicamentos"
-  Edital: https://pncp.gov.br/app/editais/46374500000194/2026/7547
+Encontrados 0 erro(s), 2 suspeita(s) e 155 aviso(s).
 
 [AVISO] O edital 91566877000108-1-000930/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "SERVICOS"
