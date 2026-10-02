@@ -98,13 +98,24 @@ O par de perguntas que resolve cada uma:
 PR aberta parada não é trabalho guardado. É trabalho apodrecendo — o custo de
 mesclá-la sobe todo dia, e o benefício que ela não entrega é cobrado todo dia.
 
-# Pendência aberta: o crédito do Gemini acabou (02/10)
+# Pendência aberta: o crédito do Gemini acabou, e voltou (02/10)
 
-**Os posts não saem desde 03/09, e a causa não é código: o crédito pré-pago
-do Gemini acabou.** Toda leitura volta `HTTP 402 … Your prepayment credits are
-depleted` (em 04/09 a mesma mensagem vinha como HTTP 429). O script recusa a
-leva, corretamente, porque nenhum post foi lido. A última leva com leitura de
-verdade é a de 26/08, com 24 de 25.
+**Os posts não saíram de 03/09 a 02/10, e a causa não era código: o crédito
+pré-pago do Gemini acabou.** Toda leitura voltava `HTTP 402 … Your prepayment
+credits are depleted` (em 04/09 a mesma mensagem vinha como HTTP 429). O script
+recusava a leva, corretamente, porque nenhum post era lido. A última leva
+publicada com leitura de verdade é a de 26/08, com 24 de 25.
+
+**Estado em 02/10, 17:57 UTC: o dono recarregou, e a leitura voltou.** O
+disparo manual de `publicar-posts.yml` (execução 37043860046) leu 4 de 5. O
+quinto, Guaimbê/SP, não tinha documento com texto extraível, o que não é falha
+nossa.
+
+**Mas aquela leva NÃO foi publicada.** `publicar-posts.yml` tem
+`permissions: contents: read` e nenhum passo de commit: o JSON da leva morre
+com o runner. Ele prova a leitura, não publica, apesar do nome. Quem publica é
+o mesmo script como passo da coleta, que versiona `dados/posts/`. A primeira
+leva publicada depois da recarga deve ser a de 03/10.
 
 **Antes de mexer em código por causa de post sem leitura, leia a linha
 `análise recusada em …` no log.** Se ela falar em `prepayment credits`, o
@@ -113,24 +124,32 @@ anterior desta seção, de 21/08 (modelo aposentado e dialeto de schema), foi
 resolvida pela #58 e pela #63: as levas de 23/08 (22 de 25) e de 26/08 (24 de
 25) saíram lidas. Quem procurar aquela causa de novo vai perder tempo.
 
-Depois de recarregar, a prova é a de sempre: disparar `publicar-posts.yml` à
-mão, com **simular** desmarcado, e contar `com leitura: n de 5` no resumo. Job
-verde não prova nada, porque o passo é `continue-on-error`.
+Job verde não prova nada, porque o passo é `continue-on-error`. A prova é a
+linha `com leitura: n de 5` no log, e o arquivo do dia em `dados/posts/`.
 
-Hoje nenhum cliente sente: nenhuma empresa tem leitura no plano (o log diz
-`0 de 1 empresa(s) com perfil completo têm leitura no plano`). O primeiro que
-tiver vai receber oportunidade sem análise enquanto o crédito não voltar,
-porque `ler-recomendados.ts` usa a mesma chave.
+Enquanto não houver crédito, quem sente é o blog e o primeiro cliente com
+leitura no plano (em 02/10 eram 0 de 1 empresa), porque `ler-recomendados.ts`
+usa a mesma chave.
 
-**Por que ninguém viu durante um mês, e isso continua de pé.** A anotação
-`::error` "Leva de posts não publicada" sai numa execução que já é vermelha
-quase todo dia: 41 de 60 coletas desde 02/09, quase sempre por uma ou duas UFs
-com `fetch failed` contra o PNCP, que a junção tolera como `parcial-aceitavel`.
-Vermelho todo dia ensina a não olhar, e foi assim que o aviso certo sumiu. O
-conserto (aviso por e-mail quando a leva é recusada, ou UF tolerada deixar de
-pintar o job) é decisão do dono e não foi feito.
+Apague esta seção quando uma leva **publicada pela coleta**, com arquivo em
+`dados/posts/`, sair com a maioria dos posts lidos.
 
-Apague esta seção quando uma leva sair com a maioria dos posts lidos.
+# Pendência aberta: vermelho todo dia esconde o aviso certo (02/10)
+
+O crédito do Gemini passou um mês esgotado sem ninguém ver, e a razão continua
+de pé. A anotação `::error` "Leva de posts não publicada" sai numa execução que
+já é vermelha quase todo dia: 41 de 60 coletas desde 02/09, quase sempre por
+uma ou duas UFs com `fetch failed` contra o PNCP, que a junção tolera como
+`parcial-aceitavel` e commita normalmente. Vermelho todo dia ensina a não
+olhar, e foi assim que o aviso certo sumiu.
+
+Dois consertos possíveis, que não se excluem: aviso por e-mail ao administrador
+quando a leva é recusada (como `avisos_de_custo_de_ia` já faz para custo), ou
+UF tolerada deixar de pintar o job de vermelho. **Decisão do dono, e não foi
+tomada.**
+
+Apague esta seção quando o conserto entrar, ou quando o dono decidir que fica
+como está. Nesse caso, registre a decisão e o motivo antes de apagar.
 
 # A voz do texto que o cliente lê
 
