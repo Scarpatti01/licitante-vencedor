@@ -132,28 +132,6 @@ pintar o job) é decisão do dono e não foi feito.
 
 Apague esta seção quando uma leva sair com a maioria dos posts lidos.
 
-# Pendência aberta: a migração de 02/10 não foi aplicada
-
-A #168 escreveu `20261002170000_fechar_execute_das_funcoes_sem_schema.sql`,
-que tira de `anon` o poder de chamar `limpar_decisoes_expiradas` (a função
-apaga decisões de triagem e é `security definer`). Neste projeto migração é
-aplicada à mão, e **mesclar não aplica**. Até alguém aplicar, a porta continua
-aberta em produção.
-
-Como conferir se já foi:
-
-```sql
-select proname, proacl from pg_proc
-where proname in ('limpar_decisoes_expiradas', 'contar_decisoes_expiradas',
-                  'recorte_respeita_o_limite', 'salvar_recortes_da_empresa');
-```
-
-Aplicada, nenhuma linha tem `=X/` (PUBLIC) nem `anon=X/`, e só
-`salvar_recortes_da_empresa` mantém `authenticated=X/`. O advisor de segurança
-do Supabase também para de listar as três primeiras.
-
-Apague esta seção quando a consulta acima mostrar isso.
-
 # A voz do texto que o cliente lê
 
 Decisão do dono, 23/08. Vale para **post, guia, página e e-mail** — tudo que
