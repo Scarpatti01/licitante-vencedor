@@ -98,50 +98,44 @@ O par de perguntas que resolve cada uma:
 PR aberta parada não é trabalho guardado. É trabalho apodrecendo — o custo de
 mesclá-la sobe todo dia, e o benefício que ela não entrega é cobrado todo dia.
 
-# Pendência aberta: o crédito do Gemini acabou, e voltou (02/10)
+# Pendência aberta: o que a leva de 03/10 mostrou
 
-**Os posts não saíram de 03/09 a 02/10, e a causa não era código: o crédito
-pré-pago do Gemini acabou.** Toda leitura voltava `HTTP 402 … Your prepayment
-credits are depleted` (em 04/09 a mesma mensagem vinha como HTTP 429). O script
-recusava a leva, corretamente, porque nenhum post era lido. A última leva
-publicada com leitura de verdade é a de 26/08, com 24 de 25.
+A leva de posts voltou: as duas coletas de 03/10 leram 4 de 5, e a seção sobre
+o crédito do Gemini (esgotado de 03/09 a 02/10) saiu por ter cumprido o
+critério dela. Se post voltar a sair sem leitura, leia primeiro a linha
+`análise recusada em …` do log: `prepayment credits` é crédito, e o conserto é
+recarregar em https://ai.studio/projects.
 
-**Estado em 02/10, 17:57 UTC: o dono recarregou, e a leitura voltou.** O
-disparo manual de `publicar-posts.yml` (execução 37043860046) leu 4 de 5. O
-quinto, Guaimbê/SP, não tinha documento com texto extraível, o que não é falha
-nossa.
+A mesma conferência achou três coisas, nenhuma corrigida ainda.
 
-**Mas aquela leva NÃO foi publicada.** Até 02/10 `publicar-posts.yml` tinha
-`permissions: contents: read` e nenhum passo de commit, e o JSON da leva morria
-com o runner. Desde então o botão versiona a leva como a coleta faz, e recusa
-publicar com coleta rodando ou com a leva do dia já na `main` (o porquê está no
-cabeçalho do workflow). A primeira leva publicada depois da recarga deve ser a
-de 03/10.
+**1. A segunda coleta do dia troca os posts da primeira. Decisão do dono.** As
+duas tentativas diárias rodam a publicação, e a segunda regrava
+`dados/posts/<dia>.json` com outra seleção. Em 03/10 a primeira publicou cinco
+posts às 09:46 UTC e a segunda os trocou por outros cinco às 10:58. Como as
+páginas de post saem desses arquivos (`posts/acervo.ts`), as cinco primeiras
+deixaram de existir uma hora depois de publicadas, e a leitura foi paga duas
+vezes: 8 análises para 4 posts que ficaram. O conserto óbvio é a coleta não
+publicar quando a leva do dia já está no checkout, a regra que o botão
+`publicar-posts.yml` já segue. Não foi feito porque muda um comportamento que
+existe desde que a publicação é diária, e a #171 o manteve de propósito.
+Apague este item quando o dono decidir.
 
-E a leva recusada deixou de passar em silêncio: desde 02/10 ela pinta a coleta
-de vermelho no fim (passo "Cobrar a leva de posts recusada"), depois do commit
-do agregado. Antes, o aviso caía numa execução que já era vermelha quase todo
-dia por UF tolerada, e foi assim que um mês de crédito esgotado passou sem
-ninguém ver. Agora UF tolerada não pinta mais a execução: ver
-`vermelho-quer-dizer-olhe.test.ts`.
+**2. Leitura cortada pelo limite de tokens de saída.** Em 03/10 um edital
+(Palminópolis/GO) foi recusado com `resposta_invalida`: "A resposta foi cortada
+por atingir o limite de tokens de saída". O limite é `maxOutputTokens: 8_192`
+em `ia/gemini.ts` (o lote usa 16_384). Em agosto ele já derrubava 2 de 21
+leituras de oportunidades; a pendência de 21/08 registrava isso, e foi apagada
+em 02/10 sem levar este item junto. Não impede a leva, porque a guarda só
+recusa quando nenhum post é lido. Apague quando o limite for revisto, ou
+medido como raro.
 
-**Antes de mexer em código por causa de post sem leitura, leia a linha
-`análise recusada em …` no log.** Se ela falar em `prepayment credits`, o
-conserto é recarregar em https://ai.studio/projects, e mais nada. A pendência
-anterior desta seção, de 21/08 (modelo aposentado e dialeto de schema), foi
-resolvida pela #58 e pela #63: as levas de 23/08 (22 de 25) e de 26/08 (24 de
-25) saíram lidas. Quem procurar aquela causa de novo vai perder tempo.
-
-Job verde prova só que a leva não foi recusada inteira: 1 de 5 lido também
-sai verde. A prova de leitura é a linha `com leitura: n de 5` no log, e o
-arquivo do dia em `dados/posts/`.
-
-Enquanto não houver crédito, quem sente é o blog e o primeiro cliente com
-leitura no plano (em 02/10 eram 0 de 1 empresa), porque `ler-recomendados.ts`
-usa a mesma chave.
-
-Apague esta seção quando uma leva **versionada**, com arquivo em
-`dados/posts/`, sair com a maioria dos posts lidos.
+**3. Limpeza de decisões com timeout.** Na segunda coleta de 03/10,
+`limpar_decisoes_expiradas` estourou o `statement timeout` do Supabase
+(`57014`) com só 59 decisões na mira. Na primeira, uma hora antes, a mesma
+função apagou 1.699 em uma rodada, já com as permissões da #168 aplicadas, então
+elas não são a causa. O passo tolera a falha e repete no dia seguinte. Se
+voltar a acontecer, a pergunta é o plano da consulta logo depois de a triagem
+regravar 29.823 decisões. Apague quando passar uma semana sem repetir.
 
 # A voz do texto que o cliente lê
 
