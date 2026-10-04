@@ -1,7 +1,7 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29616 editais coletados em 2026-10-03T10:40:20.900Z.
+Revisão dos dados — 29622 editais coletados em 2026-10-04T10:05:20.833Z.
 
 Encontrados 0 erro(s), 2 suspeita(s) e 158 aviso(s).
 
@@ -647,5 +647,5 @@ Encontrados 0 erro(s), 2 suspeita(s) e 158 aviso(s).
   Evidência: objeto declarado: "CREDENCIAMENTO"
   Edital: https://pncp.gov.br/app/editais/01298975000100/2025/233
 
-87% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
+86% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
 ```
