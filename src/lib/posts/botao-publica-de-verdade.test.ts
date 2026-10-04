@@ -19,8 +19,15 @@ import { describe, expect, it } from "vitest";
  * Com o botão versionando, dois processos escrevem o mesmo arquivo do dia. Se
  * a coleta for a segunda a empurrar, o rebase dela conflita e ela perde o
  * commit do AGREGADO por causa de um post. Por isso o botão recusa publicar
- * com coleta rodando ou com a leva do dia já versionada, e a coleta pula a
- * publicação quando a leva aparece na `main` durante a execução dela.
+ * com coleta rodando ou com a leva do dia já versionada, e a coleta não publica
+ * quando a leva do dia já existe, no checkout dela ou na `main`.
+ *
+ * ## E a segunda coleta não troca a primeira (04/10)
+ *
+ * Até 04/10 a coleta só pulava a leva que chegava à `main` depois do checkout,
+ * e regravava a da própria tentativa anterior. Em 03/10 isso trocou cinco posts
+ * publicados às 09:46 UTC por outros cinco às 10:58: as páginas saem destes
+ * arquivos, então as primeiras sumiram, e a leitura foi paga duas vezes.
  */
 
 const WORKFLOWS = join(import.meta.dirname, "..", "..", "..", ".github", "workflows");
@@ -96,13 +103,17 @@ describe("o botão e a coleta não escrevem o mesmo dia", () => {
     expect(passo(BOTAO, "Publicar\n")).toMatch(/steps\.conferir\.outputs\.pode == 'true'/);
   });
 
-  it.each(COLETAS)("%s pula a leva que o botão publicou durante a coleta", (_nome, yaml) => {
+  it.each(COLETAS)("%s não publica de novo um dia que já tem leva", (_nome, yaml) => {
     const publicar = passo(yaml, "Publicar a leva de posts do dia");
-    // O que estava no checkout é da própria coleta (tentativa anterior do
-    // dia) e pode ser regravado; o que só existe na `main` chegou depois, e
-    // regravar conflitaria no rebase.
-    expect(publicar).toContain('git cat-file -e "origin/main:dados/posts/$dia.json"');
-    expect(publicar).toContain('! git cat-file -e "HEAD:dados/posts/$dia.json"');
+    // No checkout: a leva da tentativa anterior desta coleta. Regravar trocaria
+    // posts que já estão no ar, como em 03/10, quando cinco páginas sumiram uma
+    // hora depois de publicadas. Na `main`: a leva do botão, que chegou depois
+    // do checkout. Regravar essa conflitaria no rebase e custaria o agregado.
+    expect(publicar).toContain('git cat-file -e "HEAD:dados/posts/$dia.json"');
+    expect(publicar).toContain('|| git cat-file -e "origin/main:dados/posts/$dia.json"');
+    expect(publicar, "a regra até 04/10 regravava a leva do checkout").not.toContain(
+      '! git cat-file -e "HEAD:dados/posts/$dia.json"',
+    );
     // A conferência vem ANTES de chamar o script, senão não evita nada.
     expect(publicar.indexOf("git cat-file")).toBeLessThan(publicar.indexOf("scripts/publicar-posts.ts"));
   });

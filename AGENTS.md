@@ -106,21 +106,14 @@ critério dela. Se post voltar a sair sem leitura, leia primeiro a linha
 `análise recusada em …` do log: `prepayment credits` é crédito, e o conserto é
 recarregar em https://ai.studio/projects.
 
-A mesma conferência achou três coisas, nenhuma corrigida ainda.
+A mesma conferência achou três coisas. A primeira foi decidida pelo dono em
+04/10: a segunda coleta do dia trocava os posts publicados pela primeira (em
+03/10, cinco páginas sumiram uma hora depois de publicadas), e desde então
+nenhuma coleta publica um dia que já tem leva. O porquê está no passo
+"Publicar a leva de posts do dia" das duas coletas. As outras duas continuam
+abertas.
 
-**1. A segunda coleta do dia troca os posts da primeira. Decisão do dono.** As
-duas tentativas diárias rodam a publicação, e a segunda regrava
-`dados/posts/<dia>.json` com outra seleção. Em 03/10 a primeira publicou cinco
-posts às 09:46 UTC e a segunda os trocou por outros cinco às 10:58. Como as
-páginas de post saem desses arquivos (`posts/acervo.ts`), as cinco primeiras
-deixaram de existir uma hora depois de publicadas, e a leitura foi paga duas
-vezes: 8 análises para 4 posts que ficaram. O conserto óbvio é a coleta não
-publicar quando a leva do dia já está no checkout, a regra que o botão
-`publicar-posts.yml` já segue. Não foi feito porque muda um comportamento que
-existe desde que a publicação é diária, e a #171 o manteve de propósito.
-Apague este item quando o dono decidir.
-
-**2. Leitura cortada pelo limite de tokens de saída.** Em 03/10 um edital
+**1. Leitura cortada pelo limite de tokens de saída.** Em 03/10 um edital
 (Palminópolis/GO) foi recusado com `resposta_invalida`: "A resposta foi cortada
 por atingir o limite de tokens de saída". O limite é `maxOutputTokens: 8_192`
 em `ia/gemini.ts` (o lote usa 16_384). Em agosto ele já derrubava 2 de 21
@@ -129,7 +122,7 @@ em 02/10 sem levar este item junto. Não impede a leva, porque a guarda só
 recusa quando nenhum post é lido. Apague quando o limite for revisto, ou
 medido como raro.
 
-**3. Limpeza de decisões com timeout.** Na segunda coleta de 03/10,
+**2. Limpeza de decisões com timeout.** Na segunda coleta de 03/10,
 `limpar_decisoes_expiradas` estourou o `statement timeout` do Supabase
 (`57014`) com só 59 decisões na mira. Na primeira, uma hora antes, a mesma
 função apagou 1.699 em uma rodada, já com as permissões da #168 aplicadas, então
