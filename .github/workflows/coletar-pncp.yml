@@ -248,23 +248,32 @@ jobs:
         run: |
           set -o pipefail
 
-          # A leva de hoje pode ter chegado à `main` DEPOIS do checkout desta
-          # coleta, pelo botão `publicar-posts.yml`. Publicar de novo faria o
-          # rebase do commit desta coleta conflitar em `dados/posts/<dia>.json`,
-          # e a coleta perderia o agregado do dia por causa de um post. Se a
-          # leva já estava no checkout (gravada pela tentativa anterior desta
-          # mesma coleta), segue o de sempre: regrava. `dia` é o do script, a
-          # data em UTC.
+          # Leva do dia já publicada não é publicada de novo, venha de onde
+          # vier. Decisão do dono em 04/10, depois de 03/10: a primeira coleta
+          # publicou cinco posts às 09:46 UTC e a segunda os trocou por outros
+          # cinco às 10:58. As páginas de post saem destes arquivos
+          # (`posts/acervo.ts`), então as cinco primeiras saíram do ar uma hora
+          # depois de publicadas, e a leitura foi paga duas vezes.
+          #
+          # Olha nos dois lugares. No checkout está a leva da tentativa
+          # anterior desta coleta. Na `main` recém-buscada pode estar a do botão
+          # `publicar-posts.yml`, publicada depois do checkout; regravar essa
+          # faria o rebase do commit desta coleta conflitar em
+          # `dados/posts/<dia>.json` e custaria o agregado do dia.
+          #
+          # A segunda tentativa continua servindo para o dia em que a primeira
+          # não publicou: leva recusada não deixa arquivo. `dia` é o do script,
+          # a data em UTC.
           dia=$(date -u +%Y-%m-%d)
           git fetch -q origin "+refs/heads/main:refs/remotes/origin/main" || true
-          if git cat-file -e "origin/main:dados/posts/$dia.json" 2>/dev/null \
-             && ! git cat-file -e "HEAD:dados/posts/$dia.json" 2>/dev/null; then
+          if git cat-file -e "HEAD:dados/posts/$dia.json" 2>/dev/null \
+             || git cat-file -e "origin/main:dados/posts/$dia.json" 2>/dev/null; then
             {
-              echo "## Leva de posts já publicada à mão hoje"
+              echo "## Leva de posts de $dia já publicada"
               echo
-              echo "\`dados/posts/$dia.json\` chegou à \`main\` durante esta coleta, pelo botão \`publicar-posts.yml\`. Nada foi lido nem gravado aqui."
+              echo "\`dados/posts/$dia.json\` já existe, de uma coleta anterior de hoje ou do botão \`publicar-posts.yml\`. Nada foi lido nem gravado: publicar de novo trocaria posts que já estão no ar."
             } >> "$GITHUB_STEP_SUMMARY"
-            echo "::notice title=Leva já publicada à mão::dados/posts/$dia.json"
+            echo "::notice title=Leva já publicada::dados/posts/$dia.json"
             exit 0
           fi
 

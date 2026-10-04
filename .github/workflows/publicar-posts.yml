@@ -52,10 +52,11 @@
 #   2. com a leva de hoje já versionada na `main`. Republicar trocaria os posts
 #      de um dia que já está no ar.
 #
-# E a coleta, do lado dela, pula a publicação quando a leva do dia aparece na
-# `main` DURANTE a execução: é o caso de o botão ter rodado antes de ela
-# começar a publicar. Ver "Publicar a leva de posts do dia" nos dois workflows
-# de coleta, e `botao-publica-de-verdade.test.ts`.
+# E a coleta, do lado dela, não publica quando a leva do dia já existe, no
+# checkout dela ou na `main` buscada na hora: é o caso de o botão ter rodado
+# antes de ela começar a publicar, e também o da segunda coleta do dia (desde
+# 04/10 ela não troca mais os posts da primeira). Ver "Publicar a leva de posts
+# do dia" nos dois workflows de coleta, e `botao-publica-de-verdade.test.ts`.
 
 name: Publicar posts do dia
 
