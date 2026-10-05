@@ -1,13 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29622 editais coletados em 2026-10-04T11:20:23.246Z.
+Revisão dos dados — 29474 editais coletados em 2026-10-05T10:51:34.285Z.
 
-Encontrados 0 erro(s), 2 suspeita(s) e 158 aviso(s).
-
-[AVISO] O edital 96291141000180-1-006453/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "LAMINADOS"
-  Edital: https://pncp.gov.br/app/editais/96291141000180/2026/6453
+Encontrados 0 erro(s), 2 suspeita(s) e 155 aviso(s).
 
 [AVISO] O edital 87615449000142-1-000328/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "CESTAS BÁSICAS"
@@ -36,10 +32,6 @@ Encontrados 0 erro(s), 2 suspeita(s) e 158 aviso(s).
 [AVISO] O edital 01612918000154-1-000112/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "VEÍCULO"
   Edital: https://pncp.gov.br/app/editais/01612918000154/2026/112
-
-[AVISO] O edital 20733358000130-1-000105/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Plano de Saúde"
-  Edital: https://pncp.gov.br/app/editais/20733358000130/2026/105
 
 [AVISO] O edital 12053489000149-1-000209/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Medicamentos"
@@ -472,10 +464,6 @@ Encontrados 0 erro(s), 2 suspeita(s) e 158 aviso(s).
 [AVISO] O edital 25053117000164-1-000199/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Equipamentos."
   Edital: https://pncp.gov.br/app/editais/25053117000164/2026/199
-
-[AVISO] O edital 94577632000166-1-000172/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "EMPILHADEIRA"
-  Edital: https://pncp.gov.br/app/editais/94577632000166/2026/172
 
 [AVISO] O edital 00444232000139-1-001221/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Epi's"
