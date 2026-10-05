@@ -1,21 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29474 editais coletados em 2026-10-05T10:51:34.285Z.
+Revisão dos dados — 28168 editais coletados em 2026-10-05T12:42:35.314Z.
 
-Encontrados 0 erro(s), 2 suspeita(s) e 155 aviso(s).
-
-[AVISO] O edital 87615449000142-1-000328/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "CESTAS BÁSICAS"
-  Edital: https://pncp.gov.br/app/editais/87615449000142/2026/328
-
-[AVISO] O edital 88818299000137-1-000263/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "PAVIMENTAÇÃO"
-  Edital: https://pncp.gov.br/app/editais/88818299000137/2026/263
-
-[AVISO] O edital 46377800000127-1-004004/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "SERRAGEM."
-  Edital: https://pncp.gov.br/app/editais/46377800000127/2026/4004
+Encontrados 0 erro(s), 2 suspeita(s) e 156 aviso(s).
 
 [AVISO] O edital 13554910000168-1-000076/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "PAPEL A4"
@@ -32,6 +20,10 @@ Encontrados 0 erro(s), 2 suspeita(s) e 155 aviso(s).
 [AVISO] O edital 01612918000154-1-000112/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "VEÍCULO"
   Edital: https://pncp.gov.br/app/editais/01612918000154/2026/112
+
+[AVISO] O edital 20733358000130-1-000105/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Plano de Saúde"
+  Edital: https://pncp.gov.br/app/editais/20733358000130/2026/105
 
 [AVISO] O edital 12053489000149-1-000209/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Medicamentos"
@@ -353,6 +345,10 @@ Encontrados 0 erro(s), 2 suspeita(s) e 155 aviso(s).
   Evidência: objeto declarado: "MEDICAMENTOS"
   Edital: https://pncp.gov.br/app/editais/05816630000152/2026/7483
 
+[AVISO] O edital 14485841000140-1-002583/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "ODORIZADOR"
+  Edital: https://pncp.gov.br/app/editais/14485841000140/2026/2583
+
 [AVISO] O edital 13937065000100-1-000915/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "PAPEL OFICIO"
   Edital: https://pncp.gov.br/app/editais/13937065000100/2026/915
@@ -465,6 +461,10 @@ Encontrados 0 erro(s), 2 suspeita(s) e 155 aviso(s).
   Evidência: objeto declarado: "Equipamentos."
   Edital: https://pncp.gov.br/app/editais/25053117000164/2026/199
 
+[AVISO] O edital 94577632000166-1-000172/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "EMPILHADEIRA"
+  Edital: https://pncp.gov.br/app/editais/94577632000166/2026/172
+
 [AVISO] O edital 00444232000139-1-001221/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Epi's"
   Edital: https://pncp.gov.br/app/editais/00444232000139/2026/1221
@@ -516,6 +516,10 @@ Encontrados 0 erro(s), 2 suspeita(s) e 155 aviso(s).
 [AVISO] O edital 50644053000113-1-000009/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Ultrassom"
   Edital: https://pncp.gov.br/app/editais/50644053000113/2026/9
+
+[AVISO] O edital 62070362000106-1-000621/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "GRAXA"
+  Edital: https://pncp.gov.br/app/editais/62070362000106/2026/621
 
 [AVISO] O edital 02931604000187-1-000369/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
@@ -635,5 +639,5 @@ Encontrados 0 erro(s), 2 suspeita(s) e 155 aviso(s).
   Evidência: objeto declarado: "CREDENCIAMENTO"
   Edital: https://pncp.gov.br/app/editais/01298975000100/2025/233
 
-86% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
+87% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
 ```
