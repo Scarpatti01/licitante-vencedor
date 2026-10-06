@@ -138,6 +138,10 @@
   },
   {
    "uf": "BA",
+   "slug": "cairu"
+  },
+  {
+   "uf": "BA",
    "slug": "camacari"
   },
   {
@@ -267,6 +271,10 @@
   {
    "uf": "BA",
    "slug": "paulo-afonso"
+  },
+  {
+   "uf": "BA",
+   "slug": "pocoes"
   },
   {
    "uf": "BA",
@@ -1146,6 +1154,10 @@
   },
   {
    "uf": "GO",
+   "slug": "itumbiara"
+  },
+  {
+   "uf": "GO",
    "slug": "ivolandia"
   },
   {
@@ -1538,6 +1550,10 @@
   },
   {
    "uf": "MG",
+   "slug": "braunas"
+  },
+  {
+   "uf": "MG",
    "slug": "buritis"
   },
   {
@@ -1910,7 +1926,15 @@
   },
   {
    "uf": "MG",
+   "slug": "materlandia"
+  },
+  {
+   "uf": "MG",
    "slug": "matozinhos"
+  },
+  {
+   "uf": "MG",
+   "slug": "monsenhor-paulo"
   },
   {
    "uf": "MG",
@@ -2610,6 +2634,10 @@
   },
   {
    "uf": "PA",
+   "slug": "prainha"
+  },
+  {
+   "uf": "PA",
    "slug": "redencao"
   },
   {
@@ -3055,6 +3083,10 @@
   {
    "uf": "PR",
    "slug": "cambe"
+  },
+  {
+   "uf": "PR",
+   "slug": "cambira"
   },
   {
    "uf": "PR",

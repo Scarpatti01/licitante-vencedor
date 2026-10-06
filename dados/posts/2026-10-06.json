@@ -1,0 +1,838 @@
+{
+  "dia": "2026-10-06",
+  "consideradosNoDia": 29643,
+  "posts": [
+    {
+      "slug": "dispensa-generos-alimenticios-utensilios-copa-materiais-limpeza-20-2026",
+      "editalId": "01660878000116-1-000020/2026",
+      "objeto": "[Portal de Compras Públicas] - Contratação de empresa especializada para fornecimento de gêneros alimentícios, utensílios de copa, materiais de limpeza e EPI, e equipamentos e bens permanentes, destinados à manutenção e ao regular funcionamento da Câmara Municipal de Oratórios, conforme especificações e condições estabelecidas neste edital e seus anexos.",
+      "orgao": "CAMARA MUNICIPAL DE ORATORIOS",
+      "modalidade": "Dispensa",
+      "valorEstimado": 4726.96,
+      "registroDePrecos": false,
+      "uf": "MG",
+      "municipio": "Oratórios",
+      "municipioSlug": "oratorios",
+      "codigoIbge": "3145851",
+      "publicadoEm": "2026-10-01T13:12:43+00:00",
+      "encerramentoProposta": "2026-10-09T10:59:00+00:00",
+      "coletadoEm": "2026-10-06T10:47:30.645+00:00",
+      "postadoEm": "2026-10-06T10:57:57.314Z",
+      "link": "https://pncp.gov.br/app/editais/01660878000116/2026/20",
+      "analise": {
+        "editalId": "01660878000116-1-000020/2026",
+        "analisadoEm": "2026-10-06T11:01:10.712Z",
+        "versaoDoPrompt": "analise-de-edital.v1",
+        "modelo": "gemini-3.1-pro-preview",
+        "resumoExecutivo": {
+          "origem": "edital",
+          "valor": "A contratação visa o fornecimento de gêneros alimentícios, utensílios de copa, materiais de limpeza, EPIs e bens permanentes para a Câmara Municipal de Oratórios. Há tratamento favorecido para ME/EPP, com a disputa dividida em lotes para ampliar a competitividade de pequenas empresas regionais. O pagamento será em parcela única após a entrega integral dos itens.",
+          "evidencia": "Contratação de empresa especializada para fornecimento de gêneros alimentícios, utensílios de copa, materiais de limpeza e EPI, e equipamentos e bens permanentes, destinados à manutenção e ao regular funcionamento da Câmara Municipal de Oratórios, conforme especificações e condições estabelecidas neste edital e seus anexos.",
+          "confianca": "alta"
+        },
+        "exigencias": [
+          {
+            "tipo": "contrato_social",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Ato constitutivo, estatuto ou contrato social em vigor",
+              "evidencia": "Sociedade empresária ou EIRELI : ato constitutivo, estatuto ou contrato social em vigor, devidamente registrado, com identificação dos administradores;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Sociedade empresária ou EIRELI : ato constitutivo, estatuto ou contrato social em vigor, devidamente registrado, com identificação dos administradores;",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "outro",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de inscrição no Cadastro Nacional da Pessoa Jurídica (CNPJ)",
+              "evidencia": "Prova de inscrição no Cadastro Nacional da Pessoa Jurídica (CNPJ) ;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Prova de inscrição no Cadastro Nacional da Pessoa Jurídica (CNPJ) ;",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "certidao_federal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão de regularidade perante a Fazenda Nacional",
+              "evidencia": "Certidão de regularidade perante a Fazenda Nacional (Receita Federal do Brasil e Procuradoria-Geral da Fazenda Nacional);",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Certidão de regularidade perante a Fazenda Nacional (Receita Federal do Brasil e Procuradoria-Geral da Fazenda Nacional);",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "fgts",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão de regularidade com o Fundo de Garantia do Tempo de Serviço – FGTS",
+              "evidencia": "Certidão de regularidade com o Fundo de Garantia do Tempo de Serviço – FGTS ;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Certidão de regularidade com o Fundo de Garantia do Tempo de Serviço – FGTS ;",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "trabalhista_cndt",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão negativa ou positiva com efeito de negativa de débitos trabalhistas (CNDT)",
+              "evidencia": "Certidão negativa ou positiva com efeito de negativa de débitos trabalhistas ( CNDT );",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Certidão negativa ou positiva com efeito de negativa de débitos trabalhistas ( CNDT );",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "certidao_estadual",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão de regularidade com a Fazenda Estadual",
+              "evidencia": "Certidões de regularidade com as Fazendas Estadual e Municipal do domicílio ou sede do fornecedor;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Certidões de regularidade com as Fazendas Estadual e Municipal do domicílio ou sede do fornecedor;",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "certidao_municipal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão de regularidade com a Fazenda Municipal",
+              "evidencia": "Certidões de regularidade com as Fazendas Estadual e Municipal do domicílio ou sede do fornecedor;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Certidões de regularidade com as Fazendas Estadual e Municipal do domicílio ou sede do fornecedor;",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "falencia_concordata",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão negativa de falência ou recuperação judicial",
+              "evidencia": "Certidão negativa de falência ou recuperação judicial, expedida pelo distribuidor da sede do fornecedor, dentro do prazo de validade;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Certidão negativa de falência ou recuperação judicial, expedida pelo distribuidor da sede do fornecedor, dentro do prazo de validade;",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "declaracao_me_epp",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Comprovação de enquadramento como ME/EPP",
+              "evidencia": "As Microempresas e Empresas de Pequeno Porte deverão comprovar o enquadramento para fins de aplicação dos benefícios previstos na Lei Complementar nº 123/2006 ;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "As Microempresas e Empresas de Pequeno Porte deverão comprovar o enquadramento para fins de aplicação dos benefícios previstos na Lei Complementar nº 123/2006 ;",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "atestado_capacidade_tecnica",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Comprovante de fornecimento prévio de produtos similares",
+              "evidencia": "Comprovação de aptidão para o fornecimento dos bens mediante a apresentação de pelo menos 01 (um) comprovante de fornecimento prévio de produtos similares (atestado de capacidade técnica, nota fiscal emitida ou contrato anterior), emitido por pessoa jurídica de direito público ou privado.",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Comprovação de aptidão para o fornecimento dos bens mediante a apresentação de pelo menos 01 (um) comprovante de fornecimento prévio de produtos similares (atestado de capacidade técnica, nota fiscal emitida ou contrato anterior), emitido por pessoa jurídica de direito público ou privado.",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "alvara_licenca",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Licença/Alvará Sanitário de Funcionamento",
+              "evidencia": "Apresentação de Licença/Alvará Sanitário de Funcionamento válido, emitido pela Vigilância Sanitária competente, exclusivamente para as empresas que concorrerem aos lotes/itens de gêneros alimentícios e água mineral.",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "Apresentação de Licença/Alvará Sanitário de Funcionamento válido, emitido pela Vigilância Sanitária competente, exclusivamente para as empresas que concorrerem aos lotes/itens de gêneros alimentícios e água mineral.",
+              "confianca": "alta"
+            }
+          }
+        ],
+        "criterioDeJulgamento": {
+          "origem": "edital",
+          "valor": "Menor preço por lote",
+          "evidencia": "O critério de julgamento adotado será o MENOR PREÇO POR LOTE , observadas as exigências contidas neste Aviso de Contratação Direta e seus anexos quanto às especificações do objeto.",
+          "confianca": "alta"
+        },
+        "garantiaExigida": {
+          "origem": "edital",
+          "valor": false,
+          "evidencia": "10.1 Não haverá exigência de garantia contratual da execução.",
+          "confianca": "alta"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O edital não menciona exigência ou faculdade de visita técnica ou vistoria."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O edital não menciona exigência de apresentação de amostras, protótipos ou prova de conceito."
+        },
+        "riscos": [
+          {
+            "origem": "edital",
+            "valor": "Multa compensatória de 20% sobre o valor total do contrato em caso de inexecução total.",
+            "evidencia": "compensatória de 20% (vinte por cento) sobre o valor total do contrato, no caso de inexecução total do objeto;",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Suspensão de pagamento por irregularidades na documentação ou entrega, sem direito a reajustes.",
+            "evidencia": "Na hipótese de irregularidades na documentação apresentada ou de entrega em desacordo com as especificações, quantitativos ou condições estabelecidas no Termo de Referência, o pagamento ficará suspenso até a regularização das pendências, sem que isso gere direito a reajustes, acréscimos ou indenizações à Contratada.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Obrigação de substituir ou refazer produtos com defeito ou avaria às próprias expensas.",
+            "evidencia": "Substituir ou refazer, às suas expensas e no prazo fixado pela Administração, qualquer produto, equipamento ou material que apresente defeito, avaria, data de validade vencida/próxima do vencimento ou desconformidade com as especificações contratadas;",
+            "confianca": "alta"
+          }
+        ],
+        "profundidade": "documento_parcial"
+      },
+      "documentosLidos": 6
+    },
+    {
+      "slug": "pregao-eletronico-generos-alimenticios-objetivando-necessidades-consorcio-intermunicipal-17-2026",
+      "editalId": "11201252000103-1-000017/2026",
+      "objeto": "[Portal de Compras Públicas] - Registro de preços para futura e eventual aquisição de gêneros alimentícios, objetivando atender as necessidades do Consórcio Intermunicipal para Assistência da Criança e do Adolescente – CIACA.",
+      "orgao": "CONSORCIO INTERMUNICIPAL PARA ASSISTENCIA DA CRIANCA E DO ADOLESCENTE - CIACA",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 22548.1,
+      "registroDePrecos": true,
+      "uf": "MG",
+      "municipio": "Viçosa",
+      "municipioSlug": "vicosa",
+      "codigoIbge": "3171303",
+      "publicadoEm": "2026-09-28T18:26:19+00:00",
+      "encerramentoProposta": "2026-10-09T10:59:00+00:00",
+      "coletadoEm": "2026-10-06T10:47:30.645+00:00",
+      "postadoEm": "2026-10-06T10:57:57.314Z",
+      "link": "https://pncp.gov.br/app/editais/11201252000103/2026/17",
+      "analise": {
+        "editalId": "11201252000103-1-000017/2026",
+        "analisadoEm": "2026-10-06T11:02:40.658Z",
+        "versaoDoPrompt": "analise-de-edital.v1",
+        "modelo": "gemini-3.1-pro-preview",
+        "resumoExecutivo": {
+          "origem": "edital",
+          "valor": "O edital visa o registro de preços para futura e eventual aquisição de gêneros alimentícios para atender às necessidades do CIACA. A licitação adota o critério de menor preço por item. Para itens com valor inferior a R$ 80.000,00, a participação é exclusiva para microempresas e empresas de pequeno porte.",
+          "evidencia": "Registro de preços para futura e eventual aquisição de gêneros alimentícios, objetivando atender as necessidades do Consórcio Intermunicipal para Assistência da Criança e do Adolescente – CIACA. [...] O critério de julgamento adotado será de menor preço por item [...] para os itens que apresentarem valor inferior a R$ 80.000,00 (oitenta mil reais), somente poderão participar pessoas jurídicas do ramo pertinente ao objeto desta licitação e que se enquadrem no conceito legal de microempresa e empresa de pequeno porte.",
+          "confianca": "media"
+        },
+        "exigencias": [
+          {
+            "tipo": "contrato_social",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Inscrição do ato constitutivo, estatuto ou contrato social",
+              "evidencia": "8.5 Sociedade empresária, sociedade limitada unipessoal – SLU ou sociedade identificada como empresa individual de responsabilidade limitada - EIRELI : inscrição do ato constitutivo, estatuto ou contrato social no Registro Público de Empresas Mercantis",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Para fins de habilitação, deverá o licitante comprovar os seguintes requisitos: Habilitação jurídica: [...] 8.5 Sociedade empresária, sociedade limitada unipessoal – SLU ou sociedade identificada como empresa individual de responsabilidade limitada - EIRELI : inscrição do ato constitutivo, estatuto ou contrato social",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "outro",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de inscrição no CNPJ",
+              "evidencia": "8.11 prova de inscrição no Cadastro Nacional de Pessoas Jurídicas – CNPJ;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Para fins de habilitação, deverá o licitante comprovar os seguintes requisitos: [...] Regularidade fiscal, social e trabalhista: 8.11 prova de inscrição no Cadastro Nacional de Pessoas Jurídicas – CNPJ;",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "certidao_federal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade fiscal perante a Fazenda Nacional (RFB e PGFN)",
+              "evidencia": "8.12 prova de regularidade fiscal perante a Fazenda Nacional, mediante apresentação de certidão expedida conjuntamente pela Secretaria da Receita Federal do Brasil (RFB) e pela Procuradoria-Geral da Fazenda Nacional (PGFN)",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Para fins de habilitação, deverá o licitante comprovar os seguintes requisitos: [...] 8.12 prova de regularidade fiscal perante a Fazenda Nacional",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "fgts",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade com o FGTS",
+              "evidencia": "8.13 prova de regularidade com o Fundo de Garantia do Tempo de Serviço (FGTS);",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Para fins de habilitação, deverá o licitante comprovar os seguintes requisitos: [...] 8.13 prova de regularidade com o Fundo de Garantia do Tempo de Serviço (FGTS);",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "trabalhista_cndt",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de inexistência de débitos inadimplidos perante a Justiça do Trabalho",
+              "evidencia": "8.14 prova de inexistência de débitos inadimplidos perante a Justiça do Trabalho, mediante a apresentação de certidão negativa ou positiva com efeito de negativa",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Para fins de habilitação, deverá o licitante comprovar os seguintes requisitos: [...] 8.14 prova de inexistência de débitos inadimplidos perante a Justiça do Trabalho",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "certidao_estadual",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade com a Fazenda Estadual",
+              "evidencia": "8.15 prova de regularidade com a Fazenda Estadual e Municipal do domicílio ou sede do prestador de serviços, relativa à atividade em cujo exercício contrata ou concorre;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Para fins de habilitação, deverá o licitante comprovar os seguintes requisitos: [...] 8.15 prova de regularidade com a Fazenda Estadual e Municipal",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "certidao_municipal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade com a Fazenda Municipal",
+              "evidencia": "8.15 prova de regularidade com a Fazenda Estadual e Municipal do domicílio ou sede do prestador de serviços, relativa à atividade em cujo exercício contrata ou concorre;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Para fins de habilitação, deverá o licitante comprovar os seguintes requisitos: [...] 8.15 prova de regularidade com a Fazenda Estadual e Municipal",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "falencia_concordata",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão negativa de falência",
+              "evidencia": "8.16 Certidão negativa de falência expedida pelo distribuidor da sede do fornecedor, caso trate de pessoa jurídica;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Para fins de habilitação, deverá o licitante comprovar os seguintes requisitos: [...] Qualificação Econômico-Financeira: 8.16 Certidão negativa de falência",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "alvara_licenca",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Alvará Sanitário ou documento equivalente",
+              "evidencia": "8.17 Alvará Sanitário emitido pelo Órgão Municipal competente ou documento equivalente emitido por Órgão Federal ou Estadual que comprove sua atividade comercial",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "Para fins de habilitação, deverá o licitante comprovar os seguintes requisitos: [...] Qualificação Técnica: 8.17 Alvará Sanitário emitido pelo Órgão Municipal competente",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "declaracao_me_epp",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Declaração de cumprimento dos requisitos da LC 123/2006",
+              "evidencia": "5.2.2. que cumpre os requisitos estabelecidos no artigo 3° da Lei Complementar nº 123, de 2006, estando apto a usufruir do tratamento favorecido estabelecido em seus arts. 42 a 49.",
+              "confianca": "alta"
+            },
+            "fase": "proposta",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "5.2. No cadastramento da proposta inicial, o fornecedor deverá, também, assinalar “sim” ou “não” em campo próprio do sistema eletrônico, às seguintes declarações: [...] 5.2.2. que cumpre os requisitos estabelecidos no artigo 3° da Lei Complementar nº 123, de 2006",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "sicaf",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Cadastro no SICAF",
+              "evidencia": "9.3. Caso atendidas as condições de participação, a habilitação dos licitantes será verificada por meio do SICAF , em relação à habilitação jurídica, à regularidade fiscal e trabalhista, à qualificação econômica financeira e habilitação técnica.",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "5.2.10. A empresa que não possuir cadastro no SICAF, ou não possuir toda documentação atualizada, enviará por meio do sistema, em formato digital, no prazo de 2h (duas horas)",
+              "confianca": "alta"
+            }
+          }
+        ],
+        "criterioDeJulgamento": {
+          "origem": "edital",
+          "valor": "Menor preço por item",
+          "evidencia": "O critério de julgamento adotado será de menor preço por item , observadas as exigências contidas neste Edital e seus Anexos quanto às especificações do objeto.",
+          "confianca": "alta"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O texto menciona a garantia apenas de forma condicional ('caso exigida no Aviso de Contratação') e em cláusulas genéricas de penalidade ('reforço de garantia contratual'), não confirmando sua exigência obrigatória no trecho fornecido."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "Não há menção a visita técnica ou vistoria no trecho do edital fornecido."
+        },
+        "amostraExigida": {
+          "origem": "edital",
+          "valor": true,
+          "evidencia": "14.1.2.4. deixar de apresentar amostra; 14.1.2.5. apresentar proposta ou amostra em desacordo com as especificações do edital;",
+          "confianca": "media"
+        },
+        "riscos": [
+          {
+            "origem": "edital",
+            "valor": "Multa compensatória de até 30% do valor contratado",
+            "evidencia": "14.8. A sanção de multa compensatória será aplicada ao responsável por qualquer das infrações administrativas previstas no art. 155 da Lei Federal nº 14.133, de 2021, não podendo ser inferior a 0,5% (cinco décimos por cento) nem superior a 30% (trinta por cento) do valor contratado",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Multa de 20% por inexecução parcial ou entrega com vícios",
+            "evidencia": "III - 20% (vinte por cento) sobre o valor da parcela do objeto não executado, em caso de inexecução parcial do contrato, ou entrega de objeto com vícios ou defeitos ocultos que o torne impróprio ao uso a que é destinado",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Responsabilidade por equívoco no dimensionamento dos quantitativos da proposta",
+            "evidencia": "7.2.22 . Arcar com o ônus decorrente de eventual equívoco no dimensionamento dos quantitativos de sua proposta, inclusive quanto aos custos variáveis decorrentes de fatores futuros e incertos, devendo complementá-los, caso o previsto inicialmente em sua proposta não seja satisfatório",
+            "confianca": "media"
+          }
+        ],
+        "profundidade": "documento_parcial"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "pregao-eletronico-forma-parcelada-materiais-expediente-papelaria-materiais-109-2026",
+      "editalId": "08924078000104-1-000109/2026",
+      "objeto": "[Portal de Compras Públicas] - Aquisição, de forma parcelada, de materiais de expediente e papelaria, materiais escolares, didático-pedagógicos, livros paradidáticos e materiais de artesanato, destinados à manutenção das atividades administrativas, educacionais, sociais e culturais desenvolvidas pela Prefeitura Municipal de Uiraúna/PB",
+      "orgao": "MUNICIPIO DE UIRAUNA",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 1405549.32,
+      "registroDePrecos": false,
+      "uf": "PB",
+      "municipio": "Uiraúna",
+      "municipioSlug": "uirauna",
+      "codigoIbge": "2516904",
+      "publicadoEm": "2026-09-30T22:42:46+00:00",
+      "encerramentoProposta": "2026-10-09T10:59:00+00:00",
+      "coletadoEm": "2026-10-06T10:47:37.319+00:00",
+      "postadoEm": "2026-10-06T10:57:57.314Z",
+      "link": "https://pncp.gov.br/app/editais/08924078000104/2026/109",
+      "analise": {
+        "editalId": "08924078000104-1-000109/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: A resposta foi cortada por atingir o limite de tokens de saída. Reduza o trecho enviado ou aumente o limite."
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "pregao-eletronico-parcelada-oxigenio-medicinal-periodo-doze-meses-11-2026",
+      "editalId": "11293112000102-1-000011/2026",
+      "objeto": "[Portal de Compras Públicas] - Aquisição parcelada de Oxigênio e Ar Medicinal, por período de 12 (doze) meses, visando atender ao Fundo Municipal de Saúde de Tuparetama - PE",
+      "orgao": "FUNDO MUNICIPAL DE SAUDE",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 120739.55,
+      "registroDePrecos": false,
+      "uf": "PE",
+      "municipio": "Tuparetama",
+      "municipioSlug": "tuparetama",
+      "codigoIbge": "2615904",
+      "publicadoEm": "2026-09-16T14:03:15+00:00",
+      "encerramentoProposta": "2026-10-09T10:59:00+00:00",
+      "coletadoEm": "2026-10-06T10:47:53.595+00:00",
+      "postadoEm": "2026-10-06T10:57:57.314Z",
+      "link": "https://pncp.gov.br/app/editais/11293112000102/2026/11",
+      "analise": {
+        "editalId": "11293112000102-1-000011/2026",
+        "analisadoEm": "2026-10-06T11:05:29.494Z",
+        "versaoDoPrompt": "analise-de-edital.v1",
+        "modelo": "gemini-3.1-pro-preview",
+        "resumoExecutivo": {
+          "origem": "edital",
+          "valor": "O edital visa a aquisição parcelada de oxigênio e ar medicinal pelo período de 12 meses para o Fundo Municipal de Saúde de Tuparetama - PE. O fornecimento exige entrega imediata após o pedido e a prestação de garantia contratual no valor de 10% do total da contratação. O pagamento será realizado mensalmente após a entrega dos produtos.",
+          "evidencia": "OBJETO: Aquisição parcelada de Oxigênio e Ar Medicinal, por período de 12 (doze) meses, visando atender ao Fundo Municipal de Saúde de Tuparetama – PE. [...] 5.1.O prazo máximo para a execução do objeto ora licitado, conforme suas características e as necessidades do ORC, e que admite prorrogação nas condições e hipóteses previstas na Lei 14.133/21, está abaixo indicado e será considerado da emissão do Pedido de Compra: Entrega: Imediata. [...] 16.1.Observadas as disposições dos autos do presente certame, será exigida a garantia da contratação de que tratam os Arts. 96 e seguintes, da Lei 14.133/21, podendo o Contratado optar pela caução em dinheiro ou em títulos da dívida pública, seguro-garantia, fiança bancária ou título de capitalização; em valor correspondente a 10% (dez por cento) do valor total da contratação.",
+          "confianca": "media"
+        },
+        "exigencias": [
+          {
+            "tipo": "outro",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Proposta final atualizada",
+              "evidencia": "13.1.A proposta final do licitante declarado vencedor - proposta atualizada - deverá ser encaminhada no prazo de 2 (duas) horas, a contar da solicitação do Pregoeiro no sistema eletrônico, e deverá: 13.1.1.Ser elaborada em consonância com as especificações constantes deste Edital e seus Anexos, redigida em língua portuguesa e impressa em uma via em papel timbrado do proponente, quando for o caso, sem emendas, rasuras, entrelinhas ou ressalvas; datada e assinada pelo licitante ou seu representante legal, com indicação: do valor global da proposta; do prazo de entrega; das condições de pagamento; e da sua validade;",
+              "confianca": "alta"
+            },
+            "fase": "proposta",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "13.1.A proposta final do licitante declarado vencedor - proposta atualizada - deverá ser encaminhada no prazo de 2 (duas) horas, a contar da solicitação do Pregoeiro no sistema eletrônico",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "outro",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Garantia da contratação (10% do valor total)",
+              "evidencia": "16.6.1.Observadas as disposições dos autos do presente certame, será exigida a garantia da contratação de que tratam os Arts. 96 e seguintes, da Lei 14.133/21, podendo o Contratado optar pela caução em dinheiro ou em títulos da dívida pública, seguro-garantia, fiança bancária ou título de capitalização; em valor correspondente a 10% (dez por cento) do valor total da contratação.",
+              "confianca": "alta"
+            },
+            "fase": "execucao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "será exigida a garantia da contratação de que tratam os Arts. 96 e seguintes, da Lei 14.133/21",
+              "confianca": "alta"
+            }
+          }
+        ],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O trecho fornecido menciona que a modalidade é Pregão Eletrônico e detalha regras de formulação de preços, mas não declara explicitamente qual é o critério de julgamento (ex: menor preço, maior desconto)."
+        },
+        "garantiaExigida": {
+          "origem": "edital",
+          "valor": true,
+          "evidencia": "16.1.Observadas as disposições dos autos do presente certame, será exigida a garantia da contratação de que tratam os Arts. 96 e seguintes, da Lei 14.133/21, podendo o Contratado optar pela caução em dinheiro ou em títulos da dívida pública, seguro-garantia, fiança bancária ou título de capitalização; em valor correspondente a 10% (dez por cento) do valor total da contratação.",
+          "confianca": "alta"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "Não há menção a visita técnica ou vistoria no trecho do edital fornecido."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "Não há menção à exigência de amostras, protótipos ou prova de conceito no trecho fornecido."
+        },
+        "riscos": [
+          {
+            "origem": "edital",
+            "valor": "Exigência de garantia contratual no patamar máximo de 10% do valor total da contratação.",
+            "evidencia": "16.1.Observadas as disposições dos autos do presente certame, será exigida a garantia da contratação de que tratam os Arts. 96 e seguintes, da Lei 14.133/21, podendo o Contratado optar pela caução em dinheiro ou em títulos da dívida pública, seguro-garantia, fiança bancária ou título de capitalização; em valor correspondente a 10% (dez por cento) do valor total da contratação.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Prazo de entrega imediata após a emissão do Pedido de Compra.",
+            "evidencia": "5.1.O prazo máximo para a execução do objeto ora licitado, conforme suas características e as necessidades do ORC, e que admite prorrogação nas condições e hipóteses previstas na Lei 14.133/21, está abaixo indicado e será considerado da emissão do Pedido de Compra: Entrega: Imediata.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Multa de mora de 0,5% ao dia sobre o valor do contrato por atraso injustificado.",
+            "evidencia": "b – multa de mora de 0,5% (zero vírgula cinco por cento) aplicada sobre o valor do contrato, por dia de atraso injustificado na execução do objeto da contratação;",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Multa de 10% sobre o valor do contrato por infrações administrativas.",
+            "evidencia": "c – multa de 10% (dez por cento) sobre o valor do contrato por qualquer das infrações administrativas previstas no referido Art. 155;",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Prazo exíguo de apenas 2 horas para envio da proposta final atualizada após solicitação do Pregoeiro.",
+            "evidencia": "13.1.A proposta final do licitante declarado vencedor - proposta atualizada - deverá ser encaminhada no prazo de 2 (duas) horas, a contar da solicitação do Pregoeiro no sistema eletrônico",
+            "confianca": "alta"
+          }
+        ],
+        "profundidade": "documento_parcial"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "dispensa-kit-material-expediente-limpeza-necessidades-agencias-12972-2026",
+      "editalId": "00394502000144-1-012972/2026",
+      "objeto": "Aquisição de Kit de Material de Expediente e de Limpeza, visando atender às necessidades das Agências Subordinadas desta Capitania Fluvial da Amazônia Ocidental (CFAOC).",
+      "orgao": "COMANDO DA MARINHA",
+      "modalidade": "Dispensa",
+      "valorEstimado": 38430.7,
+      "registroDePrecos": false,
+      "uf": "AM",
+      "municipio": "Manaus",
+      "municipioSlug": "manaus",
+      "codigoIbge": "1302603",
+      "publicadoEm": "2026-10-05T14:09:40+00:00",
+      "encerramentoProposta": "2026-10-09T11:00:00+00:00",
+      "coletadoEm": "2026-10-06T10:47:05.238+00:00",
+      "postadoEm": "2026-10-06T10:57:57.314Z",
+      "link": "https://pncp.gov.br/app/editais/00394502000144/2026/12972",
+      "analise": {
+        "editalId": "00394502000144-1-012972/2026",
+        "analisadoEm": "2026-10-06T11:07:25.144Z",
+        "versaoDoPrompt": "analise-de-edital.v1",
+        "modelo": "gemini-3.1-pro-preview",
+        "resumoExecutivo": {
+          "origem": "edital",
+          "valor": "O edital visa a aquisição de Kit de Material de Expediente e de Limpeza para atender às necessidades das Agências Subordinadas da Capitania Fluvial da Amazônia Ocidental (CFAOC). Trata-se de uma Dispensa Eletrônica com disputa, cujo critério de julgamento é o menor preço. A validade da Ata de Registro de Preços será de 1 ano.",
+          "evidencia": "O objeto da presente licitação é para Aquisição de Kit de Material de Expediente e de Limpeza, visando atender às necessidades das Agências Subordinadas desta Capitania Fluvial da Amazônia Ocidental (CFAOC), conforme condições, quantidades e exigências estabelecidas neste edital e seus anexos.",
+          "confianca": "alta"
+        },
+        "exigencias": [
+          {
+            "tipo": "sicaf",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Sicaf",
+              "evidencia": "A habilitação dos fornecedores será verificada por meio do Sicaf, nos documentos por ele abrangidos.",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "A habilitação dos fornecedores será verificada por meio do Sicaf, nos documentos por ele abrangidos.",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "certidao_federal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "certidão conjunta relativa aos tributos federais e à Dívida Ativa da União",
+              "evidencia": "Quando não for possível a verificação da regularidade no Sistema de Cadastro de Fornecedores – SICAF, o contratado deverá entregar ao setor responsável pela fiscalização do contrato, até o dia trinta do mês seguinte ao da prestação dos serviços, os seguintes documentos: [...] 2) certidão conjunta relativa aos tributos federais e à Dívida Ativa da União;",
+              "confianca": "media"
+            },
+            "fase": "execucao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "Quando não for possível a verificação da regularidade no Sistema de Cadastro de Fornecedores – SICAF, o contratado deverá entregar ao setor responsável pela fiscalização do contrato...",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "certidao_municipal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "certidões que comprovem a regularidade perante a Fazenda Municipal ou Distrital do domicílio ou sede do contratado",
+              "evidencia": "Quando não for possível a verificação da regularidade no Sistema de Cadastro de Fornecedores – SICAF, o contratado deverá entregar ao setor responsável pela fiscalização do contrato, até o dia trinta do mês seguinte ao da prestação dos serviços, os seguintes documentos: [...] 3) certidões que comprovem a regularidade perante a Fazenda Municipal ou Distrital do domicílio ou sede do contratado;",
+              "confianca": "media"
+            },
+            "fase": "execucao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "Quando não for possível a verificação da regularidade no Sistema de Cadastro de Fornecedores – SICAF, o contratado deverá entregar ao setor responsável pela fiscalização do contrato...",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "fgts",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão de Regularidade do FGTS – CRF",
+              "evidencia": "Quando não for possível a verificação da regularidade no Sistema de Cadastro de Fornecedores – SICAF, o contratado deverá entregar ao setor responsável pela fiscalização do contrato, até o dia trinta do mês seguinte ao da prestação dos serviços, os seguintes documentos: [...] 4) Certidão de Regularidade do FGTS – CRF;",
+              "confianca": "media"
+            },
+            "fase": "execucao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "Quando não for possível a verificação da regularidade no Sistema de Cadastro de Fornecedores – SICAF, o contratado deverá entregar ao setor responsável pela fiscalização do contrato...",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "trabalhista_cndt",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Certidão Negativa de Débitos Trabalhistas – CNDT",
+              "evidencia": "Quando não for possível a verificação da regularidade no Sistema de Cadastro de Fornecedores – SICAF, o contratado deverá entregar ao setor responsável pela fiscalização do contrato, até o dia trinta do mês seguinte ao da prestação dos serviços, os seguintes documentos: [...] 5) Certidão Negativa de Débitos Trabalhistas – CNDT;",
+              "confianca": "media"
+            },
+            "fase": "execucao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "Quando não for possível a verificação da regularidade no Sistema de Cadastro de Fornecedores – SICAF, o contratado deverá entregar ao setor responsável pela fiscalização do contrato...",
+              "confianca": "alta"
+            }
+          }
+        ],
+        "criterioDeJulgamento": {
+          "origem": "edital",
+          "valor": "Menor preço",
+          "evidencia": "O critério de julgamento adotado será o menor preço, obser vadas as exigências contidas neste Aviso de Contratação Direta e seus Anexos quanto às especificações do objeto.",
+          "confianca": "alta"
+        },
+        "garantiaExigida": {
+          "origem": "edital",
+          "valor": false,
+          "evidencia": "CLÁUSULA DÉCIMA – GARANTIA DE EXECUÇÃO ( art. 92, XII ) Não haverá exigência de garantia contratual da execução.",
+          "confianca": "alta"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O trecho do edital fornecido não faz menção à exigência ou facultatividade de visita técnica ou vistoria."
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O trecho do edital fornecido não menciona a exigência de apresentação de amostras, protótipos ou prova de conceito."
+        },
+        "riscos": [
+          {
+            "origem": "edital",
+            "valor": "Multa compensatória elevada, podendo chegar de 15% a 30% do valor do contrato licitado para determinadas infrações.",
+            "evidencia": "10.4.2. Para as infrações previstas nos itens 10.1.4 , 10.1.5 , 10.1.6 , 10.1.7 e 10.1.8 , a multa será de 15% a 30% do valor do contrato licitado.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Obrigação de realizar serviços de manutenção e assistência técnica presencialmente em Manaus-AM.",
+            "evidencia": "Realizar os serviços de manutenção e assistência técnica nos seguintes locais: 1.1.1. Capitania Fluvial da Amazônia Ocidental – R. Bernardo Ramos, s/nº – Centro, Manaus-AM, CEP 69055-310.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "A empresa deve arcar com custos extras caso erre no dimensionamento dos quantitativos de sua proposta, incluindo custos variáveis futuros.",
+            "evidencia": "Arcar com o ônus decorrente de eventual equívoco no dimensionamento dos quantitativos de sua proposta, inclusive quanto aos custos variáveis decorrentes de fatores futuros e incertos, devendo complementá-los, caso o previsto inicialmente em sua proposta não seja satisfatório para o atendimento do objeto da contratação...",
+            "confianca": "alta"
+          }
+        ],
+        "profundidade": "documento_parcial"
+      },
+      "documentosLidos": 4
+    }
+  ]
+}
