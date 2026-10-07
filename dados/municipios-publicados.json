@@ -258,6 +258,10 @@
   },
   {
    "uf": "BA",
+   "slug": "macaubas"
+  },
+  {
+   "uf": "BA",
    "slug": "marau"
   },
   {
@@ -299,6 +303,10 @@
   {
    "uf": "BA",
    "slug": "ruy-barbosa"
+  },
+  {
+   "uf": "BA",
+   "slug": "salinas-da-margarida"
   },
   {
    "uf": "BA",
@@ -1022,6 +1030,10 @@
   },
   {
    "uf": "GO",
+   "slug": "britania"
+  },
+  {
+   "uf": "GO",
    "slug": "buriti-alegre"
   },
   {
@@ -1527,6 +1539,10 @@
   {
    "uf": "MG",
    "slug": "bom-despacho"
+  },
+  {
+   "uf": "MG",
+   "slug": "bom-jardim-de-minas"
   },
   {
    "uf": "MG",
@@ -2134,6 +2150,10 @@
   },
   {
    "uf": "MG",
+   "slug": "santa-luzia"
+  },
+  {
+   "uf": "MG",
    "slug": "santa-maria-do-suacui"
   },
   {
@@ -2403,6 +2423,10 @@
   {
    "uf": "MS",
    "slug": "navirai"
+  },
+  {
+   "uf": "MS",
+   "slug": "nioaque"
   },
   {
    "uf": "MS",
@@ -3074,6 +3098,10 @@
   },
   {
    "uf": "PR",
+   "slug": "astorga"
+  },
+  {
+   "uf": "PR",
    "slug": "bandeirantes"
   },
   {
@@ -3573,6 +3601,10 @@
    "slug": "vera-cruz-do-oeste"
   },
   {
+   "uf": "PR",
+   "slug": "xambre"
+  },
+  {
    "uf": "RJ",
    "slug": "angra-dos-reis"
   },
@@ -3655,6 +3687,10 @@
   {
    "uf": "RJ",
    "slug": "marica"
+  },
+  {
+   "uf": "RJ",
+   "slug": "mendes"
   },
   {
    "uf": "RJ",
@@ -3846,6 +3882,10 @@
   },
   {
    "uf": "RN",
+   "slug": "nova-cruz"
+  },
+  {
+   "uf": "RN",
    "slug": "parnamirim"
   },
   {
@@ -3871,6 +3911,10 @@
   {
    "uf": "RN",
    "slug": "sao-miguel"
+  },
+  {
+   "uf": "RN",
+   "slug": "sao-paulo-do-potengi"
   },
   {
    "uf": "RN",
@@ -3999,6 +4043,10 @@
   {
    "uf": "RS",
    "slug": "canoas"
+  },
+  {
+   "uf": "RS",
+   "slug": "canudos-do-vale"
   },
   {
    "uf": "RS",
@@ -4710,6 +4758,10 @@
   },
   {
    "uf": "SC",
+   "slug": "santa-cecilia"
+  },
+  {
+   "uf": "SC",
    "slug": "santa-helena"
   },
   {
@@ -4787,6 +4839,10 @@
   {
    "uf": "SC",
    "slug": "taio"
+  },
+  {
+   "uf": "SC",
+   "slug": "tigrinhos"
   },
   {
    "uf": "SC",
@@ -5178,6 +5234,10 @@
   },
   {
    "uf": "SP",
+   "slug": "eldorado"
+  },
+  {
+   "uf": "SP",
    "slug": "fernandopolis"
   },
   {
@@ -5534,6 +5594,10 @@
   },
   {
    "uf": "SP",
+   "slug": "piedade"
+  },
+  {
+   "uf": "SP",
    "slug": "pindamonhangaba"
   },
   {
@@ -5795,6 +5859,10 @@
   {
    "uf": "SP",
    "slug": "taruma"
+  },
+  {
+   "uf": "SP",
+   "slug": "tatui"
   },
   {
    "uf": "SP",
