@@ -134,6 +134,10 @@
   },
   {
    "uf": "BA",
+   "slug": "cacule"
+  },
+  {
+   "uf": "BA",
    "slug": "caetite"
   },
   {
@@ -382,6 +386,10 @@
   },
   {
    "uf": "CE",
+   "slug": "acopiara"
+  },
+  {
+   "uf": "CE",
    "slug": "aiuaba"
   },
   {
@@ -567,6 +575,10 @@
   {
    "uf": "CE",
    "slug": "jaguaruana"
+  },
+  {
+   "uf": "CE",
+   "slug": "jardim"
   },
   {
    "uf": "CE",
@@ -834,6 +846,10 @@
   },
   {
    "uf": "ES",
+   "slug": "fundao"
+  },
+  {
+   "uf": "ES",
    "slug": "guacui"
   },
   {
@@ -1067,6 +1083,10 @@
   {
    "uf": "GO",
    "slug": "caturai"
+  },
+  {
+   "uf": "GO",
+   "slug": "cavalcante"
   },
   {
    "uf": "GO",
@@ -1931,6 +1951,10 @@
   {
    "uf": "MG",
    "slug": "manhuacu"
+  },
+  {
+   "uf": "MG",
+   "slug": "mantena"
   },
   {
    "uf": "MG",
@@ -3178,6 +3202,10 @@
   },
   {
    "uf": "PR",
+   "slug": "colorado"
+  },
+  {
+   "uf": "PR",
    "slug": "congonhinhas"
   },
   {
@@ -3334,6 +3362,10 @@
   },
   {
    "uf": "PR",
+   "slug": "manoel-ribas"
+  },
+  {
+   "uf": "PR",
    "slug": "marechal-candido-rondon"
   },
   {
@@ -3351,6 +3383,10 @@
   {
    "uf": "PR",
    "slug": "medianeira"
+  },
+  {
+   "uf": "PR",
+   "slug": "munhoz-de-melo"
   },
   {
    "uf": "PR",
@@ -3925,6 +3961,10 @@
    "slug": "tibau"
   },
   {
+   "uf": "RN",
+   "slug": "touros"
+  },
+  {
    "uf": "RO",
    "slug": "alto-paraiso"
   },
@@ -4271,6 +4311,10 @@
   {
    "uf": "RS",
    "slug": "sao-miguel-das-missoes"
+  },
+  {
+   "uf": "RS",
+   "slug": "sao-sepe"
   },
   {
    "uf": "RS",
@@ -5939,6 +5983,10 @@
   {
    "uf": "TO",
    "slug": "gurupi"
+  },
+  {
+   "uf": "TO",
+   "slug": "itapiratins"
   },
   {
    "uf": "TO",
