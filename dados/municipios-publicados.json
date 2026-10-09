@@ -470,6 +470,10 @@
   },
   {
    "uf": "CE",
+   "slug": "chorozinho"
+  },
+  {
+   "uf": "CE",
    "slug": "coreau"
   },
   {
@@ -511,6 +515,10 @@
   {
    "uf": "CE",
    "slug": "graca"
+  },
+  {
+   "uf": "CE",
+   "slug": "granja"
   },
   {
    "uf": "CE",
@@ -1546,6 +1554,10 @@
   },
   {
    "uf": "MG",
+   "slug": "biquinhas"
+  },
+  {
+   "uf": "MG",
    "slug": "boa-esperanca"
   },
   {
@@ -1890,6 +1902,10 @@
   },
   {
    "uf": "MG",
+   "slug": "iturama"
+  },
+  {
+   "uf": "MG",
    "slug": "janauba"
   },
   {
@@ -1939,6 +1955,10 @@
   {
    "uf": "MG",
    "slug": "leopoldina"
+  },
+  {
+   "uf": "MG",
+   "slug": "liberdade"
   },
   {
    "uf": "MG",
@@ -2175,6 +2195,10 @@
   {
    "uf": "MG",
    "slug": "salinas"
+  },
+  {
+   "uf": "MG",
+   "slug": "santa-barbara"
   },
   {
    "uf": "MG",
@@ -2550,6 +2574,10 @@
   },
   {
    "uf": "MT",
+   "slug": "diamantino"
+  },
+  {
+   "uf": "MT",
    "slug": "feliz-natal"
   },
   {
@@ -2563,6 +2591,10 @@
   {
    "uf": "MT",
    "slug": "lucas-do-rio-verde"
+  },
+  {
+   "uf": "MT",
+   "slug": "mirassol-d-oeste"
   },
   {
    "uf": "MT",
@@ -3150,6 +3182,10 @@
   },
   {
    "uf": "PR",
+   "slug": "campina-do-simao"
+  },
+  {
+   "uf": "PR",
    "slug": "campina-grande-do-sul"
   },
   {
@@ -3551,6 +3587,10 @@
   {
    "uf": "PR",
    "slug": "santa-isabel-do-ivai"
+  },
+  {
+   "uf": "PR",
+   "slug": "santa-izabel-do-oeste"
   },
   {
    "uf": "PR",
@@ -3998,6 +4038,10 @@
   },
   {
    "uf": "RO",
+   "slug": "governador-jorge-teixeira"
+  },
+  {
+   "uf": "RO",
    "slug": "jaru"
   },
   {
@@ -4071,6 +4115,10 @@
   {
    "uf": "RS",
    "slug": "cachoeira-do-sul"
+  },
+  {
+   "uf": "RS",
+   "slug": "cachoeirinha"
   },
   {
    "uf": "RS",
@@ -4459,6 +4507,10 @@
   {
    "uf": "SC",
    "slug": "bom-jesus-do-oeste"
+  },
+  {
+   "uf": "SC",
+   "slug": "bom-retiro"
   },
   {
    "uf": "SC",
