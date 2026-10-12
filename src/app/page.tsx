@@ -12,6 +12,14 @@ import { EsferasDaColeta } from "@/components/EsferasDaColeta";
 import { distribuicaoPorEsfera } from "@/lib/dominio/esferas";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
 import { Logo } from "@/components/Logo";
+import { VideoDoYoutube } from "@/components/VideoDoYoutube";
+
+/** O vídeo abaixo do hero. Título conferido no oEmbed do YouTube em 12/10/2026. */
+const VIDEO_DA_HOME = {
+  id: "PkwofiRElo8",
+  titulo: "Como vender para o governo mesmo sendo microempreendedor",
+  capa: "/video-vender-para-o-governo-mei.webp",
+};
 
 /**
  * O que o livro entrega, em coisas que existem dentro dele.
@@ -218,6 +226,35 @@ export default function Home() {
                 como medimos
               </Link>
             </p>
+          </div>
+        </section>
+
+        {/*
+          O vídeo do canal, logo abaixo do hero, a pedido do dono em 12/10/2026.
+
+          Só a capa carrega com a página; o player do YouTube entra no clique.
+          Ver `VideoDoYoutube` para o porquê: o iframe direto custaria perto de
+          1 MB a toda visita da home, assistindo ou não.
+
+          O texto não descreve o conteúdo além do título: dizer o que o vídeo
+          ensina sem conferir seria afirmar o que ninguém checou.
+        */}
+        <section className="mx-auto max-w-4xl px-6 py-16">
+          <h2 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
+            {VIDEO_DA_HOME.titulo}
+          </h2>
+          <p className="mt-3 leading-relaxed text-[var(--muted)]">
+            Do nosso canal no YouTube.{" "}
+            <a
+              href={`https://www.youtube.com/watch?v=${VIDEO_DA_HOME.id}`}
+              rel="noopener"
+              className="underline underline-offset-4"
+            >
+              Abrir no YouTube
+            </a>
+          </p>
+          <div className="mt-6">
+            <VideoDoYoutube {...VIDEO_DA_HOME} />
           </div>
         </section>
 
