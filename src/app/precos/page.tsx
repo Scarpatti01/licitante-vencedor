@@ -218,7 +218,7 @@ export default function Precos() {
           */}
           <Secao id="o-que-chega" titulo="O que chega no seu e-mail">
             <P>
-              Todo dia útil, perto das 7h, um e-mail com os editais de maior
+              Todo dia útil, de manhã, um e-mail com os editais de maior
               aderência ao perfil da sua empresa: objeto, órgão, local, valor,
               prazo e o link para a publicação oficial.
             </P>

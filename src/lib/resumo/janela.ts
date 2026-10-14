@@ -9,6 +9,10 @@
  * 10h58 e 13h07 — todos os dias, com 4 a 6 horas de atraso. O conteúdo estava
  * certo; a hora, nunca.
  *
+ * Desde 14/10/2026 o texto público diz "Todo dia útil, de manhã", sem hora
+ * marcada: o envio depende da coleta, do PNCP e do agendador do GitHub, e o
+ * dono decidiu não prometer hora fixa. As 7h continuam valendo como piso.
+ *
  * O atraso é do agendador do GitHub, que a própria documentação descreve como
  * sujeito a atraso sob carga. Mudar o horário do cron não resolveria: seria
  * apostar que o atraso fica igual, e no dia em que o GitHub fosse pontual o
@@ -40,7 +44,7 @@
 
 const FUSO = "America/Sao_Paulo";
 
-/** O que a home promete. */
+/** O piso do envio. A home promete "de manhã", sem hora (ver acima). */
 export const HORA_DO_RESUMO = 7;
 
 /** Depois disto, o que chegou vai no resumo do próximo dia útil. */

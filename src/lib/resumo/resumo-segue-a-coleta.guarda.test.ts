@@ -8,7 +8,8 @@ import { ESPERA_MAXIMA_MS } from "./janela";
  *
  * ## O defeito, medido
  *
- * A home promete "todo dia útil, às 7h". O resumo era um `schedule` às 10:00
+ * A home prometia "todo dia útil, às 7h" (desde 14/10/2026, só "de manhã",
+ * sem hora marcada). O resumo era um `schedule` às 10:00
  * UTC, e nos 12 dias úteis de 08 a 23/09/2026 chegou entre 10h58 e 13h07 de
  * Brasília — sempre, porque o agendador do GitHub atrasa de 4 a 6 horas sob
  * carga. Em 24/09 o gatilho passou a ser a coleta terminar.

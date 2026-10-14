@@ -300,7 +300,7 @@ export default function ComoFunciona() {
                 ["Cobertura geográfica", `No ar — ${COBERTURA.extensao}`],
                 ["Filtro por perfil", "No ar, rodando como etapa de cada coleta"],
                 ["Leitura dos editais de maior aderência", "No ar — todo dia, logo depois do filtro, para quem tem empresa cadastrada"],
-                ["Envio automático do e-mail", "No ar — dias úteis, 7h10 da manhã"],
+                ["Envio automático do e-mail", "No ar, nos dias úteis, de manhã"],
                 ["Planos pagos", "Ainda não abertos"],
               ]}
             />

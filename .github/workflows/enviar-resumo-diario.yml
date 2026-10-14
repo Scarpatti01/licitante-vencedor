@@ -8,7 +8,8 @@
 #
 # ## Quando sai: quando a coleta termina, nunca antes das 7h
 #
-# A home promete "todo dia útil, às 7h". Até 24/09/2026 isso era um `schedule`
+# A home prometia "todo dia útil, às 7h" (desde 14/10/2026 diz só "de manhã",
+# sem hora marcada; as 7h ficaram como piso). Até 24/09/2026 isso era um `schedule`
 # às 10:00 UTC, e nos 12 dias úteis medidos de 08 a 23/09 o resumo chegou entre
 # 10h58 e 13h07 de Brasília — todos os dias. O agendador do GitHub atrasa sob
 # carga, e atrasou de 4 a 6 horas, sempre. O conteúdo estava certo; a hora não.
