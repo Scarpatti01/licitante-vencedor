@@ -159,8 +159,8 @@ export default function Home() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
-              Todo dia útil, às 7h, você recebe os editais do PNCP compatíveis
-              com o seu perfil, ordenados por aderência. Os mais aderentes vão
+              Todo dia útil, de manhã, você recebe os editais do PNCP
+              compatíveis com o seu perfil, ordenados por aderência. Os mais aderentes vão
               com o documento lido: o que exigem de habilitação, o que falta no
               seu cadastro, o prazo e o risco. Você só decide se participa.
             </p>

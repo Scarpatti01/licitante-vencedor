@@ -49,8 +49,8 @@ export type PreferenciasDeEnvio = {
 };
 
 export const PADRAO: PreferenciasDeEnvio = {
-  // 7h é o horário anunciado nas páginas públicas do serviço; mudar aqui sem
-  // mudar lá faria a tela contradizer a promessa comercial.
+  // 7h é o piso do envio (`HORA_DO_RESUMO` em `resumo/janela.ts`). As páginas
+  // públicas prometem "de manhã", sem hora, desde 14/10/2026.
   horario: "07:00",
   apenasDiasUteis: true,
   canalEmail: true,
