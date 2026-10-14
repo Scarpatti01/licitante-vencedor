@@ -13,6 +13,7 @@ import { distribuicaoPorEsfera } from "@/lib/dominio/esferas";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
 import { Logo } from "@/components/Logo";
 import { VideoDoYoutube } from "@/components/VideoDoYoutube";
+import { OFERTA } from "@/lib/jornada/oferta";
 
 /** O vídeo abaixo do hero. Título conferido no oEmbed do YouTube em 12/10/2026. */
 const VIDEO_DA_HOME = {
@@ -430,8 +431,17 @@ export default function Home() {
                 >
                   Ver os planos
                 </Link>
-                <Link href="/jornada/" className="text-sm text-[#C7D0DE] underline underline-offset-4">
-                  Ou comprar só o livro e a jornada
+                {/*
+                  A cor da borda vai em `style` porque `* { border-color }`, em
+                  `globals.css`, fica fora de camada e vence qualquer classe
+                  `border-[cor]` do Tailwind: com a classe, o contorno saía cinza.
+                */}
+                <Link
+                  href="/jornada/"
+                  style={{ borderColor: "#D9B65F" }}
+                  className="rounded-lg border-2 px-5 py-[10px] font-semibold text-[#D9B65F] transition-colors hover:bg-[#D9B65F] hover:text-[#0C1B33]"
+                >
+                  Comprar só o Workbook, {OFERTA.precoEscrito}
                 </Link>
               </div>
             </div>
