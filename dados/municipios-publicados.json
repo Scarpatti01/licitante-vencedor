@@ -170,6 +170,14 @@
   },
   {
    "uf": "BA",
+   "slug": "caturama"
+  },
+  {
+   "uf": "BA",
+   "slug": "cocos"
+  },
+  {
+   "uf": "BA",
    "slug": "conceicao-do-coite"
   },
   {
@@ -1814,6 +1822,10 @@
   },
   {
    "uf": "MG",
+   "slug": "fama"
+  },
+  {
+   "uf": "MG",
    "slug": "ferros"
   },
   {
@@ -1883,6 +1895,10 @@
   {
    "uf": "MG",
    "slug": "itabirito"
+  },
+  {
+   "uf": "MG",
+   "slug": "itaguara"
   },
   {
    "uf": "MG",
@@ -2618,6 +2634,10 @@
   },
   {
    "uf": "MT",
+   "slug": "matupa"
+  },
+  {
+   "uf": "MT",
    "slug": "mirassol-d-oeste"
   },
   {
@@ -2683,6 +2703,10 @@
   {
    "uf": "PA",
    "slug": "belterra"
+  },
+  {
+   "uf": "PA",
+   "slug": "braganca"
   },
   {
    "uf": "PA",
@@ -2918,6 +2942,10 @@
   },
   {
    "uf": "PE",
+   "slug": "condado"
+  },
+  {
+   "uf": "PE",
    "slug": "cortes"
   },
   {
@@ -2959,6 +2987,10 @@
   {
    "uf": "PE",
    "slug": "itambe"
+  },
+  {
+   "uf": "PE",
+   "slug": "joao-alfredo"
   },
   {
    "uf": "PE",
@@ -3127,6 +3159,10 @@
   {
    "uf": "PI",
    "slug": "picos"
+  },
+  {
+   "uf": "PI",
+   "slug": "piracuruca"
   },
   {
    "uf": "PI",
@@ -3310,6 +3346,10 @@
   },
   {
    "uf": "PR",
+   "slug": "diamante-do-norte"
+  },
+  {
+   "uf": "PR",
    "slug": "fazenda-rio-grande"
   },
   {
@@ -3451,6 +3491,10 @@
   {
    "uf": "PR",
    "slug": "maringa"
+  },
+  {
+   "uf": "PR",
+   "slug": "maripa"
   },
   {
    "uf": "PR",
@@ -3926,6 +3970,10 @@
   },
   {
    "uf": "RJ",
+   "slug": "tangua"
+  },
+  {
+   "uf": "RJ",
    "slug": "tres-rios"
   },
   {
@@ -4133,6 +4181,10 @@
    "slug": "boa-vista"
   },
   {
+   "uf": "RR",
+   "slug": "pacaraima"
+  },
+  {
    "uf": "RS",
    "slug": "alegrete"
   },
@@ -4255,6 +4307,10 @@
   {
    "uf": "RS",
    "slug": "horizontina"
+  },
+  {
+   "uf": "RS",
+   "slug": "ibiraiaras"
   },
   {
    "uf": "RS",
@@ -4738,6 +4794,10 @@
   },
   {
    "uf": "SC",
+   "slug": "itapema"
+  },
+  {
+   "uf": "SC",
    "slug": "itapoa"
   },
   {
@@ -4883,6 +4943,10 @@
   {
    "uf": "SC",
    "slug": "presidente-getulio"
+  },
+  {
+   "uf": "SC",
+   "slug": "rio-das-antas"
   },
   {
    "uf": "SC",
@@ -5350,6 +5414,10 @@
   },
   {
    "uf": "SP",
+   "slug": "chavantes"
+  },
+  {
+   "uf": "SP",
    "slug": "conchal"
   },
   {
@@ -5367,6 +5435,10 @@
   {
    "uf": "SP",
    "slug": "cravinhos"
+  },
+  {
+   "uf": "SP",
+   "slug": "cruzalia"
   },
   {
    "uf": "SP",
