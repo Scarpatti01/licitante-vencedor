@@ -1270,6 +1270,10 @@
   },
   {
    "uf": "GO",
+   "slug": "montividiu-do-norte"
+  },
+  {
+   "uf": "GO",
    "slug": "morrinhos"
   },
   {
@@ -2630,6 +2634,10 @@
   },
   {
    "uf": "MT",
+   "slug": "guiratinga"
+  },
+  {
+   "uf": "MT",
    "slug": "juina"
   },
   {
@@ -3155,6 +3163,10 @@
   {
    "uf": "PI",
    "slug": "floriano"
+  },
+  {
+   "uf": "PI",
+   "slug": "massape-do-piaui"
   },
   {
    "uf": "PI",
@@ -3782,6 +3794,10 @@
   },
   {
    "uf": "RJ",
+   "slug": "barra-do-pirai"
+  },
+  {
+   "uf": "RJ",
    "slug": "barra-mansa"
   },
   {
@@ -4003,6 +4019,10 @@
   {
    "uf": "RN",
    "slug": "apodi"
+  },
+  {
+   "uf": "RN",
+   "slug": "areia-branca"
   },
   {
    "uf": "RN",
@@ -5722,6 +5742,10 @@
   },
   {
    "uf": "SP",
+   "slug": "maraba-paulista"
+  },
+  {
+   "uf": "SP",
    "slug": "marilia"
   },
   {
@@ -6187,6 +6211,10 @@
   {
    "uf": "TO",
    "slug": "nazare"
+  },
+  {
+   "uf": "TO",
+   "slug": "nova-olinda"
   },
   {
    "uf": "TO",
