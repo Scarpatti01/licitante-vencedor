@@ -54,6 +54,10 @@
   },
   {
    "uf": "AL",
+   "slug": "sao-jose-da-tapera"
+  },
+  {
+   "uf": "AL",
    "slug": "teotonio-vilela"
   },
   {
@@ -351,6 +355,10 @@
   {
    "uf": "BA",
    "slug": "sao-felix-do-coribe"
+  },
+  {
+   "uf": "BA",
+   "slug": "sao-sebastiao-do-passe"
   },
   {
    "uf": "BA",
@@ -1006,6 +1014,10 @@
   },
   {
    "uf": "GO",
+   "slug": "abadia-de-goias"
+  },
+  {
+   "uf": "GO",
    "slug": "acreuna"
   },
   {
@@ -1087,6 +1099,10 @@
   {
    "uf": "GO",
    "slug": "buritinopolis"
+  },
+  {
+   "uf": "GO",
+   "slug": "cachoeira-alta"
   },
   {
    "uf": "GO",
@@ -1501,6 +1517,10 @@
    "slug": "serrano-do-maranhao"
   },
   {
+   "uf": "MA",
+   "slug": "timon"
+  },
+  {
    "uf": "MG",
    "slug": "abaete"
   },
@@ -1734,6 +1754,10 @@
   },
   {
    "uf": "MG",
+   "slug": "chale"
+  },
+  {
+   "uf": "MG",
    "slug": "chapada-gaucha"
   },
   {
@@ -1806,6 +1830,10 @@
   },
   {
    "uf": "MG",
+   "slug": "dores-do-indaia"
+  },
+  {
+   "uf": "MG",
    "slug": "dores-do-turvo"
   },
   {
@@ -1843,6 +1871,10 @@
   {
    "uf": "MG",
    "slug": "formiga"
+  },
+  {
+   "uf": "MG",
+   "slug": "fortuna-de-minas"
   },
   {
    "uf": "MG",
@@ -2354,6 +2386,10 @@
   },
   {
    "uf": "MG",
+   "slug": "turmalina"
+  },
+  {
+   "uf": "MG",
    "slug": "uba"
   },
   {
@@ -2379,6 +2415,10 @@
   {
    "uf": "MG",
    "slug": "varginha"
+  },
+  {
+   "uf": "MG",
+   "slug": "varzea-da-palma"
   },
   {
    "uf": "MG",
@@ -2435,6 +2475,10 @@
   {
    "uf": "MS",
    "slug": "bela-vista"
+  },
+  {
+   "uf": "MS",
+   "slug": "bodoquena"
   },
   {
    "uf": "MS",
@@ -3071,6 +3115,10 @@
   {
    "uf": "PE",
    "slug": "ribeirao"
+  },
+  {
+   "uf": "PE",
+   "slug": "saloa"
   },
   {
    "uf": "PE",
@@ -4478,6 +4526,10 @@
   },
   {
    "uf": "RS",
+   "slug": "sao-lourenco-do-sul"
+  },
+  {
+   "uf": "RS",
    "slug": "sao-luiz-gonzaga"
   },
   {
@@ -4942,6 +4994,10 @@
   },
   {
    "uf": "SC",
+   "slug": "paraiso"
+  },
+  {
+   "uf": "SC",
    "slug": "penha"
   },
   {
@@ -5154,6 +5210,10 @@
   },
   {
    "uf": "SE",
+   "slug": "campo-do-brito"
+  },
+  {
+   "uf": "SE",
    "slug": "caninde-de-sao-francisco"
   },
   {
@@ -5163,6 +5223,10 @@
   {
    "uf": "SE",
    "slug": "estancia"
+  },
+  {
+   "uf": "SE",
+   "slug": "frei-paulo"
   },
   {
    "uf": "SE",
@@ -5367,6 +5431,10 @@
   {
    "uf": "SP",
    "slug": "buri"
+  },
+  {
+   "uf": "SP",
+   "slug": "buritama"
   },
   {
    "uf": "SP",
@@ -5842,6 +5910,10 @@
   },
   {
    "uf": "SP",
+   "slug": "pederneiras"
+  },
+  {
+   "uf": "SP",
    "slug": "pedreira"
   },
   {
@@ -6159,6 +6231,10 @@
   {
    "uf": "SP",
    "slug": "valparaiso"
+  },
+  {
+   "uf": "SP",
+   "slug": "vargem-grande-paulista"
   },
   {
    "uf": "SP",
