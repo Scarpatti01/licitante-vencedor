@@ -20,7 +20,7 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
   termoPrincipal: "vale a pena participar de licitação",
   guiaRelacionado: "/vender-para-o-governo/",
   publicadoEm: "2026-08-14",
-  verificadoEm: "2026-08-14",
+  verificadoEm: "2026-10-17",
   corpo: [
     {
       tipo: "paragrafo",
@@ -132,7 +132,7 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     {
       tipo: "paragrafo",
       texto:
-        "Aqui a pergunta não é “eu tenho os documentos?”, e sim “eles estão válidos hoje e válidos na data provável da sessão?”. Certidão vencida no dia errado elimina empresa que ganhou no lance, e a margem de correção é estreita: o art. 64 só admite, em diligência, complementar informação sobre documento já apresentado e atualizar documento cuja validade expirou depois do recebimento das propostas. O que não foi entregue não tem conserto.",
+        "Aqui a pergunta não é “eu tenho os documentos?”, e sim “eles estão válidos hoje e válidos na data provável da sessão?”. Certidão vencida no dia errado elimina empresa que ganhou no lance, e a margem de correção é estreita: o art. 64 só admite, em diligência, complementar informação sobre documento já apresentado e atualizar documento cuja validade expirou depois do recebimento das propostas. Fora disso, o TCU já admitiu a juntada em diligência só do documento que prova condição que já existia na data da proposta (Acórdão 1211/2021-Plenário), e quem decide no caso concreto é o agente de contratação. Não conte com ela. Em licitação estadual ou municipal, o tribunal de contas local pode entender diferente.",
     },
     {
       tipo: "paragrafo",
@@ -251,6 +251,12 @@ export const VALE_A_PENA_PARTICIPAR: Artigo = {
     },
   ],
   fontes: [
+    {
+      titulo: "TCU, Licitações e Contratos: habilitação (Acórdão 1211/2021-Plenário)",
+      url: "https://licitacoesecontratos.tcu.gov.br/5-5-habilitacao-2/",
+      sustenta:
+        "A vedação do art. 64 não alcança documento ausente que comprova condição atendida pelo licitante quando apresentou a proposta.",
+    },
     {
       titulo: "Lei nº 14.133/2021, art. 55 (Planalto)",
       url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",

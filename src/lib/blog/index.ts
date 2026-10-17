@@ -1,4 +1,5 @@
 import type { Artigo } from "./tipos";
+import { ATESTADO_DE_CAPACIDADE_TECNICA } from "./artigos/atestado-de-capacidade-tecnica";
 import { ATRASO_NO_PAGAMENTO } from "./artigos/atraso-no-pagamento-de-contrato-administrativo";
 import { COMO_SABER_SE_SAIU_UMA_LICITACAO } from "./artigos/como-saber-se-saiu-uma-licitacao";
 import { DOCUMENTOS_PARA_PARTICIPAR } from "./artigos/documentos-para-participar-de-licitacao";
@@ -20,6 +21,7 @@ export { validarArtigo, contarPalavras, textoDoArtigo } from "./tipos";
  * vez neste projeto.
  */
 const CATALOGO: readonly Artigo[] = [
+  ATESTADO_DE_CAPACIDADE_TECNICA,
   ATRASO_NO_PAGAMENTO,
   COMO_SABER_SE_SAIU_UMA_LICITACAO,
   DOCUMENTOS_PARA_PARTICIPAR,
