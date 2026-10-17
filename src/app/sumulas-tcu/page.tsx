@@ -10,7 +10,17 @@ import { artigosDoGuia } from "@/lib/blog";
 const TITULO = "Súmulas do TCU: 258, 262, 263, 270 e outras";
 const DESCRICAO =
   "Texto oficial e efeito prático das súmulas do TCU que mais aparecem em edital: 247, 258, 260, 262, 263, 270, 272 e outras.";
-const ATUALIZADO = "2026-08-12";
+/**
+ * 17/10/2026: três leituras corrigidas. A Súmula 270 não esgota as hipóteses
+ * de marca, que o art. 41, I, da Lei 14.133 ampliou. A Súmula 275 foi editada
+ * sob o art. 31 da Lei 8.666, e a Lei 14.133 (art. 69, § 4º) não repete a
+ * não cumulação. A Súmula 282 foi REVOGADA pelo Acórdão 1890/2026-Plenário
+ * (15/07/2026), conferido na pesquisa de súmulas do TCU, por estar superada
+ * pela Resolução TCU 344/2022 (prescrição de 5 anos, art. 2º). Teses do STF
+ * nos Temas 899 e 897 conferidas no portal do STF.
+ */
+const PUBLICADO = "2026-08-12";
+const ATUALIZADO = "2026-10-17";
 
 export const metadata: Metadata = {
   title: TITULO,
@@ -83,12 +93,12 @@ const RESUMO: string[][] = [
   ["263", "Habilitação", "Quantitativo mínimo é legal, limitado às parcelas de maior relevância e proporcional ao objeto"],
   ["265", "Contratação direta", "Contratar subsidiária exige preço de mercado e pertinência com o objeto social"],
   ["269", "Tecnologia da informação", "Remuneração vinculada a resultado; posto ou hora só com justificativa prévia"],
-  ["270", "Especificação", "Indicação de marca só por padronização estritamente necessária e justificada antes"],
+  ["270", "Especificação", "Indicação de marca só com justificativa prévia; a Lei 14.133 ampliou as hipóteses (art. 41, I)"],
   ["272", "Habilitação", "Vedada exigência que obrigue o licitante a gastar antes de ter o contrato"],
   ["274", "Habilitação", "Vedada exigência de inscrição prévia no SICAF como condição de habilitação"],
-  ["275", "Qualificação econômica", "Capital mínimo, patrimônio líquido ou garantia, nunca os três somados"],
+  ["275", "Qualificação econômica", "Capital mínimo, patrimônio líquido ou garantia como alternativas, sob a Lei 8.666"],
   ["281", "Cooperativas", "Vedada a participação quando o serviço exige subordinação, pessoalidade e habitualidade"],
-  ["282", "Responsabilização", "Ação de ressarcimento ao erário é imprescritível"],
+  ["282", "Responsabilização", "Revogada em 2026; o TCU aplica prescrição de 5 anos (Resolução 344/2022)"],
   ["283", "Habilitação", "Exige-se prova de regularidade fiscal, não certidão de quitação"],
   ["287", "Contratação direta", "Dispensa para promoção de concurso público exige nexo com a natureza da instituição"],
 ];
@@ -102,7 +112,7 @@ const schema = {
       headline: TITULO,
       description: DESCRICAO,
       inLanguage: SITE.locale,
-      datePublished: ATUALIZADO,
+      datePublished: PUBLICADO,
       dateModified: ATUALIZADO,
       author: { "@id": `${SITE.url}/#${AUTHOR.slug}` },
       publisher: { "@id": `${SITE.url}/#organization` },
@@ -147,7 +157,7 @@ export default function SumulasTcu() {
         </h1>
 
         <p className="mt-5 text-sm text-[var(--muted)]">
-          Por {AUTHOR.name} · Atualizado em 12 de agosto de 2026
+          Por {AUTHOR.name} · Atualizado em 17 de outubro de 2026
         </p>
 
         <div className="mt-8 space-y-6">
@@ -259,11 +269,15 @@ export default function SumulasTcu() {
               prévia justificação.
             </Citacao>
             <P>
-              Repare nas duas condições cumulativas: padronização estritamente
-              necessária <em>e</em> justificativa prévia. Edital que traz a marca
-              sem a justificativa no processo não atende à segunda, e esse é o
-              ponto de ataque mais simples de sustentar. Você não precisa
-              discutir engenharia, só apontar a ausência do documento.
+              A súmula foi editada sob a Lei 8.666 e fala só em padronização. A
+              Lei 14.133 ampliou as hipóteses no art. 41, I: padronização,
+              compatibilidade com plataformas já adotadas, marca ou modelo
+              vendido por mais de um fornecedor que seja o único capaz de
+              atender, e marca como mera referência. O que
+              continua igual é a exigência de justificativa formal. Edital que
+              traz a marca sem a justificativa no processo é o ponto de ataque
+              mais simples de sustentar: você não precisa discutir engenharia,
+              só apontar a ausência do documento.
             </P>
           </Secao>
 
@@ -329,9 +343,13 @@ export default function SumulasTcu() {
               entrega futura e de execução de obras e serviços.
             </Citacao>
             <P>
-              A palavra que trabalha é “não cumulativa”. O edital escolhe uma
-              das três. Exigir capital mínimo e garantia e patrimônio líquido ao
-              mesmo tempo é o caso clássico, e é impugnação de redação simples.
+              A palavra que trabalha é “não cumulativa”, mas com uma ressalva
+              importante: a súmula interpretava o art. 31 da Lei 8.666. A Lei
+              14.133 permite capital mínimo ou patrimônio líquido mínimo de até
+              10% do valor estimado, em compras para entrega futura e em obras e
+              serviços (art. 69, § 4º), e não repete a regra da não cumulação.
+              Sob a lei nova, a súmula é argumento possível, não vedação
+              expressa.
             </P>
             <Citacao fonte="Súmula TCU nº 281">
               É vedada a participação de cooperativas em licitação quando, pela
@@ -525,19 +543,24 @@ export default function SumulasTcu() {
           </Secao>
 
           <Secao id="responsabilizacao" titulo="Dano ao erário e prazo para cobrança">
-            <Citacao fonte="Súmula TCU nº 282">
+            <Citacao fonte="Súmula TCU nº 282 (revogada pelo Acórdão 1890/2026-Plenário)">
               As ações de ressarcimento movidas pelo Estado contra os agentes
               causadores de danos ao erário são imprescritíveis.
             </Citacao>
             <P>
-              Esta não trata de disputa de edital, e é justamente por isso que
-              merece atenção de quem executa contrato. Ela diz que a cobrança de
-              dano ao erário não tem prazo para prescrever, o que significa que
-              pendência de execução contratual mal resolvida não some com o
-              tempo.
+              Esta súmula não vale mais. O TCU a revogou em julho de 2026
+              (Acórdão 1890/2026-Plenário), porque a Resolução TCU 344/2022 já
+              disciplinava o assunto de outro jeito: nos processos do tribunal,
+              as pretensões punitiva e de ressarcimento prescrevem em 5 anos,
+              contados dos marcos que a resolução define. Antes disso, o STF já
+              havia decidido que é prescritível a cobrança fundada em decisão
+              de tribunal de contas (Tema 899) e que são imprescritíveis as
+              ações de ressarcimento fundadas em ato doloso de improbidade
+              administrativa (Tema 897).
             </P>
             <P>
-              A consequência operacional é simples e vale dinheiro: guarde a
+              A súmula fica aqui porque ainda aparece citada em textos antigos.
+              A consequência operacional continua valendo dinheiro: guarde a
               documentação de execução, medições, atestos, comunicações
               formais, aditivos, muito além do prazo em que a nota fiscal
               importa para o fisco. Quando a cobrança aparece, o que separa a
@@ -634,6 +657,21 @@ export default function SumulasTcu() {
               <li>
                 <a className="underline underline-offset-4" href="https://www.planalto.gov.br/ccivil_03/leis/2002/l10520.htm" target="_blank" rel="noopener">
                   Lei nº 10.520/2002 (Planalto)
+                </a>
+              </li>
+              <li>
+                <a className="underline underline-offset-4" href="https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=4046531&numeroProcesso=636886&classeProcesso=RE&numeroTema=899" target="_blank" rel="noopener">
+                  STF, Tema 899 de repercussão geral
+                </a>
+              </li>
+              <li>
+                <a className="underline underline-offset-4" href="https://portal.stf.jus.br/jurisprudenciaRepercussao/verAndamentoProcesso.asp?incidente=4670950&numeroProcesso=852475&classeProcesso=RE&numeroTema=897" target="_blank" rel="noopener">
+                  STF, Tema 897 de repercussão geral
+                </a>
+              </li>
+              <li>
+                <a className="underline underline-offset-4" href="https://pesquisa.apps.tcu.gov.br/documento/sumula/*/NUMERO%253A282/DTRELEVANCIA%2520desc/0/sinonimos%253Dtrue" target="_blank" rel="noopener">
+                  TCU, Súmula 282 com a nota de revogação (Acórdão 1890/2026-Plenário)
                 </a>
               </li>
             </ul>
