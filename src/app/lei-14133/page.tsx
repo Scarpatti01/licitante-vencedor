@@ -60,7 +60,7 @@ const FAQ = [
   {
     pergunta: "A Lei 8.666 ainda vale em 2026?",
     resposta:
-      "Não para licitações novas. A 8.666/93, a Lei do Pregão (10.520/2002) e o RDC (12.462/2011) foram revogadas em 30 de dezembro de 2023. Contratos assinados sob a lei antiga continuam regidos por ela até o fim da vigência, então na prática as duas convivem, uma para contratos em execução, outra para tudo que é licitado hoje.",
+      "Não para licitações novas. A 8.666/93, a Lei do Pregão (10.520/2002) e a parte de licitações do RDC (arts. 1º a 47-A da Lei 12.462/2011) foram revogadas em 30 de dezembro de 2023. Contratos assinados sob a lei antiga continuam regidos por ela até o fim da vigência, então na prática as duas convivem, uma para contratos em execução, outra para tudo que é licitado hoje.",
   },
   {
     pergunta: "Quais modalidades a Lei 14.133 extinguiu?",

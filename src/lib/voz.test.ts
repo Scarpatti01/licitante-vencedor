@@ -40,6 +40,7 @@ const VIGIADOS = [
   "lib/blog/artigos/dispensa-eletronica.ts",
   "lib/blog/artigos/documentos-para-participar-de-licitacao.ts",
   "lib/blog/artigos/exigencia-abusiva-em-edital.ts",
+  "lib/blog/artigos/lei-8666-ainda-vale.ts",
   "lib/blog/artigos/prazo-para-impugnar-edital-de-licitacao.ts",
   "lib/blog/artigos/prazo-para-recurso-em-licitacao.ts",
   "lib/blog/artigos/quantas-licitacoes-sao-publicadas-por-dia.ts",
@@ -191,7 +192,7 @@ describe("a guarda vigia o que foi limpo", () => {
     // Sem esta contagem, alguém "conserta" um teste vermelho removendo a linha
     // da lista, e a guarda passa a proteger um conjunto vazio sem ficar
     // vermelha nunca mais.
-    expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(13);
+    expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(14);
     // 17 desde 28/08, com a rota que entrega o livro carimbado; 18 desde
     // 17/10, com a tela de confirmação que entrega os materiais.
     expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(18);
