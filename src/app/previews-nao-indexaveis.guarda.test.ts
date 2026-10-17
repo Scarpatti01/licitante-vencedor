@@ -86,13 +86,23 @@ describe("preview do Vercel não é indexável", () => {
     }
   });
 
-  it("em produção nenhum noindex é enviado", async () => {
+  it("em produção nenhum noindex é enviado, fora dos materiais gratuitos", async () => {
+    /*
+     * Desde 17/10/2026 há UMA exceção, e ela é estreita de propósito:
+     * `/materiais/` (os arquivos entregues depois da confirmação do e-mail,
+     * `src/lib/materiais.ts`). Qualquer X-Robots-Tag em outra fonte, e em
+     * especial numa fonte que pegue o site inteiro, continua reprovando.
+     */
     const cabecalhos = await cabecalhosDe("production");
-    const todos = cabecalhos.flatMap((c) => c.headers);
-    expect(
-      todos.some((h) => h.key.toLowerCase() === "x-robots-tag"),
-      "produção está mandando X-Robots-Tag; isso tira o site do índice",
-    ).toBe(false);
+    const comRobots = cabecalhos.filter((c) =>
+      c.headers.some((h) => h.key.toLowerCase() === "x-robots-tag"),
+    );
+    for (const c of comRobots) {
+      expect(
+        c.source.startsWith("/materiais/"),
+        `produção está mandando X-Robots-Tag em "${c.source}"; isso tira páginas do índice`,
+      ).toBe(true);
+    }
   });
 
   it("sem a variável, presume produção", async () => {
@@ -105,7 +115,7 @@ describe("preview do Vercel não é indexável", () => {
       expect(proibidos(regra)).not.toContain("/");
     }
     const cabecalhos = await cabecalhosDe(undefined);
-    expect(cabecalhos.flatMap((c) => c.headers).length).toBe(0);
+    expect(cabecalhos.every((c) => c.source.startsWith("/materiais/"))).toBe(true);
   });
 
   it("o robots de produção continua escondendo a área logada", () => {
