@@ -1,6 +1,7 @@
 import { capturaConfigurada, emailPlausivel, gerarToken, gravarLead } from "@/lib/leads";
 import { enviarConfirmacao } from "@/lib/leads-emails";
 import { dentroDoLimite, identificarChamador } from "@/lib/limite-de-taxa";
+import { materialPorSlug } from "@/lib/materiais";
 
 /**
  * Recebe o cadastro no convite do teste.
@@ -32,6 +33,8 @@ type Corpo = {
   email?: unknown;
   cidade?: unknown;
   origem?: unknown;
+  /** Slug de um material de `materiais.ts`, quando o formulário oferece um. */
+  material?: unknown;
   /**
    * Campo-armadilha, invisível para gente e preenchido por robô de formulário.
    * Se vier preenchido, a requisição é descartada — respondendo 200, porque
@@ -90,6 +93,9 @@ export async function POST(request: Request) {
   }
 
   const cidade = texto(corpo.cidade, 120);
+  // Slug desconhecido vira cadastro comum, e não erro: o material é um
+  // acréscimo ao cadastro, e recusar o lead por causa dele perderia o lead.
+  const material = materialPorSlug(corpo.material);
 
   const resultado = await gravarLead({
     email,
@@ -118,7 +124,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const envio = await enviarConfirmacao({ email, cidade, token: resultado.token });
+  const envio = await enviarConfirmacao({ email, cidade, token: resultado.token, material });
 
   if (!envio.ok) {
     /*

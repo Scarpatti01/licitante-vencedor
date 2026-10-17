@@ -26,8 +26,19 @@ const nextConfig: NextConfig = {
    * pior que o conteúdo duplicado que estamos consertando.
    */
   async headers() {
+    /*
+     * Os materiais gratuitos (`src/lib/materiais.ts`) também ficam fora do
+     * índice, em produção inclusive. Eles são entregues depois da confirmação
+     * do e-mail; indexado, o PDF apareceria na busca e o formulário que leva a
+     * ele deixaria de ter razão de existir. Quem procura o assunto deve cair no
+     * post, que explica e oferece o material.
+     */
+    const materiais = {
+      source: "/materiais/:arquivo*",
+      headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+    };
     const producao = !process.env.VERCEL_ENV || process.env.VERCEL_ENV === "production";
-    if (producao) return [];
+    if (producao) return [materiais];
     return [
       {
         source: "/:caminho*",

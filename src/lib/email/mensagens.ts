@@ -137,6 +137,22 @@ function regiaoEmTexto(cidade: string | null | undefined): string {
   return c ? `de ${c}` : "da sua região";
 }
 
+/**
+ * Um material gratuito pedido no formulário, do jeito que o e-mail precisa dele.
+ *
+ * Só os textos, e não o tipo de `materiais.ts`: esta camada não sabe o que é um
+ * lead nem de onde vem um material, e é bom que continue assim.
+ */
+export type MaterialNoEmail = {
+  /** "o modelo de impugnação de edital" */
+  nome: string;
+  /** "o modelo de impugnação" */
+  nomeCurto: string;
+  /** Endereço absoluto do arquivo. Só a boas-vindas usa: a confirmação ainda não entrega. */
+  url?: string;
+  descricao?: string;
+};
+
 export type DadosDaConfirmacao = {
   email: string;
   /** URL de confirmação, montada por quem gera o token de confirmação. */
@@ -145,20 +161,52 @@ export type DadosDaConfirmacao = {
   tokenDeDescadastro: string;
   cidade?: string | null;
   urlBase?: string;
+  /** Presente quando o cadastro foi para receber um material gratuito. */
+  material?: MaterialNoEmail | null;
 };
 
+/*
+ * Até 17/10/2026 esta mensagem prometia "os alertas de licitação" chegando
+ * todo dia útil, e o alerta gratuito acabou em 25/08. Quem se cadastrava pelo
+ * formulário (que oferece o convite do teste) confirmava o e-mail esperando um
+ * envio diário que não vinha. Agora ela diz o que o formulário ofereceu: o
+ * convite do teste, ou o material pedido.
+ */
 export function conteudoDeConfirmacao(dados: DadosDaConfirmacao): ConteudoDeEmail {
+  if (dados.material) {
+    return {
+      assunto: `Confirme seu e-mail para receber ${dados.material.nomeCurto}`,
+      titulo: "Falta um clique para o seu material",
+      paragrafos: [
+        `Você pediu ${dados.material.nome}. Ele fica disponível assim que você confirmar este endereço.`,
+        "Antes disso, precisamos confirmar que este e-mail é seu.",
+      ],
+      acao: { rotulo: "Confirmar e baixar", url: dados.linkDeConfirmacao },
+      listas: [],
+      fecho: [
+        "Enquanto você não clicar, não enviamos nada.",
+        "Se não foi você quem pediu, é só ignorar esta mensagem: sem o clique, o endereço não entra na lista.",
+      ],
+      rodape: {
+        cadastradoComo: dados.email,
+        descadastro: urlDeDescadastro(dados.tokenDeDescadastro, dados.urlBase),
+        porque: `Você recebe este e-mail porque pediu ${dados.material.nome} no ${SITE.name}.`,
+        limites: LIMITES,
+      },
+    };
+  }
+
   return {
-    assunto: "Confirme seu e-mail para receber os alertas de licitação",
-    titulo: "Falta um clique para o alerta começar",
+    assunto: "Confirme seu e-mail para receber o convite do teste",
+    titulo: "Falta um clique para o convite chegar",
     paragrafos: [
-      `Você pediu para acompanhar os editais ${regiaoEmTexto(dados.cidade)} publicados no Portal Nacional de Contratações Públicas. Eles chegam neste endereço nos dias úteis, pela manhã.`,
+      `Você pediu o convite para testar por ${DIAS_DE_TESTE} dias o resumo com os editais ${regiaoEmTexto(dados.cidade)} publicados no Portal Nacional de Contratações Públicas. Depois que a empresa estiver cadastrada, ele chega neste endereço nos dias úteis, pela manhã.`,
       "Antes disso, precisamos confirmar que este e-mail é seu.",
     ],
     acao: { rotulo: "Confirmar meu e-mail", url: dados.linkDeConfirmacao },
     listas: [],
     fecho: [
-      "Enquanto você não clicar, não enviamos nada, nem o primeiro alerta.",
+      "Enquanto você não clicar, não enviamos nada, nem o convite.",
       "Se não foi você quem pediu, é só ignorar esta mensagem: sem o clique, o endereço não entra na lista.",
     ],
     rodape: {
@@ -236,10 +284,48 @@ export type DadosDeBoasVindas = {
   tokenDeDescadastro: string;
   cidade?: string | null;
   urlBase?: string;
+  /** Presente quando o cadastro foi para receber um material gratuito. */
+  material?: MaterialNoEmail | null;
 };
+
+/**
+ * A entrega do material, para a pessoa guardar o link.
+ *
+ * A página de confirmação já mostra o botão de baixar; este e-mail existe para
+ * o arquivo continuar a um clique depois que a aba fechar. Ele não repete o
+ * convite do teste nem o aviso sobre o fim do alerta gratuito: quem pediu um
+ * modelo não pediu nenhum dos dois.
+ */
+function conteudoDaEntregaDoMaterial(
+  dados: DadosDeBoasVindas,
+  material: MaterialNoEmail & { url: string },
+): ConteudoDeEmail {
+  const urlBase = dados.urlBase ?? SITE.url;
+  return {
+    assunto: `Aqui está ${material.nomeCurto}`,
+    titulo: "Seu material está pronto",
+    paragrafos: [
+      `E-mail confirmado. Aqui está ${material.nome}.`,
+      ...(material.descricao ? [material.descricao] : []),
+      `Se quiser o caminho inteiro, do primeiro cadastro ao contrato assinado, ele está no Workbook do Licitante: ${urlBase}/jornada/`,
+    ],
+    acao: { rotulo: "Baixar o material", url: material.url },
+    listas: [],
+    fecho: ["O material organiza o trabalho, mas não substitui a leitura do edital nem a análise de um advogado."],
+    rodape: {
+      cadastradoComo: dados.email,
+      descadastro: urlDeDescadastro(dados.tokenDeDescadastro, dados.urlBase),
+      porque: `Você recebe este e-mail porque pediu ${material.nome} no ${SITE.name}.`,
+      limites: LIMITES,
+    },
+  };
+}
 
 export function conteudoDeBoasVindas(dados: DadosDeBoasVindas): ConteudoDeEmail {
   const urlBase = dados.urlBase ?? SITE.url;
+  if (dados.material?.url) {
+    return conteudoDaEntregaDoMaterial(dados, { ...dados.material, url: dados.material.url });
+  }
 
   return {
     assunto: `E-mail confirmado. Seus ${DIAS_DE_TESTE} dias começam quando você quiser`,

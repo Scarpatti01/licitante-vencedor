@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Folha de habilitação · Workbook do Licitante (amostra grátis)</title>
+<!--
+  A folha A.1 do Workbook do Licitante, como amostra grátis.
+
+  O texto e as colunas vêm do livro (livro/completo.html, "A.1 Folha de
+  habilitação"). Três diferenças, todas conferidas na Lei 14.133 no Planalto em
+  17/10/2026, e que o livro também precisa receber:
+
+  - "Falência e concordata" virou "Certidão negativa de falência": o art. 69,
+    II pede "certidão negativa de feitos sobre falência", e a concordata deixou
+    de existir com a Lei 11.101/2005 (recuperação judicial).
+  - Entram o CNPJ e a inscrição estadual e/ou municipal (art. 68, I e II).
+  - Entra a declaração do art. 68, VI (cumprimento do art. 7º, XXXIII, da
+    Constituição, sobre trabalho de menor).
+
+  Gerar o PDF: node materiais/gerar-folha.mjs (precisa de playwright).
+-->
+<link rel="stylesheet" href="../livro/fontes/embutidas.css">
+<style>
+  @page { size: A4; margin: 16mm 14mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Lato", sans-serif; color: #0C1B33; font-size: 10.5pt; }
+  .selo { font-size: 8pt; letter-spacing: .18em; text-transform: uppercase; color: #8B6A23; font-weight: 700; }
+  h1 { font-family: "Playfair Display", serif; font-size: 22pt; margin: 4mm 0 2mm; }
+  .instrucao { color: #3D4A5C; line-height: 1.45; margin: 0 0 5mm; max-width: 165mm; }
+  .titulo-tabela { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1.5pt solid #0C1B33; padding-bottom: 1.5mm; }
+  .titulo-tabela strong { font-size: 11pt; }
+  .titulo-tabela span { font-size: 8.5pt; color: #8B6A23; text-transform: uppercase; letter-spacing: .1em; }
+  table { width: 100%; border-collapse: collapse; margin-top: 1mm; }
+  th { text-align: left; font-size: 8.5pt; text-transform: uppercase; letter-spacing: .06em; color: #3D4A5C; padding: 2mm 2mm; border-bottom: .6pt solid #9AA5B4; }
+  td { padding: 0 2mm; height: 9.2mm; border-bottom: .6pt solid #C9D0DA; vertical-align: middle; }
+  td.doc { width: 46%; }
+  td.tenho { width: 10%; }
+  td.tenho::before { content: ""; display: inline-block; width: 4mm; height: 4mm; border: .8pt solid #0C1B33; border-radius: .8mm; }
+  td.onde { width: 26%; }
+  td.vence { width: 18%; }
+  .lei { color: #6B7686; font-size: 8pt; }
+  footer { margin-top: 6mm; padding-top: 3mm; border-top: .6pt solid #C9D0DA; font-size: 8.5pt; color: #3D4A5C; line-height: 1.45; }
+  footer strong { color: #0C1B33; }
+</style>
+</head>
+<body>
+  <div class="selo">Workbook do Licitante · amostra grátis · folha A.1</div>
+  <h1>Folha de habilitação</h1>
+  <p class="instrucao">
+    Preencha uma vez, confira antes de cada envio. A coluna da direita é a que evita a
+    inabilitação mais comum, que é a certidão que venceu entre a proposta e a habilitação.
+    O edital diz quais destes documentos ele pede: marque os que ele exige e confira cada
+    exigência nele.
+  </p>
+
+  <div class="titulo-tabela"><strong>O que eu tenho, e até quando</strong><span>Confira antes de cada envio</span></div>
+  <table>
+    <thead>
+      <tr><th>Documento</th><th>Tenho</th><th>Onde está o arquivo</th><th>Vence em</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="doc">Contrato social e alterações</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Procuração do representante</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Cartão CNPJ <span class="lei">(art. 68, I)</span></td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Inscrição estadual e/ou municipal <span class="lei">(art. 68, II)</span></td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Certidão federal</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Certidão estadual</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Certidão municipal</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">FGTS</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Trabalhista</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Certidão negativa de falência <span class="lei">(art. 69, II)</span></td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Balanço patrimonial</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Índices contábeis calculados</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Atestado de capacidade técnica</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Registro em conselho, se exigido</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Declaração de ME ou EPP</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Declaração sobre trabalho de menor <span class="lei">(art. 68, VI)</span></td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">&nbsp;</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">&nbsp;</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+    </tbody>
+  </table>
+
+  <footer>
+    <strong>Esta é uma das folhas de trabalho do Workbook do Licitante.</strong> O livro leva do
+    primeiro cadastro ao contrato assinado, com a Jornada de 12 Semanas no sistema:
+    licitantevencedor.com.br/jornada/<br>
+    Artigos citados: Lei nº 14.133/2021. Não é parecer jurídico; o edital prevalece em qualquer divergência.
+  </footer>
+</body>
+</html>

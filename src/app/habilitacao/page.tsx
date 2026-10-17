@@ -5,6 +5,7 @@ import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { MATERIAIS } from "@/lib/materiais";
 import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO = "Habilitação em licitação: documentos e limites";
@@ -221,14 +222,12 @@ export default function Habilitacao() {
           */}
           <section aria-label="Alerta diário de editais">
             <CapturaAlerta
-              origem="guia/habilitacao#meio"
+              origem="guia/habilitacao#material-folha-de-habilitacao"
               chamada={{
-                titulo:
-                  "O prazo para renovar certidão começa quando o edital sai, não quando você vence",
-                texto:
-                  "Teste por 14 dias, sem cartão: nos dias úteis, os editais publicados no PNCP que combinam com o que a sua empresa vende, com nota de aderência, órgão, valor, prazo e o link para o registro oficial. Ver o edital na publicação é o que dá tempo de pedir a certidão municipal antes de ela ser cobrada.",
+                titulo: "A folha que evita a certidão vencida no meio do caminho",
+                texto: MATERIAIS["folha-de-habilitacao"].descricao,
               }}
-              textoDoBotao="Quero testar por 14 dias"
+              material="folha-de-habilitacao"
             />
           </section>
 

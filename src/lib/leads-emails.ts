@@ -7,6 +7,7 @@ import {
   type ResultadoDeEnvio,
 } from "@/lib/email";
 import { SITE } from "./site";
+import type { Material } from "./materiais";
 
 /**
  * As duas mensagens que o double opt-in dispara, já ligadas ao provedor.
@@ -35,6 +36,8 @@ export type DestinatarioDoLead = {
   cidade: string | null;
   /** O token que identifica o lead no destino — o de `ResultadoCaptura`, não o gerado. */
   token: string;
+  /** O material gratuito pedido, quando o cadastro foi por um. */
+  material?: Material | null;
 };
 
 /**
@@ -50,8 +53,25 @@ export type DestinatarioDoLead = {
  * reservado: o token pode vir de outra origem (os leads antigos da planilha
  * recebem UUID na migração), e a garantia vale mais que os microssegundos.
  */
-export function urlDeConfirmacao(token: string, urlBase: string = SITE.url): string {
-  return `${urlBase}/confirmar/?t=${encodeURIComponent(token)}`;
+export function urlDeConfirmacao(
+  token: string,
+  urlBase: string = SITE.url,
+  material?: Pick<Material, "slug"> | null,
+): string {
+  const base = `${urlBase}/confirmar/?t=${encodeURIComponent(token)}`;
+  // O material viaja no link, e não só na origem gravada: ver `materiais.ts`.
+  return material ? `${base}&m=${encodeURIComponent(material.slug)}` : base;
+}
+
+/** O que a camada de e-mail precisa saber do material, sem conhecer `materiais.ts`. */
+function materialParaOEmail(material: Material | null | undefined, urlBase: string = SITE.url) {
+  if (!material) return null;
+  return {
+    nome: material.nome,
+    nomeCurto: material.nomeCurto,
+    descricao: material.descricao,
+    url: `${urlBase}${material.arquivo}`,
+  };
 }
 
 /** Pede a confirmação do endereço. Sem este clique, o lead não recebe mais nada. */
@@ -60,8 +80,9 @@ export async function enviarConfirmacao(destinatario: DestinatarioDoLead): Promi
     mensagemDeConfirmacao({
       email: destinatario.email,
       cidade: destinatario.cidade,
-      linkDeConfirmacao: urlDeConfirmacao(destinatario.token),
+      linkDeConfirmacao: urlDeConfirmacao(destinatario.token, SITE.url, destinatario.material),
       tokenDeDescadastro: destinatario.token,
+      material: materialParaOEmail(destinatario.material),
     }),
   );
 }
@@ -73,6 +94,7 @@ export async function enviarBoasVindas(destinatario: DestinatarioDoLead): Promis
       email: destinatario.email,
       cidade: destinatario.cidade,
       tokenDeDescadastro: destinatario.token,
+      material: materialParaOEmail(destinatario.material),
     }),
   );
 }

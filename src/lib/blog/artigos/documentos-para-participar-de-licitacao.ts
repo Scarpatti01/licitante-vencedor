@@ -193,6 +193,11 @@ export const DOCUMENTOS_PARA_PARTICIPAR: Artigo = {
         "Muita empresa desiste de edital por causa da visita técnica, achando que é obrigatória e inviável quando a obra fica a trezentos quilômetros. O art. 63, § 2º, permite ao edital exigir, sob pena de inabilitação, que o licitante ateste conhecer o local e as condições da obra ou serviço, quando a avaliação prévia for imprescindível, assegurado a ele o direito de fazer vistoria prévia. Mas o § 3º é categórico: o edital sempre deverá prever a possibilidade de substituição da vistoria por declaração formal assinada pelo responsável técnico do licitante, atestando conhecimento pleno das condições. Edital que não oferece essa alternativa está fora do texto da lei.",
     },
     {
+      tipo: "captura",
+      chamada: "Baixe a folha de habilitação do Workbook",
+      material: "folha-de-habilitacao",
+    },
+    {
       tipo: "subtitulo",
       texto: "A rotina que evita a derrota documental",
     },
