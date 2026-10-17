@@ -85,7 +85,9 @@ export default async function PaginaDoArtigo({
         inLanguage: SITE.locale,
         datePublished: artigo.publicadoEm,
         dateModified: artigo.verificadoEm,
-        author: { "@type": "Person", name: AUTHOR.name, jobTitle: AUTHOR.jobTitle },
+        // Por `@id`, para o Google ligar o texto ao Person do layout, que
+        // carrega os perfis (`sameAs`). Inline, o autor era só um nome.
+        author: { "@id": `${SITE.url}/#${AUTHOR.slug}` },
         publisher: { "@id": `${SITE.url}/#organization` },
         mainEntityOfPage: { "@type": "WebPage", "@id": url },
         // `citation` existe porque as fontes oficiais são o que sustenta o
