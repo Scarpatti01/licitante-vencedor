@@ -6,6 +6,7 @@ import { COMO_SABER_SE_SAIU_UMA_LICITACAO } from "./artigos/como-saber-se-saiu-u
 import { DISPENSA_E_INEXIGIBILIDADE } from "./artigos/dispensa-e-inexigibilidade";
 import { DISPENSA_ELETRONICA } from "./artigos/dispensa-eletronica";
 import { DOCUMENTOS_PARA_PARTICIPAR } from "./artigos/documentos-para-participar-de-licitacao";
+import { EXIGENCIA_ABUSIVA_EM_EDITAL } from "./artigos/exigencia-abusiva-em-edital";
 import { PRAZO_PARA_IMPUGNAR_EDITAL } from "./artigos/prazo-para-impugnar-edital-de-licitacao";
 import { PRAZO_PARA_RECURSO } from "./artigos/prazo-para-recurso-em-licitacao";
 import { QUANTAS_LICITACOES_POR_DIA } from "./artigos/quantas-licitacoes-sao-publicadas-por-dia";
@@ -31,6 +32,7 @@ const CATALOGO: readonly Artigo[] = [
   DISPENSA_E_INEXIGIBILIDADE,
   DISPENSA_ELETRONICA,
   DOCUMENTOS_PARA_PARTICIPAR,
+  EXIGENCIA_ABUSIVA_EM_EDITAL,
   PRAZO_PARA_IMPUGNAR_EDITAL,
   PRAZO_PARA_RECURSO,
   QUANTAS_LICITACOES_POR_DIA,
