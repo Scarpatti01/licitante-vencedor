@@ -204,7 +204,7 @@ export default function Limites() {
               cabecalho={["Tipo de contratação", "Limite publicado no decreto"]}
               linhas={[
                 [
-                  "Obras e serviços de engenharia",
+                  "Obras, serviços de engenharia e manutenção de veículos",
                   emReais(DISPENSA_POR_VALOR.obrasEEngenharia),
                 ],
                 [
