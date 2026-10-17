@@ -11,6 +11,8 @@ export const SITE = {
   description:
     "Triagem diária dos editais do PNCP para empresas que vendem ao governo: o que pedem, o que falta na sua habilitação, o prazo e o risco.",
   foundingYear: "2016",
+  /** Perfis da marca (não do autor): o canal do YouTube. */
+  sameAs: ["https://www.youtube.com/@licitantevencedor"],
 } as const;
 
 /**
@@ -81,8 +83,18 @@ export const AUTHOR = {
   jobTitle: "Fundador, especialista em Inteligência Artificial e analista de licitações",
   photo: "/authors/leandro-scarpatti.jpg",
   bio: "Especialista em Inteligência Artificial aplicada a contratações públicas. Acompanha diariamente as publicações do Portal Nacional de Contratações Públicas e transforma edital bruto em decisão de negócio para empresas fornecedoras.",
-  // TODO: preencher com LinkedIn e demais perfis antes da Etapa 4 (camada de entidade).
-  sameAs: [] as string[],
+  /*
+   * Perfis públicos do autor, enviados por ele em 17/10/2026. Ligam o Person
+   * do schema a uma pessoa com histórico fora do site, que é o que o Google
+   * pesa em tema de dinheiro e lei. Só entra perfil que o próprio dono
+   * confirmou ser dele. O canal do YouTube é da marca e fica na Organization
+   * (`SITE.sameAs`), não aqui.
+   */
+  sameAs: [
+    "https://www.linkedin.com/in/leandro-scarpatti/",
+    "https://medium.com/@scarpatti74",
+    "https://www.quora.com/profile/Leandro-Scarpatti",
+  ] as string[],
 } as const;
 
 /**

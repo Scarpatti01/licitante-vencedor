@@ -119,7 +119,7 @@ export default function Habilitacao() {
         <Trilha atual="Habilitação" />
 
         <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl">
-          Habilitação
+          Habilitação em licitação: o que a Lei 14.133 permite exigir de você
         </h1>
 
         <p className="mt-5 text-sm text-[var(--muted)]">

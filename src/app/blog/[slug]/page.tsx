@@ -7,6 +7,7 @@ import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { Corpo, ancora } from "@/components/blog/Corpo";
 import { CardAssinatura } from "@/components/CardAssinatura";
+import { ConviteAoWorkbook } from "@/components/ConviteAoWorkbook";
 
 /**
  * A página de um artigo.
@@ -84,7 +85,9 @@ export default async function PaginaDoArtigo({
         inLanguage: SITE.locale,
         datePublished: artigo.publicadoEm,
         dateModified: artigo.verificadoEm,
-        author: { "@type": "Person", name: AUTHOR.name, jobTitle: AUTHOR.jobTitle },
+        // Por `@id`, para o Google ligar o texto ao Person do layout, que
+        // carrega os perfis (`sameAs`). Inline, o autor era só um nome.
+        author: { "@id": `${SITE.url}/#${AUTHOR.slug}` },
         publisher: { "@id": `${SITE.url}/#organization` },
         mainEntityOfPage: { "@type": "WebPage", "@id": url },
         // `citation` existe porque as fontes oficiais são o que sustenta o
@@ -207,9 +210,12 @@ export default async function PaginaDoArtigo({
           está disposto a dar.
           
           Agora a escalada é natural. A captura gratuita fica no meio, onde a
-          dor aparece; o cartão pago fica no fim, para quem quer mais. Um de
-          cada, e cada um dizendo a verdade do seu lado.
+          dor aparece; no fim ficam os dois produtos pagos, para quem quer
+          mais: o Workbook, que já pode ser comprado, e o cartão da assinatura.
+          Cada um dizendo a verdade do seu lado.
         */}
+        <ConviteAoWorkbook />
+
         <CardAssinatura />
 
         <section className="mt-16 border-t pt-8">

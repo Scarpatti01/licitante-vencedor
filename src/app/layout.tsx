@@ -69,6 +69,7 @@ const entityGraph = {
       knowsAbout: [...KNOWS_ABOUT],
       areaServed: { "@type": "Country", name: "Brasil" },
       founder: { "@id": `${SITE.url}/#${AUTHOR.slug}` },
+      sameAs: [...SITE.sameAs],
     },
     {
       "@type": "Person",

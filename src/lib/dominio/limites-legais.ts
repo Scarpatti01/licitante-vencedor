@@ -26,8 +26,11 @@
  *
  * ## Como atualizar, todo janeiro
  *
- * O reajuste sai por decreto no fim de dezembro e vale a partir de 1º de
- * janeiro. Troque `REAJUSTE_VIGENTE` inteiro — decreto, data e percentual — e os
+ * O reajuste vale a partir de 1º de janeiro (art. 182 da Lei 14.133). Até 2026
+ * ele saiu por decreto no fim de dezembro; o art. 3º do Decreto 12.807/2025
+ * delegou as atualizações seguintes à autoridade máxima do MGI, então a de 2027
+ * pode vir por ato do ministério. O campo continua se chamando `decreto`: é o
+ * nome do ato, seja ele qual for. Troque `REAJUSTE_VIGENTE` inteiro — decreto, data e percentual — e os
  * valores. A guarda exige que os três campos mudem juntos: decreto novo com data
  * velha é o erro que passa despercebido.
  */
@@ -36,12 +39,30 @@
 export const REAJUSTE_VIGENTE = {
   /** Como o decreto é citado, para o leitor conferir na fonte. */
   decreto: "Decreto nº 12.807/2025",
+  /** Onde o texto oficial está publicado. Conferido em 17/10/2026. */
+  url: "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/d12807.htm",
   /** Primeiro dia de vigência, em ISO. */
   vigenteDesde: "2026-01-01",
   /** O percentual do reajuste, pelo IPCA-E. */
   percentual: 4.41,
   /** O ano a que os valores se referem, para o texto poder dizê-lo. */
   ano: 2026,
+} as const;
+
+/**
+ * O ato que tirou a atualização anual do decreto presidencial.
+ *
+ * Fixo de propósito, e separado de `REAJUSTE_VIGENTE`: quando o reajuste de
+ * 2027 entrar, `REAJUSTE_VIGENTE` passa a apontar para o ato do MGI, e um texto
+ * que dissesse "o art. 3º do {REAJUSTE_VIGENTE.decreto} delegou..." ficaria
+ * falso sozinho. Quem fala da delegação usa estes campos.
+ */
+export const DELEGACAO_DA_ATUALIZACAO = {
+  /** O decreto cujo art. 3º delegou ao MGI as atualizações seguintes. */
+  ato: "Decreto nº 12.807/2025",
+  url: "https://www.planalto.gov.br/ccivil_03/_ato2023-2026/2025/decreto/d12807.htm",
+  /** O último ano cujos valores saíram por decreto presidencial. */
+  ultimoAnoPorDecreto: 2026,
 } as const;
 
 /**

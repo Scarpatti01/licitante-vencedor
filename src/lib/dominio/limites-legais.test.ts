@@ -32,6 +32,16 @@ describe("os valores carregam a própria procedência", () => {
     expect(REAJUSTE_VIGENTE.ano).toBe(Number(REAJUSTE_VIGENTE.vigenteDesde.slice(0, 4)));
   });
 
+  it("o título de /limites/ fala do ano dos valores em vigor", () => {
+    // O título é literal porque a guarda de `resultado-de-busca` o mede no
+    // fonte. Literal envelhece: em janeiro, valor novo com "2026" no título é o
+    // resultado de busca dizendo um ano e a página mostrando outro.
+    const fonte = readFileSync(join(import.meta.dirname, "..", "..", "app", "limites", "page.tsx"), "utf8");
+    const titulo = fonte.match(/const TITULO = "([^"]+)";/)?.[1];
+    expect(titulo, "não achei `const TITULO = \"...\"` em src/app/limites/page.tsx").toBeDefined();
+    expect(titulo).toContain(String(REAJUSTE_VIGENTE.ano));
+  });
+
   it("a vigência por extenso usa o ordinal só no dia 1º", () => {
     // Em português, "1º de janeiro" mas "15 de janeiro". A primeira versão da
     // função escrevia "15º".

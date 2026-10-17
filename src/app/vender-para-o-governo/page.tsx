@@ -53,7 +53,7 @@ const FAQ = [
   {
     pergunta: "Qual o valor mínimo para o governo ser obrigado a licitar?",
     resposta:
-      "Abaixo dos limites de dispensa por valor do artigo 75 da Lei 14.133, atualizados anualmente por decreto. O órgão pode contratar por dispensa. Isso não significa contratar quem quiser: a dispensa eletrônica também é um procedimento com aviso público e disputa de preço, e é o melhor lugar para uma empresa nova ganhar o primeiro contrato, porque a concorrência é menor e a documentação exigida é mais enxuta.",
+      "Abaixo dos limites de dispensa por valor do artigo 75 da Lei 14.133, atualizados todo 1º de janeiro. O órgão pode contratar por dispensa. Isso não significa contratar quem quiser: a dispensa eletrônica também é um procedimento com aviso público e disputa de preço, e é o melhor lugar para uma empresa nova ganhar o primeiro contrato, porque a concorrência é menor e a documentação exigida é mais enxuta.",
   },
   {
     pergunta: "O que é o empate ficto de 5%?",
