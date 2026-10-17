@@ -24,10 +24,10 @@ import type { Artigo } from "../tipos";
  */
 export const ATRASO_NO_PAGAMENTO: Artigo = {
   slug: "atraso-no-pagamento-de-contrato-administrativo",
-  tituloDaBusca: "Atraso no pagamento de contrato administrativo",
-  titulo: "Atraso no pagamento de contrato administrativo: o que a Lei 14.133 garante",
+  tituloDaBusca: "Atraso no pagamento do governo: o que fazer",
+  titulo: "O órgão atrasou o pagamento: o que a Lei 14.133 permite fazer?",
   descricao:
-    "Atraso superior a 2 meses no pagamento dá ao contratado o direito de suspender a execução ou pedir a extinção do contrato, com indenização.",
+    "Atraso de mais de 2 meses no pagamento dá ao contratado o direito de suspender a execução ou pedir a extinção do contrato, com indenização. Veja como agir.",
   resumo:
     "A Lei 14.133/2021 não fixa um prazo único de pagamento. Quem define isso é o edital e o contrato, na fase de planejamento. Mas ela é clara sobre o que acontece quando o órgão atrasa demais: passados 2 meses da nota fiscal sem pagamento, o contratado tem o direito de suspender a execução do contrato ou pedir a extinção dele, com direito a indenização. Este texto reúne os artigos que sustentam isso e o que fazer antes de chegar lá.",
   intencao: "operacional",

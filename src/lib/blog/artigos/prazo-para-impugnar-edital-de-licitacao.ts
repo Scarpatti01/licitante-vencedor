@@ -18,20 +18,30 @@ import type { Artigo } from "../tipos";
  * Conferido contra o portal Licitações e Contratos do TCU, que reproduz o texto
  * legal — o Planalto respondeu 503 nas tentativas de verificação, e citar sem
  * ler não é uma opção neste repositório.
+ *
+ * ## A contagem, corrigida em 17/10/2026
+ *
+ * Até esta data o destaque dizia que, para sessão numa terça, o último dia era a
+ * quarta, e o passo a passo, contando 3 dias úteis para trás, chegava na
+ * quinta. As duas coisas não podiam valer juntas, e esta é a página mais vista
+ * do site. Vale a do passo a passo: o art. 183 da Lei 14.133 manda excluir o
+ * dia do começo e incluir o do vencimento, e o manual do TCU aplica essa regra
+ * ao art. 164 (terça excluída; segunda 1, sexta 2, quinta 3). Conferido no
+ * Planalto e no manual do TCU em 17/10/2026.
  */
 export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
   slug: "prazo-para-impugnar-edital-de-licitacao",
-  tituloDaBusca: "Prazo para impugnar edital: 3 dias úteis",
-  titulo: "Prazo para impugnar edital de licitação: 3 dias úteis, contados para trás",
+  tituloDaBusca: "Prazo para impugnar edital: como contar os dias",
+  titulo: "Qual o prazo para impugnar edital de licitação? 3 dias úteis antes da abertura",
   descricao:
-    "O prazo do art. 164 da Lei 14.133 corre a partir da abertura do certame, não da publicação. Como contar, o que difere de esclarecimento e de recurso.",
+    "Pela Lei 14.133, art. 164, qualquer pessoa pode impugnar o edital até 3 dias úteis antes da abertura. Como contar os dias para trás sem perder o prazo.",
   resumo:
     "Qualquer pessoa pode impugnar um edital ou pedir esclarecimento, mas o pedido precisa ser protocolado até 3 dias úteis antes da abertura do certame, um prazo que corre de trás para frente. Quem acha o edital na véspera não perde por mérito: perde por calendário. Impugnação, esclarecimento e recurso são três coisas distintas, com momentos e efeitos diferentes.",
   intencao: "operacional",
   termoPrincipal: "prazo para impugnar edital",
   guiaRelacionado: "/lei-14133/",
   publicadoEm: "2026-08-14",
-  verificadoEm: "2026-08-14",
+  verificadoEm: "2026-10-17",
   corpo: [
     {
       tipo: "paragrafo",
@@ -46,7 +56,7 @@ export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
     {
       tipo: "destaque",
       texto:
-        "Três dias úteis não são três dias. Numa sessão marcada para uma terça-feira, o último dia para protocolar é a quarta-feira anterior. Se houver feriado no meio, é a terça. Encontrar o edital na sexta é encontrar tarde demais, e nada no edital avisa isso.",
+        "Três dias úteis não são três dias. Numa sessão marcada para uma terça-feira, o último dia para protocolar é a quinta-feira anterior: sem contar a própria terça, volta-se segunda (1), sexta (2) e quinta (3). Se houver feriado no meio, o último dia recua para a quarta. Encontrar o edital na sexta é encontrar tarde demais, e nada no edital avisa isso.",
     },
     {
       tipo: "paragrafo",
@@ -104,9 +114,9 @@ export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
       tipo: "passos",
       itens: [
         "Confirme a data e a hora de abertura no próprio edital e no aviso publicado. É dela que o prazo é contado para trás. Os [portais de licitação](/portais-de-licitacao/) trazem essa data no aviso, mas o edital é que prevalece.",
-        "Conte 3 dias úteis retroativos, excluindo o dia da abertura e pulando feriados do ente que licita, que nem sempre coincidem com os da sua cidade.",
-        "Localize no edital o meio de protocolo. A própria Lei manda o edital informar como impugnar e pedir esclarecimento, inclusive por meio eletrônico.",
-        "Escreva apontando o dispositivo do edital e por que ele contraria a Lei, com o pedido claro ao final: correção, supressão ou republicação.",
+        "Conte 3 dias úteis retroativos, excluindo o dia da abertura e pulando feriados do ente que licita, que nem sempre coincidem com os da sua cidade. O terceiro dia útil é o último em que o pedido ainda entra no prazo. É a regra do art. 183 da Lei: exclui-se o dia do começo e inclui-se o do vencimento, e só contam os dias com expediente no órgão.",
+        "Localize no edital o meio de protocolo. A própria Lei manda o edital informar como impugnar e pedir esclarecimento, inclusive por meio eletrônico. Em licitação eletrônica, o TCU já considerou irregular limitar a impugnação ao horário de expediente do órgão e entendeu que ela pode ser aceita até 23h59 do último dia (Acórdão 969/2022-Plenário). Mesmo assim, não deixe para a última hora.",
+        "Escreva apontando o dispositivo do edital e por que ele contraria a Lei, com o pedido claro ao final: correção, supressão ou republicação. Quando houver, cite a [súmula do TCU](/sumulas-tcu/) ou a [decisão do Tribunal](/jurisprudencia/) que trata do mesmo ponto: é o argumento que o agente de contratação mais tem dificuldade de ignorar.",
         "Guarde o comprovante com data e hora. Sem ele, discutir tempestividade depois é discutir sem prova.",
         "Acompanhe a resposta e verifique se o edital foi alterado, alteração que afete a formulação das propostas obriga a nova divulgação e reabertura do prazo.",
       ],
@@ -140,7 +150,7 @@ export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
     {
       pergunta: "Qual o prazo para impugnar um edital de licitação?",
       resposta:
-        "Até 3 dias úteis antes da data de abertura do certame, conforme o art. 164 da Lei nº 14.133/2021. O prazo é contado retroativamente a partir da abertura, e não da publicação do edital.",
+        "Até 3 dias úteis antes da data de abertura do certame, conforme o art. 164 da Lei nº 14.133/2021. O prazo é contado retroativamente a partir da abertura, e não da publicação do edital. Numa sessão marcada para terça-feira, sem feriado no caminho, o último dia é a quinta anterior: exclui-se a terça e contam-se segunda, sexta e quinta.",
     },
     {
       pergunta: "Preciso estar cadastrado ou ser licitante para impugnar?",
@@ -192,6 +202,18 @@ export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
       url: "https://licitacoesecontratos.tcu.gov.br/5-6-recurso-e-pedido-de-reconsideracao/",
       sustenta:
         "Reprodução das hipóteses e dos prazos recursais do art. 165, incluindo a preclusão pela não manifestação imediata da intenção de recorrer.",
+    },
+    {
+      titulo: "Lei nº 14.133/2021, art. 183 (Planalto)",
+      url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",
+      sustenta:
+        "Regra de contagem: exclui-se o dia do começo e inclui-se o do vencimento; nos prazos em dias úteis, só contam os dias com expediente administrativo no órgão ou entidade competente.",
+    },
+    {
+      titulo: "TCU, Acórdão 969/2022-Plenário",
+      url: "https://pesquisa.apps.tcu.gov.br/documento/acordao-completo/*/NUMACORDAO%3A969%20ANOACORDAO%3A2022%20COLEGIADO%3A%22Plen%C3%A1rio%22/DTRELEVANCIA%20desc%2C%20NUMACORDAOINT%20desc/0",
+      sustenta:
+        "Em licitação eletrônica, é irregular limitar o prazo de impugnação ao horário de funcionamento do órgão; a impugnação pode ser aceita até 23h59 da data limite. Citado no manual do TCU sobre impugnação.",
     },
     {
       titulo: "Portal Nacional de Contratações Públicas",

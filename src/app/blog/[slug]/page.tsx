@@ -7,6 +7,7 @@ import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { Corpo, ancora } from "@/components/blog/Corpo";
 import { CardAssinatura } from "@/components/CardAssinatura";
+import { ConviteAoWorkbook } from "@/components/ConviteAoWorkbook";
 
 /**
  * A página de um artigo.
@@ -210,6 +211,8 @@ export default async function PaginaDoArtigo({
           dor aparece; o cartão pago fica no fim, para quem quer mais. Um de
           cada, e cada um dizendo a verdade do seu lado.
         */}
+        <ConviteAoWorkbook />
+
         <CardAssinatura />
 
         <section className="mt-16 border-t pt-8">

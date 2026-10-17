@@ -40,9 +40,9 @@ export const PRAZO_PARA_RECURSO: Artigo = {
   slug: "prazo-para-recurso-em-licitacao",
   tituloDaBusca: "Prazo para recurso em licitação: 3 dias úteis",
   titulo:
-    "Prazo para recurso em licitação: 3 dias úteis, e a manifestação que não espera o dia seguinte",
+    "Qual o prazo para recurso em licitação? 3 dias úteis, e a intenção é na hora",
   descricao:
-    "O recurso tem 3 dias úteis pela Lei 14.133. Contra julgamento e habilitação, a intenção de recorrer é imediata na sessão, sob pena de preclusão.",
+    "Lei 14.133, art. 165: recurso em 3 dias úteis da intimação ou da ata. Contra julgamento e habilitação, a intenção de recorrer é na hora, na sessão.",
   resumo:
     "A Lei 14.133/2021 dá 3 dias úteis para apresentar as razões de recurso. Só que, contra o julgamento das propostas e contra a habilitação, esse prazo nem começa se a intenção de recorrer não for manifestada imediatamente na sessão pública. Quem fecha o pregão sem registrar a intenção no campo próprio do sistema perde o direito ali, e descobre no dia seguinte. Este texto separa os prazos que a Lei trata como coisas diferentes e diz o que precisa acontecer em cada um.",
   intencao: "operacional",
@@ -171,7 +171,7 @@ export const PRAZO_PARA_RECURSO: Artigo = {
         "Fique na sessão até o fim. O momento em que o vencedor é declarado é o único em que a intenção de recorrer pode ser registrada, e ele não avisa com antecedência.",
         "Registre a intenção no campo próprio do sistema, de forma imediata e motivada. Motivada aqui significa dizer contra o que e por quê, em uma ou duas frases. Não é a hora do argumento completo, é a hora de não perder o direito de escrevê-lo.",
         "Peça vista dos elementos indispensáveis à defesa: proposta, planilha e documentação de habilitação do concorrente. É o que sustenta a razão que você vai apresentar.",
-        "Escreva as razões dentro dos 3 dias úteis, contados da intimação ou da lavratura da ata. Aponte o dispositivo do edital ou da Lei que foi descumprido e diga qual ato deve ser invalidado.",
+        "Escreva as razões dentro dos 3 dias úteis, contados da intimação ou da lavratura da ata. Aponte o dispositivo do edital ou da Lei que foi descumprido e diga qual ato deve ser invalidado. Se o ponto já foi decidido pelo TCU, cite a [súmula](/sumulas-tcu/) ou o [acórdão](/jurisprudencia/) com número: é o que dá peso à razão.",
         "Se você é o vencedor e alguém recorreu, conte o seu prazo de contrarrazões a partir do fim do prazo do recorrente, e responda. Silêncio não é neutro nesse processo.",
         "Antes de tudo isso, confira se o problema estava no edital e não no julgamento. Vício de edital se ataca por impugnação, e o [prazo para impugnar é outro](/blog/prazo-para-impugnar-edital-de-licitacao/), bem antes da sessão.",
       ],

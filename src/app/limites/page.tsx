@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
+import { AUTHOR, SITE, IMAGENS_DE_COMPARTILHAMENTO } from "@/lib/site";
 import { Citacao, Faq, Indice, P, RespostaDireta, Secao, Tabela } from "@/components/Prose";
 import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
@@ -45,7 +45,12 @@ import {
  * art. 75, e é ela que garante que esta página não se descole da fonte.
  */
 
-const TITULO = "Limites de dispensa da Lei 14.133 em 2026";
+/*
+ * Literal, e não montado com `REAJUSTE_VIGENTE.ano`, porque a guarda de
+ * `resultado-de-busca` mede o título no fonte. Trocar o ano aqui junto com o
+ * reajuste de janeiro.
+ */
+const TITULO = "Dispensa de licitação 2026: valores e limites";
 
 /*
  * Montada a partir dos valores, e por isso passa por `limitarDescricao`.
@@ -58,12 +63,18 @@ const TITULO = "Limites de dispensa da Lei 14.133 em 2026";
  * escrita.
  */
 const DESCRICAO = limitarDescricao(
-  `Os valores de dispensa por valor em ${REAJUSTE_VIGENTE.ano}: ` +
-    `${emReais(DISPENSA_POR_VALOR.obrasEEngenharia)} para obras e ` +
-    `${emReais(DISPENSA_POR_VALOR.comprasEServicos)} para compras, pelo ` +
-    `${REAJUSTE_VIGENTE.decreto.replace("nº ", "")}. Quando mudam e quem tem o dobro.`,
+  `Dispensa por valor em ${REAJUSTE_VIGENTE.ano}: abaixo de ` +
+    `${emReais(DISPENSA_POR_VALOR.obrasEEngenharia)} em obras e serviços de engenharia e de ` +
+    `${emReais(DISPENSA_POR_VALOR.comprasEServicos)} nas demais compras e serviços.`,
 );
-const ATUALIZADO = REAJUSTE_VIGENTE.vigenteDesde;
+/*
+ * Datas da PÁGINA, não do decreto. `REAJUSTE_VIGENTE.vigenteDesde` diz desde
+ * quando os valores valem; estas dizem quando o texto foi publicado (#114) e
+ * revisado pela última vez. O Article do schema usa estas, porque é o texto que
+ * ele descreve.
+ */
+const PUBLICADO = "2026-08-27";
+const REVISADO = "2026-10-17";
 
 export const metadata: Metadata = {
   title: TITULO,
@@ -113,8 +124,10 @@ const FAQ = [
   {
     pergunta: "Com que frequência esses valores mudam?",
     resposta:
-      "Uma vez por ano. O decreto de reajuste costuma sair no fim de dezembro e passa a " +
-      `valer em 1º de janeiro. O reajuste em vigor foi de ${REAJUSTE_VIGENTE.percentual
+      "Uma vez por ano, em 1º de janeiro, como manda o art. 182 da Lei 14.133. Até " +
+      `${REAJUSTE_VIGENTE.ano} a atualização saiu por decreto; o art. 3º do ` +
+      `${REAJUSTE_VIGENTE.decreto} delegou as próximas ao Ministério da Gestão (MGI). ` +
+      `O reajuste em vigor foi de ${REAJUSTE_VIGENTE.percentual
         .toString()
         .replace(".", ",")}% pelo IPCA-E.`,
   },
@@ -140,7 +153,7 @@ export default function Limites() {
       <article className="mx-auto max-w-3xl px-5 py-10 sm:px-8">
         <header className="space-y-4">
           <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Limites de dispensa da Lei 14.133
+            Qual o valor da dispensa de licitação em {REAJUSTE_VIGENTE.ano}?
           </h1>
           <p className="text-lg leading-relaxed text-[var(--muted)]">
             Os valores que decidem se uma contratação pode ser feita sem
@@ -154,11 +167,13 @@ export default function Limites() {
 
         <div className="mt-8">
           <RespostaDireta>
-            Em {REAJUSTE_VIGENTE.ano}, a dispensa por valor vale até{" "}
-            <strong>{emReais(DISPENSA_POR_VALOR.obrasEEngenharia)}</strong> para
-            obras e serviços de engenharia, e até{" "}
-            <strong>{emReais(DISPENSA_POR_VALOR.comprasEServicos)}</strong> para
-            as demais compras e serviços.
+            Em {REAJUSTE_VIGENTE.ano}, a dispensa por valor vale para
+            contratações abaixo de{" "}
+            <strong>{emReais(DISPENSA_POR_VALOR.obrasEEngenharia)}</strong> em
+            obras e serviços de engenharia, e abaixo de{" "}
+            <strong>{emReais(DISPENSA_POR_VALOR.comprasEServicos)}</strong> nas
+            demais compras e serviços. A lei diz &ldquo;valores inferiores
+            a&rdquo;: o valor exato do limite já fica de fora.
           </RespostaDireta>
         </div>
 
@@ -271,10 +286,18 @@ export default function Limites() {
 
           <Secao id="quando-muda" titulo="Quando estes números mudam">
             <P>
-              Uma vez por ano. O decreto de reajuste costuma ser publicado no
-              fim de dezembro e passa a valer no primeiro dia de janeiro. O
+              Uma vez por ano, em 1º de janeiro, como manda o art. 182 da Lei
+              14.133, que também manda divulgar os novos valores no PNCP. O
               índice usado é o IPCA-E, e o reajuste em vigor foi de{" "}
               {REAJUSTE_VIGENTE.percentual.toString().replace(".", ",")}%.
+            </P>
+            <P>
+              Até {REAJUSTE_VIGENTE.ano} a atualização saiu por decreto
+              presidencial no fim de dezembro. O art. 3º do{" "}
+              {REAJUSTE_VIGENTE.decreto} mudou isso: delegou à autoridade máxima
+              do Ministério da Gestão e da Inovação em Serviços Públicos (MGI) a
+              competência para atualizar os valores nos exercícios seguintes. Na
+              virada do ano, procure o ato do ministério, e não só um decreto.
             </P>
             <P>
               É por isso que esta página existe num endereço próprio. Todo
@@ -290,13 +313,27 @@ export default function Limites() {
             <P>
               Não confie neste site para uma decisão que vale dinheiro sem
               conferir na fonte, e isso vale para qualquer site. O{" "}
-              {REAJUSTE_VIGENTE.decreto} está publicado no Diário Oficial da
-              União e no portal da Presidência da República, e o texto do artigo
-              75 da Lei 14.133 traz as duas faixas e a regra do dobro.
+              <a
+                href={REAJUSTE_VIGENTE.url}
+                className="underline underline-offset-4"
+                rel="noopener"
+              >
+                {REAJUSTE_VIGENTE.decreto}
+              </a>{" "}
+              está publicado no Diário Oficial da União e no portal da
+              Presidência da República, e o texto do{" "}
+              <a
+                href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm#art75"
+                className="underline underline-offset-4"
+                rel="noopener"
+              >
+                artigo 75 da Lei 14.133
+              </a>{" "}
+              traz as duas faixas e a regra do dobro.
             </P>
             <P>
               Se a data no topo desta página estiver muito distante do ano
-              corrente, presuma que saiu decreto novo e confira antes de usar o
+              corrente, presuma que saiu atualização nova e confira antes de usar o
               número. A data está no topo justamente para permitir essa
               desconfiança.
             </P>
@@ -316,9 +353,29 @@ export default function Limites() {
         </div>
 
         <p className="mt-8 text-sm text-[var(--muted)]">
-          Última verificação do conteúdo: {ATUALIZADO}.
+          Última verificação do conteúdo: {REVISADO}.
         </p>
       </article>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "@id": `${SITE.url}/limites/#article`,
+            headline: TITULO,
+            description: DESCRICAO,
+            inLanguage: SITE.locale,
+            datePublished: PUBLICADO,
+            dateModified: REVISADO,
+            author: { "@id": `${SITE.url}/#${AUTHOR.slug}` },
+            publisher: { "@id": `${SITE.url}/#organization` },
+            isPartOf: { "@id": `${SITE.url}/#website` },
+            citation: [REAJUSTE_VIGENTE.url],
+          }),
+        }}
+      />
 
       <script
         type="application/ld+json"

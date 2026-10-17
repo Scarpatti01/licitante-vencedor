@@ -7,9 +7,9 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 
-const TITULO = "Súmulas do TCU: o que muda na sua proposta";
+const TITULO = "Súmulas do TCU: 258, 262, 263, 270 e outras";
 const DESCRICAO =
-  "As súmulas do TCU que mais aparecem em edital: 247, 262, 263, 269, 270, 272, 274, 275, 281, 283 e outras, com texto oficial e efeito prático.";
+  "Texto oficial e efeito prático das súmulas do TCU que mais aparecem em edital: 247, 258, 260, 262, 263, 270, 272 e outras.";
 const ATUALIZADO = "2026-08-12";
 
 export const metadata: Metadata = {
@@ -143,7 +143,7 @@ export default function SumulasTcu() {
         <Trilha atual="Súmulas do TCU" />
 
         <h1 className="mt-6 text-4xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl">
-          Súmulas do TCU em licitações
+          Súmulas do TCU em licitações: o texto e o que muda na sua proposta
         </h1>
 
         <p className="mt-5 text-sm text-[var(--muted)]">

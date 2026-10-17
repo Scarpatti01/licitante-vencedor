@@ -130,6 +130,13 @@ export const PAGINAS_PRODUTO: readonly { href: string; prioridade: number }[] = 
    */
   { href: "/precos/", prioridade: 0.9 },
   { href: "/como-funciona/", prioridade: 0.7 },
+  /*
+   * A página de venda do Workbook, o único produto com checkout aberto. Ficou
+   * fora do sitemap até 17/10 sem motivo registrado: é indexável, tem canonical
+   * e dados estruturados de produto, e era a única página que vende sem estar
+   * na lista que o rastreador recebe.
+   */
+  { href: "/jornada/", prioridade: 0.9 },
 ];
 
 export const GUIAS_PUBLICADOS = GUIAS.filter((g) => g.publicado);
