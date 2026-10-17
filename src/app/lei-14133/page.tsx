@@ -7,6 +7,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { artigosDoGuia } from "@/lib/blog";
 import {
+  DELEGACAO_DA_ATUALIZACAO,
   DISPENSA_POR_VALOR,
   DOBRAM_O_LIMITE,
   REAJUSTE_VIGENTE,
@@ -20,10 +21,21 @@ const DESCRICAO =
 /*
  * Publicado em 10/08 (99d6e9e). A data visível e a do schema estavam
  * descasadas (10/08 no texto, 26/08 no schema); desde 17/10 as duas saem
- * destas constantes.
+ * destas constantes, a visível por `dataPorExtenso`.
  */
 const PUBLICADO = "2026-08-10";
 const ATUALIZADO = "2026-10-17";
+
+const MESES = [
+  "janeiro", "fevereiro", "março", "abril", "maio", "junho",
+  "julho", "agosto", "setembro", "outubro", "novembro", "dezembro",
+];
+
+/** "2026-10-17" → "17 de outubro de 2026", sem passar por fuso. */
+function dataPorExtenso(iso: string): string {
+  const [ano, mes, dia] = iso.split("-").map(Number);
+  return `${dia} de ${MESES[mes - 1]} de ${ano}`;
+}
 
 export const metadata: Metadata = {
   title: TITULO,
@@ -137,7 +149,7 @@ export default function Lei14133() {
         </h1>
 
         <p className="mt-5 text-sm text-[var(--muted)]">
-          Por {AUTHOR.name} · Atualizado em 17 de outubro de 2026
+          Por {AUTHOR.name} · Atualizado em {dataPorExtenso(ATUALIZADO)}
         </p>
 
         <div className="mt-8 space-y-6">
@@ -293,9 +305,9 @@ export default function Lei14133() {
               comum.
             </P>
             <P>
-              Até {REAJUSTE_VIGENTE.ano} a atualização saiu por decreto no fim de
-              dezembro; o próprio {REAJUSTE_VIGENTE.decreto} delegou as próximas ao
-              Ministério da Gestão (MGI). Em janeiro, confira se já há valor novo:
+              Até {DELEGACAO_DA_ATUALIZACAO.ultimoAnoPorDecreto} a atualização saiu
+              por decreto no fim de dezembro; o {DELEGACAO_DA_ATUALIZACAO.ato}{" "}
+              delegou as seguintes ao Ministério da Gestão (MGI). Em janeiro, confira se já há valor novo:
               trabalhar com o do ano passado é erro que aparece em proposta e em
               cotação. A página{" "}
               <a className="underline underline-offset-4" href="/limites/">

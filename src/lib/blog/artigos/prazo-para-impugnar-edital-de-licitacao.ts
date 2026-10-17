@@ -16,8 +16,7 @@ import type { Artigo } from "../tipos";
  * com essas palavras, em vez de insinuar o contrário pelo silêncio.
  *
  * Conferido contra o portal Licitações e Contratos do TCU, que reproduz o texto
- * legal — o Planalto respondeu 503 nas tentativas de verificação, e citar sem
- * ler não é uma opção neste repositório.
+ * legal. Em 14/08 o Planalto respondeu 503; em 17/10 o texto foi lido lá.
  *
  * ## A contagem, corrigida em 17/10/2026
  *
@@ -25,9 +24,10 @@ import type { Artigo } from "../tipos";
  * quarta, e o passo a passo, contando 3 dias úteis para trás, chegava na
  * quinta. As duas coisas não podiam valer juntas, e esta é a página mais vista
  * do site. Vale a do passo a passo: o art. 183 da Lei 14.133 manda excluir o
- * dia do começo e incluir o do vencimento, e o manual do TCU aplica essa regra
- * ao art. 164 (terça excluída; segunda 1, sexta 2, quinta 3). Conferido no
- * Planalto e no manual do TCU em 17/10/2026.
+ * dia do começo e incluir o do vencimento, e o manual do TCU cita essa regra
+ * na página sobre impugnação. O exemplo (terça excluída; segunda 1, sexta 2,
+ * quinta 3) é conta nossa sobre a regra, não do manual. Conferido no Planalto
+ * e no manual do TCU em 17/10/2026.
  */
 export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
   slug: "prazo-para-impugnar-edital-de-licitacao",
@@ -114,7 +114,7 @@ export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
       tipo: "passos",
       itens: [
         "Confirme a data e a hora de abertura no próprio edital e no aviso publicado. É dela que o prazo é contado para trás. Os [portais de licitação](/portais-de-licitacao/) trazem essa data no aviso, mas o edital é que prevalece.",
-        "Conte 3 dias úteis retroativos, excluindo o dia da abertura e pulando feriados do ente que licita, que nem sempre coincidem com os da sua cidade. O terceiro dia útil é o último em que o pedido ainda entra no prazo. É a regra do art. 183 da Lei: exclui-se o dia do começo e inclui-se o do vencimento, e só contam os dias com expediente no órgão.",
+        "Conte 3 dias úteis retroativos, excluindo o dia da abertura e pulando feriados do ente que licita, que nem sempre coincidem com os da sua cidade. O terceiro dia útil é o último em que o pedido ainda entra no prazo. Se o edital ou o sistema informar a data-limite, vale a dele; na dúvida, protocole um dia antes. É a regra do art. 183 da Lei: exclui-se o dia do começo e inclui-se o do vencimento, e só contam os dias com expediente no órgão.",
         "Localize no edital o meio de protocolo. A própria Lei manda o edital informar como impugnar e pedir esclarecimento, inclusive por meio eletrônico. Em licitação eletrônica, o TCU já considerou irregular limitar a impugnação ao horário de expediente do órgão e entendeu que ela pode ser aceita até 23h59 do último dia (Acórdão 969/2022-Plenário). Mesmo assim, não deixe para a última hora.",
         "Escreva apontando o dispositivo do edital e por que ele contraria a Lei, com o pedido claro ao final: correção, supressão ou republicação. Quando houver, cite a [súmula do TCU](/sumulas-tcu/) ou a [decisão do Tribunal](/jurisprudencia/) que trata do mesmo ponto: é o argumento que o agente de contratação mais tem dificuldade de ignorar.",
         "Guarde o comprovante com data e hora. Sem ele, discutir tempestividade depois é discutir sem prova.",

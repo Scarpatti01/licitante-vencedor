@@ -7,6 +7,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import { limitarDescricao } from "@/lib/seo/resultado-de-busca";
 import {
+  DELEGACAO_DA_ATUALIZACAO,
   DISPENSA_POR_VALOR,
   DOBRAM_O_LIMITE,
   REAJUSTE_VIGENTE,
@@ -102,8 +103,8 @@ const FAQ = [
   {
     pergunta: `Qual é o valor da dispensa de licitação em ${REAJUSTE_VIGENTE.ano}?`,
     resposta:
-      `${emReais(DISPENSA_POR_VALOR.obrasEEngenharia)} para obras e serviços de engenharia, ` +
-      `e ${emReais(DISPENSA_POR_VALOR.comprasEServicos)} para as demais compras e serviços. ` +
+      `Abaixo de ${emReais(DISPENSA_POR_VALOR.obrasEEngenharia)} em obras e serviços de engenharia, ` +
+      `e abaixo de ${emReais(DISPENSA_POR_VALOR.comprasEServicos)} nas demais compras e serviços. ` +
       `Os dois valores foram fixados pelo ${REAJUSTE_VIGENTE.decreto} e valem desde ` +
       `${vigenciaPorExtenso()}.`,
   },
@@ -125,8 +126,8 @@ const FAQ = [
     pergunta: "Com que frequência esses valores mudam?",
     resposta:
       "Uma vez por ano, em 1º de janeiro, como manda o art. 182 da Lei 14.133. Até " +
-      `${REAJUSTE_VIGENTE.ano} a atualização saiu por decreto; o art. 3º do ` +
-      `${REAJUSTE_VIGENTE.decreto} delegou as próximas ao Ministério da Gestão (MGI). ` +
+      `${DELEGACAO_DA_ATUALIZACAO.ultimoAnoPorDecreto} a atualização saiu por decreto; o art. 3º do ` +
+      `${DELEGACAO_DA_ATUALIZACAO.ato} delegou as seguintes ao Ministério da Gestão (MGI). ` +
       `O reajuste em vigor foi de ${REAJUSTE_VIGENTE.percentual
         .toString()
         .replace(".", ",")}% pelo IPCA-E.`,
@@ -158,7 +159,7 @@ export default function Limites() {
           <p className="text-lg leading-relaxed text-[var(--muted)]">
             Os valores que decidem se uma contratação pode ser feita sem
             licitação, com o decreto que os fixou e a data em que passaram a
-            valer. Esta página é atualizada quando o decreto muda.
+            valer. Esta página é atualizada a cada reajuste.
           </p>
           <p className="text-sm text-[var(--muted)]">
             Vigente desde {vigenciaPorExtenso()} · {REAJUSTE_VIGENTE.decreto}
@@ -185,7 +186,7 @@ export default function Limites() {
           <Secao id="valores" titulo="Os valores em vigor, e de onde eles vêm">
             <P>
               A Lei 14.133 autoriza a contratação direta por valor em duas
-              faixas, e corrige as duas por decreto todo ano. Os números abaixo
+              faixas, e atualiza as duas todo 1º de janeiro. Os números abaixo
               são os que valem hoje.
             </P>
 
@@ -292,9 +293,9 @@ export default function Limites() {
               {REAJUSTE_VIGENTE.percentual.toString().replace(".", ",")}%.
             </P>
             <P>
-              Até {REAJUSTE_VIGENTE.ano} a atualização saiu por decreto
-              presidencial no fim de dezembro. O art. 3º do{" "}
-              {REAJUSTE_VIGENTE.decreto} mudou isso: delegou à autoridade máxima
+              Até {DELEGACAO_DA_ATUALIZACAO.ultimoAnoPorDecreto} a atualização
+              saiu por decreto presidencial no fim de dezembro. O art. 3º do{" "}
+              {DELEGACAO_DA_ATUALIZACAO.ato} mudou isso: delegou à autoridade máxima
               do Ministério da Gestão e da Inovação em Serviços Públicos (MGI) a
               competência para atualizar os valores nos exercícios seguintes. Na
               virada do ano, procure o ato do ministério, e não só um decreto.

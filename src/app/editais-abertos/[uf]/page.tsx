@@ -144,7 +144,7 @@ function perguntasDaUf(u: UfAberta): { pergunta: string; resposta: string }[] {
     },
     {
       pergunta: "Qual é a diferença entre pregão e dispensa?",
-      resposta: `O pregão é a modalidade padrão para bem e serviço comum, com disputa de lances. A dispensa é contratação direta por valor pequeno, que em ${REAJUSTE_VIGENTE.ano} vale até ${emReais(DISPENSA_POR_VALOR.comprasEServicos)} em compras e serviços e até ${emReais(DISPENSA_POR_VALOR.obrasEEngenharia)} em obras e engenharia. Dispensa não é contratar quem quiser: a dispensa eletrônica também tem aviso público e disputa de preço.`,
+      resposta: `O pregão é a modalidade padrão para bem e serviço comum, com disputa de lances. A dispensa é contratação direta por valor pequeno, que em ${REAJUSTE_VIGENTE.ano} vale abaixo de ${emReais(DISPENSA_POR_VALOR.comprasEServicos)} em compras e serviços e abaixo de ${emReais(DISPENSA_POR_VALOR.obrasEEngenharia)} em obras e serviços de engenharia. Dispensa não é contratar quem quiser: a dispensa eletrônica também tem aviso público e disputa de preço.`,
     },
     {
       pergunta: "De onde vêm estes editais?",
@@ -258,7 +258,7 @@ export default async function EditaisAbertosDaUf({
               O pregão eletrônico costuma dominar porque é a modalidade padrão
               para bem e serviço comum, e ele é disputado de qualquer lugar do
               país. A dispensa aparece logo atrás e é a porta de entrada mais
-              subestimada: em {REAJUSTE_VIGENTE.ano} ela vale até{" "}
+              subestimada: em {REAJUSTE_VIGENTE.ano} ela vale abaixo de{" "}
               {emReais(DISPENSA_POR_VALOR.comprasEServicos)} em compras e
               serviços, com menos concorrência e documentação mais enxuta. O que
               cada modalidade exige está no{" "}

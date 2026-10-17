@@ -42,7 +42,7 @@ export const PRAZO_PARA_RECURSO: Artigo = {
   titulo:
     "Qual o prazo para recurso em licitação? 3 dias úteis, e a intenção é na hora",
   descricao:
-    "Lei 14.133, art. 165: recurso em 3 dias úteis da intimação ou da ata. Contra julgamento e habilitação, a intenção de recorrer é na hora, na sessão.",
+    "Lei 14.133, art. 165: recurso em 3 dias úteis da intimação ou da ata. Contra julgamento e habilitação, a intenção de recorrer tem de ser imediata.",
   resumo:
     "A Lei 14.133/2021 dá 3 dias úteis para apresentar as razões de recurso. Só que, contra o julgamento das propostas e contra a habilitação, esse prazo nem começa se a intenção de recorrer não for manifestada imediatamente na sessão pública. Quem fecha o pregão sem registrar a intenção no campo próprio do sistema perde o direito ali, e descobre no dia seguinte. Este texto separa os prazos que a Lei trata como coisas diferentes e diz o que precisa acontecer em cada um.",
   intencao: "operacional",

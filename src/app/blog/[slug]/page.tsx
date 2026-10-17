@@ -208,8 +208,9 @@ export default async function PaginaDoArtigo({
           está disposto a dar.
           
           Agora a escalada é natural. A captura gratuita fica no meio, onde a
-          dor aparece; o cartão pago fica no fim, para quem quer mais. Um de
-          cada, e cada um dizendo a verdade do seu lado.
+          dor aparece; no fim ficam os dois produtos pagos, para quem quer
+          mais: o Workbook, que já pode ser comprado, e o cartão da assinatura.
+          Cada um dizendo a verdade do seu lado.
         */}
         <ConviteAoWorkbook />
 

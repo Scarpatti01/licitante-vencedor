@@ -13,7 +13,7 @@ export const DOCUMENTOS_PARA_PARTICIPAR: Artigo = {
   tituloDaBusca: "Documentos para participar de licitação por fase",
   titulo: "Quais documentos preciso para participar de licitação? A lista por fase",
   descricao:
-    "Quais documentos você precisa para participar de licitação: habilitação jurídica, fiscal, técnica e econômica, e o que tem conserto quando falta.",
+    "Quais documentos você precisa para participar de licitação: habilitação jurídica, fiscal, técnica e econômica, e o que ainda dá para corrigir depois.",
   resumo:
     "A Lei 14.133 divide a habilitação em jurídica, técnica, fiscal/social/trabalhista e econômico-financeira, e em regra só o licitante vencedor apresenta os documentos. O que elimina empresa quase nunca é a falta do documento em si: é a validade vencida no dia errado, o atestado sem quantitativo e o item que simplesmente não foi anexado.",
   intencao: "operacional",

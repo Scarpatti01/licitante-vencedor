@@ -76,7 +76,7 @@ export const GUIAS: readonly Guia[] = [
     /*
      * Nasceu em 26/08 como a "página viva" dos números que envelhecem.
      *
-     * Os limites de dispensa mudam por decreto todo janeiro. Impressos em
+     * Os limites de dispensa mudam todo 1º de janeiro. Impressos em
      * material que não se atualiza, envelhecem em silêncio: este guia carregou
      * os valores de 2021 por cinco anos sem que nada reclamasse. A regra que
      * passou a valer é que todo material distribuído cita este endereço em vez
