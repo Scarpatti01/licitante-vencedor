@@ -7,6 +7,7 @@ import { DISPENSA_E_INEXIGIBILIDADE } from "./artigos/dispensa-e-inexigibilidade
 import { DISPENSA_ELETRONICA } from "./artigos/dispensa-eletronica";
 import { DOCUMENTOS_PARA_PARTICIPAR } from "./artigos/documentos-para-participar-de-licitacao";
 import { EXIGENCIA_ABUSIVA_EM_EDITAL } from "./artigos/exigencia-abusiva-em-edital";
+import { LEI_8666_AINDA_VALE } from "./artigos/lei-8666-ainda-vale";
 import { PRAZO_PARA_IMPUGNAR_EDITAL } from "./artigos/prazo-para-impugnar-edital-de-licitacao";
 import { PRAZO_PARA_RECURSO } from "./artigos/prazo-para-recurso-em-licitacao";
 import { QUANTAS_LICITACOES_POR_DIA } from "./artigos/quantas-licitacoes-sao-publicadas-por-dia";
@@ -33,6 +34,7 @@ const CATALOGO: readonly Artigo[] = [
   DISPENSA_ELETRONICA,
   DOCUMENTOS_PARA_PARTICIPAR,
   EXIGENCIA_ABUSIVA_EM_EDITAL,
+  LEI_8666_AINDA_VALE,
   PRAZO_PARA_IMPUGNAR_EDITAL,
   PRAZO_PARA_RECURSO,
   QUANTAS_LICITACOES_POR_DIA,
