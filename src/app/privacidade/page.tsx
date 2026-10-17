@@ -135,13 +135,13 @@ export default function Privacidade() {
               linhas={[
                 [
                   "E-mail",
-                  "Ao pedir o alerta de editais, ou ao criar conta",
-                  "Enviar os editais compatíveis e permitir o acesso à conta",
+                  "Ao pedir o convite do teste, um material gratuito (modelo ou folha de trabalho), ou ao criar conta",
+                  "Enviar o que você pediu: o convite e os editais compatíveis, ou só o material pedido; e permitir o acesso à conta",
                   "Execução do serviço que você pediu (art. 7º, V)",
                 ],
                 [
                   "Cidade ou região de interesse",
-                  "No formulário de alerta",
+                  "No formulário do convite do teste (o do material não pede)",
                   "Saber quais editais interessam a você",
                   "Execução do serviço (art. 7º, V)",
                 ],

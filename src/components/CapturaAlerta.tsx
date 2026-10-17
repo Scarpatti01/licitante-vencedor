@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import { BOTAO_DO_TESTE, PROMESSA_CURTA } from "@/lib/convite";
+import { MATERIAIS, type SlugDeMaterial } from "@/lib/materiais";
 
 /**
  * Formulário de cadastro no convite do teste.
@@ -34,6 +35,7 @@ export function CapturaAlerta({
   origem,
   chamada,
   textoDoBotao = BOTAO_DO_TESTE,
+  material,
 }: {
   /** Qual página gerou o cadastro. É o que permite saber qual conteúdo converte. */
   origem: string;
@@ -48,7 +50,17 @@ export function CapturaAlerta({
    */
   chamada?: { titulo: string; texto: string };
   textoDoBotao?: string;
+  /**
+   * Oferece um material gratuito (`materiais.ts`) no lugar do convite do teste.
+   *
+   * Muda o que o formulário promete e o que a confirmação entrega; o cadastro,
+   * o double opt-in e a origem continuam os mesmos. Sem cidade: quem pede um
+   * modelo de impugnação não escolheu região nenhuma, e perguntar seria atrito
+   * sem uso.
+   */
+  material?: SlugDeMaterial;
 }) {
+  const oferta = material ? MATERIAIS[material] : null;
   const [estado, setEstado] = useState<Estado>({ tipo: "parado" });
 
   async function enviar(evento: React.FormEvent<HTMLFormElement>) {
@@ -67,6 +79,7 @@ export function CapturaAlerta({
           cidade: dados.get("cidade"),
           site: dados.get("site"),
           origem,
+          ...(oferta ? { material: oferta.slug } : {}),
         }),
       });
 
@@ -102,8 +115,8 @@ export function CapturaAlerta({
             <p className="leading-relaxed">
               <strong>Falta um clique.</strong> Enviamos um e-mail de confirmação
               para o endereço que você digitou. Só depois que você clicar no link
-              é que o convite do teste sai — é assim que garantimos que ninguém
-              entra na lista sem pedir.
+              é que {oferta ? "o material é liberado" : "o convite do teste sai"}:
+              é assim que garantimos que ninguém entra na lista sem pedir.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
               Não chegou em alguns minutos? Confira a caixa de spam e o promoções.
@@ -116,8 +129,8 @@ export function CapturaAlerta({
             <p className="leading-relaxed">
               <strong>Recebemos seu cadastro, mas o e-mail de confirmação não
               saiu.</strong>{" "}
-              Seu interesse está registrado — o que falhou foi o envio, do nosso
-              lado. Sem a confirmação, o convite não sai.
+              Seu interesse está registrado. O que falhou foi o envio, do nosso
+              lado. Sem a confirmação, {oferta ? "o material não é liberado" : "o convite não sai"}.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
               Tente de novo daqui a pouco ou fale com a gente pelo{" "}
@@ -169,15 +182,17 @@ export function CapturaAlerta({
               className="mt-1 w-full rounded-md border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
             />
           </label>
-          <label className="block">
-            <span className="text-sm font-medium">Cidade de interesse</span>
-            <input
-              name="cidade"
-              type="text"
-              placeholder="Recife, Caruaru…"
-              className="mt-1 w-full rounded-md border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
-            />
-          </label>
+          {oferta ? null : (
+            <label className="block">
+              <span className="text-sm font-medium">Cidade de interesse</span>
+              <input
+                name="cidade"
+                type="text"
+                placeholder="Recife, Caruaru…"
+                className="mt-1 w-full rounded-md border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
+              />
+            </label>
+          )}
         </div>
 
         {/* Armadilha para robô: invisível e fora da ordem de tabulação. */}
@@ -195,7 +210,11 @@ export function CapturaAlerta({
           disabled={estado.tipo === "enviando"}
           className="rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white disabled:opacity-60"
         >
-          {estado.tipo === "enviando" ? "Enviando…" : textoDoBotao}
+          {estado.tipo === "enviando"
+            ? "Enviando…"
+            : oferta && textoDoBotao === BOTAO_DO_TESTE
+              ? `Receber ${oferta.nomeCurto}`
+              : textoDoBotao}
         </button>
 
         {/*
@@ -207,9 +226,10 @@ export function CapturaAlerta({
           entregar o e-mail, que a pessoa quer conferir.
         */}
         <p className="text-xs leading-relaxed text-[var(--muted)]">
-          {PROMESSA_CURTA} Usamos seu e-mail apenas para enviar o convite e os
-          editais que você pediu, e você sai com um clique. Sem rastreador e sem repasse a
-          terceiros — veja a{" "}
+          {oferta
+            ? `Grátis, em ${oferta.formato}. Usamos seu e-mail apenas para enviar o material que você pediu, e você sai com um clique.`
+            : `${PROMESSA_CURTA} Usamos seu e-mail apenas para enviar o convite e os editais que você pediu, e você sai com um clique.`} Sem rastreador e sem repasse a
+          terceiros. Veja a{" "}
           <a href="/privacidade/" className="underline underline-offset-4">
             política de privacidade
           </a>

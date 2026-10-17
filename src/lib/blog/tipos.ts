@@ -1,3 +1,4 @@
+import type { SlugDeMaterial } from "../materiais";
 /**
  * O modelo de um artigo do blog.
  *
@@ -39,7 +40,16 @@ export type BlocoDeConteudo =
    * tem um problema. Depois do parágrafo que descreve a dor, não no fim da
    * página que ele nunca alcança.
    */
-  | { tipo: "captura"; chamada: string };
+  | {
+      tipo: "captura";
+      chamada: string;
+      /**
+       * Oferece um material gratuito (`materiais.ts`) em vez do convite do
+       * teste. Com ele, `chamada` vira o título curto e o texto de apoio é a
+       * descrição do material.
+       */
+      material?: SlugDeMaterial;
+    };
 
 export type Artigo = {
   slug: string;

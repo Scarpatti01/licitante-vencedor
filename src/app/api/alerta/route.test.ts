@@ -122,6 +122,19 @@ describe("POST /api/alerta/", () => {
     expect(enviarFalso).not.toHaveBeenCalled();
   });
 
+  it("leva o material pedido até o e-mail de confirmação", async () => {
+    await cadastrar({ ...LEAD, material: "modelo-de-impugnacao" });
+    const [destinatario] = enviarFalso.mock.calls[0];
+    expect(destinatario.material?.slug).toBe("modelo-de-impugnacao");
+  });
+
+  it("material desconhecido não recusa o lead: vira cadastro comum", async () => {
+    const resposta = await cadastrar({ ...LEAD, material: "toString" });
+    expect(resposta.status).toBe(201);
+    const [destinatario] = enviarFalso.mock.calls[0];
+    expect(destinatario.material).toBeNull();
+  });
+
   it("e-mail implausível não chega a gravar nem a enviar", async () => {
     const resposta = await cadastrar({ ...LEAD, email: "sem-arroba" });
 

@@ -3,6 +3,9 @@ import { after } from "next/server";
 import { Detalhe, TelaDeAviso } from "@/components/TelaDeAviso";
 import { confirmarLead, type IdentificacaoDoLead } from "@/lib/leads";
 import { enviarBoasVindas } from "@/lib/leads-emails";
+import { materialPorSlug, type Material } from "@/lib/materiais";
+import { DIAS_DE_TESTE } from "@/lib/assinatura/teste";
+import { OFERTA } from "@/lib/jornada/oferta";
 
 /**
  * O segundo passo do double opt-in: a pessoa clicou no link do e-mail.
@@ -49,8 +52,9 @@ export default async function Confirmar({
 }: {
   searchParams: Promise<{ [chave: string]: string | string[] | undefined }>;
 }) {
-  const { t } = await searchParams;
+  const { t, m } = await searchParams;
   const resultado = await confirmarLead(typeof t === "string" ? t : undefined);
+  const material = materialPorSlug(m);
 
   if (resultado.situacao === "feito-agora") {
     /*
@@ -65,25 +69,31 @@ export default async function Confirmar({
      * nunca lançado.
      */
     const token = typeof t === "string" ? t : "";
-    after(() => avisarBoasVindas(resultado.lead, token));
+    after(() => avisarBoasVindas(resultado.lead, token, material));
 
+    if (material) return <EntregaDoMaterial material={material} mandamosPorEmail />;
+
+    /*
+     * Até 17/10/2026 esta tela dizia "O alerta começa no próximo dia útil", e
+     * o alerta gratuito acabou em 25/08. O formulário oferece o convite do
+     * teste, e é ele que a tela confirma.
+     */
     return (
       <TelaDeAviso
-        titulo="E-mail confirmado. O alerta começa no próximo dia útil."
+        titulo="E-mail confirmado. O convite está a caminho."
         caminhos={[
-          { href: "/blog/", rotulo: "Ler os guias enquanto isso", principal: true },
-          { href: "/como-funciona/", rotulo: "Como funciona o alerta" },
+          { href: "/criar-conta/", rotulo: `Começar os ${DIAS_DE_TESTE} dias`, principal: true },
+          { href: "/como-funciona/", rotulo: "Como funciona" },
         ]}
       >
         <p>
-          Pronto. A partir de agora você recebe, nos dias úteis pela manhã, os
-          editais publicados no Portal Nacional de Contratações Públicas para a
-          região que você indicou.
+          Mandamos agora um e-mail com o convite para os {DIAS_DE_TESTE} dias
+          de teste. Para começar, falta cadastrar a empresa e escolher onde
+          procurar: leva uns cinco minutos.
         </p>
         <Detalhe>
-          Quando não houver publicação nova naquele dia, você não recebe e-mail.
-          Silêncio também é resposta — caixa de entrada cheia de “nada por aqui”
-          só ensina a ignorar o remetente. E o link para sair da lista está no
+          Depois disso, o resumo chega nos dias úteis pela manhã, e só quando
+          houver edital novo para você. O link para sair da lista está no
           rodapé de toda mensagem, sempre a um clique.
         </Detalhe>
       </TelaDeAviso>
@@ -91,23 +101,26 @@ export default async function Confirmar({
   }
 
   if (resultado.situacao === "ja-estava") {
+    // Quem já estava na lista e pediu um material recebe o material aqui.
+    if (material) return <EntregaDoMaterial material={material} mandamosPorEmail={false} />;
+
     return (
       <TelaDeAviso
         titulo="Este e-mail já estava confirmado."
         caminhos={[
-          { href: "/blog/", rotulo: "Ler os guias", principal: true },
-          { href: "/como-funciona/", rotulo: "Como funciona o alerta" },
+          { href: "/criar-conta/", rotulo: `Começar os ${DIAS_DE_TESTE} dias`, principal: true },
+          { href: "/blog/", rotulo: "Ler os guias" },
         ]}
       >
         <p>
-          Nada a fazer: você já está na lista e continua recebendo os editais nos
-          dias úteis. Clicar duas vezes no link não cadastra duas vezes nem
-          reinicia nada.
+          Nada a fazer: o cadastro já estava confirmado, e clicar duas vezes no
+          link não cadastra duas vezes nem reinicia nada. Se você ainda não
+          começou o teste, o caminho é criar a conta.
         </p>
         <Detalhe>
-          Se os alertas não estão chegando, procure na caixa de spam e marque o
-          remetente como confiável. Se ainda assim não aparecerem, fale com a
-          gente pelo contato em <a className="underline underline-offset-4" href="/sobre/">sobre</a>.
+          Se os nossos e-mails não estão chegando, procure na caixa de spam e
+          marque o remetente como confiável. Se ainda assim não aparecerem, fale
+          com a gente pelo contato em <a className="underline underline-offset-4" href="/sobre/">sobre</a>.
         </Detalhe>
       </TelaDeAviso>
     );
@@ -118,7 +131,12 @@ export default async function Confirmar({
       <TelaDeAviso
         titulo="Este link de confirmação não vale mais."
         caminhos={[
-          { href: "/alerta-de-licitacao/", rotulo: "Cadastrar de novo", principal: true },
+          {
+            // Quem veio pelo material volta à página que o oferece, e não ao convite do teste.
+            href: material?.pagina ?? "/alerta-de-licitacao/",
+            rotulo: material ? "Pedir o material de novo" : "Cadastrar de novo",
+            principal: true,
+          },
           { href: "/sobre/", rotulo: "Falar com a gente" },
         ]}
       >
@@ -128,7 +146,7 @@ export default async function Confirmar({
           cadastro foi cancelado depois, ou o link é de uma tentativa antiga.
         </p>
         <Detalhe>
-          O caminho mais rápido é se cadastrar de novo — leva o mesmo tempo que
+          O caminho mais rápido é se cadastrar de novo: leva o mesmo tempo que
           descobrir qual das três foi, e um novo e-mail de confirmação chega em
           seguida.
         </Detalhe>
@@ -150,7 +168,7 @@ export default async function Confirmar({
         botão do e-mail.
       </p>
       <Detalhe>
-        Seu cadastro não foi perdido e nada foi decidido sobre ele — só não
+        Seu cadastro não foi perdido e nada foi decidido sobre ele. Só não
         conseguimos registrar a confirmação neste momento. Se insistir e não
         funcionar, o contato está em{" "}
         <a className="underline underline-offset-4" href="/sobre/">
@@ -170,14 +188,56 @@ export default async function Confirmar({
  * aceitável (a confirmação valeu; só o primeiro e-mail não sai) desde que fique
  * no log de quem opera.
  */
-async function avisarBoasVindas(lead: IdentificacaoDoLead | undefined, token: string) {
+async function avisarBoasVindas(
+  lead: IdentificacaoDoLead | undefined,
+  token: string,
+  material: Material | null,
+) {
   if (!lead?.email) {
-    console.error("[confirmar] confirmado sem identificar o lead — boas-vindas não enviadas");
+    console.error("[confirmar] confirmado sem identificar o lead; boas-vindas não enviadas");
     return;
   }
 
-  const envio = await enviarBoasVindas({ email: lead.email, cidade: lead.cidade, token });
+  const envio = await enviarBoasVindas({ email: lead.email, cidade: lead.cidade, token, material });
   if (!envio.ok) {
     console.error("[confirmar] boas-vindas não enviadas", envio.motivo, envio.detalhe);
   }
+}
+
+/**
+ * A entrega de um material gratuito.
+ *
+ * O botão principal baixa o arquivo; o segundo leva ao Workbook, que é o passo
+ * pago natural de quem pediu uma folha de trabalho ou um modelo. O preço sai de
+ * `OFERTA`, como em toda oferta do site.
+ */
+function EntregaDoMaterial({
+  material,
+  mandamosPorEmail,
+}: {
+  material: Material;
+  /** Só na primeira confirmação o link vai por e-mail; no segundo clique, não. */
+  mandamosPorEmail: boolean;
+}) {
+  return (
+    <TelaDeAviso
+      titulo={`Pronto. Aqui está ${material.nomeCurto}.`}
+      caminhos={[
+        { href: material.arquivo, rotulo: "Baixar o material", principal: true, arquivo: true },
+        { href: "/jornada/", rotulo: "Conhecer o Workbook" },
+      ]}
+    >
+      <p>{material.descricao}</p>
+      <p>
+        Formato: {material.formato}.
+        {mandamosPorEmail ? " Também vamos mandar o link para o seu e-mail, para você guardar." : ""}
+      </p>
+      <Detalhe>
+        Quer o caminho inteiro, do primeiro cadastro ao contrato assinado? O{" "}
+        {OFERTA.nomeCompleto} custa {OFERTA.precoEscrito}, {OFERTA.formaDeCobranca}, com{" "}
+        {OFERTA.diasDeGarantia} dias de garantia. O material não é parecer jurídico e não
+        substitui a leitura do edital.
+      </Detalhe>
+    </TelaDeAviso>
+  );
 }

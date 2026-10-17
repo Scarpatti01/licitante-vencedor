@@ -91,12 +91,19 @@ export function abrirRepositorio(): Repositorio | null {
        *   `cidade=not.is.null` — sem região não há o que filtrar. Quem cadastrou
        *     sem cidade não recebe: o alerta seria "todos os editais do Brasil",
        *     que não é o produto que ele pediu.
+       *   `origem=not.like.*material-*` — quem se cadastrou para receber um
+       *     material gratuito (`materiais.ts`) leu "usamos seu e-mail apenas
+       *     para enviar o material que você pediu". O formulário do material
+       *     não pede cidade, então a condição de cima já o deixaria de fora;
+       *     esta torna a regra explícita, para não depender de um campo que
+       *     alguém pode acrescentar ao formulário amanhã.
        */
       const consulta = new URLSearchParams({
         select: "id,email,cidade,token",
         confirmado_em: "not.is.null",
         descadastrado_em: "is.null",
         cidade: "not.is.null",
+        origem: "not.like.*material-*",
         order: "recebido_em.asc",
       });
 

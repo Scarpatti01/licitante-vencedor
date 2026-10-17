@@ -31,10 +31,10 @@ import type { Artigo } from "../tipos";
  */
 export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
   slug: "prazo-para-impugnar-edital-de-licitacao",
-  tituloDaBusca: "Prazo para impugnar edital: como contar os dias",
+  tituloDaBusca: "Prazo para impugnar edital: contagem e modelo",
   titulo: "Qual o prazo para impugnar edital de licitação? 3 dias úteis antes da abertura",
   descricao:
-    "Pela Lei 14.133, art. 164, qualquer pessoa pode impugnar o edital até 3 dias úteis antes da abertura. Como contar os dias para trás sem perder o prazo.",
+    "Pela Lei 14.133, art. 164, qualquer pessoa pode impugnar o edital até 3 dias úteis antes da abertura. Como contar o prazo, e um modelo para baixar.",
   resumo:
     "Qualquer pessoa pode impugnar um edital ou pedir esclarecimento, mas o pedido precisa ser protocolado até 3 dias úteis antes da abertura do certame, um prazo que corre de trás para frente. Quem acha o edital na véspera não perde por mérito: perde por calendário. Impugnação, esclarecimento e recurso são três coisas distintas, com momentos e efeitos diferentes.",
   intencao: "operacional",
@@ -120,6 +120,11 @@ export const PRAZO_PARA_IMPUGNAR_EDITAL: Artigo = {
         "Guarde o comprovante com data e hora. Sem ele, discutir tempestividade depois é discutir sem prova.",
         "Acompanhe a resposta e verifique se o edital foi alterado, alteração que afete a formulação das propostas obriga a nova divulgação e reabertura do prazo.",
       ],
+    },
+    {
+      tipo: "captura",
+      chamada: "Baixe o modelo de impugnação de edital",
+      material: "modelo-de-impugnacao",
     },
     {
       tipo: "subtitulo",

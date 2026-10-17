@@ -5,6 +5,7 @@ import { AutorBio } from "@/components/AutorBio";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { MATERIAIS } from "@/lib/materiais";
 import { artigosDoGuia } from "@/lib/blog";
 
 const TITULO = "Jurisprudência em licitações: o que o TCU exige";
@@ -242,15 +243,14 @@ export default function Jurisprudencia() {
             Sem heading próprio: o `Indice` promete uma lista fechada de seções,
             e um h2 comercial faria o sumário discordar do documento.
           */}
-          <section aria-label="Alerta diário de editais">
+          <section aria-label="Modelo de impugnação grátis">
             <CapturaAlerta
-              origem="guia/jurisprudencia#meio"
+              origem="guia/jurisprudencia#material-modelo-de-impugnacao"
               chamada={{
-                titulo: "O argumento só serve enquanto o prazo está aberto",
-                texto:
-                  "Este guia é sobre argumento, e ele continua logo abaixo. Pule esta caixa sem culpa. Fica só a observação prática: os prazos da tabela acima correm a partir da publicação. Se ajudar, dá para testar por 14 dias, sem cartão, o serviço que manda nos dias úteis os editais do PNCP que combinam com o que a sua empresa vende, com prazo e link para o registro oficial.",
+                titulo: "Vai impugnar? Comece pelo modelo",
+                texto: MATERIAIS["modelo-de-impugnacao"].descricao,
               }}
-              textoDoBotao="Quero testar por 14 dias"
+              material="modelo-de-impugnacao"
             />
           </section>
 

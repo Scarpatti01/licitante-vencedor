@@ -324,3 +324,41 @@ describe("HTML de e-mail", () => {
     }
   });
 });
+
+describe("material gratuito", () => {
+  const MATERIAL = {
+    nome: "o modelo de impugnação de edital",
+    nomeCurto: "o modelo de impugnação",
+    descricao: "A estrutura do pedido.",
+    url: `${SITE.url}/materiais/modelo-de-impugnacao-de-edital.docx`,
+  };
+
+  it("a confirmação fala do material, e não do convite do teste", () => {
+    const c = conteudoDeConfirmacao({ ...CONFIRMACAO, material: MATERIAL });
+    const texto = emTextoSimples(c);
+    expect(c.assunto).toContain(MATERIAL.nomeCurto);
+    expect(texto).toContain(MATERIAL.nome);
+    expect(texto).not.toMatch(/convite|dias de teste/i);
+    // O link continua sendo o de confirmação: o arquivo só sai depois do clique.
+    expect(c.acao?.url).toBe(CONFIRMACAO.linkDeConfirmacao);
+    expect(texto).not.toContain(MATERIAL.url);
+    expect(texto).toMatch(/enquanto você não clicar, não enviamos nada/i);
+  });
+
+  it("a boas-vindas entrega o arquivo e não repete o convite nem o aviso do alerta", () => {
+    const c = conteudoDeBoasVindas({ ...BOAS_VINDAS, material: MATERIAL });
+    const texto = emTextoSimples(c);
+    expect(c.acao?.url).toBe(MATERIAL.url);
+    expect(texto).not.toMatch(/alerta gratuito|Começar os/i);
+    expect(c.rodape.descadastro).toBeTruthy();
+    expect(c.rodape.porque).toContain(MATERIAL.nome);
+  });
+
+  it("sem material, a confirmação promete o convite do teste, que é o que o formulário oferece", () => {
+    // Até 17/10/2026 ela prometia "os alertas de licitação", que acabaram em 25/08.
+    const c = conteudoDeConfirmacao(CONFIRMACAO);
+    expect(c.assunto).toMatch(/convite/i);
+    expect(emTextoSimples(c)).not.toMatch(/alertas de licitação/i);
+    expect(emTextoSimples(c)).toMatch(new RegExp(`${DIAS_DE_TESTE} dias`));
+  });
+});

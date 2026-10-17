@@ -44,6 +44,7 @@ export {
   type DadosDaConfirmacao,
   type DadosDoConvite,
   type DadosDeBoasVindas,
+  type MaterialNoEmail,
 } from "./mensagens.ts";
 
 export { criarProvedorResend, chaveDoResend, type OpcoesDoProvedorResend } from "./resend.ts";

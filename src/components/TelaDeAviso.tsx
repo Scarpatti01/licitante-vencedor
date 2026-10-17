@@ -25,6 +25,11 @@ export type CaminhoAdiante = {
   rotulo: string;
   /** Destaca o caminho principal. No máximo um por tela. */
   principal?: boolean;
+  /**
+   * Um arquivo para baixar, e não uma página. Vai num `<a download>` comum:
+   * o `Link` do Next trataria `/materiais/x.pdf` como rota e tentaria buscá-la.
+   */
+  arquivo?: boolean;
 };
 
 export function TelaDeAviso({
@@ -49,20 +54,20 @@ export function TelaDeAviso({
         <div className="mt-6 space-y-4 leading-relaxed">{children}</div>
 
         <div className="mt-10 flex flex-wrap gap-3">
-          {caminhos.map((caminho) => (
-            <Link
-              key={caminho.href}
-              href={caminho.href}
-              prefetch={false}
-              className={
-                caminho.principal
-                  ? "rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white"
-                  : "rounded-md border px-5 py-2.5 text-sm font-medium"
-              }
-            >
-              {caminho.rotulo}
-            </Link>
-          ))}
+          {caminhos.map((caminho) => {
+            const classe = caminho.principal
+              ? "rounded-md bg-[var(--accent)] px-5 py-2.5 text-sm font-medium text-white"
+              : "rounded-md border px-5 py-2.5 text-sm font-medium";
+            return caminho.arquivo ? (
+              <a key={caminho.href} href={caminho.href} download className={classe}>
+                {caminho.rotulo}
+              </a>
+            ) : (
+              <Link key={caminho.href} href={caminho.href} prefetch={false} className={classe}>
+                {caminho.rotulo}
+              </Link>
+            );
+          })}
         </div>
       </main>
     </div>

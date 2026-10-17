@@ -1,4 +1,5 @@
 import { Fragment, type ReactNode } from "react";
+import { MATERIAIS } from "@/lib/materiais";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
 import type { BlocoDeConteudo } from "@/lib/blog/tipos";
 
@@ -145,6 +146,17 @@ function renderizar(bloco: BlocoDeConteudo, origem: string, indice: number) {
       );
 
     case "captura":
+      if (bloco.material) {
+        return (
+          <div className="py-4">
+            <CapturaAlerta
+              origem={`${origem}#material-${bloco.material}`}
+              chamada={{ titulo: bloco.chamada, texto: MATERIAIS[bloco.material].descricao }}
+              material={bloco.material}
+            />
+          </div>
+        );
+      }
       return (
         <div className="py-4">
           <CapturaAlerta

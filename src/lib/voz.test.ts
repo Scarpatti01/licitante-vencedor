@@ -51,6 +51,15 @@ const VIGIADOS = [
   "lib/email/mensagens.ts",
   "components/CardAssinatura.tsx",
   /*
+   * As telas e o formulário dos materiais gratuitos, de 17/10/2026: entraram
+   * na lista junto com a limpeza dos travessões que já estavam nelas.
+   */
+  "components/CapturaAlerta.tsx",
+  "components/TelaDeAviso.tsx",
+  "components/ConviteAoWorkbook.tsx",
+  "app/confirmar/page.tsx",
+  "lib/materiais.ts",
+  /*
    * O carimbo do livro. É a linha que o comprador lê no rodapé de todas as 126
    * páginas do exemplar dele, e por isso é texto de cliente como qualquer
    * outro. Entrou junto com a entrega do livro.
@@ -178,8 +187,9 @@ describe("a guarda vigia o que foi limpo", () => {
     // da lista, e a guarda passa a proteger um conjunto vazio sem ficar
     // vermelha nunca mais.
     expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(8);
-    // 17 desde 28/08, com a rota que entrega o livro carimbado.
-    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(17);
+    // 17 desde 28/08, com a rota que entrega o livro carimbado; 18 desde
+    // 17/10, com a tela de confirmação que entrega os materiais.
+    expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(18);
     expect(VIGIADOS).toContain("lib/resumo/plano.ts");
 
     /*
