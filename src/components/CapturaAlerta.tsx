@@ -129,7 +129,7 @@ export function CapturaAlerta({
             <p className="leading-relaxed">
               <strong>Recebemos seu cadastro, mas o e-mail de confirmação não
               saiu.</strong>{" "}
-              Seu interesse está registrado — o que falhou foi o envio, do nosso
+              Seu interesse está registrado. O que falhou foi o envio, do nosso
               lado. Sem a confirmação, {oferta ? "o material não é liberado" : "o convite não sai"}.
             </p>
             <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
@@ -229,7 +229,7 @@ export function CapturaAlerta({
           {oferta
             ? `Grátis, em ${oferta.formato}. Usamos seu e-mail apenas para enviar o material que você pediu, e você sai com um clique.`
             : `${PROMESSA_CURTA} Usamos seu e-mail apenas para enviar o convite e os editais que você pediu, e você sai com um clique.`} Sem rastreador e sem repasse a
-          terceiros — veja a{" "}
+          terceiros. Veja a{" "}
           <a href="/privacidade/" className="underline underline-offset-4">
             política de privacidade
           </a>

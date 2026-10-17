@@ -15,7 +15,17 @@
     de existir com a Lei 11.101/2005 (recuperação judicial).
   - Entram o CNPJ e a inscrição estadual e/ou municipal (art. 68, I e II).
   - Entra a declaração do art. 68, VI (cumprimento do art. 7º, XXXIII, da
-    Constituição, sobre trabalho de menor).
+    Constituição, sobre trabalho de menor) e a do art. 63, IV (reserva de
+    cargos para pessoa com deficiência e reabilitado), que a lei diz "será
+    exigida".
+  - Balanço vira "balanço e demonstrações contábeis dos 2 últimos exercícios",
+    como no art. 69, I.
+  - A frase da coluna de vencimento foi corrigida: o livro diz que ela evita
+    "a certidão que venceu entre a proposta e a habilitação", mas essa o
+    art. 64, II deixa atualizar em diligência. O risco real é a certidão já
+    vencida na data da proposta.
+  Acrescentados também o selo, o rodapé e a frase "o edital diz quais destes
+  documentos ele pede".
 
   Gerar o PDF: node materiais/gerar-folha.mjs (precisa de playwright).
 -->
@@ -47,10 +57,10 @@
   <div class="selo">Workbook do Licitante · amostra grátis · folha A.1</div>
   <h1>Folha de habilitação</h1>
   <p class="instrucao">
-    Preencha uma vez, confira antes de cada envio. A coluna da direita é a que evita a
-    inabilitação mais comum, que é a certidão que venceu entre a proposta e a habilitação.
-    O edital diz quais destes documentos ele pede: marque os que ele exige e confira cada
-    exigência nele.
+    Preencha uma vez, confira antes de cada envio. A coluna da direita evita mandar certidão
+    já vencida na data da proposta: a que vence depois disso pode ser atualizada em diligência
+    (art. 64, II); a que já estava vencida, não. O edital diz quais destes documentos ele
+    pede: marque os que ele exige e confira cada exigência nele.
   </p>
 
   <div class="titulo-tabela"><strong>O que eu tenho, e até quando</strong><span>Confira antes de cada envio</span></div>
@@ -69,13 +79,13 @@
       <tr><td class="doc">FGTS</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
       <tr><td class="doc">Trabalhista</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
       <tr><td class="doc">Certidão negativa de falência <span class="lei">(art. 69, II)</span></td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
-      <tr><td class="doc">Balanço patrimonial</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Balanço e demonstrações contábeis, 2 últimos exercícios <span class="lei">(art. 69, I)</span></td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
       <tr><td class="doc">Índices contábeis calculados</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
       <tr><td class="doc">Atestado de capacidade técnica</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
       <tr><td class="doc">Registro em conselho, se exigido</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
       <tr><td class="doc">Declaração de ME ou EPP</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
       <tr><td class="doc">Declaração sobre trabalho de menor <span class="lei">(art. 68, VI)</span></td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
-      <tr><td class="doc">&nbsp;</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
+      <tr><td class="doc">Declaração de reserva de cargos (PcD e reabilitado) <span class="lei">(art. 63, IV)</span></td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
       <tr><td class="doc">&nbsp;</td><td class="tenho"></td><td class="onde"></td><td class="vence"></td></tr>
     </tbody>
   </table>

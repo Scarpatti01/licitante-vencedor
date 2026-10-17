@@ -131,7 +131,12 @@ export default async function Confirmar({
       <TelaDeAviso
         titulo="Este link de confirmação não vale mais."
         caminhos={[
-          { href: "/alerta-de-licitacao/", rotulo: "Cadastrar de novo", principal: true },
+          {
+            // Quem veio pelo material volta à página que o oferece, e não ao convite do teste.
+            href: material?.pagina ?? "/alerta-de-licitacao/",
+            rotulo: material ? "Pedir o material de novo" : "Cadastrar de novo",
+            principal: true,
+          },
           { href: "/sobre/", rotulo: "Falar com a gente" },
         ]}
       >
@@ -141,7 +146,7 @@ export default async function Confirmar({
           cadastro foi cancelado depois, ou o link é de uma tentativa antiga.
         </p>
         <Detalhe>
-          O caminho mais rápido é se cadastrar de novo — leva o mesmo tempo que
+          O caminho mais rápido é se cadastrar de novo: leva o mesmo tempo que
           descobrir qual das três foi, e um novo e-mail de confirmação chega em
           seguida.
         </Detalhe>
@@ -163,7 +168,7 @@ export default async function Confirmar({
         botão do e-mail.
       </p>
       <Detalhe>
-        Seu cadastro não foi perdido e nada foi decidido sobre ele — só não
+        Seu cadastro não foi perdido e nada foi decidido sobre ele. Só não
         conseguimos registrar a confirmação neste momento. Se insistir e não
         funcionar, o contato está em{" "}
         <a className="underline underline-offset-4" href="/sobre/">
@@ -189,7 +194,7 @@ async function avisarBoasVindas(
   material: Material | null,
 ) {
   if (!lead?.email) {
-    console.error("[confirmar] confirmado sem identificar o lead — boas-vindas não enviadas");
+    console.error("[confirmar] confirmado sem identificar o lead; boas-vindas não enviadas");
     return;
   }
 
@@ -225,7 +230,7 @@ function EntregaDoMaterial({
       <p>{material.descricao}</p>
       <p>
         Formato: {material.formato}.
-        {mandamosPorEmail ? " Também mandamos o link para o seu e-mail, para você guardar." : ""}
+        {mandamosPorEmail ? " Também vamos mandar o link para o seu e-mail, para você guardar." : ""}
       </p>
       <Detalhe>
         Quer o caminho inteiro, do primeiro cadastro ao contrato assinado? O{" "}

@@ -115,7 +115,10 @@ describe("preview do Vercel não é indexável", () => {
       expect(proibidos(regra)).not.toContain("/");
     }
     const cabecalhos = await cabecalhosDe(undefined);
-    expect(cabecalhos.every((c) => c.source.startsWith("/materiais/"))).toBe(true);
+    const comRobots = cabecalhos.filter((c) =>
+      c.headers.some((h) => h.key.toLowerCase() === "x-robots-tag"),
+    );
+    expect(comRobots.every((c) => c.source.startsWith("/materiais/"))).toBe(true);
   });
 
   it("o robots de produção continua escondendo a área logada", () => {

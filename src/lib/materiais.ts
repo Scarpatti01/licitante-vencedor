@@ -20,6 +20,16 @@
  *
  * O arquivo fica em `public/materiais/`, e os geradores em `materiais/`, onde o
  * texto pode ser revisado em diff.
+ *
+ * ## A regra de consentimento (LGPD)
+ *
+ * O formulário do material diz: "usamos seu e-mail apenas para enviar o
+ * material que você pediu". Lead cuja origem contém `#material-` consentiu com
+ * ISSO e nada mais: não entra em alerta, campanha nem convite. O envio de
+ * alertas já o exclui (`alertas/repositorio.ts`). Atenção ao caso que a origem
+ * não resolve: quem pede o material com um e-mail que já estava na lista mantém
+ * a origem antiga, e o consentimento anterior. Qualquer envio novo para "todos
+ * os confirmados" precisa olhar isto antes.
  */
 
 export type Material = {
@@ -33,6 +43,8 @@ export type Material = {
   formato: string;
   /** Uma frase sobre o que a pessoa recebe. */
   descricao: string;
+  /** Onde o material é oferecido, para "pedir de novo" quando o link expira. */
+  pagina: string;
 };
 
 export const MATERIAIS = {
@@ -42,6 +54,7 @@ export const MATERIAIS = {
     nomeCurto: "o modelo de impugnação",
     arquivo: "/materiais/modelo-de-impugnacao-de-edital.docx",
     formato: "documento editável (.docx), abre no Word e no Google Docs",
+    pagina: "/blog/prazo-para-impugnar-edital-de-licitacao/",
     descricao:
       "A estrutura do pedido, com a tempestividade do art. 164 já escrita e campos para a cláusula, o fundamento e o pedido do seu caso.",
   },
@@ -51,8 +64,9 @@ export const MATERIAIS = {
     nomeCurto: "a folha de habilitação",
     arquivo: "/materiais/folha-de-habilitacao.pdf",
     formato: "PDF de uma página, para imprimir ou preencher",
+    pagina: "/blog/documentos-para-participar-de-licitacao/",
     descricao:
-      "Os documentos de habilitação numa folha só, com a coluna de vencimento que evita a inabilitação mais comum: a certidão que venceu no meio do caminho.",
+      "Os documentos de habilitação numa folha só, com a coluna de vencimento que evita mandar certidão já vencida na data da proposta, o caso que a diligência do art. 64 não conserta.",
   },
 } as const satisfies Record<string, Material>;
 

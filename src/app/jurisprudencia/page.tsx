@@ -243,7 +243,7 @@ export default function Jurisprudencia() {
             Sem heading próprio: o `Indice` promete uma lista fechada de seções,
             e um h2 comercial faria o sumário discordar do documento.
           */}
-          <section aria-label="Alerta diário de editais">
+          <section aria-label="Modelo de impugnação grátis">
             <CapturaAlerta
               origem="guia/jurisprudencia#material-modelo-de-impugnacao"
               chamada={{

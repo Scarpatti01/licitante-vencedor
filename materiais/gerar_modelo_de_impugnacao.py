@@ -68,10 +68,12 @@ def gerar():
 
     paragrafo(
         doc,
-        "Antes de usar: este modelo organiza o pedido, mas não é parecer jurídico e não "
-        "substitui a análise de um advogado. O edital prevalece: confira nele o meio de "
-        "protocolo (sistema, e-mail ou outro) e a data-limite. Apague este aviso e os "
-        "textos entre colchetes antes de enviar.",
+        "Antes de usar (apague este quadro antes de enviar): este modelo organiza o pedido, "
+        "mas não é parecer jurídico e não substitui a análise de um advogado. O edital "
+        "prevalece. Confira nele o meio de protocolo (sistema, e-mail ou outro), o "
+        "horário-limite e se ele pede documento de representação junto com a impugnação. "
+        "Guarde o comprovante de envio com data e hora e acompanhe a resposta e uma "
+        "eventual republicação. Apague também todos os textos entre colchetes.",
         italico=True,
         cor=CINZA,
         tamanho=10,
@@ -166,24 +168,14 @@ def gerar():
     paragrafo(doc, "[Cidade], [data].", depois=28)
     paragrafo(doc, "______________________________________", depois=2)
     paragrafo(doc, "[Nome do representante legal]", depois=2)
-    paragrafo(doc, "[Cargo] · [Razão social] · CNPJ [   ]", depois=18)
+    paragrafo(doc, "[Cargo] · [Razão social] · CNPJ [   ]", depois=0)
 
-    paragrafo(doc, "Antes de enviar", negrito=True, tamanho=10)
-    for item in (
-        "Confirme no edital o meio de protocolo e o horário-limite.",
-        "Guarde o comprovante de envio com data e hora.",
-        "Acompanhe a resposta e uma eventual republicação do edital.",
-    ):
-        paragrafo(doc, f"• {item}", tamanho=10, cor=CINZA, depois=2)
-
-    paragrafo(
-        doc,
-        "Modelo gratuito do Licitante Vencedor · licitantevencedor.com.br/blog/prazo-para-impugnar-edital-de-licitacao/",
-        tamanho=9,
-        cor=CINZA,
-        depois=0,
-    ).paragraph_format.space_before = Pt(14)
-
+    # Nada depois da assinatura: o que ficasse aqui iria parar no protocolo.
+    # A origem do modelo vai nas propriedades do arquivo, não no corpo.
+    doc.core_properties.comments = (
+        "Modelo gratuito do Licitante Vencedor: "
+        "licitantevencedor.com.br/blog/prazo-para-impugnar-edital-de-licitacao/"
+    )
     doc.core_properties.title = "Modelo de impugnação de edital (Lei 14.133/2021, art. 164)"
     doc.core_properties.author = "Licitante Vencedor"
 

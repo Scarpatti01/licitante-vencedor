@@ -220,11 +220,11 @@ export default function Habilitacao() {
             acessível sem inventar entrada de outline — mesma forma que as
             capturas de /blog/ já usam.
           */}
-          <section aria-label="Alerta diário de editais">
+          <section aria-label="Folha de habilitação grátis">
             <CapturaAlerta
               origem="guia/habilitacao#material-folha-de-habilitacao"
               chamada={{
-                titulo: "A folha que evita a certidão vencida no meio do caminho",
+                titulo: "A folha que evita mandar certidão já vencida",
                 texto: MATERIAIS["folha-de-habilitacao"].descricao,
               }}
               material="folha-de-habilitacao"
