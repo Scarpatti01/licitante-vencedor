@@ -7,6 +7,11 @@ import type { Artigo } from "../tipos";
  * são os mesmos já conferidos no texto oficial ao escrever `/habilitacao/`.
  * Aqui eles entram pelo outro lado: não "o que o edital não pode pedir", e sim
  * "o que eu preciso ter, e por que ter não basta".
+ *
+ * 17/10/2026: a linha "documento não anexado: não tem conserto" saiu. O TCU
+ * (Acórdão 1211/2021-Plenário, enunciado conferido em
+ * licitacoesecontratos.tcu.gov.br/5-5-habilitacao-2/) admite a juntada em
+ * diligência do documento ausente que prova condição já existente na proposta.
  */
 export const DOCUMENTOS_PARA_PARTICIPAR: Artigo = {
   slug: "documentos-para-participar-de-licitacao",
@@ -20,7 +25,7 @@ export const DOCUMENTOS_PARA_PARTICIPAR: Artigo = {
   termoPrincipal: "documentos para participar de licitação",
   guiaRelacionado: "/habilitacao/",
   publicadoEm: "2026-08-14",
-  verificadoEm: "2026-08-14",
+  verificadoEm: "2026-10-17",
   corpo: [
     {
       tipo: "paragrafo",
@@ -111,7 +116,16 @@ export const DOCUMENTOS_PARA_PARTICIPAR: Artigo = {
           "Art. 64, I",
         ],
         ["Erro de soma ou de digitação que não muda a substância", "Sim, a comissão pode sanar", "Art. 64, § 1º"],
-        ["O documento simplesmente não foi anexado", "Não, seria apresentação de documento novo", "Art. 64, caput"],
+        [
+          "O documento não foi anexado, mas prova condição que já existia na proposta",
+          "Pode ser: o TCU admite a juntada em diligência",
+          "Acórdão 1211/2021-TCU-Plenário (leitura do art. 64)",
+        ],
+        [
+          "O documento prova condição que só passou a existir depois da proposta",
+          "Não, seria apresentação de documento novo",
+          "Art. 64, caput",
+        ],
         [
           "A certidão já estava vencida na data de recebimento das propostas",
           "Não, o inciso II fala em validade expirada depois dessa data",
@@ -237,7 +251,7 @@ export const DOCUMENTOS_PARA_PARTICIPAR: Artigo = {
     {
       pergunta: "Esqueci de anexar um documento. Posso mandar depois?",
       resposta:
-        "Não. O caput do art. 64 proíbe substituir ou apresentar documentos novos após a entrega, e as duas exceções são complementação de informação sobre documento já apresentado e atualização de validade expirada depois do recebimento das propostas. Documento que não foi anexado não se encaixa em nenhuma delas.",
+        "Talvez. A letra do art. 64 proíbe documento novo após a entrega, com duas exceções em diligência. Mas o TCU entende que a vedação não alcança o documento ausente que comprova condição que a empresa já atendia quando apresentou a proposta (Acórdão 1211/2021-Plenário). Pelo TCU, ele deve ser pedido e avaliado, mas quem decide no caso concreto é o agente de contratação, e, se ele negar, o caminho é o recurso. Em licitação estadual ou municipal, o tribunal de contas local pode entender diferente.",
     },
     {
       pergunta: "O edital exige atestado do volume total do contrato. Isso é legal?",
@@ -251,6 +265,12 @@ export const DOCUMENTOS_PARA_PARTICIPAR: Artigo = {
     },
   ],
   fontes: [
+    {
+      titulo: "TCU, Licitações e Contratos: habilitação (Acórdão 1211/2021-Plenário)",
+      url: "https://licitacoesecontratos.tcu.gov.br/5-5-habilitacao-2/",
+      sustenta:
+        "A vedação do art. 64 não alcança documento ausente que comprova condição atendida pelo licitante quando apresentou a proposta.",
+    },
     {
       titulo: "Lei nº 14.133/2021, arts. 62, 63, 66 e 68 (Planalto)",
       url: "https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/l14133.htm",

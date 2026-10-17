@@ -11,7 +11,15 @@ import { artigosDoGuia } from "@/lib/blog";
 const TITULO = "Habilitação em licitação: documentos e limites";
 const DESCRICAO =
   "O que a Lei 14.133 permite exigir e o que ela proíbe: os 4% dos atestados, o teto de 50%, o limite de 10% de capital e o que dá para corrigir.";
-const ATUALIZADO = "2026-08-12";
+/**
+ * 17/10/2026: a tabela e a FAQ do art. 64 diziam que documento não entregue
+ * "não tem conserto". O TCU entende diferente (Acórdão 1211/2021-Plenário,
+ * enunciado na página oficial licitacoesecontratos.tcu.gov.br/5-5-habilitacao-2/):
+ * documento ausente que prova condição já existente na proposta deve ser pedido
+ * em diligência. Corrigido aqui e em documentos-para-participar-de-licitacao.
+ */
+const PUBLICADO = "2026-08-12";
+const ATUALIZADO = "2026-10-17";
 
 export const metadata: Metadata = {
   title: TITULO,
@@ -46,7 +54,7 @@ const FAQ = [
   {
     pergunta: "Esqueci um documento. Dá para enviar depois?",
     resposta:
-      "Depende do que é. O art. 64 proíbe substituir ou apresentar documento novo, mas abre duas exceções em diligência: complementar informação sobre documento já apresentado, desde que sobre fato que já existia na abertura, e atualizar documento cuja validade venceu depois do recebimento das propostas. E a comissão pode sanar erro ou falha que não altere a substância. Documento que simplesmente não foi entregue não se encaixa em nenhuma dessas.",
+      "Depende do que é. O art. 64 proíbe substituir ou apresentar documento novo, mas abre duas exceções em diligência: complementar informação sobre documento já apresentado, desde que sobre fato que já existia na abertura, e atualizar documento cuja validade venceu depois do recebimento das propostas. E a comissão pode sanar erro ou falha que não altere a substância. Para o documento que ficou de fora, o TCU admite a juntada em diligência quando ele prova condição que já existia na data da proposta (Acórdão 1211/2021-Plenário). Peça a diligência, mas não conte com ela. Em licitação estadual ou municipal, o tribunal de contas local pode entender diferente.",
   },
   {
     pergunta: "O edital pede atestado do volume total do contrato. Isso vale?",
@@ -84,7 +92,7 @@ const schema = {
       headline: TITULO,
       description: DESCRICAO,
       inLanguage: SITE.locale,
-      datePublished: ATUALIZADO,
+      datePublished: PUBLICADO,
       dateModified: ATUALIZADO,
       author: { "@id": `${SITE.url}/#${AUTHOR.slug}` },
       publisher: { "@id": `${SITE.url}/#organization` },
@@ -253,14 +261,20 @@ export default function Habilitacao() {
               linhas={[
                 ["Certidão venceu depois da entrega das propostas", "Sim. Cabe atualização", "Art. 64, II"],
                 ["Documento entregue, mas faltou detalhar uma informação que já existia", "Sim. Cabe complementação em diligência", "Art. 64, I"],
-                ["Documento simplesmente não foi entregue", "Não. É apresentação de documento novo", "Art. 64, caput"],
+                ["Documento não foi entregue, mas prova condição que já existia na proposta", "Pode ser. O TCU admite a juntada em diligência", "Acórdão 1211/2021-TCU-Plenário (leitura do art. 64)"],
+                ["Documento prova condição que só passou a existir depois da proposta", "Não. É apresentação de documento novo", "Art. 64, caput"],
                 ["Erro material que não muda a substância (soma, digitação)", "Sim, a comissão pode sanar", "Art. 64, § 1º"],
               ]}
             />
             <P>
-              A linha divisória é essa: complementar o que existe, sim; suprir o
-              que faltou, não. Vale como regra de conferência antes de enviar:
-              o que não foi anexado não tem conserto depois.
+              A linha divisória é a data: o que a empresa já atendia quando
+              apresentou a proposta pode ser comprovado em diligência, mesmo que o
+              papel tenha ficado de fora, segundo o TCU no Acórdão 1211/2021; o que
+              só passou a existir depois, não. Pelo TCU, esse documento deve ser
+              pedido e avaliado, mas quem decide no caso concreto é o agente de
+              contratação, e, se ele negar, o caminho é o recurso. Em licitação
+              estadual ou municipal, o tribunal de contas local pode entender
+              diferente. Confira tudo antes de enviar.
             </P>
           </Secao>
 
@@ -473,6 +487,11 @@ export default function Habilitacao() {
               <li>
                 <a className="underline underline-offset-4" href="https://pesquisa.apps.tcu.gov.br/pesquisa/sumula" target="_blank" rel="noopener">
                   Súmulas do Tribunal de Contas da União
+                </a>
+              </li>
+              <li>
+                <a className="underline underline-offset-4" href="https://licitacoesecontratos.tcu.gov.br/5-5-habilitacao-2/" target="_blank" rel="noopener">
+                  TCU, Licitações e Contratos: habilitação (Acórdão 1211/2021-Plenário)
                 </a>
               </li>
             </ul>

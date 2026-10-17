@@ -32,6 +32,7 @@ const RAIZ = join(import.meta.dirname, "..");
 
 /** As áreas já limpas. Acrescente aqui ao limpar uma nova. */
 const VIGIADOS = [
+  "lib/blog/artigos/atestado-de-capacidade-tecnica.ts",
   "lib/blog/artigos/atraso-no-pagamento-de-contrato-administrativo.ts",
   "lib/blog/artigos/como-saber-se-saiu-uma-licitacao.ts",
   "lib/blog/artigos/documentos-para-participar-de-licitacao.ts",
@@ -186,7 +187,7 @@ describe("a guarda vigia o que foi limpo", () => {
     // Sem esta contagem, alguém "conserta" um teste vermelho removendo a linha
     // da lista, e a guarda passa a proteger um conjunto vazio sem ficar
     // vermelha nunca mais.
-    expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(8);
+    expect(VIGIADOS.filter((c) => c.startsWith("lib/blog/artigos/"))).toHaveLength(9);
     // 17 desde 28/08, com a rota que entrega o livro carimbado; 18 desde
     // 17/10, com a tela de confirmação que entrega os materiais.
     expect(VIGIADOS.filter((c) => c.startsWith("app/"))).toHaveLength(18);
