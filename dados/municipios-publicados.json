@@ -118,6 +118,10 @@
   },
   {
    "uf": "BA",
+   "slug": "antas"
+  },
+  {
+   "uf": "BA",
    "slug": "barreiras"
   },
   {
@@ -203,6 +207,10 @@
   {
    "uf": "BA",
    "slug": "feira-de-santana"
+  },
+  {
+   "uf": "BA",
+   "slug": "formosa-do-rio-preto"
   },
   {
    "uf": "BA",
@@ -295,6 +303,10 @@
   {
    "uf": "BA",
    "slug": "morro-do-chapeu"
+  },
+  {
+   "uf": "BA",
+   "slug": "ourolandia"
   },
   {
    "uf": "BA",
@@ -1154,6 +1166,10 @@
   },
   {
    "uf": "GO",
+   "slug": "damolandia"
+  },
+  {
+   "uf": "GO",
    "slug": "davinopolis"
   },
   {
@@ -1163,6 +1179,10 @@
   {
    "uf": "GO",
    "slug": "divinopolis-de-goias"
+  },
+  {
+   "uf": "GO",
+   "slug": "doverlandia"
   },
   {
    "uf": "GO",
@@ -1798,6 +1818,10 @@
   },
   {
    "uf": "MG",
+   "slug": "coracao-de-jesus"
+  },
+  {
+   "uf": "MG",
    "slug": "coronel-fabriciano"
   },
   {
@@ -1859,6 +1883,10 @@
   {
    "uf": "MG",
    "slug": "fama"
+  },
+  {
+   "uf": "MG",
+   "slug": "fernandes-tourinho"
   },
   {
    "uf": "MG",
@@ -2110,6 +2138,10 @@
   },
   {
    "uf": "MG",
+   "slug": "nova-porteirinha"
+  },
+  {
+   "uf": "MG",
    "slug": "olaria"
   },
   {
@@ -2274,7 +2306,15 @@
   },
   {
    "uf": "MG",
+   "slug": "santa-barbara-do-tugurio"
+  },
+  {
+   "uf": "MG",
    "slug": "santa-luzia"
+  },
+  {
+   "uf": "MG",
+   "slug": "santa-margarida"
   },
   {
    "uf": "MG",
@@ -2350,11 +2390,19 @@
   },
   {
    "uf": "MG",
+   "slug": "serra-dos-aimores"
+  },
+  {
+   "uf": "MG",
    "slug": "serro"
   },
   {
    "uf": "MG",
    "slug": "sete-lagoas"
+  },
+  {
+   "uf": "MG",
+   "slug": "soledade-de-minas"
   },
   {
    "uf": "MG",
@@ -3430,6 +3478,10 @@
   },
   {
    "uf": "PR",
+   "slug": "foz-do-jordao"
+  },
+  {
+   "uf": "PR",
    "slug": "francisco-beltrao"
   },
   {
@@ -3439,6 +3491,10 @@
   {
    "uf": "PR",
    "slug": "guaira"
+  },
+  {
+   "uf": "PR",
+   "slug": "guaraci"
   },
   {
    "uf": "PR",
@@ -3567,6 +3623,10 @@
   {
    "uf": "PR",
    "slug": "medianeira"
+  },
+  {
+   "uf": "PR",
+   "slug": "morretes"
   },
   {
    "uf": "PR",
@@ -4198,6 +4258,10 @@
   },
   {
    "uf": "RO",
+   "slug": "guajara-mirim"
+  },
+  {
+   "uf": "RO",
    "slug": "jaru"
   },
   {
@@ -4219,6 +4283,10 @@
   {
    "uf": "RO",
    "slug": "ouro-preto-do-oeste"
+  },
+  {
+   "uf": "RO",
+   "slug": "parecis"
   },
   {
    "uf": "RO",
@@ -4311,6 +4379,10 @@
   {
    "uf": "RS",
    "slug": "capao-da-canoa"
+  },
+  {
+   "uf": "RS",
+   "slug": "capitao"
   },
   {
    "uf": "RS",
@@ -4435,6 +4507,10 @@
   {
    "uf": "RS",
    "slug": "osorio"
+  },
+  {
+   "uf": "RS",
+   "slug": "palmeira-das-missoes"
   },
   {
    "uf": "RS",
@@ -4879,6 +4955,10 @@
   {
    "uf": "SC",
    "slug": "ituporanga"
+  },
+  {
+   "uf": "SC",
+   "slug": "jabora"
   },
   {
    "uf": "SC",
@@ -6219,6 +6299,10 @@
   {
    "uf": "SP",
    "slug": "tupa"
+  },
+  {
+   "uf": "SP",
+   "slug": "tupi-paulista"
   },
   {
    "uf": "SP",
