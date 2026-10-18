@@ -13,7 +13,7 @@ import { carimboQueCabe, corpoQueCabe, linhaDoCarimbo } from "./carimbo";
  * calada no dia em que alguém reordena as linhas do arquivo.
  */
 
-const ROTA = "src/app/(app)/minha-jornada/livro/[formato]/route.ts";
+const ROTA = "src/app/(jornada)/minha-jornada/livro/[formato]/route.ts";
 
 function semComentarios(ts: string) {
   // Um comentário explicando a ordem não pode virar a prova da ordem.

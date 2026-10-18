@@ -19,6 +19,12 @@ export const ROTAS_DO_PRODUTO = [
   // Fora do grupo `(app)`, mas igualmente do produto: exige sessão.
   "/cadastrar-empresa",
   /*
+   * A Jornada, em `(jornada)` desde 18/10. Exige sessão e só sessão: quem
+   * comprou o Workbook na Hotmart não precisa de empresa cadastrada. Sem este
+   * item, quem chegava sem login via a página de compra de algo que já pagou.
+   */
+  "/minha-jornada",
+  /*
    * A área de quem opera o negócio — hoje, a tela de leads.
    *
    * Estar nesta lista garante só o primeiro degrau: sem sessão, o proxy manda

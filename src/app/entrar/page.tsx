@@ -24,12 +24,17 @@ export default async function Entrar({
   // `searchParams` é uma Promise neste Next — mudou na 15, e a 16 removeu o
   // acesso síncrono de compatibilidade.
   const { proximo } = await searchParams;
+  // Quem comprou o Workbook chega aqui pela Jornada, e "painel da empresa"
+  // falaria de um produto que essa pessoa não contratou.
+  const paraAJornada = proximo?.startsWith("/minha-jornada") ?? false;
 
   return (
     <main className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-5 py-12">
       <h1 className="text-2xl font-semibold tracking-tight">Entrar</h1>
       <p className="mt-2 mb-6 text-sm leading-relaxed text-[var(--muted)]">
-        Acesse o painel da sua empresa.
+        {paraAJornada
+          ? "Entre com o e-mail da compra para abrir a Jornada e baixar o livro."
+          : "Acesse o painel da sua empresa."}
       </p>
 
       <FormularioDeAcesso
@@ -39,7 +44,13 @@ export default async function Entrar({
         proximo={proximo}
         rodape={
           <>
-            Ainda não tem conta? <LinkDeAcesso href="/criar-conta/">Criar conta</LinkDeAcesso>.
+            Ainda não tem conta?{" "}
+            <LinkDeAcesso
+              href={proximo ? `/criar-conta/?proximo=${encodeURIComponent(proximo)}` : "/criar-conta/"}
+            >
+              Criar conta
+            </LinkDeAcesso>
+            .
           </>
         }
       />

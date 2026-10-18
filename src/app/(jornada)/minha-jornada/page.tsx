@@ -39,53 +39,6 @@ export default async function PaginaDaJornada() {
       descricao="Um passo por semana, na ordem em que as coisas dependem umas das outras."
     >
       <div className="space-y-8">
-        <section className="rounded-xl border bg-[var(--surface)] p-5">
-          <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h2 className="text-sm font-semibold">Seu progresso</h2>
-            <p className="text-sm text-[var(--muted)]">
-              <span className="font-semibold text-[var(--fg)] tabular-nums">
-                {estado.concluidas}
-              </span>{" "}
-              de {TOTAL_DE_ETAPAS} semanas
-            </p>
-          </div>
-
-          <div
-            className="mt-3 h-2 w-full overflow-hidden rounded-full bg-[var(--muted-bg,#e5e7eb)]"
-            role="progressbar"
-            aria-valuenow={percentual}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label="Progresso na jornada"
-          >
-            <div
-              className="h-full rounded-full bg-[var(--accent,#1B4D8F)] transition-[width]"
-              style={{ width: `${percentual}%` }}
-            />
-          </div>
-
-          {estado.proxima ? (
-            <p className="mt-4 text-sm">
-              <Link
-                className="font-medium underline underline-offset-4"
-                href={`/minha-jornada/${estado.proxima.semana}/`}
-              >
-                Continuar na semana {estado.proxima.semana}: {estado.proxima.titulo}
-              </Link>
-            </p>
-          ) : (
-            <p className="mt-4 text-sm">
-              As doze estão concluídas. O diagnóstico trimestral, na Folha F do
-              livro, é o que mantém isso vivo daqui em diante.
-            </p>
-          )}
-          <p className="mt-3 text-sm">
-            <Link className="underline underline-offset-4" href="/minha-jornada/exportar/">
-              Ver e imprimir as suas respostas
-            </Link>
-          </p>
-        </section>
-
         {/*
           O livro. Links comuns, e não botões com JavaScript: assim o download
           funciona no menu do botão direito, no "abrir em nova aba" e num
@@ -132,6 +85,53 @@ export default async function PaginaDaJornada() {
             No celular, o EPUB abre no Apple Books, no Google Play Livros ou no
             Kobo. Para ler no Kindle, use o &ldquo;Enviar para Kindle&rdquo; da
             Amazon, que aceita esse formato.
+          </p>
+        </section>
+
+        <section className="rounded-xl border bg-[var(--surface)] p-5">
+          <div className="flex flex-wrap items-baseline justify-between gap-3">
+            <h2 className="text-sm font-semibold">Seu progresso</h2>
+            <p className="text-sm text-[var(--muted)]">
+              <span className="font-semibold text-[var(--fg)] tabular-nums">
+                {estado.concluidas}
+              </span>{" "}
+              de {TOTAL_DE_ETAPAS} semanas
+            </p>
+          </div>
+
+          <div
+            className="mt-3 h-2 w-full overflow-hidden rounded-full bg-[var(--muted-bg,#e5e7eb)]"
+            role="progressbar"
+            aria-valuenow={percentual}
+            aria-valuemin={0}
+            aria-valuemax={100}
+            aria-label="Progresso na jornada"
+          >
+            <div
+              className="h-full rounded-full bg-[var(--accent,#1B4D8F)] transition-[width]"
+              style={{ width: `${percentual}%` }}
+            />
+          </div>
+
+          {estado.proxima ? (
+            <p className="mt-4 text-sm">
+              <Link
+                className="font-medium underline underline-offset-4"
+                href={`/minha-jornada/${estado.proxima.semana}/`}
+              >
+                Continuar na semana {estado.proxima.semana}: {estado.proxima.titulo}
+              </Link>
+            </p>
+          ) : (
+            <p className="mt-4 text-sm">
+              As doze estão concluídas. O diagnóstico trimestral, na Folha F do
+              livro, é o que mantém isso vivo daqui em diante.
+            </p>
+          )}
+          <p className="mt-3 text-sm">
+            <Link className="underline underline-offset-4" href="/minha-jornada/exportar/">
+              Ver e imprimir as suas respostas
+            </Link>
           </p>
         </section>
 

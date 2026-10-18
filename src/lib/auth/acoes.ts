@@ -6,6 +6,7 @@ import { isAuthWeakPasswordError } from "@supabase/supabase-js";
 import { clienteDoServidor } from "./cliente";
 import { MINIMO_DA_SENHA, mensagemDeSenhaRecusada, type EstadoDaEntrada } from "./estado";
 import { destinoSeguro } from "./rotas";
+import { SITE } from "../site";
 import { senhaFoiVazada } from "./senha-vazada";
 import { dentroDoLimite, identificarChamador } from "../limite-de-taxa";
 
@@ -115,7 +116,21 @@ export async function criarConta(
     return { erro: mensagemDeSenhaRecusada(["pwned"]), aviso: null };
   }
 
-  const { data, error } = await supabase.auth.signUp({ email, password: senha });
+  /*
+   * O link de confirmação devolve a pessoa ao login com o destino dela. Se o
+   * endereço não estiver na lista de redirecionamentos permitidos do Supabase,
+   * ele cai na URL do site, que é o comportamento de antes: nada piora.
+   */
+  const proximoDaConta = dados.get("proximo");
+  const emailRedirectTo =
+    typeof proximoDaConta === "string" && proximoDaConta
+      ? `${SITE.url}/entrar/?proximo=${encodeURIComponent(destinoSeguro(proximoDaConta))}`
+      : undefined;
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password: senha,
+    options: emailRedirectTo ? { emailRedirectTo } : undefined,
+  });
 
   if (error) {
     /*
@@ -180,13 +195,33 @@ export async function criarConta(
     return {
       erro: null,
       aviso:
-        "Se este e-mail ainda não tinha conta, enviamos agora um link de confirmação — " +
+        "Se este e-mail ainda não tinha conta, enviamos agora um link de confirmação: " +
         "confira a caixa de entrada e o spam. Se já tinha, o link não é reenviado: " +
         "use Entrar logo abaixo, ou recupere a senha.",
     };
   }
 
-  redirect("/onboarding/");
+  /*
+   * Quem veio do convite da compra na Hotmart traz `proximo` apontando para a
+   * Jornada; mandar essa pessoa ao onboarding do monitor (que pede empresa)
+   * seria trocar o que ela comprou por um produto que ela não contratou.
+   */
+  redirect(
+    typeof proximoDaConta === "string" && proximoDaConta
+      ? destinoSeguro(proximoDaConta)
+      : "/onboarding/",
+  );
+}
+
+/**
+ * Para quem comprou o Workbook com um e-mail e entrou com outro: sai e já
+ * cai na criação de conta, com a Jornada como destino. Sem isto, o "saia" da
+ * tela de sem acesso levaria à home, e a pessoa teria de achar o caminho.
+ */
+export async function sairECriarContaDaCompra() {
+  const supabase = await clienteDoServidor();
+  await supabase?.auth.signOut();
+  redirect("/criar-conta/?proximo=/minha-jornada/");
 }
 
 export async function sair() {

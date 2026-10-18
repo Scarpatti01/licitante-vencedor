@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import { ROTAS_DE_ENTRADA, ROTAS_DO_PRODUTO, sobPrefixo } from "@/lib/auth/rotas";
+import { destinoSeguro, ROTAS_DE_ENTRADA, ROTAS_DO_PRODUTO, sobPrefixo } from "@/lib/auth/rotas";
 import { LEGACY_GONE } from "@/lib/legacy";
 
 /*
@@ -98,10 +98,15 @@ async function comSessao(request: NextRequest, path: string) {
   }
 
   if (autenticado && sobPrefixo(path, ROTAS_DE_ENTRADA)) {
-    const destino = request.nextUrl.clone();
-    destino.pathname = "/painel/";
-    destino.search = "";
-    return NextResponse.redirect(destino);
+    /*
+     * Quem já tem sessão e abre o login vai para onde o link pedia, e só na
+     * falta disso para o painel. É o caso de quem comprou o Workbook já logado
+     * e clica em "Criar minha conta" no convite: o link leva `proximo` para a
+     * Jornada, e cair no painel (que exige empresa) seria o caminho errado.
+     */
+    const proximo = request.nextUrl.searchParams.get("proximo");
+    const alvo = new URL(destinoSeguro(proximo), request.nextUrl);
+    return NextResponse.redirect(alvo);
   }
 
   return resposta;
