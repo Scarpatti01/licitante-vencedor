@@ -18,6 +18,11 @@ const DESCRICAO =
  * (15/07/2026), conferido na pesquisa de súmulas do TCU, por estar superada
  * pela Resolução TCU 344/2022 (prescrição de 5 anos, art. 2º). Teses do STF
  * nos Temas 899 e 897 conferidas no portal do STF.
+ *
+ * Na mesma data, as 18 súmulas da página foram conferidas uma a uma na
+ * pesquisa de súmulas do TCU: só a 282 está marcada como revogada. As citações
+ * seguem o campo Enunciado da base ("Lei 8.666/1993", sem "nº"); a 274 mantém
+ * "Sicaf", grafia do texto aprovado no Acórdão 1315/2012.
  */
 const PUBLICADO = "2026-08-12";
 const ATUALIZADO = "2026-10-17";
@@ -84,23 +89,23 @@ const FAQ = [
 
 const RESUMO: string[][] = [
   ["39", "Contratação direta", "Inexigibilidade por notória especialização só cabe em serviço de natureza singular"],
-  ["247", "Divisão do objeto", "Objeto divisível deve ser adjudicado por item, e a habilitação tem de acompanhar a divisão"],
+  ["247", "Divisão do objeto", "Objeto divisível deve admitir adjudicação por item, sem prejuízo ao conjunto nem perda de escala; a habilitação acompanha a divisão"],
   ["257", "Engenharia", "Serviço comum de engenharia pode ser contratado por pregão"],
   ["258", "Orçamento", "Composição de custos, encargos e BDI integram o edital e a proposta; nada de “verba”"],
   ["260", "Engenharia", "É dever do gestor exigir ART das peças técnicas"],
   ["261", "Engenharia", "Projeto básico adequado e atualizado é necessário; revisão não pode transfigurar o objeto"],
   ["262", "Preço", "Inexequibilidade pelos índices legais é presunção relativa: cabe demonstrar que o preço fecha"],
-  ["263", "Habilitação", "Quantitativo mínimo é legal, limitado às parcelas de maior relevância e proporcional ao objeto"],
+  ["263", "Habilitação", "Quantitativo mínimo é legal, limitado às parcelas de maior relevância e valor significativo e proporcional ao objeto"],
   ["265", "Contratação direta", "Contratar subsidiária exige preço de mercado e pertinência com o objeto social"],
-  ["269", "Tecnologia da informação", "Remuneração vinculada a resultado; posto ou hora só com justificativa prévia"],
-  ["270", "Especificação", "Indicação de marca só com justificativa prévia; a Lei 14.133 ampliou as hipóteses (art. 41, I)"],
+  ["269", "Tecnologia da informação", "Remuneração vinculada a resultado; posto ou hora só quando o objeto não permitir, com justificativa prévia"],
+  ["270", "Especificação", "Marca só quando estritamente necessária para padronização, com justificativa prévia; a Lei 14.133 ampliou as hipóteses (art. 41, I)"],
   ["272", "Habilitação", "Vedada exigência que obrigue o licitante a gastar antes de ter o contrato"],
   ["274", "Habilitação", "Vedada exigência de inscrição prévia no SICAF como condição de habilitação"],
-  ["275", "Qualificação econômica", "Capital mínimo, patrimônio líquido ou garantia como alternativas, sob a Lei 8.666"],
+  ["275", "Qualificação econômica", "Capital social mínimo, patrimônio líquido ou garantia como alternativas, sob a Lei 8.666"],
   ["281", "Cooperativas", "Vedada a participação quando o serviço exige subordinação, pessoalidade e habitualidade"],
   ["282", "Responsabilização", "Revogada em 2026; o TCU aplica prescrição de 5 anos (Resolução 344/2022)"],
   ["283", "Habilitação", "Exige-se prova de regularidade fiscal, não certidão de quitação"],
-  ["287", "Contratação direta", "Dispensa para promoção de concurso público exige nexo com a natureza da instituição"],
+  ["287", "Contratação direta", "Dispensa para promoção de concurso público exige os requisitos do art. 24, XIII, da Lei 8.666, nexo com a instituição e preço de mercado"],
 ];
 
 const schema = {
@@ -395,7 +400,7 @@ export default function SumulasTcu() {
             </P>
             <Citacao fonte="Súmula TCU nº 262">
               O critério definido no art. 48, inciso II, § 1º, alíneas &quot;a&quot; e
-              &quot;b&quot;, da Lei nº 8.666/93 conduz a uma presunção relativa de
+              &quot;b&quot;, da Lei 8.666/1993 conduz a uma presunção relativa de
               inexequibilidade de preços, devendo a Administração dar à licitante
               a oportunidade de demonstrar a exequibilidade da sua proposta.
             </Citacao>
@@ -431,7 +436,7 @@ export default function SumulasTcu() {
           <Secao id="engenharia" titulo="Obras e serviços de engenharia">
             <Citacao fonte="Súmula TCU nº 257">
               O uso do pregão nas contratações de serviços comuns de engenharia
-              encontra amparo na Lei nº 10.520/2002.
+              encontra amparo na Lei 10.520/2002.
             </Citacao>
             <P>
               O que decide não é a palavra “engenharia” no objeto, é se o serviço
@@ -443,7 +448,7 @@ export default function SumulasTcu() {
               Em licitações de obras e serviços de engenharia, é necessária a
               elaboração de projeto básico adequado e atualizado, assim
               considerado aquele aprovado com todos os elementos descritos no
-              art. 6º, inciso IX, da Lei nº 8.666, de 21 de junho de 1993,
+              art. 6º, inciso IX, da Lei 8.666, de 21 de junho de 1993,
               constituindo prática ilegal a revisão de projeto básico ou a
               elaboração de projeto executivo que transfigurem o objeto
               originalmente contratado em outro de natureza e propósito diversos.
@@ -482,7 +487,7 @@ export default function SumulasTcu() {
               capaz de exigir, na seleção do executor de confiança, grau de
               subjetividade insuscetível de ser medido pelos critérios objetivos
               de qualificação inerentes ao processo de licitação, nos termos do
-              art. 25, inciso II, da Lei nº 8.666/1993.
+              art. 25, inciso II, da Lei 8.666/1993.
             </Citacao>
             <P>
               Notória especialização sozinha não basta. O serviço precisa ser
@@ -493,7 +498,7 @@ export default function SumulasTcu() {
             </P>
             <Citacao fonte="Súmula TCU nº 265">
               A contratação de subsidiárias e controladas com fulcro no art. 24,
-              inciso XXIII, da Lei nº 8.666/93 somente é admitida nas hipóteses
+              inciso XXIII, da Lei 8.666/1993 somente é admitida nas hipóteses
               em que houver, simultaneamente, compatibilidade com os preços de
               mercado e pertinência entre o serviço a ser prestado ou os bens a
               serem alienados ou adquiridos e o objeto social das mencionadas
