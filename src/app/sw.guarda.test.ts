@@ -40,9 +40,12 @@ function decisorDeCache(): (url: URL) => boolean {
 
 /** As rotas da área logada, lidas da árvore em vez de escritas à mão. */
 function rotasLogadas() {
-  const doGrupo = readdirSync("src/app/(app)", { withFileTypes: true })
-    .filter((e) => e.isDirectory())
-    .map((e) => `/${e.name}/`);
+  // `(jornada)` também: as respostas e o livro carimbado são do dono da sessão.
+  const doGrupo = ["src/app/(app)", "src/app/(jornada)"].flatMap((grupo) =>
+    readdirSync(grupo, { withFileTypes: true })
+      .filter((e) => e.isDirectory())
+      .map((e) => `/${e.name}/`),
+  );
   return [...doGrupo, "/administracao/", "/administracao/jornada/", "/api/alertas/"];
 }
 

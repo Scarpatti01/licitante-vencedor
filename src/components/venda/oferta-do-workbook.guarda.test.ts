@@ -36,6 +36,7 @@ const SEM_OFERTA: Record<string, string> = {
   "privacidade/page.tsx": "página legal: venda no meio de política de privacidade confunde aviso com anúncio",
   "termos/page.tsx": "página legal",
   "aviso-legal/page.tsx": "página legal",
+  "boas-vindas/page.tsx": "é a tela de quem acabou de comprar o Workbook; oferecer de novo o que a pessoa já pagou confunde",
 };
 
 function paginas(dir: string): string[] {

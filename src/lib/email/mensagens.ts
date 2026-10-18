@@ -218,6 +218,13 @@ export function conteudoDeConfirmacao(dados: DadosDaConfirmacao): ConteudoDeEmai
 }
 
 /**
+ * O destino de quem comprou: a Jornada, onde estão também os dois arquivos do
+ * livro. Sem `proximo`, a conta nova caía no onboarding do monitor de editais,
+ * que pede empresa e CNPJ a quem só comprou um livro.
+ */
+export const DESTINO_DA_COMPRA = "/minha-jornada/";
+
+/**
  * Onde o comprador cria a conta, com o e-mail já preenchido.
  *
  * O parâmetro não é conveniência de digitação. O acesso à Jornada é ligado pelo
@@ -226,7 +233,15 @@ export function conteudoDeConfirmacao(dados: DadosDaConfirmacao): ConteudoDeEmai
  * exatamente esse caso.
  */
 export function urlDeCriarConta(email: string, urlBase: string = SITE.url): string {
-  return `${urlBase}/criar-conta/?email=${encodeURIComponent(email)}`;
+  return (
+    `${urlBase}/criar-conta/?email=${encodeURIComponent(email)}` +
+    `&proximo=${encodeURIComponent(DESTINO_DA_COMPRA)}`
+  );
+}
+
+/** Sem codificar a barra: este endereço aparece escrito no corpo do e-mail. */
+export function urlDeEntrarNaJornada(urlBase: string = SITE.url): string {
+  return `${urlBase}/entrar/?proximo=${DESTINO_DA_COMPRA}`;
 }
 
 export type DadosDoConvite = {
@@ -260,16 +275,17 @@ export type DadosDoConvite = {
 export function conteudoDoConvite(dados: DadosDoConvite): ConteudoDeEmail {
   return {
     assunto: "Sua compra está confirmada. Falta abrir a Jornada",
-    titulo: "Falta um passo para começar a Jornada",
+    titulo: "Falta um passo: criar a sua conta",
     paragrafos: [
-      "Sua compra do Workbook do Licitante foi confirmada. O PDF e o arquivo ePub chegam pela Hotmart, no e-mail de entrega dela.",
-      `A Jornada de 12 semanas fica aqui no site, e para abrir você precisa de uma conta com este mesmo endereço: ${dados.email}`,
+      "Sua compra do Workbook do Licitante pela Hotmart foi confirmada.",
+      "O livro em PDF e em EPUB e a Jornada de 12 semanas ficam juntos na sua área do site. Crie a conta e entre: você vai direto para lá. Se pedirmos para confirmar o e-mail, confirme pelo link que chegar e entre de novo.",
+      `Use este mesmo endereço, o da compra: ${dados.email}`,
     ],
     acao: { rotulo: "Criar minha conta", url: urlDeCriarConta(dados.email, dados.urlBase) },
     listas: [],
     fecho: [
       "Use exatamente este endereço. É por ele que a sua compra é reconhecida, então uma conta criada com outro e-mail não encontra o acesso.",
-      "Se você já tem conta com este endereço, não precisa criar outra: é só entrar, que a Jornada já está liberada.",
+      `Se você já tem conta com este endereço, não precisa criar outra: entre por ${urlDeEntrarNaJornada(dados.urlBase)} e a Jornada já está liberada.`,
     ],
     rodape: {
       cadastradoComo: dados.email,

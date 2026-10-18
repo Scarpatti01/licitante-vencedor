@@ -71,7 +71,7 @@ const VIGIADOS = [
    * outro. Entrou junto com a entrega do livro.
    */
   "lib/livro/carimbo.ts",
-  "app/(app)/minha-jornada/livro/[formato]/route.ts",
+  "app/(jornada)/minha-jornada/livro/[formato]/route.ts",
   /*
    * Entrou em 26/08 com a faixa de procedência. É texto de venda como qualquer
    * outro: fala de fonte, de lei e de privacidade para quem ainda decide se
@@ -108,7 +108,7 @@ const VIGIADOS = [
   "app/administracao/jornada/page.tsx",
   "app/administracao/jornada/acoes.ts",
   "components/jornada/BotaoDeImprimir.tsx",
-  "app/(app)/minha-jornada/exportar/page.tsx",
+  "app/(jornada)/minha-jornada/exportar/page.tsx",
   /*
    * A página de venda, em 27/08. É o texto mais comercial do domínio inteiro:
    * se algum lugar precisa soar escrito por gente, é este.
@@ -126,9 +126,9 @@ const VIGIADOS = [
   "components/jornada/SemAcessoAJornada.tsx",
   "components/jornada/ReenviarConvite.tsx",
   "components/jornada/FormularioDaEtapa.tsx",
-  "app/(app)/minha-jornada/page.tsx",
-  "app/(app)/minha-jornada/[semana]/page.tsx",
-  "app/(app)/minha-jornada/acoes.ts",
+  "app/(jornada)/minha-jornada/page.tsx",
+  "app/(jornada)/minha-jornada/[semana]/page.tsx",
+  "app/(jornada)/minha-jornada/acoes.ts",
 ];
 
 /**
@@ -205,7 +205,7 @@ describe("a guarda vigia o que foi limpo", () => {
      * que é exatamente o caso que a guarda deveria pegar.
      */
     const daJornada = [
-      ...listarArquivos("src/app/(app)/minha-jornada"),
+      ...listarArquivos("src/app/(jornada)/minha-jornada"),
       ...listarArquivos("src/components/jornada"),
       ...listarArquivos("src/lib/jornada"),
       ...listarArquivos("src/components/venda"),

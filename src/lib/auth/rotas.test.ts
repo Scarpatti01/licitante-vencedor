@@ -47,6 +47,9 @@ describe("sobPrefixo", () => {
     expect(sobPrefixo("/painel", ROTAS_DO_PRODUTO)).toBe(true);
     expect(sobPrefixo("/painel/", ROTAS_DO_PRODUTO)).toBe(true);
     expect(sobPrefixo("/oportunidades/PE-2026-1", ROTAS_DO_PRODUTO)).toBe(true);
+    // Quem comprou o Workbook e chega sem login precisa ser mandado entrar,
+    // e não ver a página de compra.
+    expect(sobPrefixo("/minha-jornada/livro/pdf/", ROTAS_DO_PRODUTO)).toBe(true);
   });
 
   it("não casa por prefixo de texto", () => {
