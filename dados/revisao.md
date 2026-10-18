@@ -1,7 +1,7 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29106 editais coletados em 2026-10-17T09:43:27.305Z.
+Revisão dos dados — 29129 editais coletados em 2026-10-18T08:20:16.373Z.
 
 Encontrados 0 erro(s), 5 suspeita(s) e 120 aviso(s).
 
