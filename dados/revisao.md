@@ -1,17 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29260 editais coletados em 2026-10-19T09:18:43.983Z.
+Revisão dos dados — 28635 editais coletados em 2026-10-19T11:18:23.167Z.
 
-Encontrados 0 erro(s), 5 suspeita(s) e 120 aviso(s).
-
-[AVISO] O edital 94707486000146-1-000187/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "COMBUSTÍVEL"
-  Edital: https://pncp.gov.br/app/editais/94707486000146/2026/187
-
-[AVISO] O edital 46374500000194-1-008082/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Medicamentos"
-  Edital: https://pncp.gov.br/app/editais/46374500000194/2026/8082
+Encontrados 0 erro(s), 4 suspeita(s) e 118 aviso(s).
 
 [AVISO] O edital 88818299000137-1-000326/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "BATERIAS"
@@ -500,11 +492,6 @@ Encontrados 0 erro(s), 5 suspeita(s) e 120 aviso(s).
 [AVISO] O edital 09025418000128-1-000010/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "TERCEIRIZADO"
   Edital: https://pncp.gov.br/app/editais/09025418000128/2026/10
-
-[SUSPEITA] No edital 28741080000155-1-000003/2026, do órgão MUNICIPIO DE ITABORAI, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 7.871.553.320,00, contra máximo de R$ 10.418.282.688,00 entre os demais Credenciamento deste conjunto
-  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Credenciamento (dividido por 10 daria R$ 787.155.332,00; dividido por 100 daria R$ 78.715.533,20; dividido por 1.000 daria R$ 7.871.553,32; dividido por 10.000 daria R$ 787.155,33). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
-  Edital: https://pncp.gov.br/app/editais/28741080000155/2026/3
 
 [AVISO] O edital 01298975000100-1-000233/2025 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "CREDENCIAMENTO"
