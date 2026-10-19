@@ -1,7 +1,7 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29129 editais coletados em 2026-10-18T09:55:42.922Z.
+Revisão dos dados — 29260 editais coletados em 2026-10-19T09:18:43.983Z.
 
 Encontrados 0 erro(s), 5 suspeita(s) e 120 aviso(s).
 
@@ -435,8 +435,8 @@ Encontrados 0 erro(s), 5 suspeita(s) e 120 aviso(s).
   Edital: https://pncp.gov.br/app/editais/88067780000138/2026/144
 
 [SUSPEITA] No edital 00043711000143-1-000060/2026, do órgão DEPARTAMENTO NACIONAL DE OBRAS CONTRA AS SECAS, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 46.279.258.200,00, contra máximo de R$ 3.605.158.390,45 entre os demais Pregão - Eletrônico deste conjunto
-  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 100 daria R$ 462.792.582,00; dividido por 1.000 daria R$ 46.279.258,20; dividido por 10.000 daria R$ 4.627.925,82; dividido por 100.000 daria R$ 462.792,58). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
+  Evidência: valor declarado R$ 46.279.258.200,00, contra máximo de R$ 6.559.834.778,30 entre os demais Pregão - Eletrônico deste conjunto
+  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10 daria R$ 4.627.925.820,00; dividido por 100 daria R$ 462.792.582,00; dividido por 1.000 daria R$ 46.279.258,20; dividido por 10.000 daria R$ 4.627.925,82; dividido por 100.000 daria R$ 462.792,58). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/00043711000143/2026/60
 
 [AVISO] O edital 17503475000101-1-000213/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
