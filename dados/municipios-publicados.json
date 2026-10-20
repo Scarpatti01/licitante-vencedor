@@ -10,6 +10,10 @@
   },
   {
    "uf": "AC",
+   "slug": "mancio-lima"
+  },
+  {
+   "uf": "AC",
    "slug": "rio-branco"
   },
   {
@@ -55,6 +59,10 @@
   {
    "uf": "AL",
    "slug": "sao-jose-da-tapera"
+  },
+  {
+   "uf": "AL",
+   "slug": "sao-luis-do-quitunde"
   },
   {
    "uf": "AL",
@@ -1159,6 +1167,10 @@
   {
    "uf": "GO",
    "slug": "corrego-do-ouro"
+  },
+  {
+   "uf": "GO",
+   "slug": "corumbaiba"
   },
   {
    "uf": "GO",
@@ -2290,6 +2302,10 @@
   },
   {
    "uf": "MG",
+   "slug": "rosario-da-limeira"
+  },
+  {
+   "uf": "MG",
    "slug": "sabinopolis"
   },
   {
@@ -2790,6 +2806,10 @@
   },
   {
    "uf": "PA",
+   "slug": "abaetetuba"
+  },
+  {
+   "uf": "PA",
    "slug": "altamira"
   },
   {
@@ -2971,6 +2991,10 @@
   {
    "uf": "PB",
    "slug": "sousa"
+  },
+  {
+   "uf": "PB",
+   "slug": "sume"
   },
   {
    "uf": "PB",
@@ -3163,6 +3187,10 @@
   {
    "uf": "PE",
    "slug": "ribeirao"
+  },
+  {
+   "uf": "PE",
+   "slug": "rio-formoso"
   },
   {
    "uf": "PE",
@@ -4322,6 +4350,10 @@
   },
   {
    "uf": "RR",
+   "slug": "caracarai"
+  },
+  {
+   "uf": "RR",
    "slug": "pacaraima"
   },
   {
@@ -4467,6 +4499,10 @@
   {
    "uf": "RS",
    "slug": "imbe"
+  },
+  {
+   "uf": "RS",
+   "slug": "independencia"
   },
   {
    "uf": "RS",
@@ -5014,6 +5050,10 @@
   },
   {
    "uf": "SC",
+   "slug": "mirim-doce"
+  },
+  {
+   "uf": "SC",
    "slug": "modelo"
   },
   {
@@ -5534,6 +5574,10 @@
   },
   {
    "uf": "SP",
+   "slug": "cajamar"
+  },
+  {
+   "uf": "SP",
    "slug": "cajati"
   },
   {
@@ -5835,6 +5879,10 @@
   {
    "uf": "SP",
    "slug": "jau"
+  },
+  {
+   "uf": "SP",
+   "slug": "jose-bonifacio"
   },
   {
    "uf": "SP",
@@ -6186,6 +6234,10 @@
   },
   {
    "uf": "SP",
+   "slug": "sao-jose-da-bela-vista"
+  },
+  {
+   "uf": "SP",
    "slug": "sao-jose-do-rio-pardo"
   },
   {
@@ -6335,6 +6387,10 @@
   {
    "uf": "TO",
    "slug": "araguaina"
+  },
+  {
+   "uf": "TO",
+   "slug": "arraias"
   },
   {
    "uf": "TO",
