@@ -1,9 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29283 editais coletados em 2026-10-20T08:52:58.391Z.
+Revisão dos dados — 29290 editais coletados em 2026-10-20T10:27:24.172Z.
 
-Encontrados 0 erro(s), 5 suspeita(s) e 123 aviso(s).
+Encontrados 0 erro(s), 5 suspeita(s) e 126 aviso(s).
 
 [AVISO] O edital 62070362000106-1-000640/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "CONECTOR FÊMEA"
@@ -297,9 +297,21 @@ Encontrados 0 erro(s), 5 suspeita(s) e 123 aviso(s).
   Evidência: objeto declarado: "CAL"
   Edital: https://pncp.gov.br/app/editais/01285170000122/2026/6
 
+[AVISO] O edital 02931604000187-1-000378/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "copo para agua"
+  Edital: https://pncp.gov.br/app/editais/02931604000187/2026/378
+
 [AVISO] O edital 03661160000170-1-000096/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "CAFE EM GRÃOS"
   Edital: https://pncp.gov.br/app/editais/03661160000170/2026/96
+
+[AVISO] O edital 02931604000187-1-000379/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "diversos"
+  Edital: https://pncp.gov.br/app/editais/02931604000187/2026/379
+
+[AVISO] O edital 02931604000187-1-000380/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "perfurador"
+  Edital: https://pncp.gov.br/app/editais/02931604000187/2026/380
 
 [AVISO] O edital 46374500000194-1-008395/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Insulinas"
