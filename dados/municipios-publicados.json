@@ -170,6 +170,10 @@
   },
   {
    "uf": "BA",
+   "slug": "canavieiras"
+  },
+  {
+   "uf": "BA",
    "slug": "candeias"
   },
   {
@@ -282,6 +286,10 @@
   },
   {
    "uf": "BA",
+   "slug": "jiquirica"
+  },
+  {
+   "uf": "BA",
    "slug": "juazeiro"
   },
   {
@@ -342,6 +350,10 @@
   },
   {
    "uf": "BA",
+   "slug": "riachao-do-jacuipe"
+  },
+  {
+   "uf": "BA",
    "slug": "ribeira-do-pombal"
   },
   {
@@ -379,6 +391,10 @@
   {
    "uf": "BA",
    "slug": "sao-sebastiao-do-passe"
+  },
+  {
+   "uf": "BA",
+   "slug": "seabra"
   },
   {
    "uf": "BA",
@@ -1122,6 +1138,10 @@
   },
   {
    "uf": "GO",
+   "slug": "cabeceiras"
+  },
+  {
+   "uf": "GO",
    "slug": "cachoeira-alta"
   },
   {
@@ -1510,6 +1530,10 @@
   },
   {
    "uf": "MA",
+   "slug": "barra-do-corda"
+  },
+  {
+   "uf": "MA",
    "slug": "barreirinhas"
   },
   {
@@ -1531,6 +1555,10 @@
   {
    "uf": "MA",
    "slug": "pinheiro"
+  },
+  {
+   "uf": "MA",
+   "slug": "santa-luzia"
   },
   {
    "uf": "MA",
@@ -2283,6 +2311,10 @@
   {
    "uf": "MG",
    "slug": "raul-soares"
+  },
+  {
+   "uf": "MG",
+   "slug": "resende-costa"
   },
   {
    "uf": "MG",
@@ -3378,6 +3410,10 @@
   },
   {
    "uf": "PR",
+   "slug": "boa-ventura-de-sao-roque"
+  },
+  {
+   "uf": "PR",
    "slug": "bocaiuva-do-sul"
   },
   {
@@ -3570,6 +3606,10 @@
   },
   {
    "uf": "PR",
+   "slug": "itapejara-d-oeste"
+  },
+  {
+   "uf": "PR",
    "slug": "ivaipora"
   },
   {
@@ -3658,6 +3698,10 @@
   },
   {
    "uf": "PR",
+   "slug": "missal"
+  },
+  {
+   "uf": "PR",
    "slug": "morretes"
   },
   {
@@ -3679,6 +3723,10 @@
   {
    "uf": "PR",
    "slug": "nova-laranjeiras"
+  },
+  {
+   "uf": "PR",
+   "slug": "nova-londrina"
   },
   {
    "uf": "PR",
@@ -3787,6 +3835,10 @@
   {
    "uf": "PR",
    "slug": "reserva"
+  },
+  {
+   "uf": "PR",
+   "slug": "ribeirao-do-pinhal"
   },
   {
    "uf": "PR",
@@ -4198,6 +4250,10 @@
   },
   {
    "uf": "RN",
+   "slug": "joao-camara"
+  },
+  {
+   "uf": "RN",
    "slug": "macau"
   },
   {
@@ -4283,6 +4339,10 @@
   {
    "uf": "RO",
    "slug": "cacoal"
+  },
+  {
+   "uf": "RO",
+   "slug": "colorado-do-oeste"
   },
   {
    "uf": "RO",
@@ -5970,6 +6030,10 @@
   },
   {
    "uf": "SP",
+   "slug": "mirandopolis"
+  },
+  {
+   "uf": "SP",
    "slug": "mirassol"
   },
   {
@@ -6387,6 +6451,10 @@
   {
    "uf": "SP",
    "slug": "votuporanga"
+  },
+  {
+   "uf": "TO",
+   "slug": "araguacema"
   },
   {
    "uf": "TO",
