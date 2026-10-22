@@ -210,6 +210,10 @@
   },
   {
    "uf": "BA",
+   "slug": "dias-d-avila"
+  },
+  {
+   "uf": "BA",
    "slug": "euclides-da-cunha"
   },
   {
@@ -970,6 +974,10 @@
   },
   {
    "uf": "ES",
+   "slug": "montanha"
+  },
+  {
+   "uf": "ES",
    "slug": "muniz-freire"
   },
   {
@@ -1255,6 +1263,10 @@
   {
    "uf": "GO",
    "slug": "guapo"
+  },
+  {
+   "uf": "GO",
+   "slug": "guarinos"
   },
   {
    "uf": "GO",
@@ -1586,6 +1598,10 @@
   },
   {
    "uf": "MG",
+   "slug": "abre-campo"
+  },
+  {
+   "uf": "MG",
    "slug": "acaiaca"
   },
   {
@@ -1906,6 +1922,10 @@
   },
   {
    "uf": "MG",
+   "slug": "ervalia"
+  },
+  {
+   "uf": "MG",
    "slug": "esmeraldas"
   },
   {
@@ -2031,6 +2051,10 @@
   {
    "uf": "MG",
    "slug": "itanhomi"
+  },
+  {
+   "uf": "MG",
+   "slug": "itapeva"
   },
   {
    "uf": "MG",
@@ -3234,6 +3258,10 @@
   },
   {
    "uf": "PE",
+   "slug": "salgueiro"
+  },
+  {
+   "uf": "PE",
    "slug": "saloa"
   },
   {
@@ -3590,6 +3618,10 @@
   },
   {
    "uf": "PR",
+   "slug": "iguaracu"
+  },
+  {
+   "uf": "PR",
    "slug": "imbau"
   },
   {
@@ -3655,6 +3687,10 @@
   {
    "uf": "PR",
    "slug": "mallet"
+  },
+  {
+   "uf": "PR",
+   "slug": "mambore"
   },
   {
    "uf": "PR",
@@ -3982,6 +4018,10 @@
   },
   {
    "uf": "RJ",
+   "slug": "aperibe"
+  },
+  {
+   "uf": "RJ",
    "slug": "araruama"
   },
   {
@@ -4027,6 +4067,10 @@
   {
    "uf": "RJ",
    "slug": "duque-de-caxias"
+  },
+  {
+   "uf": "RJ",
+   "slug": "guapimirim"
   },
   {
    "uf": "RJ",
@@ -4163,6 +4207,10 @@
   {
    "uf": "RJ",
    "slug": "sao-joao-da-barra"
+  },
+  {
+   "uf": "RJ",
+   "slug": "sao-joao-de-meriti"
   },
   {
    "uf": "RJ",
@@ -5790,6 +5838,10 @@
   },
   {
    "uf": "SP",
+   "slug": "guarei"
+  },
+  {
+   "uf": "SP",
    "slug": "guariba"
   },
   {
@@ -5939,6 +5991,10 @@
   {
    "uf": "SP",
    "slug": "jales"
+  },
+  {
+   "uf": "SP",
+   "slug": "jambeiro"
   },
   {
    "uf": "SP",
@@ -6239,6 +6295,10 @@
   {
    "uf": "SP",
    "slug": "rio-das-pedras"
+  },
+  {
+   "uf": "SP",
+   "slug": "riolandia"
   },
   {
    "uf": "SP",
