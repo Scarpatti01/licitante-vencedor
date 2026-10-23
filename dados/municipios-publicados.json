@@ -1434,6 +1434,10 @@
   },
   {
    "uf": "GO",
+   "slug": "pires-do-rio"
+  },
+  {
+   "uf": "GO",
    "slug": "planaltina"
   },
   {
@@ -1731,6 +1735,10 @@
   {
    "uf": "MG",
    "slug": "buritis"
+  },
+  {
+   "uf": "MG",
+   "slug": "caete"
   },
   {
    "uf": "MG",
@@ -2986,6 +2994,10 @@
   },
   {
    "uf": "PA",
+   "slug": "soure"
+  },
+  {
+   "uf": "PA",
    "slug": "viseu"
   },
   {
@@ -3027,6 +3039,10 @@
   {
    "uf": "PB",
    "slug": "mamanguape"
+  },
+  {
+   "uf": "PB",
+   "slug": "mari"
   },
   {
    "uf": "PB",
@@ -3238,6 +3254,10 @@
   },
   {
    "uf": "PE",
+   "slug": "petrolandia"
+  },
+  {
+   "uf": "PE",
    "slug": "petrolina"
   },
   {
@@ -3327,6 +3347,10 @@
   {
    "uf": "PE",
    "slug": "trindade"
+  },
+  {
+   "uf": "PE",
+   "slug": "tuparetama"
   },
   {
    "uf": "PE",
@@ -4446,6 +4470,10 @@
   },
   {
    "uf": "RO",
+   "slug": "rolim-de-moura"
+  },
+  {
+   "uf": "RO",
    "slug": "santa-luzia-d-oeste"
   },
   {
@@ -4491,6 +4519,10 @@
   {
    "uf": "RS",
    "slug": "bento-goncalves"
+  },
+  {
+   "uf": "RS",
+   "slug": "cacequi"
   },
   {
    "uf": "RS",
@@ -4631,6 +4663,10 @@
   {
    "uf": "RS",
    "slug": "jaguarao"
+  },
+  {
+   "uf": "RS",
+   "slug": "lagoa-vermelha"
   },
   {
    "uf": "RS",
@@ -4787,6 +4823,10 @@
   {
    "uf": "RS",
    "slug": "taquara"
+  },
+  {
+   "uf": "RS",
+   "slug": "taquari"
   },
   {
    "uf": "RS",
@@ -6194,6 +6234,10 @@
   },
   {
    "uf": "SP",
+   "slug": "pinhalzinho"
+  },
+  {
+   "uf": "SP",
    "slug": "piquete"
   },
   {
@@ -6295,6 +6339,10 @@
   {
    "uf": "SP",
    "slug": "rio-das-pedras"
+  },
+  {
+   "uf": "SP",
+   "slug": "rio-grande-da-serra"
   },
   {
    "uf": "SP",
@@ -6583,6 +6631,10 @@
   {
    "uf": "TO",
    "slug": "pedro-afonso"
+  },
+  {
+   "uf": "TO",
+   "slug": "ponte-alta-do-tocantins"
   },
   {
    "uf": "TO",
