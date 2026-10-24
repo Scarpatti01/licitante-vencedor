@@ -34,6 +34,10 @@
   },
   {
    "uf": "AL",
+   "slug": "coruripe"
+  },
+  {
+   "uf": "AL",
    "slug": "maceio"
   },
   {
@@ -43,6 +47,10 @@
   {
    "uf": "AL",
    "slug": "penedo"
+  },
+  {
+   "uf": "AL",
+   "slug": "pilar"
   },
   {
    "uf": "AL",
@@ -1302,6 +1310,10 @@
   },
   {
    "uf": "GO",
+   "slug": "jaragua"
+  },
+  {
+   "uf": "GO",
    "slug": "jatai"
   },
   {
@@ -1650,6 +1662,10 @@
   },
   {
    "uf": "MG",
+   "slug": "arantina"
+  },
+  {
+   "uf": "MG",
    "slug": "arapora"
   },
   {
@@ -1743,6 +1759,10 @@
   {
    "uf": "MG",
    "slug": "caiana"
+  },
+  {
+   "uf": "MG",
+   "slug": "caldas"
   },
   {
    "uf": "MG",
@@ -2686,6 +2706,10 @@
   },
   {
    "uf": "MS",
+   "slug": "laguna-carapa"
+  },
+  {
+   "uf": "MS",
    "slug": "maracaju"
   },
   {
@@ -2719,6 +2743,10 @@
   {
    "uf": "MS",
    "slug": "porto-murtinho"
+  },
+  {
+   "uf": "MS",
+   "slug": "ribas-do-rio-pardo"
   },
   {
    "uf": "MS",
@@ -2827,6 +2855,10 @@
   {
    "uf": "MT",
    "slug": "mirassol-d-oeste"
+  },
+  {
+   "uf": "MT",
+   "slug": "nobres"
   },
   {
    "uf": "MT",
@@ -4018,6 +4050,10 @@
   },
   {
    "uf": "PR",
+   "slug": "tres-barras-do-parana"
+  },
+  {
+   "uf": "PR",
    "slug": "ubirata"
   },
   {
@@ -4507,6 +4543,10 @@
   {
    "uf": "RS",
    "slug": "alvorada"
+  },
+  {
+   "uf": "RS",
+   "slug": "ametista-do-sul"
   },
   {
    "uf": "RS",
@@ -6035,6 +6075,10 @@
   {
    "uf": "SP",
    "slug": "jambeiro"
+  },
+  {
+   "uf": "SP",
+   "slug": "jandira"
   },
   {
    "uf": "SP",
