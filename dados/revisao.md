@@ -1,21 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29751 editais coletados em 2026-10-27T09:20:54.560Z.
+Revisão dos dados — 29076 editais coletados em 2026-10-27T11:04:09.573Z.
 
-Encontrados 0 erro(s), 7 suspeita(s) e 131 aviso(s).
-
-[AVISO] O edital 00402552000126-1-000550/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Óleo diesel."
-  Edital: https://pncp.gov.br/app/editais/00402552000126/2026/550
-
-[AVISO] O edital 46374500000194-1-008395/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Insulinas"
-  Edital: https://pncp.gov.br/app/editais/46374500000194/2026/8395
-
-[AVISO] O edital 96291141000180-1-007127/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "pneu"
-  Edital: https://pncp.gov.br/app/editais/96291141000180/2026/7127
+Encontrados 0 erro(s), 7 suspeita(s) e 128 aviso(s).
 
 [AVISO] O edital 42498600000171-1-004385/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Guarda Sol"
