@@ -310,6 +310,10 @@
   },
   {
    "uf": "BA",
+   "slug": "lapao"
+  },
+  {
+   "uf": "BA",
    "slug": "lauro-de-freitas"
   },
   {
@@ -395,6 +399,10 @@
   {
    "uf": "BA",
    "slug": "santo-estevao"
+  },
+  {
+   "uf": "BA",
+   "slug": "sao-felipe"
   },
   {
    "uf": "BA",
@@ -1118,6 +1126,10 @@
   },
   {
    "uf": "GO",
+   "slug": "aragoiania"
+  },
+  {
+   "uf": "GO",
    "slug": "arenopolis"
   },
   {
@@ -1451,6 +1463,10 @@
   {
    "uf": "GO",
    "slug": "piracanjuba"
+  },
+  {
+   "uf": "GO",
+   "slug": "pirenopolis"
   },
   {
    "uf": "GO",
@@ -2406,6 +2422,10 @@
   },
   {
    "uf": "MG",
+   "slug": "sabara"
+  },
+  {
+   "uf": "MG",
    "slug": "sabinopolis"
   },
   {
@@ -3242,6 +3262,10 @@
   },
   {
    "uf": "PE",
+   "slug": "igarassu"
+  },
+  {
+   "uf": "PE",
    "slug": "ilha-de-itamaraca"
   },
   {
@@ -3355,6 +3379,10 @@
   {
    "uf": "PE",
    "slug": "sao-bento-do-una"
+  },
+  {
+   "uf": "PE",
+   "slug": "sao-jose-da-coroa-grande"
   },
   {
    "uf": "PE",
@@ -3726,6 +3754,10 @@
   },
   {
    "uf": "PR",
+   "slug": "iretama"
+  },
+  {
+   "uf": "PR",
    "slug": "itapejara-d-oeste"
   },
   {
@@ -3855,6 +3887,10 @@
   {
    "uf": "PR",
    "slug": "nova-prata-do-iguacu"
+  },
+  {
+   "uf": "PR",
+   "slug": "ouro-verde-do-oeste"
   },
   {
    "uf": "PR",
@@ -4015,6 +4051,10 @@
   {
    "uf": "PR",
    "slug": "santo-antonio-do-paraiso"
+  },
+  {
+   "uf": "PR",
+   "slug": "santo-inacio"
   },
   {
    "uf": "PR",
@@ -4326,6 +4366,10 @@
   },
   {
    "uf": "RJ",
+   "slug": "teresopolis"
+  },
+  {
+   "uf": "RJ",
    "slug": "tres-rios"
   },
   {
@@ -4631,6 +4675,10 @@
   {
    "uf": "RS",
    "slug": "capao-da-canoa"
+  },
+  {
+   "uf": "RS",
+   "slug": "capao-do-leao"
   },
   {
    "uf": "RS",
@@ -6178,6 +6226,10 @@
   },
   {
    "uf": "SP",
+   "slug": "luiziania"
+  },
+  {
+   "uf": "SP",
    "slug": "mairinque"
   },
   {
@@ -6219,6 +6271,10 @@
   {
    "uf": "SP",
    "slug": "mirandopolis"
+  },
+  {
+   "uf": "SP",
+   "slug": "mirante-do-paranapanema"
   },
   {
    "uf": "SP",
