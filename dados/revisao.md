@@ -1,13 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29224 editais coletados em 2026-10-28T10:01:43.168Z.
+Revisão dos dados — 28936 editais coletados em 2026-10-28T11:40:26.825Z.
 
-Encontrados 0 erro(s), 7 suspeita(s) e 121 aviso(s).
-
-[AVISO] O edital 18715599000105-1-000753/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "coffee break"
-  Edital: https://pncp.gov.br/app/editais/18715599000105/2026/753
+Encontrados 0 erro(s), 7 suspeita(s) e 120 aviso(s).
 
 [AVISO] O edital 13699404000167-1-000185/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "AUTOCLAVE"
