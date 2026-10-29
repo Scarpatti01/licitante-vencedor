@@ -2294,6 +2294,10 @@
   },
   {
    "uf": "MG",
+   "slug": "pains"
+  },
+  {
+   "uf": "MG",
    "slug": "para-de-minas"
   },
   {
@@ -2379,6 +2383,10 @@
   {
    "uf": "MG",
    "slug": "pouso-alegre"
+  },
+  {
+   "uf": "MG",
+   "slug": "pouso-alto"
   },
   {
    "uf": "MG",
@@ -3774,6 +3782,10 @@
   },
   {
    "uf": "PR",
+   "slug": "jataizinho"
+  },
+  {
+   "uf": "PR",
    "slug": "joaquim-tavora"
   },
   {
@@ -5083,6 +5095,10 @@
   {
    "uf": "SC",
    "slug": "bombinhas"
+  },
+  {
+   "uf": "SC",
+   "slug": "braco-do-norte"
   },
   {
    "uf": "SC",
