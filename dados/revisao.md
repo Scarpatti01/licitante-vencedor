@@ -1,29 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 30744 editais coletados em 2026-10-29T10:25:19.828Z.
+Revisão dos dados — 29357 editais coletados em 2026-10-29T11:48:55.597Z.
 
-Encontrados 0 erro(s), 6 suspeita(s) e 115 aviso(s).
-
-[AVISO] O edital 00375114000116-1-000166/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Lâmpada."
-  Edital: https://pncp.gov.br/app/editais/00375114000116/2026/166
-
-[AVISO] O edital 00402552000126-1-000552/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Ácidos."
-  Edital: https://pncp.gov.br/app/editais/00402552000126/2026/552
-
-[AVISO] O edital 10784782000150-1-000440/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Itens NQV"
-  Edital: https://pncp.gov.br/app/editais/10784782000150/2026/440
-
-[AVISO] O edital 62070362000106-1-000662/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "LANTERNAS LED"
-  Edital: https://pncp.gov.br/app/editais/62070362000106/2026/662
-
-[AVISO] O edital 88067780000138-1-000142/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Obras"
-  Edital: https://pncp.gov.br/app/editais/88067780000138/2026/142
+Encontrados 0 erro(s), 6 suspeita(s) e 111 aviso(s).
 
 [AVISO] O edital 63025530000104-1-004043/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "DFD 432/2026"
@@ -214,6 +194,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 115 aviso(s).
   Evidência: objeto declarado: "CANALETA"
   Edital: https://pncp.gov.br/app/editais/13529136000135/2026/140
 
+[AVISO] O edital 13221247000180-1-000048/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "PNEU"
+  Edital: https://pncp.gov.br/app/editais/13221247000180/2026/48
+
 [AVISO] O edital 05816630000152-1-008054/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "KIT DE INFUSAO"
   Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8054
@@ -258,6 +242,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 115 aviso(s).
   Evidência: valor declarado R$ 46.279.258.200,00, contra máximo de R$ 8.837.320.000,00 entre os demais Pregão - Eletrônico deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10 daria R$ 4.627.925.820,00; dividido por 100 daria R$ 462.792.582,00; dividido por 1.000 daria R$ 46.279.258,20; dividido por 10.000 daria R$ 4.627.925,82; dividido por 100.000 daria R$ 462.792,58). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/00043711000143/2026/60
+
+[AVISO] O edital 13529136000135-1-000142/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "PNEU RADIAL"
+  Edital: https://pncp.gov.br/app/editais/13529136000135/2026/142
 
 [AVISO] O edital 62070362000106-1-000677/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "DISCO DE FREIO"
@@ -408,10 +396,6 @@ Encontrados 0 erro(s), 6 suspeita(s) e 115 aviso(s).
   Evidência: objeto declarado: "Medicamentos."
   Edital: https://pncp.gov.br/app/editais/25053117000164/2026/217
 
-[AVISO] O edital 44880060000111-1-000232/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "fIREWALL"
-  Edital: https://pncp.gov.br/app/editais/44880060000111/2026/232
-
 [AVISO] O edital 01676018000170-1-000002/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Notebook"
   Edital: https://pncp.gov.br/app/editais/01676018000170/2026/2
@@ -442,7 +426,7 @@ Encontrados 0 erro(s), 6 suspeita(s) e 115 aviso(s).
 
 [SUSPEITA] No edital 14682109000160-1-000030/2026, do órgão FUNDO DE URBANIZACAO DE CURITIBA, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
   Evidência: valor declarado R$ 19.737.063.876,00, contra máximo de R$ 6.552.622.178,24 entre os demais Concorrência - Presencial deste conjunto
-  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Concorrência - Presencial (dividido por 10 daria R$ 1.973.706.387,60; dividido por 100 daria R$ 197.370.638,76; dividido por 1.000 daria R$ 19.737.063,88; dividido por 10.000 daria R$ 1.973.706,39). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
+  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Concorrência - Presencial (dividido por 10 daria R$ 1.973.706.387,60; dividido por 100 daria R$ 197.370.638,76; dividido por 1.000 daria R$ 19.737.063,88). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/14682109000160/2026/30
 
 [AVISO] O edital 17503475000101-1-000241/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
