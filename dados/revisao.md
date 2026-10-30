@@ -1,17 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 30342 editais coletados em 2026-10-30T10:27:54.443Z.
+Revisão dos dados — 29933 editais coletados em 2026-10-30T11:41:43.804Z.
 
-Encontrados 0 erro(s), 6 suspeita(s) e 119 aviso(s).
-
-[AVISO] O edital 01263896000164-1-000767/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "reagentes"
-  Edital: https://pncp.gov.br/app/editais/01263896000164/2026/767
-
-[AVISO] O edital 91566877000108-1-001052/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "SERVICOS"
-  Edital: https://pncp.gov.br/app/editais/91566877000108/2026/1052
+Encontrados 0 erro(s), 6 suspeita(s) e 118 aviso(s).
 
 [AVISO] O edital 03288908000483-1-000046/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "30853/2026"
@@ -285,6 +277,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 119 aviso(s).
 [AVISO] O edital 63025530000104-1-004297/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Mobiliário"
   Edital: https://pncp.gov.br/app/editais/63025530000104/2026/4297
+
+[AVISO] O edital 62070362000106-1-000688/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "ELETRODO"
+  Edital: https://pncp.gov.br/app/editais/62070362000106/2026/688
 
 [AVISO] O edital 88067780000138-1-000149/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Serviço"
