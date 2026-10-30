@@ -42,6 +42,10 @@
   },
   {
    "uf": "AL",
+   "slug": "marechal-deodoro"
+  },
+  {
+   "uf": "AL",
    "slug": "murici"
   },
   {
@@ -1633,6 +1637,10 @@
    "slug": "timon"
   },
   {
+   "uf": "MA",
+   "slug": "ze-doca"
+  },
+  {
    "uf": "MG",
    "slug": "abaete"
   },
@@ -1903,6 +1911,10 @@
   {
    "uf": "MG",
    "slug": "conceicao-do-rio-verde"
+  },
+  {
+   "uf": "MG",
+   "slug": "conceicao-dos-ouros"
   },
   {
    "uf": "MG",
@@ -2262,6 +2274,10 @@
   },
   {
    "uf": "MG",
+   "slug": "nova-serrana"
+  },
+  {
+   "uf": "MG",
    "slug": "olaria"
   },
   {
@@ -2339,6 +2355,10 @@
   {
    "uf": "MG",
    "slug": "pedro-leopoldo"
+  },
+  {
+   "uf": "MG",
+   "slug": "perdoes"
   },
   {
    "uf": "MG",
@@ -2511,6 +2531,10 @@
   {
    "uf": "MG",
    "slug": "sao-joaquim-de-bicas"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-jose-da-lapa"
   },
   {
    "uf": "MG",
@@ -2802,6 +2826,10 @@
   },
   {
    "uf": "MS",
+   "slug": "sidrolandia"
+  },
+  {
+   "uf": "MS",
    "slug": "sonora"
   },
   {
@@ -2883,6 +2911,14 @@
   {
    "uf": "MT",
    "slug": "guiratinga"
+  },
+  {
+   "uf": "MT",
+   "slug": "itauba"
+  },
+  {
+   "uf": "MT",
+   "slug": "itiquira"
   },
   {
    "uf": "MT",
@@ -3122,6 +3158,10 @@
   },
   {
    "uf": "PB",
+   "slug": "juripiranga"
+  },
+  {
+   "uf": "PB",
    "slug": "mae-d-agua"
   },
   {
@@ -3334,6 +3374,10 @@
   },
   {
    "uf": "PE",
+   "slug": "panelas"
+  },
+  {
+   "uf": "PE",
    "slug": "paudalho"
   },
   {
@@ -3487,6 +3531,10 @@
   {
    "uf": "PI",
    "slug": "parnaiba"
+  },
+  {
+   "uf": "PI",
+   "slug": "pau-d-arco-do-piaui"
   },
   {
    "uf": "PI",
@@ -4006,6 +4054,10 @@
   },
   {
    "uf": "PR",
+   "slug": "realeza"
+  },
+  {
+   "uf": "PR",
    "slug": "renascenca"
   },
   {
@@ -4083,6 +4135,10 @@
   {
    "uf": "PR",
    "slug": "sao-joao-do-ivai"
+  },
+  {
+   "uf": "PR",
+   "slug": "sao-jorge-d-oeste"
   },
   {
    "uf": "PR",
@@ -4710,6 +4766,10 @@
   },
   {
    "uf": "RS",
+   "slug": "cidreira"
+  },
+  {
+   "uf": "RS",
    "slug": "cruz-alta"
   },
   {
@@ -4919,6 +4979,10 @@
   {
    "uf": "RS",
    "slug": "sao-jeronimo"
+  },
+  {
+   "uf": "RS",
+   "slug": "sao-jose-do-norte"
   },
   {
    "uf": "RS",
