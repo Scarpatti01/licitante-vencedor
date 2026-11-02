@@ -69,3 +69,6 @@ livro/passo2.pdf
 # Cache do Python, criado ao importar os geradores do livro.
 livro/__pycache__/
 __pycache__/
+
+# IndexNow: lista de URLs já enviadas (scripts/indexnow.mjs)
+.indexnow-state.json
