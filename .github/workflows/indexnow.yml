@@ -9,6 +9,8 @@ on:
 
 permissions:
   contents: read
+  # Para achar e baixar a lista guardada pela execução anterior.
+  actions: read
 
 jobs:
   indexnow:
@@ -33,20 +35,37 @@ jobs:
         with:
           node-version: "24"
 
-      # A lista de URLs da última execução. Sem ela, o script envia o sitemap
-      # inteiro. O cache some depois de 7 dias sem uso; nesse caso o próximo
-      # deploy reenvia tudo uma vez, e volta a enviar só as novas.
-      - uses: actions/cache/restore@v4
-        with:
-          path: .indexnow-state.json
-          key: indexnow-${{ github.run_id }}
-          restore-keys: indexnow-
+      # A lista de URLs da última execução que deu certo. Sem ela, o script
+      # envia o sitemap inteiro.
+      #
+      # Era o cache do Actions, e ele não funciona aqui: o deployment_status
+      # não está ligado a uma branch, e o cache recusa o evento com um aviso,
+      # sem falhar. A primeira execução em produção (02/11) mostrou isso; com
+      # o cache, todo deploy reenviaria as 1.874 URLs. O artefato não depende
+      # de branch, e é o mesmo caminho que `enviar-alertas.yml` usa para pegar
+      # o snapshot da coleta.
+      - name: Recuperar a lista da execução anterior
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          for candidata in $(gh run list --workflow=indexnow.yml --status=success \
+              --limit=10 --json databaseId --jq '.[].databaseId'); do
+            if gh run download "$candidata" --name indexnow-state --dir . 2>/dev/null; then
+              echo "lista recuperada da execução $candidata"
+              exit 0
+            fi
+          done
+          echo "nenhuma lista anterior: o script vai enviar todas as URLs"
 
       - run: node scripts/indexnow.mjs
 
-      # Só chega aqui se o envio deu certo: num erro, o histórico antigo fica,
-      # e o próximo deploy tenta de novo as mesmas URLs.
-      - uses: actions/cache/save@v4
+      # Só chega aqui se o envio deu certo: num erro, a lista antiga fica, e o
+      # próximo deploy tenta de novo as mesmas URLs. O nome começa com ponto, e
+      # o upload-artifact deixa esses arquivos de fora se não for avisado.
+      - uses: actions/upload-artifact@v4
         with:
+          name: indexnow-state
           path: .indexnow-state.json
-          key: indexnow-${{ github.run_id }}
+          include-hidden-files: true
+          retention-days: 90
