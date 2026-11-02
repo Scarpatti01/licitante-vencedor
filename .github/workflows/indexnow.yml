@@ -1,0 +1,52 @@
+name: IndexNow
+
+# Avisa o IndexNow (Bing, Yandex, Seznam, Naver) das URLs novas do sitemap.
+# Roda quando a Vercel termina um deploy de produção com sucesso, e à mão pela
+# aba Actions. O script não importa nada do projeto, então não há `npm ci`.
+on:
+  deployment_status:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  indexnow:
+    # A Vercel manda um deployment_status para cada estado de cada deploy,
+    # inclusive os de preview. Só o sucesso em produção interessa.
+    if: github.event_name == 'workflow_dispatch' || (github.event.deployment_status.state == 'success' && github.event.deployment.environment == 'Production')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    # No job, e não no workflow: no workflow, o evento de um deploy de preview
+    # (que este job ignora) cancelaria uma execução de produção que estivesse
+    # esperando na fila. Aqui, uma execução nova só substitui outra de produção,
+    # e ela compara com o último histórico salvo, então nenhuma URL se perde.
+    concurrency:
+      group: indexnow
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      # A lista de URLs da última execução. Sem ela, o script envia o sitemap
+      # inteiro. O cache some depois de 7 dias sem uso; nesse caso o próximo
+      # deploy reenvia tudo uma vez, e volta a enviar só as novas.
+      - uses: actions/cache/restore@v4
+        with:
+          path: .indexnow-state.json
+          key: indexnow-${{ github.run_id }}
+          restore-keys: indexnow-
+
+      - run: node scripts/indexnow.mjs
+
+      # Só chega aqui se o envio deu certo: num erro, o histórico antigo fica,
+      # e o próximo deploy tenta de novo as mesmas URLs.
+      - uses: actions/cache/save@v4
+        with:
+          path: .indexnow-state.json
+          key: indexnow-${{ github.run_id }}
