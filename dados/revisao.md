@@ -1,21 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29844 editais coletados em 2026-11-02T13:52:48.103Z.
+Revisão dos dados — 29441 editais coletados em 2026-11-03T11:20:58.322Z.
 
-Encontrados 0 erro(s), 6 suspeita(s) e 119 aviso(s).
-
-[AVISO] O edital 00394502000144-1-014586/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Case Tv 55’"
-  Edital: https://pncp.gov.br/app/editais/00394502000144/2026/14586
-
-[AVISO] O edital 94706140000123-1-000107/2025 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Leiloeiro"
-  Edital: https://pncp.gov.br/app/editais/94706140000123/2025/107
-
-[AVISO] O edital 18715599000105-1-000752/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "açucar"
-  Edital: https://pncp.gov.br/app/editais/18715599000105/2026/752
+Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
 
 [AVISO] O edital 91566877000108-1-001017/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "SERVICOS"
@@ -311,7 +299,7 @@ Encontrados 0 erro(s), 6 suspeita(s) e 119 aviso(s).
   Edital: https://pncp.gov.br/app/editais/25053117000164/2026/216
 
 [SUSPEITA] No edital 13284641000167-1-000002/2026, do órgão MUNICIPIO DE MAETINGA, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 3.561.024.617.607,35, contra máximo de R$ 897.274.272,38 entre os demais Concorrência - Eletrônica deste conjunto
+  Evidência: valor declarado R$ 3.561.024.617.607,35, contra máximo de R$ 981.636.500,60 entre os demais Concorrência - Eletrônica deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Concorrência - Eletrônica (dividido por 10.000 daria R$ 356.102.461,76; dividido por 100.000 daria R$ 35.610.246,18). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/13284641000167/2026/2
 

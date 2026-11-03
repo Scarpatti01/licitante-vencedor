@@ -1,0 +1,416 @@
+{
+  "dia": "2026-11-03",
+  "consideradosNoDia": 29630,
+  "posts": [
+    {
+      "slug": "pregao-eletronico-generos-alimenticios-hortifrutigranjeiros-carnes-embutidos-preparo-325-2026",
+      "editalId": "44573087000161-1-000325/2026",
+      "objeto": "REGISTRO DE PREÇOS PARA FUTURA E EVENTUAL AQUISIÇÃO DE GÊNEROS ALIMENTÍCIOS (HORTIFRUTIGRANJEIROS, CARNES E EMBUTIDOS) DESTINADOS AO PREPARO DA ALIMENTAÇÃO DOS MORADORES DAS RESIDÊNCIAS TERAPÊUTICAS E EQUIPE DO CORPO DE BOMBEIROS DO MUNICÍPIO DE TUPÃ - SP, PELO PERÍODO 12 (DOZE) MESES",
+      "orgao": "MUNICIPIO DE TUPA",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 960555.56,
+      "registroDePrecos": true,
+      "uf": "SP",
+      "municipio": "Tupã",
+      "municipioSlug": "tupa",
+      "codigoIbge": "3555000",
+      "publicadoEm": "2026-10-21T10:45:50+00:00",
+      "encerramentoProposta": "2026-11-06T11:59:00+00:00",
+      "coletadoEm": "2026-11-03T11:23:32.794+00:00",
+      "postadoEm": "2026-11-03T11:29:50.606Z",
+      "link": "https://pncp.gov.br/app/editais/44573087000161/2026/325",
+      "analise": {
+        "editalId": "44573087000161-1-000325/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 2
+    },
+    {
+      "slug": "credenciamento-presente-chamada-publica-tem-objetivo-generos-256-2026",
+      "editalId": "81531162000158-1-000256/2026",
+      "objeto": "A presente chamada Pública  tem por objetivo a aquisição de gêneros alimentícios diretamente da agricultura familiar e do empreendedor familiar rural ou de suas organizações, destinados à alimentação escolar no Município de Forquilhinha/SC, conforme Lei Federal nº. 11.947 de 2009 e Resoluções do FNDE relativas ao PNAE.",
+      "orgao": "MUNICIPIO DE FORQUILHINHA",
+      "modalidade": "Credenciamento",
+      "valorEstimado": 994203.9,
+      "registroDePrecos": false,
+      "uf": "SC",
+      "municipio": "Forquilhinha",
+      "municipioSlug": "forquilhinha",
+      "codigoIbge": "4205456",
+      "publicadoEm": "2026-10-14T14:45:03+00:00",
+      "encerramentoProposta": "2026-11-06T11:59:00+00:00",
+      "coletadoEm": "2026-11-03T11:23:17.215+00:00",
+      "postadoEm": "2026-11-03T11:29:50.606Z",
+      "link": "https://pncp.gov.br/app/editais/81531162000158/2026/256",
+      "analise": {
+        "editalId": "81531162000158-1-000256/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 6
+    },
+    {
+      "slug": "pregao-eletronico-materiais-insumos-equipamentos-odontologicos-atendimento-demandas-55-2026",
+      "editalId": "03773942000109-1-000055/2026",
+      "objeto": "[LICITANET] - Registro de preços para futura e eventual aquisição de materiais, insumos e equipamentos odontológicos destinados ao atendimento das demandas da Secretaria Municipal de Saúde de Pedra Preta MT.",
+      "orgao": "MUNICIPIO DE PEDRA PRETA",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 1072207.12,
+      "registroDePrecos": true,
+      "uf": "MT",
+      "municipio": "Pedra Preta",
+      "municipioSlug": "pedra-preta",
+      "codigoIbge": "5106372",
+      "publicadoEm": "2026-10-22T18:23:12+00:00",
+      "encerramentoProposta": "2026-11-06T11:30:00+00:00",
+      "coletadoEm": "2026-11-03T11:21:46.187+00:00",
+      "postadoEm": "2026-11-03T11:29:50.606Z",
+      "link": "https://pncp.gov.br/app/editais/03773942000109/2026/55",
+      "analise": {
+        "editalId": "03773942000109-1-000055/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "pregao-eletronico-formacao-parcelado-comprimidos-pomadas-solucoes-orais-367-2026",
+      "editalId": "11049830000120-1-000367/2026",
+      "objeto": "FORMAÇÃO DE REGISTRO DE PREÇO NO FORNECIMENTO PARCELADO DE COMPRIMIDOS, POMADAS E SOLUÇÕES ORAIS PARA EVENTUAL E FUTURA AQUISIÇÃO, A FIM DE ATENDER AS NECESSIDADES DA CENTRAL DE ABASTECIMENTO FARMACÊUTICA (CAF), PELO PERÍODO DE 12 (DOZE) MESES, CONFORME AS ESPECIFICAÇÕES E QUANTITATIVOS CONSTANTES NO TERMO DE REFERÊNCIA, ANEXO I, DO EDITAL.",
+      "orgao": "MUNICIPIO DE GRAVATA",
+      "modalidade": "Pregão - Eletrônico",
+      "valorEstimado": 5372247.96,
+      "registroDePrecos": true,
+      "uf": "PE",
+      "municipio": "Gravatá",
+      "municipioSlug": "gravata",
+      "codigoIbge": "2606408",
+      "publicadoEm": "2026-09-23T18:27:03+00:00",
+      "encerramentoProposta": "2026-11-06T11:30:00+00:00",
+      "coletadoEm": "2026-11-03T11:21:51.59+00:00",
+      "postadoEm": "2026-11-03T11:29:50.606Z",
+      "link": "https://pncp.gov.br/app/editais/11049830000120/2026/367",
+      "analise": {
+        "editalId": "11049830000120-1-000367/2026",
+        "analisadoEm": null,
+        "versaoDoPrompt": null,
+        "modelo": null,
+        "resumoExecutivo": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "exigencias": [],
+        "criterioDeJulgamento": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "amostraExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "A leitura automática do edital falhou: O fornecedor recusou a requisição (HTTP 402): {\"error\":{\"code\":402,\"message\":\"Your prepayment credits are depleted. Please go to AI Studio at https://ai.studio/projects to manage your project and billing. Learn more at https://ai.google.dev/gemini-api/docs/billing#prepay. \",\"status\":\"RESOURCE_EXHAUSTED\"}}"
+        },
+        "riscos": [],
+        "profundidade": "lista"
+      },
+      "documentosLidos": 1
+    },
+    {
+      "slug": "dispensa-material-expediente-necessidades-companhia-pesquisa-recursos-529-2026",
+      "editalId": "00091652000189-1-000529/2026",
+      "objeto": "Aquisição de MATERIAL DE EXPEDIENTE para atender as necessidades da Companhia de Pesquisa de Recursos Minerais - CPRM, na unidade de Belo Horizonte",
+      "orgao": "COMPANHIA DE PESQUISA DE RECURSOS MINERAIS",
+      "modalidade": "Dispensa",
+      "valorEstimado": 4986.44,
+      "registroDePrecos": false,
+      "uf": "MG",
+      "municipio": "Belo Horizonte",
+      "municipioSlug": "belo-horizonte",
+      "codigoIbge": "3106200",
+      "publicadoEm": "2026-10-29T14:20:18+00:00",
+      "encerramentoProposta": "2026-11-06T12:00:00+00:00",
+      "coletadoEm": "2026-11-03T11:21:23.826+00:00",
+      "postadoEm": "2026-11-03T11:29:50.606Z",
+      "link": "https://pncp.gov.br/app/editais/00091652000189/2026/529",
+      "analise": {
+        "editalId": "00091652000189-1-000529/2026",
+        "analisadoEm": "2026-11-03T11:31:26.977Z",
+        "versaoDoPrompt": "analise-de-edital.v1",
+        "modelo": "gemini-3.1-pro-preview",
+        "resumoExecutivo": {
+          "origem": "edital",
+          "valor": "A contratação visa a aquisição de material de expediente para a CPRM em Belo Horizonte/MG, por meio de Dispensa Eletrônica. Microempresas e empresas de pequeno porte terão tratamento favorecido, devendo estar credenciadas no SICAF e no portal gov.br/compras para participar.",
+          "evidencia": "O objeto da presente Dispensa Eletrônica é a aquisição Material de Expediente , cujas especificações técnicas, quantidades, condições de entrega e demais exigências estão detalhadas no Projeto Básico (Anexo I) deste Aviso. [...] Será concedido tratamento favorecido para as microempresas e empresas de pequeno porte [...] Poderão participar os fornecedores interessados cujo ramo de atividade seja compatível com o objeto desta Dispensa Eletrônica e que estiverem previamente credenciados no Sistema de Cadastramento Unificado de Fornecedores – SICAF e no Sistema de Compras do Governo Federal ( www.gov.br/compras ).",
+          "confianca": "media"
+        },
+        "exigencias": [
+          {
+            "tipo": "contrato_social",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Ato constitutivo, estatuto ou contrato social em vigor",
+              "evidencia": "no caso de sociedade empresária ou empresa individual de responsabilidade limitada - EIRELI: ato constitutivo, estatuto ou contrato social em vigor, devidamente registrado na Junta Comercial da respectiva sede, acompanhado de documento comprobatório de seus administradores;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "São documentos exigidos para a habilitação do fornecedor: [...] no caso de sociedade empresária ou empresa individual de responsabilidade limitada - EIRELI: ato constitutivo, estatuto ou contrato social em vigor",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "certidao_federal",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade fiscal perante a Fazenda Nacional (RFB e PGFN)",
+              "evidencia": "Prova de regularidade fiscal perante a Fazenda Nacional, mediante apresentação de certidão expedida conjuntamente pela Secretaria da Receita Federal do Brasil (RFB) e pela Procuradoria-Geral da Fazenda Nacional (PGFN), referente a todos os créditos tributários federais e à Dívida Ativa da União (DAU) por elas administrados",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "São documentos exigidos para a habilitação do fornecedor: [...] Prova de regularidade fiscal perante a Fazenda Nacional",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "certidao_estadual",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de inscrição no cadastro de contribuintes estadual e/ou municipal",
+              "evidencia": "Prova de inscrição no cadastro de contribuintes estadual e/ou municipal, se houver, relativo ao domicílio ou sede do fornecedor, pertinente ao seu ramo de atividade e compatível com o objeto contratual;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "Prova de inscrição no cadastro de contribuintes estadual e/ou municipal, se houver",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "fgts",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de regularidade relativa à Seguridade Social e ao FGTS",
+              "evidencia": "Prova de regularidade relativa à Seguridade Social e ao FGTS, que demonstre cumprimento dos encargos sociais instituídos por lei;",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "São documentos exigidos para a habilitação do fornecedor: [...] Prova de regularidade relativa à Seguridade Social e ao FGTS",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "trabalhista_cndt",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Prova de inexistência de débitos inadimplidos perante a justiça do trabalho",
+              "evidencia": "Prova de inexistência de débitos inadimplidos perante a justiça do trabalho, mediante a apresentação de certidão negativa ou positiva com efeito de negativa, nos termos do Título VII-A da Consolidação das Leis do Trabalho",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "São documentos exigidos para a habilitação do fornecedor: [...] Prova de inexistência de débitos inadimplidos perante a justiça do trabalho",
+              "confianca": "media"
+            }
+          },
+          {
+            "tipo": "sicaf",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Habilitação verificada por meio do SICAF",
+              "evidencia": "Caso atendidas as condições de participação, a habilitação dos fornecedores será verificada por meio do SICAF, nos documentos por ele abrangidos.",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "É dever do fornecedor atualizar previamente as comprovações constantes do SICAF, para que estejam vigentes na data da abertura da sessão pública, ou encaminhar, quando solicitado, a respectiva documentação atualizada.",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "declaracao_me_epp",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Declaração de cumprimento dos requisitos da Lei Complementar nº 123/2006",
+              "evidencia": "Que cumpre os requisitos estabelecidos no artigo 3º da Lei Complementar nº 123, de 14/12/2006 , estando apto a usufruir do tratamento favorecido estabelecido em seus artigos 42 a 49;",
+              "confianca": "alta"
+            },
+            "fase": "proposta",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": false,
+              "evidencia": "A assinalação do campo “não” apenas produzirá o efeito de o participante não ter direito ao tratamento favorecido previsto na Lei Complementar nº 123, de 14/12/2006 , mesmo que microempresa, empresa de pequeno porte ou sociedade cooperativa.",
+              "confianca": "alta"
+            }
+          },
+          {
+            "tipo": "outro",
+            "descricao": {
+              "origem": "edital",
+              "valor": "Cumprimento do disposto no inciso XXXIII do art. 7º da Constituição Federal",
+              "evidencia": "Cumprimento do disposto no inciso XXXIII do art. 7º da Constituição Federal.",
+              "confianca": "alta"
+            },
+            "fase": "habilitacao",
+            "obrigatoria": {
+              "origem": "edital",
+              "valor": true,
+              "evidencia": "São documentos exigidos para a habilitação do fornecedor: [...] Cumprimento do disposto no inciso XXXIII do art. 7º da Constituição Federal.",
+              "confianca": "media"
+            }
+          }
+        ],
+        "criterioDeJulgamento": {
+          "origem": "edital",
+          "valor": "Menor preço por grupo",
+          "evidencia": "O critério de julgamento adotado será o menor preço por grupo , observadas as exigências contidas neste Aviso de Dispensa e em seus anexos quanto às especificações do objeto.",
+          "confianca": "alta"
+        },
+        "garantiaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O trecho do edital fornecido não menciona a exigência de garantia de proposta ou garantia contratual."
+        },
+        "visitaTecnicaExigida": {
+          "origem": "desconhecido",
+          "valor": null,
+          "motivo": "O texto analisado não faz menção à necessidade ou faculdade de visita técnica ou vistoria."
+        },
+        "amostraExigida": {
+          "origem": "edital",
+          "valor": true,
+          "evidencia": "Os critérios pertinentes a solicitação de amostras do material (quando for o caso) estão previstos no Termo de Referência anexo a este Aviso de Dispensa.",
+          "confianca": "media"
+        },
+        "riscos": [
+          {
+            "origem": "edital",
+            "valor": "Prazo muito curto (mínimo de 2 horas) para envio de proposta adequada e documentos complementares após solicitação.",
+            "evidencia": "Será concedido o prazo de 02 (duas) horas , no mínimo , contado da solicitação do agente de contratação no sistema, para envio da proposta adequada ao último lance ofertado ou valor negociado (no caso da proposta superior ao valor estimado), e, se necessário, também, dos documentos complementares.",
+            "confianca": "alta"
+          },
+          {
+            "origem": "edital",
+            "valor": "Multa compensatória pesada (10% a 15%) em caso de inexecução total, recusa em entregar o objeto ou abandono.",
+            "evidencia": "A recusa em iniciar o fornecimento, a ausência de manifestação após convocação regular da CPRM, o não atendimento à convocação para entrega, a recusa em entregar o objeto, o abandono da execução, a extinção da contratação por culpa do contratado ou a inexecução total da obrigação sujeitarão o responsável à multa compensatória entre 10% (dez por cento) e 15% (quinze por cento), incidente sobre o valor total dos itens não atendidos, não entregues ou não executados.",
+            "confianca": "alta"
+          }
+        ],
+        "profundidade": "documento_parcial"
+      },
+      "documentosLidos": 2
+    }
+  ]
+}
