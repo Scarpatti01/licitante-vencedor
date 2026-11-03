@@ -1,29 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29441 editais coletados em 2026-11-03T11:20:58.322Z.
+Revisão dos dados — 28260 editais coletados em 2026-11-03T13:01:54.000Z.
 
-Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
-
-[AVISO] O edital 91566877000108-1-001017/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "SERVICOS"
-  Edital: https://pncp.gov.br/app/editais/91566877000108/2026/1017
-
-[AVISO] O edital 13912084000181-1-000030/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "."
-  Edital: https://pncp.gov.br/app/editais/13912084000181/2026/30
-
-[AVISO] O edital 10572022000180-1-000680/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Medicamentos"
-  Edital: https://pncp.gov.br/app/editais/10572022000180/2026/680
-
-[AVISO] O edital 15126437000305-1-004265/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Madicamentos"
-  Edital: https://pncp.gov.br/app/editais/15126437000305/2026/4265
-
-[AVISO] O edital 94706132000187-1-000083/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "SERVIÇOS"
-  Edital: https://pncp.gov.br/app/editais/94706132000187/2026/83
+Encontrados 0 erro(s), 6 suspeita(s) e 113 aviso(s).
 
 [AVISO] O edital 13420302000160-1-000022/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "AGUA MINERAL"
@@ -162,7 +142,7 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
   Edital: https://pncp.gov.br/app/editais/10572022000180/2026/665
 
 [SUSPEITA] No edital 00043711000143-1-000060/2026, do órgão DEPARTAMENTO NACIONAL DE OBRAS CONTRA AS SECAS, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 46.279.258.200,00, contra máximo de R$ 8.837.320.000,00 entre os demais Pregão - Eletrônico deste conjunto
+  Evidência: valor declarado R$ 46.279.258.200,00, contra máximo de R$ 12.379.800.000,00 entre os demais Pregão - Eletrônico deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10 daria R$ 4.627.925.820,00; dividido por 100 daria R$ 462.792.582,00; dividido por 1.000 daria R$ 46.279.258,20; dividido por 10.000 daria R$ 4.627.925,82; dividido por 100.000 daria R$ 462.792,58). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/00043711000143/2026/60
 
@@ -245,6 +225,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
 [AVISO] O edital 35582108000114-1-000069/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "COPO para agua"
   Edital: https://pncp.gov.br/app/editais/35582108000114/2026/69
+
+[AVISO] O edital 13699404000167-1-000193/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "ANESTESICO"
+  Edital: https://pncp.gov.br/app/editais/13699404000167/2026/193
 
 [AVISO] O edital 15126437000305-1-004486/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Eletrodo"
@@ -348,8 +332,8 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
   Edital: https://pncp.gov.br/app/editais/53378820000188/2026/23
 
 [SUSPEITA] No edital 14147474000175-1-000028/2026, do órgão MUNICIPIO DE COARACI, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 102.935.385.688,86, contra máximo de R$ 8.837.320.000,00 entre os demais Pregão - Eletrônico deste conjunto
-  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 100 daria R$ 1.029.353.856,89; dividido por 1.000 daria R$ 102.935.385,69; dividido por 10.000 daria R$ 10.293.538,57; dividido por 100.000 daria R$ 1.029.353,86). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
+  Evidência: valor declarado R$ 102.935.385.688,86, contra máximo de R$ 12.379.800.000,00 entre os demais Pregão - Eletrônico deste conjunto
+  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10 daria R$ 10.293.538.568,89; dividido por 100 daria R$ 1.029.353.856,89; dividido por 1.000 daria R$ 102.935.385,69; dividido por 10.000 daria R$ 10.293.538,57; dividido por 100.000 daria R$ 1.029.353,86). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/14147474000175/2026/28
 
 [AVISO] O edital 46377800000127-1-004784/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
@@ -407,6 +391,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
 [AVISO] O edital 01612918000154-1-000123/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "VEÍCULO"
   Edital: https://pncp.gov.br/app/editais/01612918000154/2026/123
+
+[AVISO] O edital 19843929000100-1-000754/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "MMH"
+  Edital: https://pncp.gov.br/app/editais/19843929000100/2026/754
 
 [AVISO] O edital 60448040000122-1-000703/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "FIOS"
