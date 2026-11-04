@@ -146,7 +146,15 @@
   },
   {
    "uf": "BA",
+   "slug": "barra-da-estiva"
+  },
+  {
+   "uf": "BA",
    "slug": "barreiras"
+  },
+  {
+   "uf": "BA",
+   "slug": "belo-campo"
   },
   {
    "uf": "BA",
@@ -2214,6 +2222,10 @@
   },
   {
    "uf": "MG",
+   "slug": "madre-de-deus-de-minas"
+  },
+  {
+   "uf": "MG",
    "slug": "manhuacu"
   },
   {
@@ -3534,6 +3546,10 @@
   },
   {
    "uf": "PI",
+   "slug": "curral-novo-do-piaui"
+  },
+  {
+   "uf": "PI",
    "slug": "floriano"
   },
   {
@@ -3559,6 +3575,10 @@
   {
    "uf": "PI",
    "slug": "ribeiro-goncalves"
+  },
+  {
+   "uf": "PI",
+   "slug": "sao-jose-do-piaui"
   },
   {
    "uf": "PI",
@@ -5878,6 +5898,10 @@
   },
   {
    "uf": "SP",
+   "slug": "auriflama"
+  },
+  {
+   "uf": "SP",
    "slug": "avare"
   },
   {
@@ -6095,6 +6119,10 @@
   {
    "uf": "SP",
    "slug": "florida-paulista"
+  },
+  {
+   "uf": "SP",
+   "slug": "florinea"
   },
   {
    "uf": "SP",
@@ -6827,6 +6855,10 @@
   {
    "uf": "TO",
    "slug": "araguaina"
+  },
+  {
+   "uf": "TO",
+   "slug": "araguatins"
   },
   {
    "uf": "TO",
