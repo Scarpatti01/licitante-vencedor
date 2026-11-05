@@ -214,6 +214,10 @@
   },
   {
    "uf": "BA",
+   "slug": "casa-nova"
+  },
+  {
+   "uf": "BA",
    "slug": "catu"
   },
   {
@@ -271,6 +275,10 @@
   {
    "uf": "BA",
    "slug": "ilheus"
+  },
+  {
+   "uf": "BA",
+   "slug": "inhambupe"
   },
   {
    "uf": "BA",
@@ -918,6 +926,10 @@
   },
   {
    "uf": "ES",
+   "slug": "apiaca"
+  },
+  {
+   "uf": "ES",
    "slug": "aracruz"
   },
   {
@@ -1410,6 +1422,10 @@
   },
   {
    "uf": "GO",
+   "slug": "mossamedes"
+  },
+  {
+   "uf": "GO",
    "slug": "nazario"
   },
   {
@@ -1515,6 +1531,10 @@
   {
    "uf": "GO",
    "slug": "rubiataba"
+  },
+  {
+   "uf": "GO",
+   "slug": "sanclerlandia"
   },
   {
    "uf": "GO",
@@ -2374,6 +2394,10 @@
   },
   {
    "uf": "MG",
+   "slug": "pedralva"
+  },
+  {
+   "uf": "MG",
    "slug": "pedro-leopoldo"
   },
   {
@@ -3006,6 +3030,10 @@
   },
   {
    "uf": "MT",
+   "slug": "varzea-grande"
+  },
+  {
+   "uf": "MT",
    "slug": "vila-rica"
   },
   {
@@ -3079,6 +3107,10 @@
   {
    "uf": "PA",
    "slug": "maraba"
+  },
+  {
+   "uf": "PA",
+   "slug": "marituba"
   },
   {
    "uf": "PA",
@@ -3171,6 +3203,10 @@
   {
    "uf": "PB",
    "slug": "cuite"
+  },
+  {
+   "uf": "PB",
+   "slug": "guarabira"
   },
   {
    "uf": "PB",
@@ -3851,6 +3887,10 @@
   {
    "uf": "PR",
    "slug": "itapejara-d-oeste"
+  },
+  {
+   "uf": "PR",
+   "slug": "itauna-do-sul"
   },
   {
    "uf": "PR",
@@ -4918,6 +4958,10 @@
   },
   {
    "uf": "RS",
+   "slug": "nova-boa-vista"
+  },
+  {
+   "uf": "RS",
    "slug": "nova-hartz"
   },
   {
@@ -5798,6 +5842,10 @@
   },
   {
    "uf": "SE",
+   "slug": "nossa-senhora-do-socorro"
+  },
+  {
+   "uf": "SE",
    "slug": "propria"
   },
   {
@@ -5963,6 +6011,10 @@
   {
    "uf": "SP",
    "slug": "braganca-paulista"
+  },
+  {
+   "uf": "SP",
+   "slug": "brodowski"
   },
   {
    "uf": "SP",
@@ -6806,6 +6858,10 @@
   },
   {
    "uf": "SP",
+   "slug": "torrinha"
+  },
+  {
+   "uf": "SP",
    "slug": "trabiju"
   },
   {
@@ -6895,6 +6951,10 @@
   {
    "uf": "TO",
    "slug": "itapora-do-tocantins"
+  },
+  {
+   "uf": "TO",
+   "slug": "jau-do-tocantins"
   },
   {
    "uf": "TO",
