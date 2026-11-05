@@ -1,22 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29149 editais coletados em 2026-11-05T11:29:55.506Z.
+Revisão dos dados — 27945 editais coletados em 2026-11-05T13:31:02.562Z.
 
-Encontrados 0 erro(s), 7 suspeita(s) e 117 aviso(s).
-
-[AVISO] O edital 88067780000138-1-000144/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Obras"
-  Edital: https://pncp.gov.br/app/editais/88067780000138/2026/144
-
-[AVISO] O edital 10572022000180-1-000665/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Medicamentos"
-  Edital: https://pncp.gov.br/app/editais/10572022000180/2026/665
-
-[SUSPEITA] No edital 00043711000143-1-000060/2026, do órgão DEPARTAMENTO NACIONAL DE OBRAS CONTRA AS SECAS, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 46.279.258.200,00, contra máximo de R$ 12.379.800.000,00 entre os demais Pregão - Eletrônico deste conjunto
-  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10 daria R$ 4.627.925.820,00; dividido por 100 daria R$ 462.792.582,00; dividido por 1.000 daria R$ 46.279.258,20; dividido por 10.000 daria R$ 4.627.925,82; dividido por 100.000 daria R$ 462.792,58). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
-  Edital: https://pncp.gov.br/app/editais/00043711000143/2026/60
+Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
 
 [AVISO] O edital 10572048000128-1-001495/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "CADEADO"
@@ -408,6 +395,10 @@ Encontrados 0 erro(s), 7 suspeita(s) e 117 aviso(s).
   Evidência: objeto declarado: "EQUIPAMENTOS"
   Edital: https://pncp.gov.br/app/editais/88594999000195/2026/1674
 
+[AVISO] O edital 90256686000179-1-000199/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "BENS"
+  Edital: https://pncp.gov.br/app/editais/90256686000179/2026/199
+
 [AVISO] O edital 63025530000104-1-004410/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Baterias"
   Edital: https://pncp.gov.br/app/editais/63025530000104/2026/4410
@@ -508,5 +499,5 @@ Encontrados 0 erro(s), 7 suspeita(s) e 117 aviso(s).
   Evidência: objeto declarado: "CREDENCIAMENTO"
   Edital: https://pncp.gov.br/app/editais/01298975000100/2025/233
 
-86% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
+87% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
 ```
