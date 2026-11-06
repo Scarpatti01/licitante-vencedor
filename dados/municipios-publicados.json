@@ -94,6 +94,10 @@
   },
   {
    "uf": "AM",
+   "slug": "labrea"
+  },
+  {
+   "uf": "AM",
    "slug": "manaus"
   },
   {
@@ -359,6 +363,10 @@
   {
    "uf": "BA",
    "slug": "mata-de-sao-joao"
+  },
+  {
+   "uf": "BA",
+   "slug": "morpara"
   },
   {
    "uf": "BA",
@@ -1250,6 +1258,10 @@
   },
   {
    "uf": "GO",
+   "slug": "cocalzinho-de-goias"
+  },
+  {
+   "uf": "GO",
    "slug": "colinas-do-sul"
   },
   {
@@ -1331,6 +1343,10 @@
   {
    "uf": "GO",
    "slug": "hidrolandia"
+  },
+  {
+   "uf": "GO",
+   "slug": "iaciara"
   },
   {
    "uf": "GO",
@@ -2746,6 +2762,10 @@
   },
   {
    "uf": "MS",
+   "slug": "bonito"
+  },
+  {
+   "uf": "MS",
    "slug": "brasilandia"
   },
   {
@@ -2835,6 +2855,10 @@
   {
    "uf": "MS",
    "slug": "nioaque"
+  },
+  {
+   "uf": "MS",
+   "slug": "nova-alvorada-do-sul"
   },
   {
    "uf": "MS",
@@ -3171,6 +3195,10 @@
   {
    "uf": "PA",
    "slug": "soure"
+  },
+  {
+   "uf": "PA",
+   "slug": "trairao"
   },
   {
    "uf": "PA",
@@ -3551,6 +3579,10 @@
   {
    "uf": "PE",
    "slug": "tuparetama"
+  },
+  {
+   "uf": "PE",
+   "slug": "vertente-do-lerio"
   },
   {
    "uf": "PE",
@@ -5191,6 +5223,10 @@
   {
    "uf": "SC",
    "slug": "balneario-arroio-do-silva"
+  },
+  {
+   "uf": "SC",
+   "slug": "balneario-barra-do-sul"
   },
   {
    "uf": "SC",
