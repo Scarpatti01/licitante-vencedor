@@ -1890,6 +1890,10 @@
   },
   {
    "uf": "MG",
+   "slug": "capitolio"
+  },
+  {
+   "uf": "MG",
    "slug": "carandai"
   },
   {
@@ -2323,6 +2327,10 @@
   {
    "uf": "MG",
    "slug": "nepomuceno"
+  },
+  {
+   "uf": "MG",
+   "slug": "nova-lima"
   },
   {
    "uf": "MG",
@@ -3714,6 +3722,10 @@
   },
   {
    "uf": "PR",
+   "slug": "boa-esperanca-do-iguacu"
+  },
+  {
+   "uf": "PR",
    "slug": "boa-ventura-de-sao-roque"
   },
   {
@@ -4030,6 +4042,10 @@
   },
   {
    "uf": "PR",
+   "slug": "moreira-sales"
+  },
+  {
+   "uf": "PR",
    "slug": "morretes"
   },
   {
@@ -4135,6 +4151,10 @@
   {
    "uf": "PR",
    "slug": "ponta-grossa"
+  },
+  {
+   "uf": "PR",
+   "slug": "pontal-do-parana"
   },
   {
    "uf": "PR",
