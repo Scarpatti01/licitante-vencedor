@@ -98,6 +98,10 @@
   },
   {
    "uf": "AM",
+   "slug": "manacapuru"
+  },
+  {
+   "uf": "AM",
    "slug": "manaus"
   },
   {
@@ -798,6 +802,10 @@
   },
   {
    "uf": "CE",
+   "slug": "paramoti"
+  },
+  {
+   "uf": "CE",
    "slug": "pedra-branca"
   },
   {
@@ -1275,6 +1283,10 @@
   {
    "uf": "GO",
    "slug": "cristalina"
+  },
+  {
+   "uf": "GO",
+   "slug": "crixas"
   },
   {
    "uf": "GO",
@@ -1838,6 +1850,10 @@
   },
   {
    "uf": "MG",
+   "slug": "buritizeiro"
+  },
+  {
+   "uf": "MG",
    "slug": "caete"
   },
   {
@@ -2194,6 +2210,10 @@
   },
   {
    "uf": "MG",
+   "slug": "jacinto"
+  },
+  {
+   "uf": "MG",
    "slug": "janauba"
   },
   {
@@ -2283,6 +2303,10 @@
   {
    "uf": "MG",
    "slug": "materlandia"
+  },
+  {
+   "uf": "MG",
+   "slug": "mateus-leme"
   },
   {
    "uf": "MG",
@@ -3318,6 +3342,10 @@
   },
   {
    "uf": "PE",
+   "slug": "arcoverde"
+  },
+  {
+   "uf": "PE",
    "slug": "barreiros"
   },
   {
@@ -3858,6 +3886,10 @@
   },
   {
    "uf": "PR",
+   "slug": "formosa-do-oeste"
+  },
+  {
+   "uf": "PR",
    "slug": "foz-do-iguacu"
   },
   {
@@ -3943,6 +3975,10 @@
   {
    "uf": "PR",
    "slug": "jacarezinho"
+  },
+  {
+   "uf": "PR",
+   "slug": "jaguariaiva"
   },
   {
    "uf": "PR",
@@ -4147,6 +4183,10 @@
   {
    "uf": "PR",
    "slug": "pitangueiras"
+  },
+  {
+   "uf": "PR",
+   "slug": "planaltina-do-parana"
   },
   {
    "uf": "PR",
@@ -4798,6 +4838,10 @@
   },
   {
    "uf": "RO",
+   "slug": "theobroma"
+  },
+  {
+   "uf": "RO",
    "slug": "urupa"
   },
   {
@@ -4955,6 +4999,10 @@
   {
    "uf": "RS",
    "slug": "guapore"
+  },
+  {
+   "uf": "RS",
+   "slug": "herval"
   },
   {
    "uf": "RS",
@@ -5591,6 +5639,10 @@
   {
    "uf": "SC",
    "slug": "nova-trento"
+  },
+  {
+   "uf": "SC",
+   "slug": "nova-veneza"
   },
   {
    "uf": "SC",
@@ -6554,6 +6606,10 @@
   },
   {
    "uf": "SP",
+   "slug": "nova-campina"
+  },
+  {
+   "uf": "SP",
    "slug": "nova-odessa"
   },
   {
@@ -6579,6 +6635,10 @@
   {
    "uf": "SP",
    "slug": "pacaembu"
+  },
+  {
+   "uf": "SP",
+   "slug": "palmital"
   },
   {
    "uf": "SP",
@@ -6711,6 +6771,10 @@
   {
    "uf": "SP",
    "slug": "promissao"
+  },
+  {
+   "uf": "SP",
+   "slug": "reginopolis"
   },
   {
    "uf": "SP",
@@ -7031,6 +7095,10 @@
   {
    "uf": "TO",
    "slug": "paraiso-do-tocantins"
+  },
+  {
+   "uf": "TO",
+   "slug": "parana"
   },
   {
    "uf": "TO",
