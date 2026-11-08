@@ -1,9 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 30430 editais coletados em 2026-11-07T11:56:34.352Z.
+Revisão dos dados — 30465 editais coletados em 2026-11-08T10:46:08.179Z.
 
-Encontrados 0 erro(s), 6 suspeita(s) e 124 aviso(s).
+Encontrados 0 erro(s), 6 suspeita(s) e 125 aviso(s).
 
 [AVISO] O edital 27080605000196-1-001359/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "TR - CRIOSTATO"
@@ -530,6 +530,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 124 aviso(s).
 [AVISO] O edital 01298975000100-1-000233/2025 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "CREDENCIAMENTO"
   Edital: https://pncp.gov.br/app/editais/01298975000100/2025/233
+
+[AVISO] O edital 88818299000137-1-000023/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "FISIOTERAPIA"
+  Edital: https://pncp.gov.br/app/editais/88818299000137/2026/23
 
 87% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
 ```
