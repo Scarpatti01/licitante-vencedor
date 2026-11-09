@@ -1,25 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 30461 editais coletados em 2026-11-08T12:14:04.597Z.
+Revisão dos dados — 28785 editais coletados em 2026-11-09T12:08:33.551Z.
 
-Encontrados 0 erro(s), 6 suspeita(s) e 125 aviso(s).
-
-[AVISO] O edital 27080605000196-1-001359/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "TR - CRIOSTATO"
-  Edital: https://pncp.gov.br/app/editais/27080605000196/2026/1359
-
-[AVISO] O edital 87613535000116-1-000585/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Copa e Cozinha"
-  Edital: https://pncp.gov.br/app/editais/87613535000116/2026/585
-
-[AVISO] O edital 01602022000194-1-000402/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "SEGUROS"
-  Edital: https://pncp.gov.br/app/editais/01602022000194/2026/402
-
-[AVISO] O edital 17503475000101-1-000244/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "COFFEE BREAK"
-  Edital: https://pncp.gov.br/app/editais/17503475000101/2026/244
+Encontrados 0 erro(s), 6 suspeita(s) e 122 aviso(s).
 
 [AVISO] O edital 02931604000187-1-000376/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
@@ -495,6 +479,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 125 aviso(s).
 [AVISO] O edital 94707486000146-1-000191/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "SELEÇÃO DE OCS"
   Edital: https://pncp.gov.br/app/editais/94707486000146/2026/191
+
+[AVISO] O edital 87344016000108-1-000709/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "MEDICAMENTOS"
+  Edital: https://pncp.gov.br/app/editais/87344016000108/2026/709
 
 [SUSPEITA] No edital 07954480000179-1-025660/2026, do órgão ESTADO DO CEARA, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
   Evidência: valor declarado R$ 24.253.929.260,71, contra máximo de R$ 6.552.622.178,24 entre os demais Concorrência - Presencial deste conjunto
