@@ -474,6 +474,10 @@
   },
   {
    "uf": "BA",
+   "slug": "taperoa"
+  },
+  {
+   "uf": "BA",
    "slug": "teixeira-de-freitas"
   },
   {
@@ -3237,6 +3241,10 @@
    "slug": "viseu"
   },
   {
+   "uf": "PA",
+   "slug": "xinguara"
+  },
+  {
    "uf": "PB",
    "slug": "agua-branca"
   },
@@ -4318,6 +4326,10 @@
   },
   {
    "uf": "PR",
+   "slug": "sao-pedro-do-parana"
+  },
+  {
+   "uf": "PR",
    "slug": "sao-tome"
   },
   {
@@ -5058,6 +5070,10 @@
   },
   {
    "uf": "RS",
+   "slug": "nonoai"
+  },
+  {
+   "uf": "RS",
    "slug": "nova-boa-vista"
   },
   {
@@ -5439,6 +5455,10 @@
   {
    "uf": "SC",
    "slug": "correia-pinto"
+  },
+  {
+   "uf": "SC",
+   "slug": "corupa"
   },
   {
    "uf": "SC",
