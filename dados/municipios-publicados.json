@@ -1458,6 +1458,10 @@
   },
   {
    "uf": "GO",
+   "slug": "mutunopolis"
+  },
+  {
+   "uf": "GO",
    "slug": "nazario"
   },
   {
@@ -1731,6 +1735,10 @@
   {
    "uf": "MG",
    "slug": "aiuruoca"
+  },
+  {
+   "uf": "MG",
+   "slug": "alem-paraiba"
   },
   {
    "uf": "MG",
@@ -2110,6 +2118,10 @@
   },
   {
    "uf": "MG",
+   "slug": "gonzaga"
+  },
+  {
+   "uf": "MG",
    "slug": "governador-valadares"
   },
   {
@@ -2279,6 +2291,10 @@
   {
    "uf": "MG",
    "slug": "lontra"
+  },
+  {
+   "uf": "MG",
+   "slug": "luz"
   },
   {
    "uf": "MG",
@@ -2607,6 +2623,10 @@
   {
    "uf": "MG",
    "slug": "sao-gotardo"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-joao-batista-do-gloria"
   },
   {
    "uf": "MG",
@@ -4242,6 +4262,10 @@
   },
   {
    "uf": "PR",
+   "slug": "reserva-do-iguacu"
+  },
+  {
+   "uf": "PR",
    "slug": "ribeirao-do-pinhal"
   },
   {
@@ -4371,6 +4395,10 @@
   {
    "uf": "PR",
    "slug": "tres-barras-do-parana"
+  },
+  {
+   "uf": "PR",
+   "slug": "tupassi"
   },
   {
    "uf": "PR",
@@ -4690,6 +4718,10 @@
   },
   {
    "uf": "RN",
+   "slug": "jardim-do-serido"
+  },
+  {
+   "uf": "RN",
    "slug": "joao-camara"
   },
   {
@@ -4779,6 +4811,10 @@
   {
    "uf": "RO",
    "slug": "cacoal"
+  },
+  {
+   "uf": "RO",
+   "slug": "chupinguaia"
   },
   {
    "uf": "RO",
@@ -5727,6 +5763,10 @@
   {
    "uf": "SC",
    "slug": "presidente-getulio"
+  },
+  {
+   "uf": "SC",
+   "slug": "princesa"
   },
   {
    "uf": "SC",
