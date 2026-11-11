@@ -1014,6 +1014,10 @@
   },
   {
    "uf": "ES",
+   "slug": "ibitirama"
+  },
+  {
+   "uf": "ES",
    "slug": "iconha"
   },
   {
@@ -1558,6 +1562,10 @@
   },
   {
    "uf": "GO",
+   "slug": "posse"
+  },
+  {
+   "uf": "GO",
    "slug": "professor-jamil"
   },
   {
@@ -1751,6 +1759,10 @@
   {
    "uf": "MG",
    "slug": "alto-caparao"
+  },
+  {
+   "uf": "MG",
+   "slug": "alto-rio-doce"
   },
   {
    "uf": "MG",
@@ -2230,6 +2242,10 @@
   },
   {
    "uf": "MG",
+   "slug": "jaiba"
+  },
+  {
+   "uf": "MG",
    "slug": "janauba"
   },
   {
@@ -2675,6 +2691,10 @@
   {
    "uf": "MG",
    "slug": "senador-firmino"
+  },
+  {
+   "uf": "MG",
+   "slug": "seritinga"
   },
   {
    "uf": "MG",
@@ -4910,6 +4930,10 @@
   },
   {
    "uf": "RS",
+   "slug": "ajuricaba"
+  },
+  {
+   "uf": "RS",
    "slug": "alegrete"
   },
   {
@@ -7083,6 +7107,10 @@
   {
    "uf": "SP",
    "slug": "votuporanga"
+  },
+  {
+   "uf": "TO",
+   "slug": "ananas"
   },
   {
    "uf": "TO",
