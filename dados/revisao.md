@@ -1,37 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 28856 editais coletados em 2026-11-11T11:27:12.635Z.
+Revisão dos dados — 28551 editais coletados em 2026-11-11T12:58:52.241Z.
 
-ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 26 foram coletadas por inteiro, 1 ficou parcial e 0 não trouxeram nada.
-
-  Completas (representadas por inteiro nos números abaixo): AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, TO
-  Parciais (o que entrou ANTES da interrupção está nos números abaixo; o restante da UF, não):
-    SP: 4700 editais coletados, interrompida — orçamento de tempo esgotado durante a consulta (último erro: The operation was aborted due to timeout)
-
-  Os 28856 editais revisados vêm de AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP, TO.
-
-Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
-
-[AVISO] O edital 91987669000174-1-000318/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "POÇO ARTESIANO"
-  Edital: https://pncp.gov.br/app/editais/91987669000174/2026/318
-
-[AVISO] O edital 88349238000178-1-000257/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "BENS MÓVEIS"
-  Edital: https://pncp.gov.br/app/editais/88349238000178/2026/257
-
-[AVISO] O edital 19843929000100-1-000840/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Criocauterio."
-  Edital: https://pncp.gov.br/app/editais/19843929000100/2026/840
-
-[AVISO] O edital 45132495000140-1-000784/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "PALCO"
-  Edital: https://pncp.gov.br/app/editais/45132495000140/2026/784
-
-[AVISO] O edital 00394494000136-1-001256/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Kit multimídia"
-  Edital: https://pncp.gov.br/app/editais/00394494000136/2026/1256
+Encontrados 0 erro(s), 6 suspeita(s) e 119 aviso(s).
 
 [AVISO] O edital 05816630000152-1-008360/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "CABERGOLINA"
@@ -126,6 +98,14 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
   Evidência: objeto declarado: "IMPRESSORAS"
   Edital: https://pncp.gov.br/app/editais/46377800000127/2026/4784
 
+[AVISO] O edital 96291141000180-1-007656/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "kit limpeza"
+  Edital: https://pncp.gov.br/app/editais/96291141000180/2026/7656
+
+[AVISO] O edital 62070362000106-1-000707/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "DISCO DE FREIO"
+  Edital: https://pncp.gov.br/app/editais/62070362000106/2026/707
+
 [AVISO] O edital 16695025000197-1-001230/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "longarina"
   Edital: https://pncp.gov.br/app/editais/16695025000197/2026/1230
@@ -218,6 +198,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
   Evidência: objeto declarado: "HOSPEDAGEM"
   Edital: https://pncp.gov.br/app/editais/13069489000108/2026/217
 
+[AVISO] O edital 05816630000152-1-008503/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "MEDICAMENTOS"
+  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8503
+
 [AVISO] O edital 01612918000154-1-000123/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "VEÍCULO"
   Edital: https://pncp.gov.br/app/editais/01612918000154/2026/123
@@ -269,6 +253,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
 [AVISO] O edital 62070362000106-1-000705/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "DESENGRAXANTE"
   Edital: https://pncp.gov.br/app/editais/62070362000106/2026/705
+
+[AVISO] O edital 62070362000106-1-000713/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Prensa Cabo"
+  Edital: https://pncp.gov.br/app/editais/62070362000106/2026/713
 
 [AVISO] O edital 94706033000103-1-000197/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "ELETRÔNICOS"
@@ -358,6 +346,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
   Evidência: objeto declarado: "Baterias"
   Edital: https://pncp.gov.br/app/editais/63025530000104/2026/4410
 
+[AVISO] O edital 96291141000180-1-007658/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Mat. Consumo"
+  Edital: https://pncp.gov.br/app/editais/96291141000180/2026/7658
+
 [AVISO] O edital 88349238000178-1-000262/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "EQUIPAMENTOS"
   Edital: https://pncp.gov.br/app/editais/88349238000178/2026/262
@@ -382,6 +374,14 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
   Evidência: objeto declarado: "EXCLUSIVA ME"
   Edital: https://pncp.gov.br/app/editais/78640489000153/2026/1004
 
+[AVISO] O edital 60747318000162-1-001591/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "FIOS DE SUTURA"
+  Edital: https://pncp.gov.br/app/editais/60747318000162/2026/1591
+
+[AVISO] O edital 60747318000162-1-001594/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "SONDAS"
+  Edital: https://pncp.gov.br/app/editais/60747318000162/2026/1594
+
 [SUSPEITA] No edital 01616680000135-1-000045/2026, do órgão MUNICIPIO DE SAO FRANCISCO DO BREJAO, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
   Evidência: valor declarado R$ 12.379.800.000,00, contra máximo de R$ 5.746.026.681,00 entre os demais Pregão - Eletrônico deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10 daria R$ 1.237.980.000,00; dividido por 100 daria R$ 123.798.000,00; dividido por 1.000 daria R$ 12.379.800,00; dividido por 10.000 daria R$ 1.237.980,00). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
@@ -402,6 +402,10 @@ Encontrados 0 erro(s), 6 suspeita(s) e 116 aviso(s).
 [AVISO] O edital 78640489000153-1-001019/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "EXCLUSIVA ME"
   Edital: https://pncp.gov.br/app/editais/78640489000153/2026/1019
+
+[AVISO] O edital 63025530000104-1-004547/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Água mineral"
+  Edital: https://pncp.gov.br/app/editais/63025530000104/2026/4547
 
 [AVISO] O edital 13595251000108-1-000067/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
