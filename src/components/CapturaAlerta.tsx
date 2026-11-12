@@ -155,6 +155,15 @@ export function CapturaAlerta({
         </div>
       ) : null}
 
+      {!oferta && (
+        <p className="mb-5 text-sm leading-relaxed text-[var(--muted)]">
+          Você recebe uma confirmação por e-mail. Depois de confirmar, siga o
+          convite para criar a conta, cadastrar a empresa e escolher os filtros.
+          O teste usa o plano Leve, com alertas e dados da publicação, sem leitura
+          do arquivo do edital.
+        </p>
+      )}
+
       <form onSubmit={enviar} className="space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block">

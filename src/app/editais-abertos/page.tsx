@@ -74,21 +74,26 @@ export default function EditaisAbertos() {
         </h1>
 
         <RetratoDatado coletadoEm={COLETADO_EM} />
+        <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">
+          Esta listagem e os números da página inicial são retratos publicados
+          separadamente. Compare a data e o horário de cada coleta antes de comparar
+          os totais. Mudanças posteriores no PNCP só aparecem na coleta seguinte.
+        </p>
 
         <RespostaDireta>
           <strong>{numero(TOTAIS.abertos)} editais</strong> estavam com proposta aberta no
           PNCP quando este retrato foi tirado. <strong>{numero(TOTAIS.novos)}</strong>{" "}
           apareceram nas últimas 24 horas, e <strong>{numero(TOTAIS.encerramEm24h)}</strong>{" "}
           encerram nas próximas 24 — cerca de {Math.round(TOTAIS.encerramEm24h / 24)} por
-          hora. Por isso a lista abaixo só traz edital cujo prazo vai além da próxima
-          coleta: nenhum deles vence enquanto esta página estiver no ar. Cada um
+          hora. Na seleção, a lista abaixo priorizou prazos posteriores à próxima
+          coleta prevista. Se a atualização atrasar, um prazo pode vencer. Cada edital
           mostra o próprio prazo, e é marcado se o horário passar no seu relógio.
         </RespostaDireta>
 
         <Secao id="abertos" titulo={`${abertosNoBrasil().length} editais abertos agora`}>
           <P>
-            Todos com prazo que vai além da próxima coleta — nenhum deles encerra
-            enquanto esta página estiver no ar. Os de prazo mais próximo vêm primeiro,
+            Os prazos foram conferidos no momento da coleta. Confirme a situação
+            na fonte oficial antes de preparar a proposta. Os de prazo mais próximo vêm primeiro,
             porque são os que exigem decisão antes.
           </P>
           <ListaDeAbertos editais={abertosNoBrasil()} />

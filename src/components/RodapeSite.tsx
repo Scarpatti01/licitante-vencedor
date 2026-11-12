@@ -157,8 +157,8 @@ export function RodapeSite({ oferta = true }: { oferta?: boolean } = {}) {
             rodapé desatualizado é o sinal mais barato de site abandonado.
           */}
             <p className="mt-4">
-              © {new Date().getFullYear()} {SITE.name} · Publicando sobre
-              licitações desde {SITE.foundingYear}
+              © {new Date().getFullYear()} {SITE.name} · Domínio desde {SITE.foundingYear}.
+              Operação atual desde 2026.
             </p>
           </div>
         </div>

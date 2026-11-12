@@ -121,10 +121,11 @@ export default function ComoFunciona() {
         <div className="mt-12 space-y-12">
           <Secao id="etapa-1" titulo="1. Coleta: uma fonte só, a oficial">
             <P>
-              Todo edital tem que ser publicado no Portal Nacional de
-              Contratações Públicas — a divulgação ali é obrigatória para
-              qualquer órgão, em qualquer estado ou município. É de lá que
-              coletamos, uma vez por dia, de madrugada.
+              Coletamos os editais disponíveis no Portal Nacional de Contratações
+              Públicas. A divulgação segue o âmbito da Lei 14.133/2021 e suas
+              regras de transição, incluindo o art. 176 para municípios com
+              até 20 mil habitantes. A coleta não inclui publicações que
+              ainda não chegaram ao PNCP.
             </P>
             <P>
               Não raspamos sites de prefeitura nem dependemos de portal privado.

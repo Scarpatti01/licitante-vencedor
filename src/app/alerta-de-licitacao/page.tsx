@@ -34,7 +34,7 @@ const FAQ = [
   {
     pergunta: "De onde vêm os editais?",
     resposta:
-      "Do Portal Nacional de Contratações Públicas, a base oficial onde a divulgação é obrigatória para todos os entes. A coleta é diária e automatizada, e a metodologia completa, com as limitações conhecidas, está publicada.",
+      "Do Portal Nacional de Contratações Públicas. A coleta cobre o que está disponível nessa base, respeitados o âmbito da Lei 14.133 e suas regras de transição. A coleta é diária e automatizada, e a metodologia completa, com as limitações conhecidas, está publicada.",
   },
   {
     pergunta: "Vocês cobrem todo o Brasil?",
@@ -110,8 +110,9 @@ export default function AlertaDeLicitacao() {
         <div className="mt-12 space-y-12">
           <Secao id="problema" titulo="O problema não é falta de edital. É dispersão.">
             <P>
-              A publicação é centralizada — todo edital tem que aparecer no
-              Portal Nacional de Contratações Públicas. A disputa, não: cada
+              O PNCP centraliza publicações abrangidas pela Lei 14.133. Há
+              regimes específicos e regras de transição, por isso acompanhar
+              essa base não significa cobrir toda contratação pública. Cada
               órgão conduz o certame no sistema que já usa.
             </P>
             <P>

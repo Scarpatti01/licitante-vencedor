@@ -10,7 +10,10 @@ import { RodapeSite } from "@/components/RodapeSite";
 import { ChuvaDeDados } from "@/components/ChuvaDeDados";
 import { EsferasDaColeta } from "@/components/EsferasDaColeta";
 import { distribuicaoPorEsfera } from "@/lib/dominio/esferas";
-import { dataDeBrasilia } from "@/lib/dominio/datas";
+import { dataDeBrasilia, dataEHoraDeBrasilia } from "@/lib/dominio/datas";
+import { DemonstracaoDoProduto } from "@/components/DemonstracaoDoProduto";
+import { pagamentoLigado } from "@/lib/pagamento/configuracao";
+import { DIAS_DE_TESTE } from "@/lib/assinatura/teste";
 import { Logo } from "@/components/Logo";
 import { VideoDoYoutube } from "@/components/VideoDoYoutube";
 import { OFERTA } from "@/lib/jornada/oferta";
@@ -45,7 +48,7 @@ const PILARES = [
   {
     titulo: "Checklist de habilitação",
     texto:
-      "Cada edital chega com a lista de documentos exigidos, comparada com o que a sua empresa já tem em dia. Certidão vencida deixa de ser descoberta na hora da sessão.",
+      "Nos planos Empresa e Consultoria, os editais analisados mostram exigências de habilitação e a comparação com os documentos declarados pela sua empresa. Confira validade e anexos antes de disputar.",
   },
   {
     titulo: "Prazo e risco na frente",
@@ -152,25 +155,24 @@ export default function Home() {
             <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-sky-400/30 bg-sky-400/10 px-3 py-1 text-xs font-medium tracking-wide text-sky-300 uppercase">
               <span aria-hidden className="size-1.5 animate-pulse rounded-full bg-sky-400" />
               {coleta.editais.toLocaleString("pt-BR")} editais {coleta.abrangencia}
-              , varridos hoje
+              , na coleta de {dataDeBrasilia(coleta.medidoEm)}
             </p>
 
             <h1 className="max-w-3xl text-4xl leading-[1.1] font-semibold tracking-tight text-balance text-white sm:text-6xl">
-              Os editais que a sua empresa pode ganhar, já lidos.
+              Encontre os editais do seu ramo. Saiba quais merecem sua atenção.
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-300">
-              Todo dia útil, de manhã, você recebe os editais do PNCP
-              compatíveis com o seu perfil, ordenados por aderência. Os mais aderentes vão
-              com o documento lido: o que exigem de habilitação, o que falta no
-              seu cadastro, o prazo e o risco. Você só decide se participa.
+              Receba nos dias úteis os editais publicados no PNCP que combinam
+              com a sua empresa, com objeto, órgão, valor, prazo e nota de aderência.
+              Nos planos Empresa e Consultoria, os mais aderentes também recebem
+              leitura do documento, com exigências e pontos de atenção.
             </p>
 
             <p className="mt-6 max-w-2xl leading-relaxed text-slate-400">
-              Não é mais uma lista de licitações para você garimpar. No topo da
-              sua lista a leitura já está feita, para a decisão sair em minutos
-              em vez de tomar a manhã inteira de alguém — e cada edital diz se
-              foi lido ou se ainda está só no que o órgão publicou.
+              O teste de {DIAS_DE_TESTE} dias funciona no plano Leve: alertas e filtros,
+              sem leitura do arquivo do edital. Não exige cartão e termina
+              sem cobrança automática.
             </p>
 
             {/*
@@ -199,15 +201,21 @@ export default function Home() {
                 href="/alerta-de-licitacao/"
                 className="rounded-md border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-slate-400"
               >
-                Testar 14 dias, sem cartão
+                Testar {DIAS_DE_TESTE} dias, sem cartão
               </Link>
               <Link
-                href="/como-funciona/"
+                href="#demonstracao"
                 className="rounded-md border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-slate-400"
               >
-                Como funciona
+                Ver uma análise real
               </Link>
             </div>
+
+            {!pagamentoLigado() && (
+              <p className="mt-5 max-w-2xl text-sm leading-relaxed text-slate-300">
+                O teste já está disponível por convite. As assinaturas pagas ainda não estão abertas.
+              </p>
+            )}
 
             {/*
               A procedência do número, junto do número.
@@ -222,7 +230,7 @@ export default function Home() {
               <a href="https://www.pncp.gov.br/" rel="noopener" className="underline underline-offset-4">
                 Portal Nacional de Contratações Públicas
               </a>{" "}
-              em {dataDeBrasilia(coleta.medidoEm)} · {coleta.siglas.join(", ")} ·{" "}
+              em {dataEHoraDeBrasilia(coleta.medidoEm)}, horário de Brasília · {coleta.siglas.join(", ")} ·{" "}
               <Link href="/metodologia/" className="underline underline-offset-4">
                 como medimos
               </Link>
@@ -256,6 +264,27 @@ export default function Home() {
           </p>
           <div className="mt-6">
             <VideoDoYoutube {...VIDEO_DA_HOME} />
+          </div>
+        </section>
+
+        <DemonstracaoDoProduto />
+
+        <section aria-labelledby="seu-momento" className="border-t">
+          <div className="mx-auto max-w-5xl px-6 py-16">
+            <h2 id="seu-momento" className="text-2xl font-semibold">Por onde você quer começar?</h2>
+            <div className="mt-6 grid gap-5 sm:grid-cols-3">
+              {[
+                { titulo: "Nunca participei", texto: "Entenda os cadastros, os documentos e o caminho até a primeira disputa.", href: "/vender-para-o-governo/", botao: "Ver o guia para começar" },
+                { titulo: "Minha empresa já participa", texto: "Experimente os alertas do seu ramo e organize a busca por oportunidades.", href: "/alerta-de-licitacao/", botao: "Conhecer o teste do Leve" },
+                { titulo: "Atendo vários clientes", texto: "Compare os planos para acompanhar mais de uma empresa na mesma conta.", href: "/precos/#comparar-planos", botao: "Comparar planos para escritórios" },
+              ].map((item) => (
+                <div key={item.titulo} className="rounded-xl border bg-[var(--surface)] p-6">
+                  <h3 className="font-semibold">{item.titulo}</h3>
+                  <p className="mt-3 text-sm leading-relaxed text-[var(--muted)]">{item.texto}</p>
+                  <Link href={item.href} className="mt-5 inline-block text-sm font-medium underline underline-offset-4">{item.botao}</Link>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
 
@@ -325,12 +354,13 @@ export default function Home() {
 
         <section className="mx-auto max-w-5xl px-6 py-16">
           <h2 className="text-2xl font-semibold tracking-tight">
-            Um acervo de dez anos sendo reescrito
+            Guias para quem vende ao governo
           </h2>
           <p className="mt-4 max-w-2xl leading-relaxed text-[var(--muted)]">
-            O Licitante Vencedor publica sobre licitações e contratações
-            públicas desde {SITE.foundingYear}. Todo esse acervo está sendo
-            revisado e reescrito para a Lei 14.133/2021. Estes já estão no ar:
+            O domínio publica sobre licitações desde {SITE.foundingYear}.
+            A operação atual começou em 2026, com novo autor e guias escritos
+            do zero para a Lei 14.133/2021. Conheça os conteúdos disponíveis
+            e a <Link href="/sobre/" className="underline underline-offset-4">história do site</Link>.
           </p>
 
           {/*
