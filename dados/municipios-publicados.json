@@ -2430,6 +2430,10 @@
   },
   {
    "uf": "MG",
+   "slug": "padre-paraiso"
+  },
+  {
+   "uf": "MG",
    "slug": "paineiras"
   },
   {
@@ -3982,6 +3986,10 @@
   },
   {
    "uf": "PR",
+   "slug": "icaraima"
+  },
+  {
+   "uf": "PR",
    "slug": "iguaracu"
   },
   {
@@ -4103,6 +4111,10 @@
   {
    "uf": "PR",
    "slug": "maringa"
+  },
+  {
+   "uf": "PR",
+   "slug": "mariopolis"
   },
   {
    "uf": "PR",
@@ -4655,6 +4667,10 @@
   {
    "uf": "RJ",
    "slug": "sapucaia"
+  },
+  {
+   "uf": "RJ",
+   "slug": "saquarema"
   },
   {
    "uf": "RJ",
@@ -5275,6 +5291,10 @@
   {
    "uf": "RS",
    "slug": "sapucaia-do-sul"
+  },
+  {
+   "uf": "RS",
+   "slug": "sarandi"
   },
   {
    "uf": "RS",
@@ -7207,6 +7227,10 @@
   {
    "uf": "TO",
    "slug": "santa-fe-do-araguaia"
+  },
+  {
+   "uf": "TO",
+   "slug": "tocantinopolis"
   }
  ]
 }
