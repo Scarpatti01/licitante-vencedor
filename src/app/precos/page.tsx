@@ -18,6 +18,7 @@ import { Faq, P, RespostaDireta, Secao } from "@/components/Prose";
 import { CabecalhoSite, Trilha } from "@/components/Navegacao";
 import { RodapeSite } from "@/components/RodapeSite";
 import { CapturaAlerta } from "@/components/CapturaAlerta";
+import { ComparacaoDePlanos } from "@/components/precos/ComparacaoDePlanos";
 import Image from "next/image";
 import {
   ALT_DA_ASSINATURA,
@@ -25,7 +26,7 @@ import {
   assinaturaEmDadosEstruturados,
 } from "@/lib/assinatura/dados-estruturados";
 
-const TITULO = "Preços: da lista do edital ao documento lido";
+const TITULO = "Planos e preços para acompanhar licitações";
 /*
  * A descrição DERIVA dos planos, e não os repete.
  *
@@ -95,7 +96,7 @@ export default function Precos() {
         <Trilha atual="Preços" />
 
         <h1 className="mt-6 text-3xl font-semibold tracking-tight sm:text-4xl">
-          Quanto custa receber os editais já lidos
+          Planos de alertas e leitura de editais
         </h1>
 
         <div className="mt-4 space-y-4">
@@ -105,6 +106,13 @@ export default function Precos() {
             <strong>quantas empresas cabem na conta</strong>.
           </P>
         </div>
+
+        <p className="mt-5 rounded-lg border bg-[var(--surface)] p-4 text-sm leading-relaxed">
+          {pagamentoLigado()
+            ? "As assinaturas estão disponíveis. Compare os recursos antes de escolher."
+            : `As assinaturas pagas ainda não estão abertas. Você pode pedir o convite para testar o Leve por ${DIAS_DE_TESTE} dias, sem cartão.`}
+          {" "}<Link href="#comparar-planos" className="font-medium underline underline-offset-4">Comparar todos os planos</Link>.
+        </p>
 
         {/*
           Os planos ANTES de qualquer outra coisa. Quem abre esta página veio
@@ -167,6 +175,8 @@ export default function Precos() {
           ))}
         </div>
 
+        <ComparacaoDePlanos />
+
         <div className="mt-12 space-y-12">
           {/*
             A ressalva vem LOGO depois do preço, e não no rodapé.
@@ -177,15 +187,15 @@ export default function Precos() {
             mais voltar.
           */}
           {pagamentoLigado() ? null : (
-          <Secao id="ainda-nao-abriu" titulo="Ainda não dá para assinar — e é de propósito">
+          <Secao id="ainda-nao-abriu" titulo="Ainda não dá para assinar. Receba o aviso de abertura">
             <RespostaDireta>
               O preço está definido, a forma de pagamento ainda não. Preferimos
               publicar o valor e dizer isso a deixar você descobrir no fim do
               cadastro.
             </RespostaDireta>
             <P>
-              Deixe o seu e-mail abaixo dizendo qual plano interessa. Quando a
-              cobrança abrir, você é avisado primeiro — e o preço que você vê
+              Deixe o seu e-mail abaixo. Quando a
+              cobrança abrir, você é avisado primeiro. O preço que você vê
               hoje é o que vai valer para quem entrou nesta lista.
             </P>
             <div className="mt-2">
@@ -289,6 +299,10 @@ export default function Precos() {
               São {DIAS_DE_TESTE} dias no plano Leve, sem cartão. Você cadastra
               a empresa, escolhe até três recortes e passa a receber o resumo
               nos dias úteis, exatamente como quem assina.
+            </P>
+            <P>
+              O teste não inclui leitura do arquivo, extração de exigências nem
+              comparação documental. Você pode <Link href="/#demonstracao" className="underline underline-offset-4">ver uma análise real</Link> antes de escolher um plano com leitura.
             </P>
             <P>
               No fim do prazo o acesso para sozinho. Não há cobrança automática,

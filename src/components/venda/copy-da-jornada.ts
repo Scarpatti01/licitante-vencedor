@@ -50,8 +50,8 @@ export const DESBLOQUEIA = {
     },
     {
       icone: "calendario",
-      titulo: "Nunca mais perder por documento",
-      texto: "Um calendário de certidões que elimina para sempre a causa de derrota mais boba deste mercado.",
+      titulo: "Controlar os documentos antes da disputa",
+      texto: "Um calendário de certidões para acompanhar vencimentos e reduzir o risco de apresentar documentação vencida.",
     },
     {
       icone: "lupa",
@@ -159,9 +159,9 @@ export const TRANSFORMACAO = {
     },
     {
       semana: "Semanas 2 a 4",
-      promessa: "Você nunca mais é eliminado por papel",
+      promessa: "Você organiza os documentos e os vencimentos",
       texto:
-        "Certidões levantadas, vencimentos num calendário, cadastros feitos na ordem que funciona. A derrota mais boba do mercado deixa de existir na sua empresa.",
+        "Certidões levantadas, vencimentos num calendário, cadastros feitos na ordem que funciona. Você passa a conferir a documentação antes de cada disputa.",
     },
     {
       semana: "Semanas 5 e 6",
@@ -201,7 +201,7 @@ export const ANTES_E_DEPOIS = {
   linhas: [
     { antes: "Abre o portal e não reconhece nada", depois: "Sabe exatamente quais palavras procurar" },
     { antes: "Descobre o edital quando já fechou", depois: "Confere em dois dias marcados na semana" },
-    { antes: "Perde por certidão vencida", depois: "Tem calendário de certidão e nunca mais perde por isso" },
+    { antes: "Perde por certidão vencida", depois: "Tem calendário para conferir certidões antes de disputar" },
     { antes: "Dá lance no impulso e ganha sem margem", depois: "Tem um piso escrito antes de a sessão abrir" },
     { antes: "Acha que é tudo combinado", depois: "Reconhece edital direcionado em dez minutos e vai para o próximo" },
     { antes: "Tudo depende de você lembrar", depois: "Tem um processo que outra pessoa consegue seguir" },

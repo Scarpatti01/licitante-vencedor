@@ -101,8 +101,8 @@ export function LeituraDoEdital({
             Documentos de habilitação citados
           </h3>
           <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
-            Habilitação é fase eliminatória: documento faltando desclassifica
-            antes da disputa de preço.
+            Confira a documentação e a ordem das fases no edital. Uma exigência
+            não atendida pode impedir a habilitação, mesmo após a disputa de preço.
           </p>
           <ul className="mt-4 space-y-4">
             {exigenciasDeHabilitacao.map((exigencia, i) => (

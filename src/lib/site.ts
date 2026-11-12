@@ -7,9 +7,9 @@ export const SITE = {
   name: "Licitante Vencedor",
   url: "https://licitantevencedor.com.br",
   locale: "pt-BR",
-  tagline: "Os editais que sua empresa pode ganhar, já lidos.",
+  tagline: "Alertas de licitações e leitura de editais.",
   description:
-    "Triagem diária dos editais do PNCP para empresas que vendem ao governo: o que pedem, o que falta na sua habilitação, o prazo e o risco.",
+    "Encontre editais do PNCP compatíveis com sua empresa. Conheça os alertas do plano Leve e os planos com leitura de documentos.",
   foundingYear: "2016",
   /** Perfis da marca (não do autor): o canal do YouTube. */
   sameAs: ["https://www.youtube.com/@licitantevencedor"],

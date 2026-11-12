@@ -167,8 +167,9 @@ export default function Lei14133() {
 
           <RespostaDireta>
             A Lei 14.133/2021 é a Nova Lei de Licitações e Contratos Administrativos,
-            em vigor desde abril de 2021 e obrigatória para todas as contratações
-            desde 30 de dezembro de 2023, quando a Lei 8.666/93 foi revogada. Ela
+            em vigor desde abril de 2021. A Lei 8.666/93 foi revogada em
+            30 de dezembro de 2023, com preservação do regime dos contratos
+            celebrados sob as regras anteriores. A nova lei
             unificou pregão, concorrência e RDC em um regime só, tornou a inversão de
             fases a regra e centralizou a divulgação de editais no PNCP.
           </RespostaDireta>
@@ -183,13 +184,14 @@ export default function Lei14133() {
               que conviviam de forma desconfortável havia quase trinta anos: a Lei
               8.666/93, a Lei do Pregão e o Regime Diferenciado de Contratações. Até
               2023 as duas gerações de regras conviveram, e o órgão escolhia por qual
-              licitar. Desde 30 de dezembro daquele ano, só existe uma.
+              licitar. A revogação das leis anteriores não encerrou os contratos
+              regidos por elas nem afastou os regimes específicos.
             </P>
             <P>
-              Isso tem uma consequência prática que muita empresa ainda não absorveu:
-              qualquer edital publicado hoje segue a 14.133. Se o seu material de
-              apoio interno, a sua planilha de documentos ou o seu modelo de proposta
-              foram montados na era da 8.666, eles estão desatualizados.
+              Confira a base legal de cada edital. Empresas públicas e sociedades
+              de economia mista seguem, em regra, a Lei 13.303/2016, conforme
+              o art. 1º, § 1º, da Lei 14.133. Materiais preparados sob a Lei
+              8.666 precisam ser revisados conforme o regime da contratação.
             </P>
           </Secao>
 
@@ -382,7 +384,11 @@ export default function Lei14133() {
             <P>
               O Portal Nacional de Contratações Públicas é definido pela própria lei
               como sítio oficial de divulgação. Editais, atas, contratos e aditivos de
-              União, estados e municípios passam por ali.
+              União, estados e municípios abrangidos pela lei passam por ali.
+              O art. 176 prevê uma transição de seis anos para municípios
+              com até 20 mil habitantes. Enquanto não adotarem o PNCP,
+              esses municípios devem divulgar as informações em diário oficial
+              e disponibilizar os documentos na forma prevista no artigo.
             </P>
             <P>
               Para quem vende, isso é a melhor notícia da nova lei. Antes, acompanhar
