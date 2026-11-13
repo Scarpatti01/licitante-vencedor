@@ -1,4 +1,5 @@
 import type { Artigo } from "./tipos";
+import { SICAF_CADASTRO_GRATUITO } from "./artigos/sicaf-cadastro-gratuito";
 import { ATESTADO_DE_CAPACIDADE_TECNICA } from "./artigos/atestado-de-capacidade-tecnica";
 import { ATRASO_NO_PAGAMENTO } from "./artigos/atraso-no-pagamento-de-contrato-administrativo";
 import { CERTIDOES_PARA_LICITACAO } from "./artigos/certidoes-para-licitacao";
@@ -26,6 +27,7 @@ export { validarArtigo, contarPalavras, textoDoArtigo } from "./tipos";
  * vez neste projeto.
  */
 const CATALOGO: readonly Artigo[] = [
+  SICAF_CADASTRO_GRATUITO,
   ATESTADO_DE_CAPACIDADE_TECNICA,
   ATRASO_NO_PAGAMENTO,
   CERTIDOES_PARA_LICITACAO,

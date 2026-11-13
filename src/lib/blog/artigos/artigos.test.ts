@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { SICAF_CADASTRO_GRATUITO } from "./sicaf-cadastro-gratuito";
 import { contarPalavras, validarArtigo, type Artigo } from "../tipos";
 import { GUIAS_PUBLICADOS } from "../../guias";
 import { ATRASO_NO_PAGAMENTO } from "./atraso-no-pagamento-de-contrato-administrativo";
@@ -22,6 +23,7 @@ import { VALE_A_PENA_PARTICIPAR } from "./vale-a-pena-participar-de-licitacao";
  * para produção sem nenhuma das garantias abaixo o ter examinado.
  */
 const ARTIGOS: readonly Artigo[] = [
+  SICAF_CADASTRO_GRATUITO,
   ATRASO_NO_PAGAMENTO,
   COMO_SABER_SE_SAIU_UMA_LICITACAO,
   DOCUMENTOS_PARA_PARTICIPAR,
