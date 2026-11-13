@@ -26,6 +26,9 @@ test("home, busca e demonstração cabem na tela", async ({ page }, info) => {
   const demonstracao = page.locator("#demonstracao details");
   await demonstracao.locator("summary").click();
   await expect(demonstracao).toHaveAttribute("open", "");
+  await expect(demonstracao).not.toContainText("Não foi possível determinar com segurança");
+  await expect(page.locator("#demonstracao")).toContainText("1% na proposta e 5% no contrato");
+  await expect(page.locator("#demonstracao")).toContainText("Facultativa");
   await semRolagemDaPagina(page);
   await page.screenshot({ path: info.outputPath("home.png"), fullPage: true });
 });
