@@ -52,14 +52,14 @@ next-env.d.ts
 # artefato da execucao, que e onde ele serve.
 /dados/parciais/
 
-# Saída de execução dos scripts de agendamento — diagnóstico local, não artefato.
+# SaÃ­da de execuÃ§Ã£o dos scripts de agendamento â€” diagnÃ³stico local, nÃ£o artefato.
 saida-*.txt
 
-# Saída dos scripts de publicação — diagnóstico local, não artefato.
+# SaÃ­da dos scripts de publicaÃ§Ã£o â€” diagnÃ³stico local, nÃ£o artefato.
 saida-posts.txt
 
-# O livro: o PDF e o EPUB são artefatos de saída, e o node_modules é a
-# ferramenta de quem os gera. Nenhum dos três é fonte.
+# O livro: o PDF e o EPUB sÃ£o artefatos de saÃ­da, e o node_modules Ã© a
+# ferramenta de quem os gera. Nenhum dos trÃªs Ã© fonte.
 livro/node_modules/
 livro/*.pdf
 livro/*.epub
@@ -70,5 +70,11 @@ livro/passo2.pdf
 livro/__pycache__/
 __pycache__/
 
-# IndexNow: lista de URLs já enviadas (scripts/indexnow.mjs)
+# IndexNow: lista de URLs jÃ¡ enviadas (scripts/indexnow.mjs)
 .indexnow-state.json
+
+# Evidências dos testes de navegação
+/playwright-report/
+/test-results/
+
+/supabase/.temp/

@@ -191,7 +191,7 @@ export function BuscaDePracas({ className = "" }: Props) {
           mostrarPainel && resultados.length > 0 ? `${idBase}-op-${ativo}` : undefined
         }
         aria-label="Buscar praça por cidade ou estado"
-        placeholder="Cidade ou estado"
+        placeholder="Cidade ou UF"
         value={texto}
         onChange={(e) => {
           setTexto(e.target.value);
@@ -219,11 +219,11 @@ export function BuscaDePracas({ className = "" }: Props) {
           aí o que foi digitado sumia. Ninguém reporta um defeito assim — a
           pessoa acha que o site não funciona e vai embora.
         */
-        className="w-full rounded-md border bg-[var(--surface)] px-3 py-1.5 text-sm text-[var(--foreground)] outline-none placeholder:text-[var(--muted)] focus:border-[var(--accent)]"
+        className="min-h-11 w-full rounded-md border bg-[var(--surface)] px-3 py-1.5 text-base text-[var(--foreground)] outline-none placeholder:text-[var(--muted)] focus:border-[var(--accent)] sm:text-sm"
       />
 
       {mostrarPainel ? (
-        <div className="absolute right-0 z-50 mt-1 w-72 max-w-[calc(100vw-2rem)] overflow-hidden rounded-lg border bg-[var(--background)] shadow-lg">
+        <div className="absolute right-0 z-50 mt-1 w-72 max-w-[calc(100vw-6rem)] overflow-hidden rounded-lg border bg-[var(--background)] shadow-lg sm:max-w-[calc(100vw-2rem)]">
           {falhou ? (
             /*
              * A busca depende de rede agora, e rede falha. Sem esta linha, o

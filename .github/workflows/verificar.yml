@@ -1,26 +1,26 @@
-# A verificação que faltava.
+# A verificaÃ§Ã£o que faltava.
 #
-# O repositório tem 760 testes e nenhum deles reprovava um PR: rodavam só quando
-# alguém lembrava de rodar na máquina. Isso vale para todos, mas é mais grave
-# aqui do que num projeto comum, porque boa parte desta suíte não testa função —
-# testa DECISÃO.
+# O repositÃ³rio tem 760 testes e nenhum deles reprovava um PR: rodavam sÃ³ quando
+# alguÃ©m lembrava de rodar na mÃ¡quina. Isso vale para todos, mas Ã© mais grave
+# aqui do que num projeto comum, porque boa parte desta suÃ­te nÃ£o testa funÃ§Ã£o â€”
+# testa DECISÃƒO.
 #
 # Alguns exemplos do que estava desprotegido:
 #
-#   · `coleta-paralela.test.ts` — impede que os dois workflows de coleta ganhem
+#   Â· `coleta-paralela.test.ts` â€” impede que os dois workflows de coleta ganhem
 #     agendamento ao mesmo tempo, o que comitaria o agregado duas vezes no mesmo
 #     dia com resultados diferentes;
-#   · `publicacao-no-workflow.test.ts` — exige que o runner instale as
-#     dependências, e que a leva sem nenhuma leitura seja recusada;
-#   · a guarda de degradação — "um dia ruim não apaga um dia bom", regra que
-#     custou uma série temporal para ser aprendida.
+#   Â· `publicacao-no-workflow.test.ts` â€” exige que o runner instale as
+#     dependÃªncias, e que a leva sem nenhuma leitura seja recusada;
+#   Â· a guarda de degradaÃ§Ã£o â€” "um dia ruim nÃ£o apaga um dia bom", regra que
+#     custou uma sÃ©rie temporal para ser aprendida.
 #
-# Cada um desses testes existe porque a decisão que ele guarda é fácil de
-# desfazer sem perceber. Sem CI, a mensagem de falha que eles carregam só é lida
-# por quem já estava desconfiado — que é justamente quem não precisa dela.
+# Cada um desses testes existe porque a decisÃ£o que ele guarda Ã© fÃ¡cil de
+# desfazer sem perceber. Sem CI, a mensagem de falha que eles carregam sÃ³ Ã© lida
+# por quem jÃ¡ estava desconfiado â€” que Ã© justamente quem nÃ£o precisa dela.
 #
-# Roda em PR e em push para `main`. O push importa: a coleta diária comita
-# direto na main, e uma mudança de dado que quebrasse o build precisa aparecer
+# Roda em PR e em push para `main`. O push importa: a coleta diÃ¡ria comita
+# direto na main, e uma mudanÃ§a de dado que quebrasse o build precisa aparecer
 # antes de a Vercel publicar.
 
 name: Verificar
@@ -30,22 +30,22 @@ on:
   push:
     branches: [main]
 
-# Cancelar a execução em andamento vale em PR, e NÃO vale na `main`.
+# Cancelar a execuÃ§Ã£o em andamento vale em PR, e NÃƒO vale na `main`.
 #
-# Num PR, três pushes seguidos são três versões do mesmo trabalho, e só a última
-# responde à pergunta: cancelar as anteriores economiza runner sem perder
+# Num PR, trÃªs pushes seguidos sÃ£o trÃªs versÃµes do mesmo trabalho, e sÃ³ a Ãºltima
+# responde Ã  pergunta: cancelar as anteriores economiza runner sem perder
 # resposta nenhuma.
 #
-# Na `main` cada push é um COMMIT DIFERENTE, e cada um precisa do próprio
-# veredito — é dela que a Vercel publica. Aconteceu em 26/08: a fila do Actions
-# atrasou uns sete minutos e as duas execuções entraram fora de ordem. A do
-# commit mais VELHO começou depois, caiu no mesmo grupo de concorrência e
+# Na `main` cada push Ã© um COMMIT DIFERENTE, e cada um precisa do prÃ³prio
+# veredito â€” Ã© dela que a Vercel publica. Aconteceu em 26/08: a fila do Actions
+# atrasou uns sete minutos e as duas execuÃ§Ãµes entraram fora de ordem. A do
+# commit mais VELHO comeÃ§ou depois, caiu no mesmo grupo de concorrÃªncia e
 # cancelou a do commit mais novo, que era o `head`. Sobrou uma `main` publicada
-# com verificação cancelada, e um check verde apontando para um commit que já
-# não era o topo.
+# com verificaÃ§Ã£o cancelada, e um check verde apontando para um commit que jÃ¡
+# nÃ£o era o topo.
 #
-# O grupo continua por `github.ref`, que já separa um PR do outro. O que muda é
-# só quem pode ser cancelado.
+# O grupo continua por `github.ref`, que jÃ¡ separa um PR do outro. O que muda Ã©
+# sÃ³ quem pode ser cancelado.
 concurrency:
   group: verificar-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -61,9 +61,9 @@ jobs:
           node-version: "24"
           cache: npm
 
-      # `npm ci` inteiro, e não `--omit=dev`: aqui o que se quer é justamente o
-      # que os workflows de coleta dispensam — vitest, eslint, typescript e o
-      # próprio next para o build.
+      # `npm ci` inteiro, e nÃ£o `--omit=dev`: aqui o que se quer Ã© justamente o
+      # que os workflows de coleta dispensam â€” vitest, eslint, typescript e o
+      # prÃ³prio next para o build.
       - run: npm ci
 
       - name: Tipos
@@ -75,23 +75,39 @@ jobs:
       - name: Testes
         run: npm test
 
-      # O EPUB é gerado aqui porque ele NÃO precisa de navegador, e porque a
-      # fonte do livro é editada como qualquer outro arquivo do repositório.
+      # O EPUB Ã© gerado aqui porque ele NÃƒO precisa de navegador, e porque a
+      # fonte do livro Ã© editada como qualquer outro arquivo do repositÃ³rio.
       #
       # Existe por um defeito real: trocar o selo da capa de "Rascunho completo"
-      # para "Primeira edição" introduziu a entidade `&atilde;`, o PDF foi
-      # regerado e o EPUB não. A publicação para o balde só reprovou depois do
-      # merge, com o produto já prometido na home. Quinze segundos de CI evitam
-      # isso, e `conferir-epub.py` ainda mede links, seções e texto faltando.
+      # para "Primeira ediÃ§Ã£o" introduziu a entidade `&atilde;`, o PDF foi
+      # regerado e o EPUB nÃ£o. A publicaÃ§Ã£o para o balde sÃ³ reprovou depois do
+      # merge, com o produto jÃ¡ prometido na home. Quinze segundos de CI evitam
+      # isso, e `conferir-epub.py` ainda mede links, seÃ§Ãµes e texto faltando.
       - name: O livro continua gerando
         run: |
           cd livro
           python3 gerar-epub.py
           python3 conferir-epub.py
 
-      # O build entra porque três defeitos desta base só apareceram nele:
-      # `import.meta.glob` que o Turbopack não tem, `Date.now()` impuro durante
-      # a renderização, e `generateStaticParams` exigindo leitura síncrona.
-      # Nenhum deles falha em teste unitário.
+      # O build entra porque trÃªs defeitos desta base sÃ³ apareceram nele:
+      # `import.meta.glob` que o Turbopack nÃ£o tem, `Date.now()` impuro durante
+      # a renderizaÃ§Ã£o, e `generateStaticParams` exigindo leitura sÃ­ncrona.
+      # Nenhum deles falha em teste unitÃ¡rio.
       - name: Build
         run: npm run build
+
+      - name: Instalar navegador para validação móvel
+        run: npx playwright install --with-deps chromium
+
+      - name: Validar navegação móvel
+        run: npm run test:mobile
+
+      - name: Guardar evidências da validação móvel
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validacao-mobile
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 14
