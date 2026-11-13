@@ -50,20 +50,19 @@ describe("o produto de /jornada/ nos dados estruturados", () => {
   });
 
   it("a devolução é a garantia que a página promete", () => {
-    const politica = produto.offers.hasMerchantReturnPolicy;
-    expect(politica.merchantReturnDays).toBe(OFERTA.diasDeGarantia);
-    expect(politica.applicableCountry).toBe("BR");
+    expect(produto.offers.description).toContain(`${OFERTA.diasDeGarantia} dias`);
+    expect(produto.offers.description).toContain("reembolso sem necessidade de justificativa");
 
     const garantia = FAQ.find((f) => /garantia/i.test(f.resposta));
     expect(garantia, "o FAQ deixou de falar da garantia").toBeDefined();
     expect(garantia!.resposta).toContain(`${OFERTA.diasDeGarantia} dias`);
   });
 
-  it("a entrega é digital: sem custo e na hora", () => {
-    const envio = produto.offers.shippingDetails;
-    expect(envio.shippingRate.value).toBe(0);
-    expect(envio.deliveryTime.handlingTime.maxValue).toBe(0);
-    expect(envio.deliveryTime.transitTime.maxValue).toBe(0);
+  it("descreve entrega digital sem inventar logística de frete e devolução", () => {
+    expect(produto.offers.description).toContain("Entrega digital imediata");
+    expect(produto.offers).not.toHaveProperty("shippingDetails");
+    expect(produto.offers).not.toHaveProperty("hasMerchantReturnPolicy");
+    expect(JSON.stringify(produto)).not.toContain("ReturnByMail");
   });
 
   it("preço e disponibilidade seguem a oferta", () => {

@@ -118,6 +118,18 @@ export default function Blog() {
         ) : null}
 
         <section className="mt-16">
+          <h2 className="mb-6 text-sm font-semibold tracking-wide text-[var(--muted)] uppercase">
+            Publicações de editais
+          </h2>
+          <CartaoDeConteudo
+            href="/editais-publicados/"
+            titulo="Histórico de editais publicados"
+            resumo="Consulte as publicações por data, com órgão, município e prazo informado na coleta. O acervo inclui certames encerrados."
+            chamada="Consultar o histórico"
+          />
+        </section>
+
+        <section className="mt-16">
           <CapturaAlerta
             origem="blog/indice"
             chamada={{

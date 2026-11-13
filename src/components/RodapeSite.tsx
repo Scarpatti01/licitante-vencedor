@@ -48,6 +48,7 @@ const PRODUTO = [
 
 const CONTEUDO = [
   { href: "/blog/", texto: "Guias" },
+  { href: "/editais-publicados/", texto: "Histórico de editais" },
   { href: "/lei-14133/", texto: "Lei 14.133" },
   { href: "/habilitacao/", texto: "Habilitação" },
   { href: "/vender-para-o-governo/", texto: "Vender para o governo" },

@@ -21,17 +21,17 @@ export const IMAGEM_DO_PRODUTO = "/workbook-do-licitante-produto.webp";
  * inelegível para o resultado de produto, e a página perde o preço e a
  * garantia que apareceriam na busca.
  *
- * ## Entrega e devolução de um produto digital, sem inventar
+ * ## Produto digital, sem inventar devolução física
  *
- * O livro é digital. Não há frete e não há o que devolver pelo correio. Os dois
- * campos descrevem o que de fato acontece:
+ * Em 13/11 o Search Console pediu `returnMethod` na política aninhada.
+ * Os valores documentados pelo Google são correio, loja e quiosque; nenhum
+ * descreve o reembolso deste PDF/ePub e da Jornada. `ReturnByMail` não é e-mail.
+ * Não declaramos frete nem política logística de devolução para esse produto.
+ * A entrega e a garantia reais permanecem na oferta textual e na página.
  *
- *   - entrega: custo zero, acesso liberado na hora da compra, para o Brasil;
- *   - devolução: os dias de garantia de `OFERTA`, reembolso sem custo e sem
- *     exigir justificativa, que é o que a página promete no FAQ.
- *
- * Os dois saem de `OFERTA`: se a garantia mudar lá, muda aqui junto, e a busca
- * nunca mostra um prazo diferente do que a página e o checkout praticam.
+ * Google pode continuar recomendando os campos opcionais de frete/devolução.
+ * Isso não justifica inventar logística nem garante resultado enriquecido.
+ * Referência: developers.google.com/search/docs/appearance/structured-data/merchant-listing
  */
 export function produtoEmDadosEstruturados(checkoutAberto: boolean, descricao: string) {
   return {
@@ -50,23 +50,7 @@ export function produtoEmDadosEstruturados(checkoutAberto: boolean, descricao: s
         ? "https://schema.org/InStock"
         : "https://schema.org/PreOrder",
       url: `${SITE.url}/jornada/`,
-      shippingDetails: {
-        "@type": "OfferShippingDetails",
-        shippingRate: { "@type": "MonetaryAmount", value: 0, currency: "BRL" },
-        shippingDestination: { "@type": "DefinedRegion", addressCountry: "BR" },
-        deliveryTime: {
-          "@type": "ShippingDeliveryTime",
-          handlingTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 0, unitCode: "DAY" },
-          transitTime: { "@type": "QuantitativeValue", minValue: 0, maxValue: 0, unitCode: "DAY" },
-        },
-      },
-      hasMerchantReturnPolicy: {
-        "@type": "MerchantReturnPolicy",
-        applicableCountry: "BR",
-        returnPolicyCategory: "https://schema.org/MerchantReturnFiniteReturnWindow",
-        merchantReturnDays: OFERTA.diasDeGarantia,
-        returnFees: "https://schema.org/FreeReturn",
-      },
+      description: `Entrega digital imediata. Garantia incondicional de ${OFERTA.diasDeGarantia} dias, com reembolso sem necessidade de justificativa.`,
     },
   };
 }

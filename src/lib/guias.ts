@@ -111,6 +111,7 @@ export const PAGINAS_FIXAS: readonly string[] = ["/sobre/", "/blog/"];
  */
 export const PAGINAS_INSTITUCIONAIS: readonly { href: string; prioridade: number }[] = [
   { href: "/blog/", prioridade: 0.7 },
+  { href: "/editais-publicados/", prioridade: 0.7 },
   { href: "/sobre/", prioridade: 0.5 },
   { href: "/metodologia/", prioridade: 0.5 },
   { href: "/aviso-legal/", prioridade: 0.3 },

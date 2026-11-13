@@ -19,6 +19,7 @@ import { semCarimboDoPortal } from "@/lib/posts/slug";
 import { caminhoDoMunicipio, municipioPorSlug, nomeDaUf } from "@/lib/regioes";
 import { dataDeBrasilia } from "@/lib/dominio/datas";
 import { LeituraDoEdital } from "@/components/posts/LeituraDoEdital";
+import { CAMINHO_DO_HISTORICO, trilhaDoPost } from "@/lib/posts/trilha";
 
 /**
  * A página de um edital publicado como notícia datada.
@@ -191,19 +192,7 @@ export default async function PaginaDoEdital({
         publisher: { "@id": `${SITE.url}/#organization` },
         isPartOf: { "@id": `${SITE.url}/#website` },
       },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Início", item: `${SITE.url}/` },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: `Licitações em ${post.municipio}`,
-            item: `${SITE.url}${caminhoDoMunicipio({ uf: post.uf, slug: post.municipioSlug })}`,
-          },
-          { "@type": "ListItem", position: 3, name: titulo(post), item: `${SITE.url}${caminhoDoPost(post)}` },
-        ],
-      },
+      trilhaDoPost(post, titulo(post)),
     ],
   };
 
@@ -213,6 +202,9 @@ export default async function PaginaDoEdital({
 
       <article className="mx-auto max-w-3xl px-5 py-10 sm:px-8">
         <Trilha atual={`${post.municipio} · ${post.modalidade}`} />
+        <Link href={CAMINHO_DO_HISTORICO} className="mt-4 inline-block text-sm text-[var(--muted)] underline underline-offset-4">
+          Ver o histórico de editais publicados
+        </Link>
 
         {/*
           A tarja é deliberadamente impossível de não ver. Ver a justificativa no
