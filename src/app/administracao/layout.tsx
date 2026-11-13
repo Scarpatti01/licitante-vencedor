@@ -63,13 +63,16 @@ export default async function LayoutDaAdministracao({
     <div className="min-h-dvh bg-[var(--surface)]">
       <header className="border-b bg-[var(--background)]">
         <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-5 py-3 sm:px-8">
-          <div className="flex items-center gap-3">
+          <div className="flex min-w-0 flex-wrap items-center gap-3">
             <span className="text-sm font-semibold tracking-tight">Operação</span>
-            <span className="text-xs text-[var(--muted)]">{administrador.email}</span>
+            <span className="max-w-full text-xs break-all text-[var(--muted)]">{administrador.email}</span>
           </div>
           <nav className="flex items-center gap-4 text-sm">
             <Link href="/administracao/leads/" className="hover:underline">
               Leads
+            </Link>
+            <Link href="/administracao/funil/" className="hover:underline">
+              Funil
             </Link>
             <Link href="/painel/" className="text-[var(--muted)] hover:underline">
               Ir para o produto

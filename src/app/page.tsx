@@ -193,19 +193,19 @@ export default function Home() {
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <Link
                 href="/precos/"
-                className="rounded-md bg-sky-400 px-5 py-2.5 text-sm font-semibold text-[#030814] transition-colors hover:bg-sky-300"
+                className="inline-flex min-h-11 items-center rounded-md bg-sky-400 px-5 py-2.5 text-sm font-semibold text-[#030814] transition-colors hover:bg-sky-300"
               >
                 Ver planos e preços
               </Link>
               <Link
                 href="/alerta-de-licitacao/"
-                className="rounded-md border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-slate-400"
+                className="inline-flex min-h-11 items-center rounded-md border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-slate-400"
               >
                 Testar {DIAS_DE_TESTE} dias, sem cartão
               </Link>
               <Link
                 href="#demonstracao"
-                className="rounded-md border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-slate-400"
+                className="inline-flex min-h-11 items-center rounded-md border border-slate-600 px-5 py-2.5 text-sm font-medium text-slate-200 transition-colors hover:border-slate-400"
               >
                 Ver uma análise real
               </Link>
@@ -225,7 +225,7 @@ export default function Home() {
               hero é propaganda; com ela, é um dado que o visitante pode conferir
               na fonte oficial.
             */}
-            <p className="mt-8 text-xs text-slate-500">
+            <p className="mt-8 text-xs text-slate-400">
               Coleta própria do{" "}
               <a href="https://www.pncp.gov.br/" rel="noopener" className="underline underline-offset-4">
                 Portal Nacional de Contratações Públicas

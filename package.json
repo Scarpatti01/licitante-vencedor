@@ -26,7 +26,8 @@
     "decisoes:limpar": "node scripts/limpar-decisoes.ts",
     "decisoes:simular": "node scripts/limpar-decisoes.ts --simular",
     "testes:encerrar": "node scripts/encerrar-testes.ts",
-    "testes:simular": "node scripts/encerrar-testes.ts --simular"
+    "testes:simular": "node scripts/encerrar-testes.ts --simular",
+    "test:mobile": "playwright test"
   },
   "dependencies": {
     "@google/genai": "^2.17.1",
@@ -44,6 +45,7 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@playwright/test": "1.65.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

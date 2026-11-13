@@ -58,7 +58,7 @@ export function FormularioDeAcesso({
           required
           autoComplete="email"
           defaultValue={emailInicial}
-          className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
+          className="w-full rounded-lg border bg-[var(--background)] min-h-11 px-3 py-2 text-base text-[var(--foreground)] sm:text-sm"
         />
       </div>
 
@@ -76,7 +76,7 @@ export function FormularioDeAcesso({
           // senha forte em vez de tentar preencher com a antiga.
           autoComplete={minimoDaSenha ? "new-password" : "current-password"}
           aria-describedby={minimoDaSenha ? "dica-da-senha" : undefined}
-          className="w-full rounded-lg border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
+          className="w-full rounded-lg border bg-[var(--background)] min-h-11 px-3 py-2 text-base text-[var(--foreground)] sm:text-sm"
         />
         {minimoDaSenha ? (
           <p id="dica-da-senha" className="text-xs text-[var(--muted)]">

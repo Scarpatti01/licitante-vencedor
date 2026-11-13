@@ -37,7 +37,7 @@ import { RodapeSite } from "@/components/RodapeSite";
 const TITULO = "Privacidade e proteção de dados";
 const DESCRICAO =
   "Quais dados coletamos, por quê, com quem compartilhamos e como exercer seus direitos da LGPD. Sem rastreador, sem pixel de anúncio, sem venda.";
-const ATUALIZADO = "2026-08-15";
+const ATUALIZADO = "2026-11-13";
 
 export const metadata: Metadata = {
   title: TITULO,
@@ -206,6 +206,16 @@ export default function Privacidade() {
               terceiro. Você não é o produto aqui: quem paga pelo serviço é quem
               o assina, e é por isso que medir audiência nos serve para escrever
               melhor, não para revender atenção.
+            </P>
+
+            <P>
+              Para medir o avanço dos cadastros até o uso do serviço, o painel
+              administrativo compara internamente os registros de confirmação,
+              criação de conta, empresa, filtros e ações em oportunidades.
+              A comparação usa o mesmo e-mail cadastrado e apresenta totais por
+              período. Esses identificadores não são enviados às ferramentas
+              de audiência, e a medição não acrescenta cookies nem grava um
+              histórico de navegação do visitante.
             </P>
 
             <Tabela

@@ -188,7 +188,7 @@ export function CapturaAlerta({
               required
               autoComplete="email"
               placeholder="voce@suaempresa.com.br"
-              className="mt-1 w-full rounded-md border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
+              className="mt-1 w-full rounded-md border bg-[var(--background)] min-h-11 px-3 py-2 text-base text-[var(--foreground)] sm:text-sm"
             />
           </label>
           {oferta ? null : (
@@ -198,7 +198,7 @@ export function CapturaAlerta({
                 name="cidade"
                 type="text"
                 placeholder="Recife, Caruaru…"
-                className="mt-1 w-full rounded-md border bg-[var(--background)] px-3 py-2 text-sm text-[var(--foreground)]"
+                className="mt-1 w-full rounded-md border bg-[var(--background)] min-h-11 px-3 py-2 text-base text-[var(--foreground)] sm:text-sm"
               />
             </label>
           )}
