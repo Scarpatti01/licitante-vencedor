@@ -22,7 +22,9 @@ test("histórico liga todos os editais e não inventa uma página municipal", as
   await page.screenshot({ path: info.outputPath("historico.png") });
 
   await lista.locator(`a[href="${semPraca}"]`).click();
+  await page.waitForURL((url) => url.pathname === semPraca);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.locator('script[type="application/ld+json"]').filter({ hasText: "BreadcrumbList" }).first()).toBeAttached();
   const esquemas = await page.locator('script[type="application/ld+json"]').allTextContents();
   const trilha = esquemas.flatMap((s) => JSON.parse(s)["@graph"] ?? [])
     .find((s: { "@type": string }) => s["@type"] === "BreadcrumbList");
