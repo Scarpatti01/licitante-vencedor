@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { todosOsPosts, caminhoDoPost } from "@/lib/posts/acervo";
-import { selecionarDemonstracao } from "@/lib/posts/demonstracao";
+import { DEMONSTRACAO, selecionarDemonstracao } from "@/lib/posts/demonstracao";
 import { dataDeBrasilia, dataEHoraDeBrasilia } from "@/lib/dominio/datas";
 import { LeituraDoEdital } from "@/components/posts/LeituraDoEdital";
 
@@ -28,6 +28,21 @@ export function DemonstracaoDoProduto() {
           <div><dt className="text-[var(--muted)]">Documentos lidos</dt><dd className="mt-1 font-medium">{post.documentosLidos}</dd></div>
         </dl>
         <p className="mt-5 leading-relaxed">{post.analise.resumoExecutivo.valor}</p>
+        <dl className="mt-6 grid gap-4 sm:grid-cols-3">
+          {DEMONSTRACAO.destaques.map((item) => (
+            <div key={item.titulo} className="rounded-lg border bg-[var(--background)] p-4">
+              <dt className="text-sm font-semibold">{item.titulo}</dt>
+              <dd className="mt-2 text-sm leading-relaxed">
+                {item.texto}{" "}
+                <a href={`${DEMONSTRACAO.documento}#page=${item.pagina}`} rel="noopener" className="underline underline-offset-4">Página {item.pagina} do edital</a>.
+              </dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-4 text-xs leading-relaxed text-[var(--muted)]">
+          Garantias, vistoria e amostras conferidas no documento oficial em {DEMONSTRACAO.conferidoEm}.
+          A vistoria é opcional. As amostras são de materiais da obra, durante a execução.
+        </p>
         <details className="mt-6 border-t pt-5">
           <summary className="cursor-pointer font-semibold underline underline-offset-4">Abrir análise, exigências e evidências</summary>
           <div className="mt-5"><LeituraDoEdital analise={post.analise} documentosLidos={post.documentosLidos ?? 0} /></div>

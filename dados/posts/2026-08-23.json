@@ -560,7 +560,7 @@
         },
         "visitaTecnicaExigida": {
           "origem": "edital",
-          "valor": true,
+          "valor": false,
           "evidencia": "É facultativa a avaliação prévia do local de execução dos serviços para o conhecimento pleno das condições e peculiaridades do objeto a ser contratado, sendo assegurado ao interessado o direito de realização de vistoria prévia, acompanhado por servidor designado para esse fim",
           "confianca": "alta"
         },
