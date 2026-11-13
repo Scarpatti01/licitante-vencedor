@@ -40,6 +40,15 @@ test("home, busca e demonstração cabem na tela", async ({ page }, info) => {
   await painel.getByRole("link", { name: "Ver planos e escolher o meu" }).click();
   await expect(page).toHaveURL(/\/precos\/$/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText("Planos");
+  if (info.project.name.startsWith("390-")) {
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await page.goto("/");
+    await semRolagemDaPagina(page);
+    const painelAmplo = page.locator("#amostra-do-painel");
+    await painelAmplo.screenshot({ path: info.outputPath("painel-desktop.png") });
+    await painelAmplo.getByRole("link", { name: "Ver planos e escolher o meu" }).click();
+    await expect(page).toHaveURL(/\/precos\/$/);
+  }
 });
 
 test("comparação de planos rola dentro da tabela", async ({ page }, info) => {

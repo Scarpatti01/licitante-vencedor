@@ -24,3 +24,5 @@ dependência nova. As linhas se reorganizam em celulares e o botão ocupa a
 largura disponível nas telas pequenas. O cenário Playwright da home verifica
 a legenda, as três linhas, a ausência de rolagem horizontal, a captura da
 seção e a navegação do CTA até a página de planos.
+Os perfis de 390 pixels também repetem a captura e o clique em uma viewport
+de 1280 pixels, nos dois temas, para conferir a composição em telas amplas.
