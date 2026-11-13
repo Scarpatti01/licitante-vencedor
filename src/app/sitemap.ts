@@ -4,13 +4,13 @@ import { GUIAS_PUBLICADOS, PAGINAS_INSTITUCIONAIS, PAGINAS_PRODUTO } from "@/lib
 import { ARTIGOS_PUBLICADOS } from "@/lib/blog";
 import {
   caminhoDoMunicipio,
-  MEDIDO_EM,
   medidoEmDoMunicipio,
   municipiosPublicaveis,
 } from "@/lib/regioes";
 import { caminhoDoPost, todosOsPosts } from "@/lib/posts/acervo";
-import { COLETADO_EM, ufsComAbertos } from "@/lib/abertos/acervo";
+import { abertosNoMunicipio, COLETADO_EM, ufsComAbertos } from "@/lib/abertos/acervo";
 import { temPaginaDeUf } from "@/lib/abertos/paginas";
+import { CAMINHO_DO_HISTORICO } from "@/lib/posts/trilha";
 
 /**
  * Só entram no sitemap páginas com conteúdo próprio.
@@ -22,12 +22,13 @@ import { temPaginaDeUf } from "@/lib/abertos/paginas";
  * esquecimento — são páginas por empresa, bloqueadas no robots.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const agora = new Date();
+  const posts = todosOsPosts();
+  // Sem data editorial verificável, omitir lastModified é mais honesto que
+  // anunciar mudança em todo deploy. Dados e artigos mantêm suas datas reais.
   return [
-    { url: `${SITE.url}/`, lastModified: agora, changeFrequency: "daily", priority: 1 },
+    { url: `${SITE.url}/`, changeFrequency: "daily", priority: 1 },
     ...GUIAS_PUBLICADOS.map((guia) => ({
       url: `${SITE.url}${guia.href}`,
-      lastModified: agora,
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),
@@ -46,13 +47,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
     ...PAGINAS_PRODUTO.map((p) => ({
       url: `${SITE.url}${p.href}`,
-      lastModified: agora,
       changeFrequency: "weekly" as const,
       priority: p.prioridade,
     })),
     ...PAGINAS_INSTITUCIONAIS.map((p) => ({
       url: `${SITE.url}${p.href}`,
-      lastModified: agora,
+      ...(p.href === CAMINHO_DO_HISTORICO && posts.length > 0
+        ? { lastModified: new Date(posts[0].postadoEm) }
+        : {}),
       changeFrequency: "monthly" as const,
       priority: p.prioridade,
     })),
@@ -72,10 +74,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
      */
     ...municipiosPublicaveis().map((m) => ({
       url: `${SITE.url}${caminhoDoMunicipio(m)}`,
-      // A data do município, e não a da coleta: uma página cuja UF não foi
-      // coletada não mudou, e anunciar que mudou ensina o rastreador a
-      // desconfiar do campo em todas as outras.
-      lastModified: new Date(medidoEmDoMunicipio(m)),
+      // A página mostra o agregado, o bloco de abertos (quando presente) e
+      // os posts locais. O mais recente desses conteúdos é a última mudança.
+      // A data de outra UF, sozinha, não atualiza este município.
+      lastModified: new Date(Math.max(
+        new Date(medidoEmDoMunicipio(m)).getTime(),
+        ...(abertosNoMunicipio(m.uf, m.slug) ? [new Date(COLETADO_EM).getTime()] : []),
+        ...posts.filter((p) => p.uf === m.uf && p.municipioSlug === m.slug)
+          .map((p) => new Date(p.postadoEm).getTime()),
+      )),
       changeFrequency: "weekly" as const,
       priority: 0.6,
     })),
@@ -97,7 +104,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
      * literal e as datas do certame: é ele que responde a busca de quem procura
      * aquele edital específico.
      */
-    ...todosOsPosts().map((post) => ({
+    ...posts.map((post) => ({
       url: `${SITE.url}${caminhoDoPost(post)}`,
       lastModified: new Date(post.postadoEm),
       changeFrequency: "never" as const,
