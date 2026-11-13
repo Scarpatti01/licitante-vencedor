@@ -12,6 +12,7 @@ import { EsferasDaColeta } from "@/components/EsferasDaColeta";
 import { distribuicaoPorEsfera } from "@/lib/dominio/esferas";
 import { dataDeBrasilia, dataEHoraDeBrasilia } from "@/lib/dominio/datas";
 import { DemonstracaoDoProduto } from "@/components/DemonstracaoDoProduto";
+import { AmostraDoPainel } from "@/components/AmostraDoPainel";
 import { pagamentoLigado } from "@/lib/pagamento/configuracao";
 import { DIAS_DE_TESTE } from "@/lib/assinatura/teste";
 import { Logo } from "@/components/Logo";
@@ -266,6 +267,8 @@ export default function Home() {
             <VideoDoYoutube {...VIDEO_DA_HOME} />
           </div>
         </section>
+
+        <AmostraDoPainel />
 
         <DemonstracaoDoProduto />
 
