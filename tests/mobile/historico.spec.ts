@@ -24,9 +24,11 @@ test("histórico liga todos os editais e não inventa uma página municipal", as
   await lista.locator(`a[href="${semPraca}"]`).click();
   await page.waitForURL((url) => url.pathname === semPraca);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
-  await expect(page.locator('script[type="application/ld+json"]').filter({ hasText: "BreadcrumbList" }).first()).toBeAttached();
-  const esquemas = await page.locator('script[type="application/ld+json"]').allTextContents();
-  const trilha = esquemas.flatMap((s) => JSON.parse(s)["@graph"] ?? [])
+  // Seletores de texto do Playwright ignoram SCRIPT. Esperar pelo elemento,
+  // então ler textContent, também evita ler o JSON-LD da página anterior.
+  const esquema = page.locator("#edital-dados-estruturados");
+  await expect(esquema).toBeAttached();
+  const trilha = JSON.parse((await esquema.textContent())!)["@graph"]
     .find((s: { "@type": string }) => s["@type"] === "BreadcrumbList");
   expect(trilha).toBeDefined();
   for (const item of trilha.itemListElement) expect(urls).toContain(item.item);

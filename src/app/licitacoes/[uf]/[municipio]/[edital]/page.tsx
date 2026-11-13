@@ -390,7 +390,7 @@ export default async function PaginaDoEdital({
 
       <RodapeSite />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <script id="edital-dados-estruturados" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
     </>
   );
 }
