@@ -82,3 +82,18 @@ test("captura valida e-mail e explica a indisponibilidade", async ({ page }, inf
   await semRolagemDaPagina(page);
   await page.screenshot({ path: info.outputPath("cadastro.png"), fullPage: true });
 });
+
+test("artigo do SICAF está no blog e pode ser lido no celular", async ({ page }, info) => {
+  await page.goto("/blog/");
+  await page.locator('a[href="/blog/sicaf-cadastro-gratuito/"]').first().click();
+  await expect(page).toHaveURL(/\/blog\/sicaf-cadastro-gratuito\/$/);
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("SICAF: o que é e como fazer o cadastro gratuito");
+  await expect(page.getByRole("navigation", { name: "Neste artigo" })).toBeVisible();
+  await semRolagemDaPagina(page);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://licitantevencedor.com.br/blog/sicaf-cadastro-gratuito/");
+  const esquemas = await page.locator('script[type="application/ld+json"]').allTextContents();
+  expect(esquemas.some((s) => JSON.parse(s)["@graph"]?.some((n: Record<string, unknown>) => n["@type"] === "Article"))).toBe(true);
+  await page.getByRole("heading", { name: "Os seis níveis do SICAF", exact: true }).scrollIntoViewIfNeeded();
+  await semRolagemDaPagina(page);
+  await page.screenshot({ path: info.outputPath("artigo-sicaf.png"), fullPage: true });
+});
