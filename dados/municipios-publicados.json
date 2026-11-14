@@ -82,6 +82,10 @@
   },
   {
    "uf": "AM",
+   "slug": "apui"
+  },
+  {
+   "uf": "AM",
    "slug": "atalaia-do-norte"
   },
   {
@@ -367,6 +371,10 @@
   {
    "uf": "BA",
    "slug": "mata-de-sao-joao"
+  },
+  {
+   "uf": "BA",
+   "slug": "miguel-calmon"
   },
   {
    "uf": "BA",
@@ -4790,6 +4798,10 @@
   },
   {
    "uf": "RN",
+   "slug": "macaiba"
+  },
+  {
+   "uf": "RN",
    "slug": "macau"
   },
   {
@@ -5067,6 +5079,10 @@
   {
    "uf": "RS",
    "slug": "dom-pedrito"
+  },
+  {
+   "uf": "RS",
+   "slug": "eldorado-do-sul"
   },
   {
    "uf": "RS",
@@ -5826,6 +5842,10 @@
   },
   {
    "uf": "SC",
+   "slug": "planalto-alegre"
+  },
+  {
+   "uf": "SC",
    "slug": "pomerode"
   },
   {
@@ -6063,6 +6083,10 @@
   {
    "uf": "SE",
    "slug": "itaporanga-d-ajuda"
+  },
+  {
+   "uf": "SE",
+   "slug": "japaratuba"
   },
   {
    "uf": "SE",
@@ -6354,6 +6378,10 @@
   },
   {
    "uf": "SP",
+   "slug": "colina"
+  },
+  {
+   "uf": "SP",
    "slug": "conchal"
   },
   {
@@ -6631,6 +6659,10 @@
   {
    "uf": "SP",
    "slug": "juquia"
+  },
+  {
+   "uf": "SP",
+   "slug": "laranjal-paulista"
   },
   {
    "uf": "SP",
