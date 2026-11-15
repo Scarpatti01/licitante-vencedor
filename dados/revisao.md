@@ -1,9 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 31032 editais coletados em 2026-11-14T12:31:36.693Z.
+Revisão dos dados — 31055 editais coletados em 2026-11-15T11:30:20.206Z.
 
-Encontrados 0 erro(s), 4 suspeita(s) e 127 aviso(s).
+Encontrados 0 erro(s), 4 suspeita(s) e 128 aviso(s).
 
 [AVISO] O edital 00394452000103-1-024067/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "IMPRESSORA"
@@ -232,6 +232,10 @@ Encontrados 0 erro(s), 4 suspeita(s) e 127 aviso(s).
 [AVISO] O edital 05816630000152-1-008580/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "NISTANTINA"
   Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8580
+
+[AVISO] O edital 00394502000144-1-016419/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Papel A4"
+  Edital: https://pncp.gov.br/app/editais/00394502000144/2026/16419
 
 [AVISO] O edital 19843929000100-1-000919/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "COFFE BREAK"
