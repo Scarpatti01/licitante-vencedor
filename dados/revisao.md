@@ -1,69 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 27739 editais coletados em 2026-11-16T12:03:54.058Z.
+Revisão dos dados — 28982 editais coletados em 2026-11-16T14:01:42.939Z.
 
-ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 26 foram coletadas por inteiro, 1 ficou parcial e 0 não trouxeram nada.
-
-  Completas (representadas por inteiro nos números abaixo): AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, TO
-  Parciais (o que entrou ANTES da interrupção está nos números abaixo; o restante da UF, não):
-    SP: 3750 editais coletados, interrompida — orçamento de tempo esgotado durante a consulta (último erro: The operation was aborted due to timeout)
-
-  Os 27739 editais revisados vêm de AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP, TO.
-
-Encontrados 10 erro(s), 4 suspeita(s) e 117 aviso(s).
-
-[ERRO] O edital 06460026000107-1-000040/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/06460026000107/2026/40
-
-[ERRO] O edital 06184253000149-1-000073/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/06184253000149/2026/73
-
-[ERRO] O edital 12511093000106-1-000048/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/12511093000106/2026/48
-
-[ERRO] O edital 01612325000198-1-000061/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/01612325000198/2026/61
-
-[ERRO] O edital 01612632000179-1-000019/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/01612632000179/2026/19
-
-[ERRO] O edital 06218572000128-1-000028/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/06218572000128/2026/28
-
-[ERRO] O edital 01612525000140-1-000053/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/01612525000140/2026/53
-
-[ERRO] O edital 06158455000116-1-000132/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/06158455000116/2026/132
-
-[ERRO] O edital 06138911000166-1-000087/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/06138911000166/2026/87
-
-[ERRO] O edital 06191001000147-1-000136/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
-  Evidência: encerrou em 2026-11-16T09:00:00-03:00, coleta em 2026-11-16T12:03:54.058Z
-  Edital: https://pncp.gov.br/app/editais/06191001000147/2026/136
-
-[AVISO] O edital 13595251000108-1-000077/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Obras comuns"
-  Edital: https://pncp.gov.br/app/editais/13595251000108/2026/77
-
-[AVISO] O edital 05816630000152-1-008465/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "KIT TPE"
-  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8465
-
-[AVISO] O edital 02931604000187-1-000391/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "LAVADORA"
-  Edital: https://pncp.gov.br/app/editais/02931604000187/2026/391
+Encontrados 0 erro(s), 4 suspeita(s) e 120 aviso(s).
 
 [AVISO] O edital 13069489000108-1-000217/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "HOSPEDAGEM"
@@ -353,6 +293,10 @@ Encontrados 10 erro(s), 4 suspeita(s) e 117 aviso(s).
   Evidência: objeto declarado: "Mat. Consumo"
   Edital: https://pncp.gov.br/app/editais/96291141000180/2026/7658
 
+[AVISO] O edital 13529136000135-1-000148/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Capacete"
+  Edital: https://pncp.gov.br/app/editais/13529136000135/2026/148
+
 [AVISO] O edital 88349238000178-1-000262/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "EQUIPAMENTOS"
   Edital: https://pncp.gov.br/app/editais/88349238000178/2026/262
@@ -439,6 +383,10 @@ Encontrados 10 erro(s), 4 suspeita(s) e 117 aviso(s).
   Evidência: objeto declarado: "SERVIÇOS"
   Edital: https://pncp.gov.br/app/editais/01602022000194/2026/419
 
+[AVISO] O edital 63025530000104-1-000027/2027 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "226/2026"
+  Edital: https://pncp.gov.br/app/editais/63025530000104/2027/27
+
 [AVISO] O edital 01602022000194-1-000420/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "SERVIÇOS"
   Edital: https://pncp.gov.br/app/editais/01602022000194/2026/420
@@ -459,6 +407,14 @@ Encontrados 10 erro(s), 4 suspeita(s) e 117 aviso(s).
   Evidência: objeto declarado: "Obras comuns"
   Edital: https://pncp.gov.br/app/editais/13595251000108/2026/69
 
+[AVISO] O edital 44430783000119-1-001042/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "ELETRÔNICOS"
+  Edital: https://pncp.gov.br/app/editais/44430783000119/2026/1042
+
+[AVISO] O edital 67995027000132-1-000482/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Medicamentos"
+  Edital: https://pncp.gov.br/app/editais/67995027000132/2026/482
+
 [AVISO] O edital 13119300000136-1-000085/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "VEICULOS"
   Edital: https://pncp.gov.br/app/editais/13119300000136/2026/85
@@ -467,9 +423,17 @@ Encontrados 10 erro(s), 4 suspeita(s) e 117 aviso(s).
   Evidência: objeto declarado: "Obras comuns"
   Edital: https://pncp.gov.br/app/editais/13595251000108/2026/71
 
+[AVISO] O edital 67995027000132-1-000483/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Medicamentos"
+  Edital: https://pncp.gov.br/app/editais/67995027000132/2026/483
+
 [AVISO] O edital 19843929000100-1-000896/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "MMH"
   Edital: https://pncp.gov.br/app/editais/19843929000100/2026/896
+
+[AVISO] O edital 46377800000127-1-004970/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Marcenaria"
+  Edital: https://pncp.gov.br/app/editais/46377800000127/2026/4970
 
 [AVISO] O edital 19843929000100-1-000829/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Medicamentos"
