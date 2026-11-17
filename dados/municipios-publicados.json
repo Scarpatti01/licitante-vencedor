@@ -1778,6 +1778,10 @@
   },
   {
    "uf": "MG",
+   "slug": "alpinopolis"
+  },
+  {
+   "uf": "MG",
    "slug": "alto-caparao"
   },
   {
@@ -3634,6 +3638,10 @@
   },
   {
    "uf": "PE",
+   "slug": "sanharo"
+  },
+  {
+   "uf": "PE",
    "slug": "santa-cruz-do-capibaribe"
   },
   {
@@ -3743,6 +3751,10 @@
   {
    "uf": "PI",
    "slug": "floriano"
+  },
+  {
+   "uf": "PI",
+   "slug": "guaribas"
   },
   {
    "uf": "PI",
@@ -5367,6 +5379,10 @@
   {
    "uf": "RS",
    "slug": "tramandai"
+  },
+  {
+   "uf": "RS",
+   "slug": "tres-passos"
   },
   {
    "uf": "RS",
