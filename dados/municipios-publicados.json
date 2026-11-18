@@ -170,6 +170,10 @@
   },
   {
    "uf": "BA",
+   "slug": "biritinga"
+  },
+  {
+   "uf": "BA",
    "slug": "bom-jesus-da-lapa"
   },
   {
@@ -255,6 +259,10 @@
   {
    "uf": "BA",
    "slug": "dias-d-avila"
+  },
+  {
+   "uf": "BA",
+   "slug": "dom-macedo-costa"
   },
   {
    "uf": "BA",
@@ -2262,6 +2270,10 @@
   },
   {
    "uf": "MG",
+   "slug": "itutinga"
+  },
+  {
+   "uf": "MG",
    "slug": "jacinto"
   },
   {
@@ -2578,6 +2590,10 @@
   },
   {
    "uf": "MG",
+   "slug": "pratapolis"
+  },
+  {
+   "uf": "MG",
    "slug": "presidente-bernardes"
   },
   {
@@ -2667,6 +2683,10 @@
   {
    "uf": "MG",
    "slug": "santos-dumont"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-francisco-do-gloria"
   },
   {
    "uf": "MG",
@@ -3546,6 +3566,10 @@
   },
   {
    "uf": "PE",
+   "slug": "itaquitinga"
+  },
+  {
+   "uf": "PE",
    "slug": "joao-alfredo"
   },
   {
@@ -3639,6 +3663,10 @@
   {
    "uf": "PE",
    "slug": "sanharo"
+  },
+  {
+   "uf": "PE",
+   "slug": "santa-cruz-da-baixa-verde"
   },
   {
    "uf": "PE",
@@ -4278,6 +4306,10 @@
   },
   {
    "uf": "PR",
+   "slug": "pinhalao"
+  },
+  {
+   "uf": "PR",
    "slug": "pinhao"
   },
   {
@@ -4343,6 +4375,10 @@
   {
    "uf": "PR",
    "slug": "reserva-do-iguacu"
+  },
+  {
+   "uf": "PR",
+   "slug": "ribeirao-claro"
   },
   {
    "uf": "PR",
