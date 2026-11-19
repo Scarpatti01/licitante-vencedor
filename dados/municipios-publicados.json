@@ -1754,6 +1754,10 @@
   },
   {
    "uf": "MA",
+   "slug": "viana"
+  },
+  {
+   "uf": "MA",
    "slug": "ze-doca"
   },
   {
@@ -4111,6 +4115,10 @@
   {
    "uf": "PR",
    "slug": "iretama"
+  },
+  {
+   "uf": "PR",
+   "slug": "itaipulandia"
   },
   {
    "uf": "PR",
@@ -6922,6 +6930,10 @@
   },
   {
    "uf": "SP",
+   "slug": "pereira-barreto"
+  },
+  {
+   "uf": "SP",
    "slug": "peruibe"
   },
   {
@@ -7075,6 +7087,10 @@
   {
    "uf": "SP",
    "slug": "santa-fe-do-sul"
+  },
+  {
+   "uf": "SP",
+   "slug": "santa-isabel"
   },
   {
    "uf": "SP",

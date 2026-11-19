@@ -1,37 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 28148 editais coletados em 2026-11-19T12:09:42.163Z.
+Revisão dos dados — 28345 editais coletados em 2026-11-19T14:43:12.088Z.
 
-ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 26 foram coletadas por inteiro, 1 ficou parcial e 0 não trouxeram nada.
-
-  Completas (representadas por inteiro nos números abaixo): AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, TO
-  Parciais (o que entrou ANTES da interrupção está nos números abaixo; o restante da UF, não):
-    SP: 4700 editais coletados, interrompida — orçamento de tempo esgotado durante a consulta (último erro: The operation was aborted due to timeout)
-
-  Os 28148 editais revisados vêm de AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP, TO.
-
-Encontrados 0 erro(s), 5 suspeita(s) e 114 aviso(s).
-
-[AVISO] O edital 05816630000152-1-008622/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "CABERGOLINA"
-  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8622
-
-[AVISO] O edital 05816630000152-1-008633/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "SACO SACOLA"
-  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8633
-
-[AVISO] O edital 35582108000114-1-000070/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "TONER Okidata"
-  Edital: https://pncp.gov.br/app/editais/35582108000114/2026/70
-
-[AVISO] O edital 05816630000152-1-008621/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "MEDICAMENTOS"
-  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8621
-
-[AVISO] O edital 05816630000152-1-008642/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "ESTABILIZADOR"
-  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8642
+Encontrados 0 erro(s), 5 suspeita(s) e 113 aviso(s).
 
 [AVISO] O edital 42498733000148-1-002283/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "INSUMOS"
@@ -214,7 +186,7 @@ Encontrados 0 erro(s), 5 suspeita(s) e 114 aviso(s).
   Edital: https://pncp.gov.br/app/editais/00401376000108/2026/91
 
 [SUSPEITA] No edital 01616680000135-1-000045/2026, do órgão MUNICIPIO DE SAO FRANCISCO DO BREJAO, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 12.379.800.000,00, contra máximo de R$ 1.398.712.500,00 entre os demais Pregão - Eletrônico deste conjunto
+  Evidência: valor declarado R$ 12.379.800.000,00, contra máximo de R$ 1.496.430.000,00 entre os demais Pregão - Eletrônico deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10 daria R$ 1.237.980.000,00; dividido por 100 daria R$ 123.798.000,00; dividido por 1.000 daria R$ 12.379.800,00; dividido por 10.000 daria R$ 1.237.980,00). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/01616680000135/2026/45
 
@@ -281,6 +253,10 @@ Encontrados 0 erro(s), 5 suspeita(s) e 114 aviso(s).
 [AVISO] O edital 01090674000197-1-000012/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "VIDEO GAME"
   Edital: https://pncp.gov.br/app/editais/01090674000197/2026/12
+
+[AVISO] O edital 48031918000124-1-003463/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Smartphone 5G"
+  Edital: https://pncp.gov.br/app/editais/48031918000124/2026/3463
 
 [AVISO] O edital 63025530000104-1-004547/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Água mineral"
@@ -391,20 +367,32 @@ Encontrados 0 erro(s), 5 suspeita(s) e 114 aviso(s).
   Evidência: objeto declarado: "Marcenaria"
   Edital: https://pncp.gov.br/app/editais/46377800000127/2026/4970
 
+[AVISO] O edital 63025530000104-1-000032/2027 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "400/2026"
+  Edital: https://pncp.gov.br/app/editais/63025530000104/2027/32
+
+[AVISO] O edital 63025530000104-1-000033/2027 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "230/2026"
+  Edital: https://pncp.gov.br/app/editais/63025530000104/2027/33
+
+[AVISO] O edital 46374500000194-1-009683/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Conforme TR"
+  Edital: https://pncp.gov.br/app/editais/46374500000194/2026/9683
+
 [AVISO] O edital 19843929000100-1-000829/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Medicamentos"
   Edital: https://pncp.gov.br/app/editais/19843929000100/2026/829
 
-[AVISO] O edital 63025530000104-1-004696/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "PCA 2026."
-  Edital: https://pncp.gov.br/app/editais/63025530000104/2026/4696
+[AVISO] O edital 63025530000104-1-000034/2027 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "DFD 32/2026"
+  Edital: https://pncp.gov.br/app/editais/63025530000104/2027/34
 
 [AVISO] O edital 02931604000187-1-000397/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
   Edital: https://pncp.gov.br/app/editais/02931604000187/2026/397
 
 [SUSPEITA] No edital 03112386000111-1-000061/2026, do órgão AGENCIA NACIONAL DE VIGILANCIA SANITARIA, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 65.234.423.103,96, contra máximo de R$ 1.398.712.500,00 entre os demais Pregão - Eletrônico deste conjunto
+  Evidência: valor declarado R$ 65.234.423.103,96, contra máximo de R$ 1.496.430.000,00 entre os demais Pregão - Eletrônico deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 100 daria R$ 652.344.231,04; dividido por 1.000 daria R$ 65.234.423,10; dividido por 10.000 daria R$ 6.523.442,31; dividido por 100.000 daria R$ 652.344,23). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/03112386000111/2026/61
 
