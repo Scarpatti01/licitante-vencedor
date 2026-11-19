@@ -362,6 +362,10 @@
   },
   {
    "uf": "BA",
+   "slug": "livramento-de-nossa-senhora"
+  },
+  {
+   "uf": "BA",
    "slug": "luis-eduardo-magalhaes"
   },
   {
@@ -2786,6 +2790,10 @@
   },
   {
    "uf": "MG",
+   "slug": "timoteo"
+  },
+  {
+   "uf": "MG",
    "slug": "tiros"
   },
   {
@@ -3694,6 +3702,10 @@
   },
   {
    "uf": "PE",
+   "slug": "sao-jose-do-belmonte"
+  },
+  {
+   "uf": "PE",
    "slug": "sao-jose-do-egito"
   },
   {
@@ -3923,6 +3935,10 @@
   {
    "uf": "PR",
    "slug": "candoi"
+  },
+  {
+   "uf": "PR",
+   "slug": "capanema"
   },
   {
    "uf": "PR",
@@ -4343,6 +4359,10 @@
   {
    "uf": "PR",
    "slug": "prado-ferreira"
+  },
+  {
+   "uf": "PR",
+   "slug": "pranchita"
   },
   {
    "uf": "PR",
@@ -7283,6 +7303,14 @@
   {
    "uf": "TO",
    "slug": "bandeirantes-do-tocantins"
+  },
+  {
+   "uf": "TO",
+   "slug": "barrolandia"
+  },
+  {
+   "uf": "TO",
+   "slug": "campos-lindos"
   },
   {
    "uf": "TO",
