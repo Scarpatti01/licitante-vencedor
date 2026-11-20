@@ -90,6 +90,10 @@
   },
   {
    "uf": "AM",
+   "slug": "benjamin-constant"
+  },
+  {
+   "uf": "AM",
    "slug": "boa-vista-do-ramos"
   },
   {
@@ -179,6 +183,10 @@
   {
    "uf": "BA",
    "slug": "bom-jesus-da-serra"
+  },
+  {
+   "uf": "BA",
+   "slug": "boquira"
   },
   {
    "uf": "BA",
@@ -1734,6 +1742,10 @@
   },
   {
    "uf": "MA",
+   "slug": "sao-joao-dos-patos"
+  },
+  {
+   "uf": "MA",
    "slug": "sao-luis"
   },
   {
@@ -2614,6 +2626,10 @@
   },
   {
    "uf": "MG",
+   "slug": "recreio"
+  },
+  {
+   "uf": "MG",
    "slug": "resende-costa"
   },
   {
@@ -2683,6 +2699,10 @@
   {
    "uf": "MG",
    "slug": "santa-rita-de-caldas"
+  },
+  {
+   "uf": "MG",
+   "slug": "santana-da-vargem"
   },
   {
    "uf": "MG",
@@ -2839,6 +2859,10 @@
   {
    "uf": "MG",
    "slug": "urucania"
+  },
+  {
+   "uf": "MG",
+   "slug": "urucuia"
   },
   {
    "uf": "MG",
@@ -3078,6 +3102,10 @@
   },
   {
    "uf": "MT",
+   "slug": "brasnorte"
+  },
+  {
+   "uf": "MT",
    "slug": "caceres"
   },
   {
@@ -3182,6 +3210,10 @@
   },
   {
    "uf": "MT",
+   "slug": "santa-cruz-do-xingu"
+  },
+  {
+   "uf": "MT",
    "slug": "sao-jose-dos-quatro-marcos"
   },
   {
@@ -3239,6 +3271,10 @@
   {
    "uf": "PA",
    "slug": "braganca"
+  },
+  {
+   "uf": "PA",
+   "slug": "brasil-novo"
   },
   {
    "uf": "PA",
@@ -4051,6 +4087,10 @@
   {
    "uf": "PR",
    "slug": "francisco-beltrao"
+  },
+  {
+   "uf": "PR",
+   "slug": "godoy-moreira"
   },
   {
    "uf": "PR",
@@ -5039,6 +5079,10 @@
   {
    "uf": "RO",
    "slug": "sao-francisco-do-guapore"
+  },
+  {
+   "uf": "RO",
+   "slug": "sao-miguel-do-guapore"
   },
   {
    "uf": "RO",
@@ -6191,6 +6235,10 @@
   {
    "uf": "SE",
    "slug": "neopolis"
+  },
+  {
+   "uf": "SE",
+   "slug": "nossa-senhora-das-dores"
   },
   {
    "uf": "SE",
