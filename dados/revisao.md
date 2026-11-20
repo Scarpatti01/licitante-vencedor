@@ -1,15 +1,7 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 30339 editais coletados em 2026-11-20T12:11:42.449Z.
-
-ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 26 foram coletadas por inteiro, 1 ficou parcial e 0 não trouxeram nada.
-
-  Completas (representadas por inteiro nos números abaixo): AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, TO
-  Parciais (o que entrou ANTES da interrupção está nos números abaixo; o restante da UF, não):
-    SP: 5600 editais coletados, interrompida — orçamento de tempo esgotado durante a consulta (último erro: The operation was aborted due to timeout)
-
-  Os 30339 editais revisados vêm de AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP, TO.
+Revisão dos dados — 30359 editais coletados em 2026-11-20T14:24:10.889Z.
 
 Encontrados 0 erro(s), 5 suspeita(s) e 137 aviso(s).
 
