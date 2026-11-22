@@ -1,9 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 30401 editais coletados em 2026-11-21T13:44:27.387Z.
+Revisão dos dados — 30435 editais coletados em 2026-11-22T11:59:14.133Z.
 
-Encontrados 0 erro(s), 5 suspeita(s) e 137 aviso(s).
+Encontrados 0 erro(s), 5 suspeita(s) e 138 aviso(s).
 
 [AVISO] O edital 01740422000166-1-000152/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "COMPUTADOR"
@@ -257,6 +257,10 @@ Encontrados 0 erro(s), 5 suspeita(s) e 137 aviso(s).
 [AVISO] O edital 48031918000124-1-003463/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Smartphone 5G"
   Edital: https://pncp.gov.br/app/editais/48031918000124/2026/3463
+
+[AVISO] O edital 00394502000144-1-017124/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "Obra do rancho"
+  Edital: https://pncp.gov.br/app/editais/00394502000144/2026/17124
 
 [AVISO] O edital 63025530000104-1-004547/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Água mineral"
