@@ -3,8 +3,8 @@ import { SITE } from "@/lib/site";
 import { GUIAS_PUBLICADOS, PAGINAS_INSTITUCIONAIS, PAGINAS_PRODUTO } from "@/lib/guias";
 import { ARTIGOS_PUBLICADOS } from "@/lib/blog";
 import {
+  alteradoEmDoMunicipio,
   caminhoDoMunicipio,
-  medidoEmDoMunicipio,
   municipiosPublicaveis,
 } from "@/lib/regioes";
 import { caminhoDoPost, todosOsPosts } from "@/lib/posts/acervo";
@@ -64,28 +64,41 @@ export default function sitemap(): MetadataRoute.Sitemap {
      * existe um segundo lugar capaz de discordar dela e sitemapear uma página
      * que não foi construída.
      *
-     * `lastModified` é a data da COLETA, não a do build: é ela que diz quando o
-     * conteúdo mudou de fato. Carimbar `agora` faria toda regional parecer
-     * atualizada a cada deploy e ensinaria o rastreador a ignorar o campo.
+     * `lastModified` é a data em que os NÚMEROS da página mudaram, e não a da
+     * coleta nem a do build. Até 22/11/2026 era a da coleta: a coleta é diária,
+     * e 1.821 páginas saíam com o mesmo minuto, embora só 0% a 2% dos
+     * municípios mudem de uma coleta para a outra. O efeito era o mesmo de
+     * carimbar `agora`: toda regional parecia atualizada todo dia, o que ensina
+     * o rastreador a ignorar o campo. Ver `dominio/alteracao.ts`.
+     *
+     * A data "medido em" que a página mostra muda a cada coleta e não conta:
+     * é a data da conferência, não mudança de conteúdo.
      *
      * Prioridade abaixo dos artigos: elas atendem busca com intenção local, que
      * é valiosa, mas o texto é gerado a partir de agregado e não substitui um
      * guia escrito.
      */
-    ...municipiosPublicaveis().map((m) => ({
-      url: `${SITE.url}${caminhoDoMunicipio(m)}`,
-      // A página mostra o agregado, o bloco de abertos (quando presente) e
-      // os posts locais. O mais recente desses conteúdos é a última mudança.
-      // A data de outra UF, sozinha, não atualiza este município.
-      lastModified: new Date(Math.max(
-        new Date(medidoEmDoMunicipio(m)).getTime(),
-        ...(abertosNoMunicipio(m.uf, m.slug) ? [new Date(COLETADO_EM).getTime()] : []),
-        ...posts.filter((p) => p.uf === m.uf && p.municipioSlug === m.slug)
-          .map((p) => new Date(p.postadoEm).getTime()),
-      )),
-      changeFrequency: "weekly" as const,
-      priority: 0.6,
-    })),
+    ...municipiosPublicaveis().map((m) => {
+      const abertos = abertosNoMunicipio(m.uf, m.slug);
+      return {
+        url: `${SITE.url}${caminhoDoMunicipio(m)}`,
+        // A página mostra o agregado, o bloco de abertos (quando presente) e
+        // os posts locais. A mudança mais recente desses três é a da página.
+        // A data de outra UF, sozinha, não atualiza este município.
+        //
+        // Limite conhecido: quando a cidade deixa de ter aberto, o bloco some
+        // da página e nenhuma linha guarda a data disso. O `lastmod` fica na
+        // mudança anterior até o próximo número mudar.
+        lastModified: new Date(Math.max(
+          new Date(alteradoEmDoMunicipio(m)).getTime(),
+          ...(abertos ? [new Date(abertos.alteradoEm ?? COLETADO_EM).getTime()] : []),
+          ...posts.filter((p) => p.uf === m.uf && p.municipioSlug === m.slug)
+            .map((p) => new Date(p.postadoEm).getTime()),
+        )),
+        changeFrequency: "weekly" as const,
+        priority: 0.6,
+      };
+    }),
 
     /*
      * Os posts do dia. FALTAVAM AQUI, e a ausência esvaziava o modelo inteiro.

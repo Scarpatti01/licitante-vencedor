@@ -26,6 +26,8 @@ import { deduplicar } from "../src/lib/fontes/deduplicacao.ts";
 import { marcarValoresSuspeitos, somaConfiavel } from "../src/lib/pncp/normaliza.ts";
 import { auditar, relatorioEmTexto } from "../src/lib/pncp/auditoria.ts";
 import { agregarPorMunicipio, contarPorEsfera } from "../src/lib/pncp/agregarPorMunicipio.ts";
+import { comAlteradoEm } from "../src/lib/pncp/alteradoEm.ts";
+import type { AgregadoAnterior } from "../src/lib/pncp/carregarUfAusente.ts";
 import { atualizarRegistro, normalizarRegistro } from "../src/lib/pncp/registroDePublicacao.ts";
 import { gravarEditais } from "../src/lib/editais/gravar.ts";
 import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
@@ -315,7 +317,9 @@ async function main() {
     fonte: fonte.nome,
     cobertura,
     esferas: contarPorEsfera(editais),
-    municipios: agregarPorMunicipio(editais),
+    // Com a data da última mudança de cada um, que é o `lastmod` do sitemap.
+    // Ver `alteradoEm.ts`.
+    municipios: comAlteradoEm(agregarPorMunicipio(editais), anterior, coletadoEm),
   };
 
   const relatorio = relatorioEmTexto(auditoria, cobertura);
@@ -398,9 +402,9 @@ async function lerRegistro(caminho: string): Promise<unknown> {
 }
 
 /** Lê o agregado do disco. Ausência não é erro: a primeira coleta não tem anterior. */
-async function lerAgregado(caminho: string) {
+async function lerAgregado(caminho: string): Promise<AgregadoAnterior | null> {
   try {
-    return JSON.parse(await readFile(caminho, "utf8")) as { municipios?: { uf?: string; editais?: number }[] };
+    return JSON.parse(await readFile(caminho, "utf8")) as AgregadoAnterior;
   } catch {
     return null;
   }

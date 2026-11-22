@@ -89,6 +89,12 @@ export type MunicipioAberto = ContagemDeAbertos & {
   uf: string;
   /** O slug da página. É a chave de junção com o agregado de municípios. */
   slug: string;
+  /**
+   * Quando um dos três números mudou pela última vez. Entra no `lastmod` da
+   * página do município. Ausente só em retrato gravado antes de 22/11/2026.
+   * Ver `dominio/alteracao.ts`.
+   */
+  alteradoEm?: string;
 };
 
 export type RetratoDeAbertos = {

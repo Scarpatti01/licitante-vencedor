@@ -228,6 +228,20 @@ export function medidoEmDoMunicipio(m: Pick<MunicipioAgregado, "medidoEm">): str
   return m.medidoEm ?? MEDIDO_EM;
 }
 
+/**
+ * Quando os números DESTE município mudaram pela última vez.
+ *
+ * É diferente de `medidoEmDoMunicipio`: a medição é refeita a cada coleta, e
+ * os números quase nunca mudam de uma para a outra. O sitemap usa esta data.
+ * Agregado gravado antes de `alteradoEm` existir cai na data da medição, que
+ * era o comportamento anterior. Ver `dominio/alteracao.ts`.
+ */
+export function alteradoEmDoMunicipio(
+  m: Pick<MunicipioAgregado, "medidoEm" | "alteradoEm">,
+): string {
+  return m.alteradoEm ?? medidoEmDoMunicipio(m);
+}
+
 export function municipioPorSlug(uf: string, slug: string): MunicipioAgregado | null {
   const alvoUf = uf.toUpperCase();
   return (

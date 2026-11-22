@@ -3,7 +3,7 @@ import sitemap from "./sitemap";
 import { SITE } from "@/lib/site";
 import { LEGACY_GONE, redirecionamentosAtivos } from "@/lib/legacy";
 import { ROTAS_DO_PRODUTO, sobPrefixo } from "@/lib/auth/rotas";
-import { caminhoDoMunicipio, medidoEmDoMunicipio, municipiosPublicaveis } from "@/lib/regioes";
+import { alteradoEmDoMunicipio, caminhoDoMunicipio, municipiosPublicaveis } from "@/lib/regioes";
 import { abertosNoMunicipio, COLETADO_EM } from "@/lib/abertos/acervo";
 import { todosOsPosts } from "@/lib/posts/acervo";
 import { CAMINHO_DO_HISTORICO } from "@/lib/posts/trilha";
@@ -40,12 +40,17 @@ describe("o sitemap convida o Google somente para páginas públicas canônicas"
     if (posts.length > 0) expect(entrada?.lastModified).toEqual(new Date(posts[0].postadoEm));
   });
 
-  it("as páginas municipais consideram todos os conteúdos datados que exibem", () => {
+  /*
+   * A data de cada bloco é a da última MUDANÇA dele, e não a da coleta: a
+   * coleta é diária e quase nunca muda os números. Ver `dominio/alteracao.ts`.
+   */
+  it("as páginas municipais consideram a última mudança de cada conteúdo que exibem", () => {
     const entradas = new Map(sitemap().map((e) => [e.url, e]));
     const posts = todosOsPosts();
     for (const m of municipiosPublicaveis()) {
-      const datas = [new Date(medidoEmDoMunicipio(m)).getTime()];
-      if (abertosNoMunicipio(m.uf, m.slug)) datas.push(new Date(COLETADO_EM).getTime());
+      const datas = [new Date(alteradoEmDoMunicipio(m)).getTime()];
+      const abertos = abertosNoMunicipio(m.uf, m.slug);
+      if (abertos) datas.push(new Date(abertos.alteradoEm ?? COLETADO_EM).getTime());
       for (const p of posts) {
         if (p.uf === m.uf && p.municipioSlug === m.slug) datas.push(new Date(p.postadoEm).getTime());
       }
