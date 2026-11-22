@@ -18,7 +18,7 @@
  * análises para preencher uma listagem que ninguém pediu analisada.
  */
 
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 import { abrirRepositorio } from "../src/lib/triagem/repositorio.ts";
@@ -33,6 +33,7 @@ import {
 import { perfilDaUf } from "../src/lib/abertos/perfilDaUf.ts";
 import { contarPorMunicipio } from "../src/lib/abertos/porMunicipio.ts";
 import { comLocalDeExecucao } from "../src/lib/dominio/local-de-execucao.ts";
+import { datarAlteracoes } from "../src/lib/dominio/alteracao.ts";
 
 const SEM_CONFIGURACAO = 78;
 const UM_DIA_MS = 24 * 60 * 60 * 1000;
@@ -72,6 +73,17 @@ function recorte(e: {
     encerramentoProposta: e.encerramentoProposta as string,
     link: e.link,
   };
+}
+
+/** O retrato versionado. Ausência não é erro: o primeiro dia não tem anterior. */
+async function lerRetratoAnterior(): Promise<RetratoDeAbertos | null> {
+  try {
+    return JSON.parse(
+      await readFile(resolve(process.cwd(), "dados", "abertos.json"), "utf8"),
+    ) as RetratoDeAbertos;
+  } catch {
+    return null;
+  }
 }
 
 async function main() {
@@ -120,10 +132,21 @@ async function main() {
    * `MunicipioAberto`, e o resumo é que a lista custaria uns 3 MB por dia no
    * repositório para responder a mesma pergunta que três números respondem.
    */
-  const municipios = contarPorMunicipio(
-    comPrazo.map((a) => a.edital),
-    { ehNovo, encerraLogo },
-  );
+  //
+  // Cada cidade leva a data da última vez que um dos três números mudou, que é
+  // o `lastmod` da página dela no sitemap. A comparação é com o retrato que
+  // está no checkout, o último versionado. Ver `dominio/alteracao.ts`.
+  const anterior = await lerRetratoAnterior();
+  const municipios = datarAlteracoes({
+    atuais: contarPorMunicipio(
+      comPrazo.map((a) => a.edital),
+      { ehNovo, encerraLogo },
+    ),
+    anteriores: anterior?.municipios ?? [],
+    conteudo: (m) => [m.abertos, m.novos, m.encerramEm24h],
+    desde: () => anterior?.coletadoEm ?? agora.toISOString(),
+    mudouEm: () => agora.toISOString(),
+  });
 
   const maisUrgentesPrimeiro = (a: (typeof comPrazo)[number], b: (typeof comPrazo)[number]) =>
     new Date(a.edital.encerramentoProposta as string).getTime() -

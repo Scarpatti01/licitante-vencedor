@@ -71,6 +71,7 @@ import {
   semUfsAusentes,
   type AgregadoAnterior,
 } from "../src/lib/pncp/carregarUfAusente.ts";
+import { comAlteradoEm } from "../src/lib/pncp/alteradoEm.ts";
 import { classificarColeta, resumirAgregado } from "../src/lib/fontes/degradacao.ts";
 import { gravarExecucaoDeColeta } from "../src/lib/fontes/execucoes.ts";
 import { fontePncp } from "../src/lib/fontes/pncp.ts";
@@ -296,7 +297,9 @@ async function main() {
      * silenciosa. Ver `contarPorEsfera`.
      */
     esferas: contarPorEsfera(editais),
-    municipios: [...medidosHoje, ...carregados],
+    // Com a data da última mudança de cada um, que é o `lastmod` do sitemap.
+    // Ver `alteradoEm.ts`.
+    municipios: comAlteradoEm([...medidosHoje, ...carregados], anterior, coletadoEm),
   };
 
   const relatorio = relatorioEmTexto(auditoria, cobertura);

@@ -38,6 +38,12 @@ export type MunicipioAgregado = {
    * `carregarUfAusente.ts`.
    */
   medidoEm?: string;
+  /**
+   * Quando os números desta linha mudaram pela última vez. É o `lastmod` da
+   * página no sitemap. Ausente só em agregado gravado antes de 22/11/2026.
+   * Ver `alteradoEm.ts`.
+   */
+  alteradoEm?: string;
 };
 
 /**
