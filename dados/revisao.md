@@ -1,13 +1,13 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 28457 editais coletados em 2026-11-23T13:39:53.338Z.
+Revisão dos dados — 28385 editais coletados em 2026-11-23T16:31:28.499Z.
 
-Encontrados 0 erro(s), 5 suspeita(s) e 124 aviso(s).
+Encontrados 1 erro(s), 5 suspeita(s) e 125 aviso(s).
 
-[AVISO] O edital 13763132000117-1-000027/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Impressora"
-  Edital: https://pncp.gov.br/app/editais/13763132000117/2026/27
+[ERRO] O edital 27165638000139-1-000333/2026 veio na consulta de propostas abertas, mas o prazo já havia encerrado no momento da coleta.
+  Evidência: encerrou em 2026-11-23T13:30:00-03:00, coleta em 2026-11-23T16:31:28.499Z
+  Edital: https://pncp.gov.br/app/editais/27165638000139/2026/333
 
 [AVISO] O edital 13529136000135-1-000148/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Capacete"
@@ -287,6 +287,10 @@ Encontrados 0 erro(s), 5 suspeita(s) e 124 aviso(s).
   Evidência: objeto declarado: "226/2026"
   Edital: https://pncp.gov.br/app/editais/63025530000104/2027/27
 
+[AVISO] O edital 05816630000152-1-008853/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "PAPEL"
+  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8853
+
 [AVISO] O edital 01602022000194-1-000420/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "SERVIÇOS"
   Edital: https://pncp.gov.br/app/editais/01602022000194/2026/420
@@ -431,6 +435,10 @@ Encontrados 0 erro(s), 5 suspeita(s) e 124 aviso(s).
 [AVISO] O edital 91566877000108-1-001236/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "SERVICOS"
   Edital: https://pncp.gov.br/app/editais/91566877000108/2026/1236
+
+[AVISO] O edital 01602022000194-1-000441/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "SERVIÇOS"
+  Edital: https://pncp.gov.br/app/editais/01602022000194/2026/441
 
 [AVISO] O edital 13912084000181-1-000033/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "xxx"
