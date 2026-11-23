@@ -1,65 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 30437 editais coletados em 2026-11-22T13:38:05.629Z.
+Revisão dos dados — 28457 editais coletados em 2026-11-23T13:39:53.338Z.
 
-Encontrados 0 erro(s), 5 suspeita(s) e 138 aviso(s).
-
-[AVISO] O edital 01740422000166-1-000152/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "COMPUTADOR"
-  Edital: https://pncp.gov.br/app/editais/01740422000166/2026/152
-
-[AVISO] O edital 88349238000178-1-000260/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "EQUIPAMENTOS"
-  Edital: https://pncp.gov.br/app/editais/88349238000178/2026/260
-
-[AVISO] O edital 46374500000194-1-009374/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Medicamentos"
-  Edital: https://pncp.gov.br/app/editais/46374500000194/2026/9374
-
-[AVISO] O edital 19843929000100-1-000924/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Medicamentos"
-  Edital: https://pncp.gov.br/app/editais/19843929000100/2026/924
-
-[AVISO] O edital 88594999000195-1-001674/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "EQUIPAMENTOS"
-  Edital: https://pncp.gov.br/app/editais/88594999000195/2026/1674
-
-[AVISO] O edital 88818299000137-1-000382/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "HORAS MÁQUINA"
-  Edital: https://pncp.gov.br/app/editais/88818299000137/2026/382
-
-[AVISO] O edital 87843819000107-1-001693/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "CONTRATAÇÃO"
-  Edital: https://pncp.gov.br/app/editais/87843819000107/2026/1693
-
-[AVISO] O edital 94707494000192-1-000861/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "OBRAS"
-  Edital: https://pncp.gov.br/app/editais/94707494000192/2026/861
-
-[AVISO] O edital 44880060000111-1-000249/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "brinquedo"
-  Edital: https://pncp.gov.br/app/editais/44880060000111/2026/249
-
-[AVISO] O edital 63025530000104-1-004410/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Baterias"
-  Edital: https://pncp.gov.br/app/editais/63025530000104/2026/4410
-
-[AVISO] O edital 96291141000180-1-007658/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Mat. Consumo"
-  Edital: https://pncp.gov.br/app/editais/96291141000180/2026/7658
-
-[AVISO] O edital 05816630000152-1-008652/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "CURATIVO"
-  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8652
-
-[AVISO] O edital 13574983000111-1-000064/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Trofeu"
-  Edital: https://pncp.gov.br/app/editais/13574983000111/2026/64
-
-[AVISO] O edital 13699404000167-1-000203/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "REPELENTE"
-  Edital: https://pncp.gov.br/app/editais/13699404000167/2026/203
+Encontrados 0 erro(s), 5 suspeita(s) e 124 aviso(s).
 
 [AVISO] O edital 13763132000117-1-000027/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Impressora"
