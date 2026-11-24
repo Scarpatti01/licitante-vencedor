@@ -1226,6 +1226,10 @@
   },
   {
    "uf": "GO",
+   "slug": "aruana"
+  },
+  {
+   "uf": "GO",
    "slug": "avelinopolis"
   },
   {
@@ -1351,6 +1355,10 @@
   {
    "uf": "GO",
    "slug": "doverlandia"
+  },
+  {
+   "uf": "GO",
+   "slug": "faina"
   },
   {
    "uf": "GO",
@@ -1514,6 +1522,10 @@
   },
   {
    "uf": "GO",
+   "slug": "nova-crixas"
+  },
+  {
+   "uf": "GO",
    "slug": "nova-roma"
   },
   {
@@ -1631,6 +1643,10 @@
   {
    "uf": "GO",
    "slug": "santa-rita-do-araguaia"
+  },
+  {
+   "uf": "GO",
+   "slug": "santa-rosa-de-goias"
   },
   {
    "uf": "GO",
@@ -2098,6 +2114,10 @@
   },
   {
    "uf": "MG",
+   "slug": "coromandel"
+  },
+  {
+   "uf": "MG",
    "slug": "coronel-fabriciano"
   },
   {
@@ -2235,6 +2255,10 @@
   {
    "uf": "MG",
    "slug": "ilicinea"
+  },
+  {
+   "uf": "MG",
+   "slug": "inhapim"
   },
   {
    "uf": "MG",
@@ -3482,6 +3506,10 @@
   },
   {
    "uf": "PB",
+   "slug": "sao-bento"
+  },
+  {
+   "uf": "PB",
    "slug": "sousa"
   },
   {
@@ -3515,6 +3543,10 @@
   {
    "uf": "PE",
    "slug": "barreiros"
+  },
+  {
+   "uf": "PE",
+   "slug": "belem-de-maria"
   },
   {
    "uf": "PE",
@@ -3827,6 +3859,10 @@
   {
    "uf": "PI",
    "slug": "avelino-lopes"
+  },
+  {
+   "uf": "PI",
+   "slug": "barras"
   },
   {
    "uf": "PI",
@@ -4555,6 +4591,10 @@
   {
    "uf": "PR",
    "slug": "sarandi"
+  },
+  {
+   "uf": "PR",
+   "slug": "serranopolis-do-iguacu"
   },
   {
    "uf": "PR",
@@ -5534,7 +5574,15 @@
   },
   {
    "uf": "SC",
+   "slug": "abelardo-luz"
+  },
+  {
+   "uf": "SC",
    "slug": "agrolandia"
+  },
+  {
+   "uf": "SC",
+   "slug": "aguas-de-chapeco"
   },
   {
    "uf": "SC",
@@ -6199,6 +6247,10 @@
   {
    "uf": "SE",
    "slug": "carira"
+  },
+  {
+   "uf": "SE",
+   "slug": "carmopolis"
   },
   {
    "uf": "SE",
@@ -7387,6 +7439,10 @@
   {
    "uf": "TO",
    "slug": "colinas-do-tocantins"
+  },
+  {
+   "uf": "TO",
+   "slug": "colmeia"
   },
   {
    "uf": "TO",
