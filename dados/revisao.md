@@ -1,29 +1,18 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 27572 editais coletados em 2026-11-24T14:16:39.891Z.
+Revisão dos dados — 26733 editais coletados em 2026-11-24T16:30:33.040Z.
 
-ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 26 foram coletadas por inteiro, 1 ficou parcial e 0 não trouxeram nada.
+ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 25 foram coletadas por inteiro, 2 ficaram parciais e 0 não trouxeram nada.
 
-  Completas (representadas por inteiro nos números abaixo): AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, TO
+  Completas (representadas por inteiro nos números abaixo): AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, TO
   Parciais (o que entrou ANTES da interrupção está nos números abaixo; o restante da UF, não):
-    SP: 4300 editais coletados, interrompida — orçamento de tempo esgotado durante a consulta (último erro: The operation was aborted due to timeout)
+    MG: 3650 editais coletados, interrompida — orçamento de tempo esgotado durante a consulta (último erro: The operation was aborted due to timeout)
+    SP: 3800 editais coletados, interrompida — orçamento de tempo esgotado durante a consulta (último erro: The operation was aborted due to timeout)
 
-  Os 27572 editais revisados vêm de AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP, TO.
+  Os 26733 editais revisados vêm de AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP, TO.
 
-Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
-
-[AVISO] O edital 05816630000152-1-008749/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "LÂMINAS"
-  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8749
-
-[AVISO] O edital 13699404000167-1-000206/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "ANESTESICO"
-  Edital: https://pncp.gov.br/app/editais/13699404000167/2026/206
-
-[AVISO] O edital 05816630000152-1-008761/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "MEDICAMENTOS"
-  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8761
+Encontrados 0 erro(s), 5 suspeita(s) e 116 aviso(s).
 
 [AVISO] O edital 05816630000152-1-008727/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "KIT"
@@ -53,12 +42,8 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
   Evidência: objeto declarado: "CAFE"
   Edital: https://pncp.gov.br/app/editais/00401376000108/2026/91
 
-[AVISO] O edital 46482840000139-1-000883/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Exames equinos"
-  Edital: https://pncp.gov.br/app/editais/46482840000139/2026/883
-
 [SUSPEITA] No edital 01616680000135-1-000045/2026, do órgão MUNICIPIO DE SAO FRANCISCO DO BREJAO, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 12.379.800.000,00, contra máximo de R$ 1.496.430.000,00 entre os demais Pregão - Eletrônico deste conjunto
+  Evidência: valor declarado R$ 12.379.800.000,00, contra máximo de R$ 1.311.767.600,00 entre os demais Pregão - Eletrônico deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10 daria R$ 1.237.980.000,00; dividido por 100 daria R$ 123.798.000,00; dividido por 1.000 daria R$ 12.379.800,00; dividido por 10.000 daria R$ 1.237.980,00). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/01616680000135/2026/45
 
@@ -138,10 +123,6 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
   Evidência: objeto declarado: "VIDEO GAME"
   Edital: https://pncp.gov.br/app/editais/01090674000197/2026/12
 
-[AVISO] O edital 48031918000124-1-003463/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Smartphone 5G"
-  Edital: https://pncp.gov.br/app/editais/48031918000124/2026/3463
-
 [AVISO] O edital 00394502000144-1-017124/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obra do rancho"
   Edital: https://pncp.gov.br/app/editais/00394502000144/2026/17124
@@ -211,9 +192,9 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Concorrência - Presencial (dividido por 10 daria R$ 1.973.706.387,60; dividido por 100 daria R$ 197.370.638,76; dividido por 1.000 daria R$ 19.737.063,88; dividido por 10.000 daria R$ 1.973.706,39). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/14682109000160/2026/30
 
-[AVISO] O edital 00394452000103-1-025004/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Medicamentos"
-  Edital: https://pncp.gov.br/app/editais/00394452000103/2026/25004
+[AVISO] O edital 00394502000144-1-017338/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "sss"
+  Edital: https://pncp.gov.br/app/editais/00394502000144/2026/17338
 
 [AVISO] O edital 88067780000138-1-000157/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "MATERIAL"
@@ -259,10 +240,6 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
   Evidência: objeto declarado: "LEUPRORRELINA"
   Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8891
 
-[AVISO] O edital 18746164000128-1-000142/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Areia lavada"
-  Edital: https://pncp.gov.br/app/editais/18746164000128/2026/142
-
 [AVISO] O edital 88067780000138-1-000158/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Equipamentos"
   Edital: https://pncp.gov.br/app/editais/88067780000138/2026/158
@@ -291,6 +268,10 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
   Evidência: objeto declarado: "TELA CIRURGICA"
   Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8911
 
+[AVISO] O edital 05816630000152-1-008917/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "LEUPRORRELINA"
+  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8917
+
 [AVISO] O edital 14485841000140-1-003021/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Clips 3 0"
   Edital: https://pncp.gov.br/app/editais/14485841000140/2026/3021
@@ -298,6 +279,10 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
 [AVISO] O edital 13595251000108-1-000069/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
   Edital: https://pncp.gov.br/app/editais/13595251000108/2026/69
+
+[AVISO] O edital 05816630000152-1-008918/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "MESNA 400MG"
+  Edital: https://pncp.gov.br/app/editais/05816630000152/2026/8918
 
 [AVISO] O edital 05816630000152-1-008914/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "ITEM PARA TI"
@@ -379,14 +364,6 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
   Evidência: objeto declarado: "AÇÚCAR."
   Edital: https://pncp.gov.br/app/editais/13927801000300/2026/184
 
-[AVISO] O edital 46374500000194-1-009683/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "Conforme TR"
-  Edital: https://pncp.gov.br/app/editais/46374500000194/2026/9683
-
-[AVISO] O edital 46362927000172-1-000900/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "AGUA"
-  Edital: https://pncp.gov.br/app/editais/46362927000172/2026/900
-
 [AVISO] O edital 19843929000100-1-000829/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Medicamentos"
   Edital: https://pncp.gov.br/app/editais/19843929000100/2026/829
@@ -394,14 +371,6 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
 [AVISO] O edital 17503475000101-1-000269/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "CALORIMETRO"
   Edital: https://pncp.gov.br/app/editais/17503475000101/2026/269
-
-[AVISO] O edital 63025530000104-1-000034/2027 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "DFD 32/2026"
-  Edital: https://pncp.gov.br/app/editais/63025530000104/2027/34
-
-[AVISO] O edital 24082016000159-1-000752/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "COLÇÕES"
-  Edital: https://pncp.gov.br/app/editais/24082016000159/2026/752
 
 [AVISO] O edital 02931604000187-1-000397/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Obras comuns"
@@ -464,8 +433,8 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
   Edital: https://pncp.gov.br/app/editais/01179647000195/2026/327
 
 [SUSPEITA] No edital 00394684000153-1-000155/2026, do órgão SECRETARIA DE ESTADO DE ECONOMIA DO DISTRITO FEDERAL, o valor estimado parece incoerente — possivelmente erro de digitação na fonte.
-  Evidência: valor declarado R$ 14.382.552.347.793,29, contra máximo de R$ 1.496.430.000,00 entre os demais Pregão - Eletrônico deste conjunto
-  Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Pregão - Eletrônico (dividido por 10.000 daria R$ 1.438.255.234,78; dividido por 100.000 daria R$ 143.825.523,48). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
+  Evidência: valor declarado R$ 14.382.552.347.793,29, contra máximo de R$ 1.311.767.600,00 entre os demais Pregão - Eletrônico deste conjunto
+  Hipótese: Dividido por 100.000, o valor vira R$ 143.825.523,48, que cai dentro da faixa observada em Pregão - Eletrônico neste conjunto — compatível com erro de escala na digitação. É hipótese derivada da distribuição, não confirmação: só o órgão pode dizer o valor correto.
   Edital: https://pncp.gov.br/app/editais/00394684000153/2026/155
 
 [AVISO] O edital 76995422000106-1-000166/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
@@ -476,10 +445,6 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
   Evidência: valor declarado R$ 24.253.929.260,71, contra máximo de R$ 7.592.989.827,96 entre os demais Concorrência - Presencial deste conjunto
   Hipótese: Mais de uma correção de escala é compatível com a faixa observada em Concorrência - Presencial (dividido por 10 daria R$ 2.425.392.926,07; dividido por 100 daria R$ 242.539.292,61; dividido por 1.000 daria R$ 24.253.929,26; dividido por 10.000 daria R$ 2.425.392,93). **Não é possível determinar qual seria o valor correto** a partir do dado disponível.
   Edital: https://pncp.gov.br/app/editais/07954480000179/2026/25660
-
-[AVISO] O edital 49269251000165-1-000057/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
-  Evidência: objeto declarado: "1 Imóvel"
-  Edital: https://pncp.gov.br/app/editais/49269251000165/2026/57
 
 [AVISO] O edital 39467292000102-1-000101/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "3 Imóveis"
@@ -538,5 +503,5 @@ Encontrados 0 erro(s), 5 suspeita(s) e 125 aviso(s).
   Evidência: objeto declarado: "Obras"
   Edital: https://pncp.gov.br/app/editais/88067780000138/2026/156
 
-87% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
+88% dos editais têm valor estimado informado pelo órgão; nos demais o campo veio vazio na fonte e nenhum valor foi estimado por nós.
 ```
