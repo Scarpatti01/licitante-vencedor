@@ -122,6 +122,10 @@
   },
   {
    "uf": "AM",
+   "slug": "presidente-figueiredo"
+  },
+  {
+   "uf": "AM",
    "slug": "sao-gabriel-da-cachoeira"
   },
   {
@@ -1435,6 +1439,10 @@
   {
    "uf": "GO",
    "slug": "ipora"
+  },
+  {
+   "uf": "GO",
+   "slug": "itaberai"
   },
   {
    "uf": "GO",
@@ -2986,6 +2994,10 @@
   },
   {
    "uf": "MS",
+   "slug": "caarapo"
+  },
+  {
+   "uf": "MS",
    "slug": "campo-grande"
   },
   {
@@ -3811,6 +3823,10 @@
   {
    "uf": "PE",
    "slug": "sao-vicente-ferrer"
+  },
+  {
+   "uf": "PE",
+   "slug": "serra-talhada"
   },
   {
    "uf": "PE",
@@ -4986,6 +5002,10 @@
   },
   {
    "uf": "RN",
+   "slug": "lagoa-nova"
+  },
+  {
+   "uf": "RN",
    "slug": "macaiba"
   },
   {
@@ -5527,6 +5547,10 @@
   {
    "uf": "RS",
    "slug": "sao-sepe"
+  },
+  {
+   "uf": "RS",
+   "slug": "sapiranga"
   },
   {
    "uf": "RS",
@@ -7475,6 +7499,10 @@
   {
    "uf": "TO",
    "slug": "dianopolis"
+  },
+  {
+   "uf": "TO",
+   "slug": "esperantina"
   },
   {
    "uf": "TO",
