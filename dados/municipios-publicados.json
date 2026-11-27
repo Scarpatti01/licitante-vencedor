@@ -586,6 +586,10 @@
   },
   {
    "uf": "CE",
+   "slug": "aurora"
+  },
+  {
+   "uf": "CE",
    "slug": "banabuiu"
   },
   {
@@ -1371,6 +1375,10 @@
   {
    "uf": "GO",
    "slug": "doverlandia"
+  },
+  {
+   "uf": "GO",
+   "slug": "estrela-do-norte"
   },
   {
    "uf": "GO",
@@ -3146,6 +3154,10 @@
   },
   {
    "uf": "MT",
+   "slug": "alto-taquari"
+  },
+  {
+   "uf": "MT",
    "slug": "apiacas"
   },
   {
@@ -3383,6 +3395,10 @@
   {
    "uf": "PA",
    "slug": "novo-progresso"
+  },
+  {
+   "uf": "PA",
+   "slug": "novo-repartimento"
   },
   {
    "uf": "PA",
@@ -3855,6 +3871,10 @@
   {
    "uf": "PE",
    "slug": "timbauba"
+  },
+  {
+   "uf": "PE",
+   "slug": "toritama"
   },
   {
    "uf": "PE",
@@ -5731,6 +5751,10 @@
   {
    "uf": "SC",
    "slug": "braco-do-norte"
+  },
+  {
+   "uf": "SC",
+   "slug": "braco-do-trombudo"
   },
   {
    "uf": "SC",
