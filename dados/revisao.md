@@ -1,17 +1,9 @@
 # Revisão da coleta
 
 ```
-Revisão dos dados — 29459 editais coletados em 2026-11-28T12:22:16.369Z.
+Revisão dos dados — 29947 editais coletados em 2026-11-28T14:34:19.883Z.
 
-ATENÇÃO — cobertura incompleta. Das 27 UFs solicitadas, 26 foram coletadas por inteiro, 1 ficou parcial e 0 não trouxeram nada.
-
-  Completas (representadas por inteiro nos números abaixo): AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, TO
-  Parciais (o que entrou ANTES da interrupção está nos números abaixo; o restante da UF, não):
-    SP: 5050 editais coletados, interrompida — orçamento de tempo esgotado durante a consulta (último erro: The operation was aborted due to timeout)
-
-  Os 29459 editais revisados vêm de AC, AL, AM, AP, BA, CE, DF, ES, GO, MA, MG, MS, MT, PA, PB, PE, PI, PR, RJ, RN, RO, RR, RS, SC, SE, SP, TO.
-
-Encontrados 0 erro(s), 4 suspeita(s) e 124 aviso(s).
+Encontrados 0 erro(s), 4 suspeita(s) e 126 aviso(s).
 
 [AVISO] O edital 00394452000103-1-025108/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Resina."
@@ -434,6 +426,14 @@ Encontrados 0 erro(s), 4 suspeita(s) e 124 aviso(s).
 [AVISO] O edital 46374500000194-1-009868/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Conforme TR"
   Edital: https://pncp.gov.br/app/editais/46374500000194/2026/9868
+
+[AVISO] O edital 46634200000105-1-000096/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "kits escolares"
+  Edital: https://pncp.gov.br/app/editais/46634200000105/2026/96
+
+[AVISO] O edital 63025530000104-1-004806/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
+  Evidência: objeto declarado: "ISOFLURANO"
+  Edital: https://pncp.gov.br/app/editais/63025530000104/2026/4806
 
 [AVISO] O edital 63025530000104-1-004753/2026 tem descrição de objeto curta demais para dizer o que está sendo comprado.
   Evidência: objeto declarado: "Álcool etílico"
