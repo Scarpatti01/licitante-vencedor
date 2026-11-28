@@ -1378,6 +1378,10 @@
   },
   {
    "uf": "GO",
+   "slug": "edealina"
+  },
+  {
+   "uf": "GO",
    "slug": "estrela-do-norte"
   },
   {
@@ -1527,6 +1531,10 @@
   {
    "uf": "GO",
    "slug": "morrinhos"
+  },
+  {
+   "uf": "GO",
+   "slug": "morro-agudo-de-goias"
   },
   {
    "uf": "GO",
@@ -1734,6 +1742,10 @@
   },
   {
    "uf": "GO",
+   "slug": "uruana"
+  },
+  {
+   "uf": "GO",
    "slug": "valparaiso-de-goias"
   },
   {
@@ -1915,6 +1927,10 @@
   {
    "uf": "MG",
    "slug": "barbacena"
+  },
+  {
+   "uf": "MG",
+   "slug": "bela-vista-de-minas"
   },
   {
    "uf": "MG",
@@ -2147,6 +2163,10 @@
   {
    "uf": "MG",
    "slug": "coronel-fabriciano"
+  },
+  {
+   "uf": "MG",
+   "slug": "couto-de-magalhaes-de-minas"
   },
   {
    "uf": "MG",
@@ -2438,6 +2458,10 @@
   },
   {
    "uf": "MG",
+   "slug": "manga"
+  },
+  {
+   "uf": "MG",
    "slug": "manhuacu"
   },
   {
@@ -2618,6 +2642,10 @@
   },
   {
    "uf": "MG",
+   "slug": "piedade-do-rio-grande"
+  },
+  {
+   "uf": "MG",
    "slug": "pimenta"
   },
   {
@@ -2778,6 +2806,10 @@
   },
   {
    "uf": "MG",
+   "slug": "sao-bento-abade"
+  },
+  {
+   "uf": "MG",
    "slug": "sao-francisco-do-gloria"
   },
   {
@@ -2791,6 +2823,10 @@
   {
    "uf": "MG",
    "slug": "sao-joao-batista-do-gloria"
+  },
+  {
+   "uf": "MG",
+   "slug": "sao-joao-das-missoes"
   },
   {
    "uf": "MG",
@@ -2863,6 +2899,10 @@
   {
    "uf": "MG",
    "slug": "taiobeiras"
+  },
+  {
+   "uf": "MG",
+   "slug": "taquaracu-de-minas"
   },
   {
    "uf": "MG",
@@ -3406,6 +3446,10 @@
   },
   {
    "uf": "PA",
+   "slug": "oriximina"
+  },
+  {
+   "uf": "PA",
    "slug": "paragominas"
   },
   {
@@ -3551,6 +3595,10 @@
   {
    "uf": "PB",
    "slug": "sao-bento"
+  },
+  {
+   "uf": "PB",
+   "slug": "sape"
   },
   {
    "uf": "PB",
@@ -3979,6 +4027,10 @@
   {
    "uf": "PR",
    "slug": "abatia"
+  },
+  {
+   "uf": "PR",
+   "slug": "almirante-tamandare"
   },
   {
    "uf": "PR",
@@ -6438,6 +6490,10 @@
   },
   {
    "uf": "SP",
+   "slug": "americo-brasiliense"
+  },
+  {
+   "uf": "SP",
    "slug": "amparo"
   },
   {
@@ -6631,6 +6687,10 @@
   {
    "uf": "SP",
    "slug": "casa-branca"
+  },
+  {
+   "uf": "SP",
+   "slug": "cassia-dos-coqueiros"
   },
   {
    "uf": "SP",
@@ -7090,6 +7150,10 @@
   },
   {
    "uf": "SP",
+   "slug": "pardinho"
+  },
+  {
+   "uf": "SP",
    "slug": "pariquera-acu"
   },
   {
@@ -7515,6 +7579,10 @@
   {
    "uf": "TO",
    "slug": "barrolandia"
+  },
+  {
+   "uf": "TO",
+   "slug": "brejinho-de-nazare"
   },
   {
    "uf": "TO",
